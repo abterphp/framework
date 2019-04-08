@@ -12,10 +12,9 @@ install:
 
 script:
   - docker-compose exec php make build
+  - docker-compose exec php make coverage
 
 after_success:
-  - docker-compose exec php make coverage
   - curl -L --output php-coveralls.phar https://github.com/php-coveralls/php-coveralls/releases/download/v2.1.0/php-coveralls.phar
   - chmod +x php-coveralls.phar
-  - ls php-coveralls.phar
   - travis_retry php-coveralls.phar --coverage_clover=./tmp/report/clover.xml --json_path=./tmp/report/coveralls-upload.json
