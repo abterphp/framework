@@ -1,0 +1,41 @@
+<?php
+
+declare(strict_types=1);
+
+namespace AbterPhp\Framework\Bootstrappers\Grid;
+
+use AbterPhp\Framework\Constant\Env;
+use AbterPhp\Framework\Grid\Pagination\Options as PaginationOptions;
+use Opulence\Ioc\Bootstrappers\Bootstrapper;
+use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
+use Opulence\Ioc\IContainer;
+
+class GridBootstrapper extends Bootstrapper implements ILazyBootstrapper
+{
+    /**
+     * @return array
+     */
+    public function getBindings(): array
+    {
+        return [
+            PaginationOptions::class,
+        ];
+    }
+
+    /**
+     * @param IContainer $container
+     */
+    public function registerBindings(IContainer $container)
+    {
+        $defaultPageSize = (int)getenv(Env::PAGINATION_SIZE_DEFAULT);
+        $numberCount     = (int)getenv(Env::PAGINATION_NUMBER_COUNT);
+        $pageSizeOptions = [];
+        foreach (explode(',', getenv(Env::PAGINATION_SIZE_OPTIONS)) as $pageSizeOption) {
+            $pageSizeOptions[] = (int)$pageSizeOption;
+        }
+
+        $paginationOptions = new PaginationOptions($defaultPageSize, $pageSizeOptions, $numberCount);
+
+        $container->bindInstance(PaginationOptions::class, $paginationOptions);
+    }
+}

@@ -1,0 +1,7 @@
+version: '3'
+services:
+  php:
+    image: abtercms/php:latest
+    volumes:
+      - .:/website
+    working_dir: /website

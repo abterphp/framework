@@ -1,0 +1,22 @@
+<phpunit
+        bootstrap="vendor/autoload.php"
+        colors="true">
+    <testsuite name="AbterPHP">
+        <testsuite name="unit">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuite>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+            <exclude>
+                <directory suffix=".php">./src/Bootstrappers</directory>
+                <directory suffix=".php">./src/Console/Commands</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="./tmp/report" lowUpperBound="35" highLowerBound="70"/>
+        <log type="coverage-clover" target="./tmp/report/clover.xml"/>
+    </logging>
+</phpunit>
