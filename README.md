@@ -6,3 +6,4 @@
 [![Coverage Status](https://coveralls.io/repos/github/abtercms/framework/badge.svg)](https://coveralls.io/github/abtercms/framework)
 
 This project serves as the foundations for [AbterPHP](https://github.com/abtercms/abterphp).
+
