@@ -1,10 +1,10 @@
 <?php
 
-namespace AbterPhp\Framework;
-
-use AbterPhp\Framework\Constant\Event;
+use AbterPhp\Framework\Bootstrappers;
+use AbterPhp\Framework\Console;
 use AbterPhp\Framework\Constant\Module;
 use AbterPhp\Framework\Constant\Priorities;
+use AbterPhp\Framework\Http;
 
 return [
     Module::IDENTIFIER         => 'AbterPhp\Framework',
@@ -49,12 +49,6 @@ return [
         Console\Commands\Cache\FlushCache::class,
         Console\Commands\Security\SecretGenerator::class,
         Console\Commands\Template\FlushCache::class,
-    ],
-    Module::EVENTS             => [
-        Event::NAVIGATION_READY => [
-            /** @see \AbterPhp\Framework\Events\Listeners\NavigationBuilder::handle */
-            sprintf('%s@handle', Events\Listeners\NavigationBuilder::class),
-        ],
     ],
     Module::MIDDLEWARE         => [
         Priorities::NORMAL => [
