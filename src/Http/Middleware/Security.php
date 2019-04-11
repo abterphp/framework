@@ -17,8 +17,22 @@ class Security implements IMiddleware
 {
     const KEY = 'abterphp:security';
 
+    const TEST_DB_PASSWORD              = '28T3pqyvKG3tEgsjE8Rj';
+    const TEST_ENCRYPTION_KEY           = 'b8fbb40c129ad0e426e19b7d28f42e517ce639282e55ba7a98bd2b698fda7daa';
+    const TEST_CRYPTO_FRONTEND_SALT     = 'R6n9gNH9ND6USc6D';
+    const TEST_CRYPTO_ENCRYPTION_PEPPER = 'h9fyyWr36vBnky9G';
+
     /** @var ICacheBridge */
     protected $cacheBridge;
+
+    /** @var string */
+    protected $environment;
+
+    /** @var string[] */
+    protected $environmentData;
+
+    /** @var string[] */
+    protected $settings;
 
     /**
      * Security constructor.
@@ -30,10 +44,82 @@ class Security implements IMiddleware
         $this->cacheBridge = $cacheBridge;
     }
 
+    /**
+     * @return string
+     */
+    public function getEnvironment(): string
+    {
+        if (null === $this->environment) {
+            $this->environment = getenv(Env::ENV_NAME);
+        }
+
+        return $this->environment;
+    }
+
+    /**
+     * @param string $environment
+     */
+    public function setEnvironment(string $environment): void
+    {
+        $this->environment = $environment;
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return string
+     */
+    public function getEnvironmentData(string $key): string
+    {
+        if (!isset($this->environmentData[$key])) {
+            return (string)getenv($key);
+        }
+
+        return (string)$this->environmentData[$key];
+    }
+
+    /**
+     * @param array $environmentData
+     *
+     * @return $this
+     */
+    public function setEnvironmentData(array $environmentData): Security
+    {
+        $this->environmentData = $environmentData;
+
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return string
+     */
+    public function getSetting(string $key): string
+    {
+        if (!isset($this->settings[$key])) {
+            return (string)getenv($key);
+        }
+
+        return (string)$this->settings[$key];
+    }
+
+    /**
+     * @param array $settings
+     *
+     * @return Security
+     */
+    public function setSettings(array $settings): Security
+    {
+        $this->settings = $settings;
+
+        return $this;
+    }
+
     // $next consists of the next middleware in the pipeline
     public function handle(Request $request, Closure $next): Response
     {
-        if (getenv(\AbterPhp\Framework\Constant\Env::ENV_NAME) !== Environment::PRODUCTION) {
+        if ($this->getEnvironment() !== Environment::PRODUCTION) {
             return $next($request);
         }
 
@@ -57,26 +143,26 @@ class Security implements IMiddleware
 
     private function checkSecrets()
     {
-        if (getenv(Env::DB_PASSWORD) === '28T3pqyvKG3tEgsjE8Rj') {
+        if ($this->getEnvironmentData(Env::DB_PASSWORD) === static::TEST_DB_PASSWORD) {
             throw new SecurityException('Invalid DB_PASSWORD environment variable.');
         }
 
-        if (getenv(Env::ENCRYPTION_KEY) === 'b8fbb40c129ad0e426e19b7d28f42e517ce639282e55ba7a98bd2b698fda7daa') {
+        if ($this->getEnvironmentData(Env::ENCRYPTION_KEY) === static::TEST_ENCRYPTION_KEY) {
             throw new SecurityException('Invalid ENCRYPTION_KEY environment variable.');
         }
 
-        if (getenv(Env::CRYPTO_FRONTEND_SALT) === 'R6n9gNH9ND6USc6D') {
+        if ($this->getEnvironmentData(Env::CRYPTO_FRONTEND_SALT) === static::TEST_CRYPTO_FRONTEND_SALT) {
             throw new SecurityException('Invalid CRYPTO_FRONTEND_SALT environment variable.');
         }
 
-        if (getenv(Env::CRYPTO_ENCRYPTION_PEPPER) === 'h9fyyWr36vBnky9G') {
+        if ($this->getEnvironmentData(Env::CRYPTO_ENCRYPTION_PEPPER) === static::TEST_CRYPTO_ENCRYPTION_PEPPER) {
             throw new SecurityException('Invalid CRYPTO_ENCRYPTION_PEPPER environment variable.');
         }
     }
 
     private function checkPhpSettings()
     {
-        if (ini_get('display_errors')) {
+        if ($this->getSetting('display_errors')) {
             throw new SecurityException('Unacceptable `display_errors` value for production.');
         }
     }

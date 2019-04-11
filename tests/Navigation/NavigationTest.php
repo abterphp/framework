@@ -116,6 +116,23 @@ class NavigationTest extends TestCase
         $this->assertNotContains($node, $actualResult);
     }
 
+    public function testGetExtendedDescendantNodesIgnoresOptionals()
+    {
+        $wrapper = new Component(null, [], [], 'foo');
+        $prefix  = new Component(null, [], [], 'bar');
+        $postfix = new Component(null, [], [], 'baz');
+
+        $sut = new Navigation();
+
+        $sut->setWrapper($wrapper);
+        $sut->setPrefix($prefix);
+        $sut->setPostfix($postfix);
+
+        $actualResult = $sut->getExtendedDescendantNodes(-1);
+
+        $this->assertSame([$prefix, $postfix, $wrapper], $actualResult);
+    }
+
     /**
      * @expectedException \LogicException
      */

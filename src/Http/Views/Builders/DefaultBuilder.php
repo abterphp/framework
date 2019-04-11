@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Http\Views\Builders;
 
 use AbterPhp\Framework\Constant\View;
-use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Views\Factories\IViewBuilder;
 use Opulence\Views\IView;
 
@@ -14,19 +13,6 @@ use Opulence\Views\IView;
  */
 class DefaultBuilder implements IViewBuilder
 {
-    /** @var IEventDispatcher */
-    protected $eventDispatcher;
-
-    /**
-     * WebsiteBuilder constructor.
-     *
-     * @param IEventDispatcher $eventDispatcher
-     */
-    public function __construct(IEventDispatcher $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
-
     /**
      * @inheritdoc
      */

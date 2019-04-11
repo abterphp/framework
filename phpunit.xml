@@ -12,6 +12,7 @@
             <exclude>
                 <directory suffix=".php">./src/Bootstrappers</directory>
                 <directory suffix=".php">./src/Console/Commands</directory>
+                <directory suffix=".php">./src/Http/Controllers</directory>
             </exclude>
         </whitelist>
     </filter>

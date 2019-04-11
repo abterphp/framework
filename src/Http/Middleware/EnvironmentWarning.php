@@ -18,6 +18,9 @@ class EnvironmentWarning implements IMiddleware
     /** @var ITranslator */
     protected $translator;
 
+    /** @var string */
+    protected $environment;
+
     /**
      * EnvironmentWarning constructor.
      *
@@ -27,6 +30,27 @@ class EnvironmentWarning implements IMiddleware
     {
         $this->translator = $translator;
     }
+
+    /**
+     * @return string
+     */
+    public function getEnvironment(): string
+    {
+        if (null === $this->environment) {
+            $this->environment = getenv(Env::ENV_NAME);
+        }
+
+        return $this->environment;
+    }
+
+    /**
+     * @param string $environment
+     */
+    public function setEnvironment(string $environment): void
+    {
+        $this->environment = $environment;
+    }
+
 
     /**
      * @param Request $request
@@ -39,11 +63,11 @@ class EnvironmentWarning implements IMiddleware
         /** @var Response $response */
         $response = $next($request);
 
-        if (getenv(Env::ENV_NAME) == Environment::PRODUCTION) {
+        if ($this->getEnvironment() == Environment::PRODUCTION) {
             return $response;
         }
 
-        $warning = $this->getWarningHtml(getenv(Env::ENV_NAME));
+        $warning = $this->getWarningHtml($this->getEnvironment());
 
         $response->setContent(preg_replace('/<body([^>]*)>/', '<body${1}>' . $warning, $response->getContent(), 1));
 
