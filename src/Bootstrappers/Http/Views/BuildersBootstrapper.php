@@ -25,11 +25,8 @@ class BuildersBootstrapper extends Bootstrapper
         $viewFactory->registerBuilder(
             'layouts/default',
             function (IView $view) use ($container) {
-                /** @var IEventDispatcher $eventDispatcher */
-                $eventDispatcher = $container->resolve(IEventDispatcher::class);
-
                 /** @see DefaultBuilder::build() */
-                return (new DefaultBuilder($eventDispatcher))->build($view);
+                return (new DefaultBuilder())->build($view);
             }
         );
     }
