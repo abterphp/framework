@@ -34,7 +34,7 @@ class I18nBootstrapper extends Bootstrapper
     {
         $lang = $this->getLang($container);
 
-        $translations = $this->getTranslations($container, $lang);
+        $translations = $this->getTranslations($lang);
 
         $translator = new Translator($translations);
 
@@ -61,13 +61,12 @@ class I18nBootstrapper extends Bootstrapper
     }
 
     /**
-     * @param IContainer $container
      * @param string     $lang
      *
      * @return array
      * @throws \Opulence\Ioc\IocException
      */
-    protected function getTranslations(IContainer $container, string $lang): array
+    protected function getTranslations(string $lang): array
     {
         $translations = [];
         foreach ($this->getLangDirs($lang) as $dir) {
