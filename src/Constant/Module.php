@@ -17,4 +17,5 @@ class Module
     const EVENTS             = 'EVENTS';
     const MIDDLEWARE         = 'MIDDLEWARE';
     const MIGRATION_PATHS    = 'MIGRATION_PATHS';
+    const RESOURCE_PATH      = 'RESOURCE_PATH';
 }

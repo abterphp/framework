@@ -18,6 +18,7 @@ class Manager
     const CACHE_KEY_EVENTS             = 'AbterPhp:Events';
     const CACHE_KEY_MIDDLEWARE         = 'AbterPhp:Middleware';
     const CACHE_KEY_MIGRATION_PATHS    = 'AbterPhp:MigrationPaths';
+    const CACHE_KEY_RESOURCE_PATH      = 'AbterPhp:Resource';
 
     /** @var Loader */
     protected $loader;
@@ -177,6 +178,17 @@ class Manager
     }
 
     /**
+     * @return string[]
+     */
+    public function getResourcePaths(): array
+    {
+        return $this->cacheWrapper(
+            static::CACHE_KEY_RESOURCE_PATH,
+            $this->simpleOptionCallback(Module::RESOURCE_PATH)
+        );
+    }
+
+    /**
      * Creates a callback that will simply merge a 2-dimensions array
      *
      * Examples
@@ -251,6 +263,36 @@ class Manager
             return $flattened;
         };
     }
+
+    /**
+     * Creates a callback that will return a simple option
+     *
+     * Examples
+     * Module A: [3 => ['a', 'b', 'c'], 10 => ['d', 'b'], 12 => ['a']]
+     * Module B: [10 => ['a', 'b'], 14 => ['a']]
+     * Result:   [3 => ['a', 'b', 'c'], 10 => ['d', 'b', 'a', 'b'], 12 => ['a'], 14 => ['a']]
+     *
+     * @param string $option
+     * @param bool   $reversed
+     *
+     * @return callable
+     */
+    protected function simpleOptionCallback(string $option): callable
+    {
+        return function ($modules) use ($option) {
+            $merged = [];
+            foreach ($modules as $module) {
+                if (!isset($module[$option])) {
+                    continue;
+                }
+                $merged[$module[Module::IDENTIFIER]] = $module[$option];
+            }
+
+            return $merged;
+        };
+    }
+
+
 
     /**
      * @return $this

@@ -16,6 +16,8 @@ use Opulence\Views\Compilers\Fortune\ITranspiler;
 
 class I18nBootstrapper extends Bootstrapper
 {
+    const LANG_PATH = 'lang/';
+
     /**
      * @inheritdoc
      */
@@ -30,39 +32,14 @@ class I18nBootstrapper extends Bootstrapper
      */
     private function registerTranslator(IContainer $container)
     {
-        $translations = $this->getTranslations($container);
+        $lang = $this->getLang($container);
+
+        $translations = $this->getTranslations($container, $lang);
 
         $translator = new Translator($translations);
 
         $container->bindInstance(Translator::class, $translator);
         $container->bindInstance(ITranslator::class, $translator);
-    }
-
-    /**
-     * @param IContainer $container
-     *
-     * @return array
-     * @throws \Opulence\Ioc\IocException
-     */
-    protected function getTranslations(IContainer $container): array
-    {
-        $path = Config::get('paths', 'resources.lang');
-        $lang = $this->getLang($container);
-        $dir  = sprintf('%s/%s/', $path, $lang);
-
-        $translations = [];
-        foreach (scandir($dir) as $file) {
-            if (strlen($file) < 4 || substr($file, -4) !== '.php') {
-                continue;
-            }
-
-            $key   = substr($file, 0, -4);
-            $value = require $dir . $file;
-
-            $translations[$key] = $value;
-        }
-
-        return $translations;
     }
 
     /**
@@ -81,6 +58,73 @@ class I18nBootstrapper extends Bootstrapper
         }
 
         return (string)getenv(Env::DEFAULT_LANGUAGE);
+    }
+
+    /**
+     * @param IContainer $container
+     * @param string     $lang
+     *
+     * @return array
+     * @throws \Opulence\Ioc\IocException
+     */
+    protected function getTranslations(IContainer $container, string $lang): array
+    {
+        $translations = [];
+        foreach ($this->getLangDirs($lang) as $dir) {
+            $translations = array_merge($translations, $this->scanDir($dir));
+        }
+
+        return $translations;
+    }
+
+    /**
+     * @param string $dir
+     *
+     * @return string[]
+     */
+    protected function scanDir(string $dir): array
+    {
+        if (!is_dir($dir)) {
+            return [];
+        }
+
+        $translations = [];
+        foreach (scandir($dir) as $file) {
+            if (strlen($file) < 4 || substr($file, -4) !== '.php') {
+                continue;
+            }
+
+            $key   = substr($file, 0, -4);
+            $value = require $dir . $file;
+
+            $translations[$key] = $value;
+        }
+
+        return $translations;
+    }
+
+    /**
+     * @param string $lang
+     *
+     * @return string[]
+     * @throws \Opulence\Ioc\IocException
+     */
+    protected function getLangDirs(string $lang): array
+    {
+        global $abterModuleManager;
+
+        $paths = [];
+
+        $globalPath = Config::get('paths', 'resources.lang');
+        if ($globalPath) {
+            $paths[] = sprintf('%s/%s/', $globalPath, $lang);
+        }
+
+        foreach ($abterModuleManager->getResourcePaths() as $path) {
+            $paths[] = sprintf('%s/%s/%s/', $path, static::LANG_PATH, $lang);
+        }
+
+        return $paths;
     }
 
     /**

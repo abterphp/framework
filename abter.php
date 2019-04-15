@@ -67,4 +67,5 @@ return [
             __DIR__ . '/asset-routes.php',
         ],
     ],
+    Module::RESOURCE_PATH    => realpath(__DIR__ . '/resources'),
 ];
