@@ -83,14 +83,17 @@ class ViewBootstrapper extends BaseBootstrapper
             $resolver->registerPath($globalPath);
         }
 
-        foreach ($abterModuleManager->getResourcePaths() as $path) {
+        $resourcePaths = $abterModuleManager->getResourcePaths();
+
+        $priority = count($resourcePaths);
+        foreach ($resourcePaths as $path) {
             $modulePath = sprintf('%s/%s', $path, static::VIEWS_PATH);
 
             if (!is_dir($modulePath)) {
                 continue;
             }
 
-            $resolver->registerPath($modulePath);
+            $resolver->registerPath($modulePath, $priority--);
         }
     }
 }

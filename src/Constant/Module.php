@@ -18,4 +18,5 @@ class Module
     const MIDDLEWARE         = 'MIDDLEWARE';
     const MIGRATION_PATHS    = 'MIGRATION_PATHS';
     const RESOURCE_PATH      = 'RESOURCE_PATH';
+    const ASSETS_PATHS       = 'ASSETS_PATHS';
 }
