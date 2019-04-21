@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Bootstrappers\Assets;
 
 use AbterPhp\Framework\Assets\AssetManager;
+use AbterPhp\Framework\Assets\CacheManager;
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
+use AbterPhp\Framework\Assets\FileFinder;
 use AbterPhp\Framework\Constant\Env;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Filesystem;
 use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
@@ -39,34 +43,22 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     private function registerAssets(IContainer $container)
     {
-        $factory = new MinifierFactory();
-
-        $isProduction = getenv(Env::ENV_NAME) === Environment::PRODUCTION;
+        $minifierFactory = new MinifierFactory();
+        $fileFinder      = new FileFinder();
+        $cacheManager    = new CacheManager();
 
         $dirPublic = rtrim(getenv(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
         $dirTmp    = $dirPublic . DIRECTORY_SEPARATOR . 'tmp';
 
-        $dirRootJs  = getenv(Env::DIR_ROOT_JS) ?: $dirPublic;
-        $dirRootCss = getenv(Env::DIR_ROOT_CSS) ?: $dirPublic;
+        $fileFinderAdapter = new Local($dirPublic);
+        $cacheManagerAdapter = new Local($dirTmp);
 
-        $dirCacheJs  = getenv(Env::DIR_CACHE_JS) ?: $dirTmp;
-        $dirCacheCss = getenv(Env::DIR_CACHE_CSS) ?: $dirTmp;
+        $fileFinder->registerFilesystem(new Filesystem($fileFinderAdapter));
+        $cacheManager->registerFilesystem(new Filesystem($cacheManagerAdapter));
 
-        $pathCacheJs  = getenv(Env::PATH_CACHE_JS) ?: \mb_substr($dirTmp, \mb_strlen($dirRootJs));
-        $pathCacheCss = getenv(Env::PATH_CACHE_CSS) ?: \mb_substr($dirTmp, \mb_strlen($dirRootCss));
+        $assetManager = new AssetManager($minifierFactory, $fileFinder, $cacheManager);
 
-        $purifier = new AssetManager(
-            $factory,
-            $dirRootJs,
-            $dirRootCss,
-            $dirCacheJs,
-            $dirCacheCss,
-            $pathCacheJs,
-            $pathCacheCss,
-            $isProduction
-        );
-
-        $container->bindInstance(AssetManager::class, $purifier);
+        $container->bindInstance(AssetManager::class, $assetManager);
     }
 
     /**
@@ -111,6 +103,17 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
                 };
 
                 return implode("\n", array_map($callback, (array)$keys));
+            }
+        );
+        $transpiler->registerViewFunction(
+            'assetImg',
+            function ($key, $alt = '') use ($assets) {
+                $path = $assets->ensureImgWebPath($key);
+                if (empty($path)) {
+                    return '';
+                }
+
+                return sprintf('<img src="%s" alt="%s">', $path, $alt) . PHP_EOL;
             }
         );
     }

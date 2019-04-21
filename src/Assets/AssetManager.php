@@ -8,34 +8,24 @@ use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
 use MatthiasMullie\Minify\CSS as CssMinifier;
 use MatthiasMullie\Minify\JS as JsMinifier;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class AssetManager
 {
     const FILE_EXTENSION_CSS = '.css';
     const FILE_EXTENSION_JS  = '.js';
 
+    const ERROR_EMPTY_GROUP_NAME = 'Group name must not be empty.';
+
     /** @var MinifierFactory */
     protected $minifierFactory;
 
-    /** @var string */
-    protected $dirRootJs;
+    /** @var FileFinder */
+    protected $fileFinder;
 
-    /** @var string */
-    protected $dirRootCss;
-
-    /** @var string */
-    protected $dirCacheJs;
-
-    /** @var string */
-    protected $dirCacheCss;
-
-    /** @var string */
-    protected $pathCacheJs;
-
-    /** @var string */
-    protected $pathCacheCss;
-
-    /** @var bool */
-    protected $isCacheAllowed;
+    /** @var CacheManager */
+    protected $cacheManager;
 
     /** @var JsMinifier[] */
     protected $jsMinifiers = [];
@@ -44,263 +34,160 @@ class AssetManager
     protected $cssMinifiers = [];
 
     /**
-     * Assets constructor.
+     * AssetManager constructor.
      *
      * @param MinifierFactory $minifierFactory
-     * @param string          $dirRootJs
-     * @param string          $dirRootCss
-     * @param string          $dirCacheJs
-     * @param string          $dirCacheCss
-     * @param string          $pathCacheJs
-     * @param string          $pathCacheCss
-     * @param bool            $isCacheAllowed
+     * @param FileFinder      $fileFinder
+     * @param CacheManager    $cacheManager
      */
-    public function __construct(
-        MinifierFactory $minifierFactory,
-        string $dirRootJs,
-        string $dirRootCss,
-        string $dirCacheJs,
-        string $dirCacheCss,
-        string $pathCacheJs,
-        string $pathCacheCss,
-        bool $isCacheAllowed
-    ) {
+    public function __construct(MinifierFactory $minifierFactory, FileFinder $fileFinder, CacheManager $cacheManager)
+    {
         $this->minifierFactory = $minifierFactory;
-
-        $this->dirRootJs      = rtrim($dirRootJs, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $this->dirRootCss     = rtrim($dirRootCss, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $this->dirCacheJs     = rtrim($dirCacheJs, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $this->dirCacheCss    = rtrim($dirCacheCss, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $this->pathCacheJs    = rtrim($pathCacheJs, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $this->pathCacheCss   = rtrim($pathCacheCss, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $this->isCacheAllowed = $isCacheAllowed;
+        $this->fileFinder      = $fileFinder;
+        $this->cacheManager    = $cacheManager;
     }
 
     /**
-     * @return string
+     * @param string $groupName
+     * @param string $rawPath
+     *
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function getDirCacheJs()
+    public function addCss(string $groupName, string $rawPath)
     {
-        return $this->dirCacheJs;
+        $content = $this->fileFinder->read($rawPath . static::FILE_EXTENSION_CSS, $groupName);
+
+        $this->getCssMinifier($groupName)->add($content);
     }
 
     /**
-     * @return string
+     * @param string $groupName
+     * @param string $rawPath
+     *
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function getDirCacheCss()
+    public function addJs(string $groupName, string $rawPath)
     {
-        return $this->dirCacheCss;
+        $content = $this->fileFinder->read($rawPath . static::FILE_EXTENSION_JS, $groupName);
+
+        $this->getJsMinifier($groupName)->add($content);
     }
 
     /**
-     * @param string $key
-     * @param string $path
-     */
-    public function addCss(string $key, string $path)
-    {
-        $fullPath = $this->dirRootCss . ltrim($path, DIRECTORY_SEPARATOR);
-
-        $this->getCssMinifier($key)->add($fullPath);
-    }
-
-    /**
-     * @param string $key
-     * @param string $path
-     */
-    public function addJs(string $key, string $path)
-    {
-        $fullPath = $this->dirRootJs . ltrim($path, DIRECTORY_SEPARATOR);
-
-        $this->getJsMinifier($key)->add($fullPath);
-    }
-
-    /**
-     * @param string $key
+     * @param string $groupName
      * @param string $content
      */
-    public function addCssContent(string $key, string $content)
+    public function addCssContent(string $groupName, string $content)
     {
-        $this->getCssMinifier($key)->add($content);
+        $this->getCssMinifier($groupName)->add($content);
     }
 
     /**
-     * @param string $key
+     * @param string $groupName
      * @param string $content
      */
-    public function addJsContent(string $key, string $content)
+    public function addJsContent(string $groupName, string $content)
     {
-        $this->getJsMinifier($key)->add($content);
+        $this->getJsMinifier($groupName)->add($content);
     }
 
     /**
-     * @param string $key
+     * @param string $groupName
      *
      * @return string
+     * @throws \League\Flysystem\FileExistsException
      */
-    public function renderJs(string $key): string
+    public function renderCss(string $groupName): string
     {
-        $content = $this->getJsMinifier($key)->minify($this->getJsCachePath($key));
+        $content   = $this->getCssMinifier($groupName)->minify();
+        $cachePath = $groupName . static::FILE_EXTENSION_CSS;
+
+        $this->cacheManager->write($cachePath, $content);
 
         return $content;
     }
 
     /**
-     * @param string $key
+     * @param string $groupName
      *
      * @return string
+     * @throws \League\Flysystem\FileExistsException
      */
-    public function renderCss(string $key): string
+    public function renderJs(string $groupName): string
     {
-        $minifier = $this->getCssMinifier($key);
-        $path     = $this->getCssCachePath($key);
+        $content   = $this->getJsMinifier($groupName)->minify();
+        $cachePath = $groupName . static::FILE_EXTENSION_JS;
 
-        $content = $minifier->minify($path);
+        $this->cacheManager->write($cachePath, $content);
 
         return $content;
     }
 
     /**
-     * @param string $key
+     * @param string $cachePath
      *
      * @return string
+     * @throws \League\Flysystem\FileExistsException
      */
-    public function ensureJsWebPath(string $key): string
+    public function renderImg(string $cachePath): string
     {
-        if (empty($key)) {
-            throw new \InvalidArgumentException('Key must not be empty.');
+        $content = $this->fileFinder->read($cachePath);
+
+        $this->cacheManager->write($cachePath, $content);
+
+        return $content;
+    }
+
+    /**
+     * @param string $groupName
+     *
+     * @return string
+     * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
+     */
+    public function ensureCssWebPath(string $groupName): string
+    {
+        $cachePath = $groupName . static::FILE_EXTENSION_CSS;
+
+        if (!$this->cacheManager->has($cachePath)) {
+            $this->renderCss($groupName);
         }
 
-        $filePath = $this->getJsCachePath($key);
-        if (!is_file($filePath) || !$this->isCacheAllowed) {
-            if (!$this->hasJsMinifier($key)) {
-                return '';
-            }
+        return $this->cacheManager->getWebPath($cachePath);
+    }
 
-            $this->getJsMinifier($key)->minify($filePath);
+    /**
+     * @param string $groupName
+     *
+     * @return string
+     * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
+     */
+    public function ensureJsWebPath(string $groupName): string
+    {
+        $cachePath = $groupName . static::FILE_EXTENSION_JS;
+
+        if (!$this->cacheManager->has($cachePath)) {
+            $this->renderJs($groupName);
         }
 
-        return $this->getJsWebPath($key, $this->getVersion($filePath));
+        return $this->cacheManager->getWebPath($cachePath);
     }
 
     /**
-     * @param string $key
+     * @param string $groupName
      *
      * @return string
+     * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function ensureCssWebPath(string $key): string
+    public function ensureImgWebPath(string $cachePath): string
     {
-        if (empty($key)) {
-            throw new \InvalidArgumentException('Key must not be empty.');
+        if (!$this->cacheManager->has($cachePath)) {
+            $this->renderImg($cachePath);
         }
 
-        $filePath = $this->getCssCachePath($key);
-        if (!is_file($filePath) || !$this->isCacheAllowed) {
-            if (!$this->hasCssMinifier($key)) {
-                return '';
-            }
-
-            $this->getCssMinifier($key)->minify($filePath);
-        }
-
-        return $this->getCssWebPath($key, $this->getVersion($filePath));
-    }
-
-    /**
-     * @param string $key
-     *
-     * @return string
-     */
-    protected function getJsCachePath(string $key): string
-    {
-        return sprintf(
-            '%s%s%s',
-            $this->dirCacheJs,
-            $key,
-            static::FILE_EXTENSION_JS
-        );
-    }
-
-    /**
-     * @param string $key
-     *
-     * @return string
-     */
-    protected function getCssCachePath(string $key): string
-    {
-        return sprintf(
-            '%s%s%s',
-            $this->dirCacheCss,
-            $key,
-            static::FILE_EXTENSION_CSS
-        );
-    }
-
-    /**
-     * @param string $path
-     *
-     * @return string
-     */
-    protected function getVersion(string $path): string
-    {
-        if (!$this->isCacheAllowed) {
-            return '';
-        }
-        
-        return substr(md5((string)filectime($path)), 0, 5);
-    }
-
-    /**
-     * @param string $key
-     * @param string $version
-     *
-     * @return string
-     */
-    protected function getJsWebPath(string $key, string $version): string
-    {
-        return sprintf(
-            '%s%s%s?%s',
-            $this->pathCacheJs,
-            $key,
-            static::FILE_EXTENSION_JS,
-            $version
-        );
-    }
-
-    /**
-     * @param string $key
-     * @param string $version
-     *
-     * @return string
-     */
-    protected function getCssWebPath(string $key, string $version): string
-    {
-        return sprintf(
-            '%s%s%s?%s',
-            $this->pathCacheCss,
-            $key,
-            static::FILE_EXTENSION_CSS,
-            $version
-        );
-    }
-
-    /**
-     * @param string $key
-     *
-     * @return bool
-     */
-    protected function hasCssMinifier(string $key): bool
-    {
-        return array_key_exists($key, $this->cssMinifiers);
-    }
-
-    /**
-     * @param string $key
-     *
-     * @return bool
-     */
-    protected function hasJsMinifier(string $key): bool
-    {
-        return array_key_exists($key, $this->jsMinifiers);
+        return $this->cacheManager->getWebPath($cachePath);
     }
 
     /**

@@ -12,41 +12,31 @@ use PHPUnit\Framework\TestCase;
 
 class AssetManagerTest extends TestCase
 {
-    const CSS_KEY = 'test-css';
-    const JS_KEY  = 'test-js';
-
-    const CSS_CONTENT = "body { \nbackground-color:  red;\n }";
-    const JS_CONTENT  = "function (  ) { alert ('ok'   ); }\n ( ) ";
-
-    const CSS_CONTENT_MINIFIED = 'body{background-color:red}';
-    const JS_CONTENT_MINIFIED  = 'function(){alert(\'ok\')}()';
-
-    const DIR_ROOT_JS    = '/tmp/js';
-    const DIR_ROOT_CSS   = '/tmp/css';
-    const DIR_CACHE_JS   = '/tmp/cache/js';
-    const DIR_CACHE_CSS  = '/tmp/cache/css';
-    const PATH_CACHE_JS  = '/path/js';
-    const PATH_CACHE_CSS = '/path/css';
-
     /** @var AssetManager */
     protected $sut;
 
     /** @var CssMinifier|MockObject */
-    protected $cssMinifier;
+    protected $cssMinifierMock;
 
     /** @var JsMinifier|MockObject */
-    protected $jsMinifier;
+    protected $jsMinifierMock;
 
     /** @var MinifierFactory|MockObject */
     protected $minifierFactoryMock;
 
+    /** @var FileFinder|MockObject */
+    protected $fileFinderMock;
+
+    /** @var CacheManager|MockObject */
+    protected $cacheManagerMock;
+
     public function setUp()
     {
-        $this->cssMinifier = $this->getMockBuilder(CssMinifier::class)
+        $this->cssMinifierMock = $this->getMockBuilder(CssMinifier::class)
             ->setMethods(['add', 'minify'])
             ->getMock();
 
-        $this->jsMinifier = $this->getMockBuilder(JsMinifier::class)
+        $this->jsMinifierMock = $this->getMockBuilder(JsMinifier::class)
             ->setMethods(['add', 'minify'])
             ->getMock();
 
@@ -54,149 +44,200 @@ class AssetManagerTest extends TestCase
             ->setMethods(['createCssMinifier', 'createJsMinifier'])
             ->getMock();
 
-        $this->minifierFactoryMock->expects($this->any())->method('createCssMinifier')->willReturn($this->cssMinifier);
-        $this->minifierFactoryMock->expects($this->any())->method('createJsMinifier')->willReturn($this->jsMinifier);
+        $this->minifierFactoryMock
+            ->expects($this->any())
+            ->method('createCssMinifier')
+            ->willReturn($this->cssMinifierMock);
+        $this->minifierFactoryMock
+            ->expects($this->any())
+            ->method('createJsMinifier')
+            ->willReturn($this->jsMinifierMock);
 
-        $isCacheAllowed = false;
+        $this->fileFinderMock = $this->getMockBuilder(FileFinder::class)
+            ->setMethods(['registerFilesystem', 'has', 'read'])
+            ->getMock();
 
-        $this->sut = new AssetManager(
-            $this->minifierFactoryMock,
-            static::DIR_ROOT_JS,
-            static::DIR_ROOT_CSS,
-            static::DIR_CACHE_JS,
-            static::DIR_CACHE_CSS,
-            static::PATH_CACHE_JS,
-            static::PATH_CACHE_CSS,
-            $isCacheAllowed
-        );
+        $this->cacheManagerMock = $this->getMockBuilder(CacheManager::class)
+            ->setMethods(['registerFilesystem', 'has', 'read', 'write', 'getWebPath', 'flush'])
+            ->getMock();
+
+        $this->sut = new AssetManager($this->minifierFactoryMock, $this->fileFinderMock, $this->cacheManagerMock);
 
         parent::setUp();
     }
 
-    public function testAddJs()
-    {
-        $expected = static::JS_CONTENT_MINIFIED;
-        $filename = 'hello.js';
-        $fullPath = static::DIR_ROOT_JS . '/hello.js';
-
-        $this->jsMinifier
-            ->expects($this->once())
-            ->method('add')
-            ->with($fullPath);
-
-        $this->jsMinifier
-            ->expects($this->once())
-            ->method('minify')
-            ->willReturn(static::JS_CONTENT_MINIFIED);
-
-        $this->sut->addJs(static::JS_KEY, $filename);
-
-        $actual = $this->sut->renderJs(static::JS_KEY);
-
-        $this->assertSame($expected, $actual);
-    }
-
     public function testAddCss()
     {
-        $expected = static::CSS_CONTENT_MINIFIED;
-        $filename = 'hello.css';
-        $fullPath = static::DIR_ROOT_CSS . '/hello.css';
+        $groupName = 'foo';
+        $rawPath   = 'bar';
+        $path      = 'bar.css';
+        $content   = 'baz';
 
-        $this->cssMinifier
-            ->expects($this->once())
-            ->method('add')
-            ->with($fullPath);
+        $this->fileFinderMock->expects($this->once())->method('read')->with($path, $groupName)->willReturn($content);
 
-        $this->cssMinifier
-            ->expects($this->once())
-            ->method('minify')
-            ->willReturn(static::CSS_CONTENT_MINIFIED);
+        $this->cssMinifierMock->expects($this->once())->method('add')->with($content);
 
-        $this->sut->addCss(static::CSS_KEY, $filename);
+        $this->sut->addCss($groupName, $rawPath);
+    }
 
-        $actual = $this->sut->renderCss(static::CSS_KEY);
+    public function testAddJs()
+    {
+        $groupName = 'foo';
+        $rawPath   = 'bar';
+        $path      = 'bar.js';
+        $content   = 'baz';
 
-        $this->assertSame($expected, $actual);
+        $this->fileFinderMock->expects($this->once())->method('read')->with($path, $groupName)->willReturn($content);
+
+        $this->jsMinifierMock->expects($this->once())->method('add')->with($content);
+
+        $this->sut->addJs($groupName, $rawPath);
     }
 
     public function testAddCssContent()
     {
-        $expected = static::CSS_CONTENT_MINIFIED;
+        $groupName = 'foo';
+        $content   = 'baz';
 
-        $this->cssMinifier
-            ->expects($this->once())
-            ->method('add')
-            ->with(static::CSS_CONTENT);
+        $this->cssMinifierMock->expects($this->once())->method('add')->with($content);
 
-        $this->cssMinifier
-            ->expects($this->once())
-            ->method('minify')
-            ->willReturn(static::CSS_CONTENT_MINIFIED);
-
-        $this->sut->addCssContent(static::CSS_KEY, static::CSS_CONTENT);
-
-        $actual = $this->sut->renderCss(static::CSS_KEY);
-
-        $this->assertSame($expected, $actual);
+        $this->sut->addCssContent($groupName, $content);
     }
 
     public function testAddJsContent()
     {
-        $expected = static::JS_CONTENT_MINIFIED;
+        $groupName = 'foo';
+        $content   = 'baz';
 
-        $this->jsMinifier
-            ->expects($this->once())
-            ->method('add')
-            ->with(static::JS_CONTENT);
+        $this->jsMinifierMock->expects($this->once())->method('add')->with($content);
 
-        $this->jsMinifier
-            ->expects($this->once())
-            ->method('minify')
-            ->willReturn(static::JS_CONTENT_MINIFIED);
-
-        $this->sut->addJsContent(static::JS_KEY, static::JS_CONTENT);
-
-        $actual = $this->sut->renderJs(static::JS_KEY);
-
-        $this->assertSame($expected, $actual);
+        $this->sut->addJsContent($groupName, $content);
     }
 
-    public function testEnsureCssWebPathIsEmptyIfNoContentIsAddedForKey()
+    public function testRenderCss()
     {
-        $actual = $this->sut->ensureCssWebPath(static::CSS_KEY);
+        $groupName = 'foo';
+        $cachePath = 'foo.css';
+        $content   = 'baz';
 
-        $this->assertEmpty($actual);
+        $this->cssMinifierMock->expects($this->once())->method('minify')->willReturn($content);
+
+        $this->cacheManagerMock->expects($this->once())->method('write')->with($cachePath, $content);
+
+        $actualResult = $this->sut->renderCss($groupName);
+
+        $this->assertSame($content, $actualResult);
     }
 
-    public function testEnsureCssWebPathBcd()
+    public function testRenderJs()
     {
-        $expected = sprintf(
-            '%s/%s%s',
-            static::PATH_CACHE_CSS,
-            static::CSS_KEY,
-            AssetManager::FILE_EXTENSION_CSS
-        );
+        $groupName = 'foo';
+        $cachePath = 'foo.js';
+        $content   = 'baz';
 
-        $this->sut->addCssContent(static::CSS_KEY, static::CSS_CONTENT);
+        $this->jsMinifierMock->expects($this->once())->method('minify')->willReturn($content);
 
-        $actual = $this->sut->ensureCssWebPath(static::CSS_KEY);
+        $this->cacheManagerMock->expects($this->once())->method('write')->with($cachePath, $content);
 
-        $this->assertContains($expected, $actual);
+        $actualResult = $this->sut->renderJs($groupName);
+
+        $this->assertSame($content, $actualResult);
     }
 
-    public function testEnsureJsWebPath()
+    public function testEnsureCssWebPathUsesCacheByDefault()
     {
-        $expected = sprintf(
-            '%s/%s%s',
-            static::PATH_CACHE_JS,
-            static::JS_KEY,
-            AssetManager::FILE_EXTENSION_JS
-        );
+        $groupName = 'foo';
+        $cachePath = 'foo.css';
+        $webPath   = '/baz';
 
-        $this->sut->addJsContent(static::JS_KEY, static::JS_CONTENT);
+        $this->cssMinifierMock->expects($this->never())->method('minify');
 
-        $actual = $this->sut->ensureJsWebPath(static::JS_KEY);
+        $this->cacheManagerMock->expects($this->any())->method('has')->willReturn(true);
+        $this->cacheManagerMock->expects($this->any())->method('getWebPath')->with($cachePath)->willReturn($webPath);
 
-        $this->assertContains($expected, $actual);
+        $actualResult = $this->sut->ensureCssWebPath($groupName);
+
+        $this->assertSame($webPath, $actualResult);
+    }
+
+    public function testEnsureJsWebPathUsesCacheByDefault()
+    {
+        $groupName = 'foo';
+        $cachePath = 'foo.js';
+        $webPath   = '/baz';
+
+        $this->jsMinifierMock->expects($this->never())->method('minify');
+
+        $this->cacheManagerMock->expects($this->any())->method('has')->willReturn(true);
+        $this->cacheManagerMock->expects($this->any())->method('getWebPath')->with($cachePath)->willReturn($webPath);
+
+        $actualResult = $this->sut->ensureJsWebPath($groupName);
+
+        $this->assertSame($webPath, $actualResult);
+    }
+
+    public function testEnsureImgWebPathUsesCacheByDefault()
+    {
+        $cachePath = 'foo.js';
+        $webPath   = '/baz';
+
+        $this->cacheManagerMock->expects($this->any())->method('has')->willReturn(true);
+        $this->fileFinderMock->expects($this->never())->method('read');
+        $this->cacheManagerMock->expects($this->any())->method('getWebPath')->with($cachePath)->willReturn($webPath);
+
+        $actualResult = $this->sut->ensureImgWebPath($cachePath);
+
+        $this->assertSame($webPath, $actualResult);
+    }
+
+    public function testEnsureCssWebPathRendersIfCacheDoesNotExist()
+    {
+        $groupName = 'foo';
+        $cachePath = 'foo.css';
+        $webPath   = '/baz';
+        $content   = 'bar';
+
+        $this->cssMinifierMock->expects($this->atLeastOnce())->method('minify')->willReturn($content);
+
+        $this->cacheManagerMock->expects($this->any())->method('has')->willReturn(false);
+        $this->cacheManagerMock->expects($this->atLeastOnce())->method('write')->with($cachePath, $content);
+        $this->cacheManagerMock->expects($this->any())->method('getWebPath')->with($cachePath)->willReturn($webPath);
+
+        $actualResult = $this->sut->ensureCssWebPath($groupName);
+
+        $this->assertSame($webPath, $actualResult);
+    }
+
+    public function testEnsureJsWebPathRendersIfCacheDoesNotExist()
+    {
+        $groupName = 'foo';
+        $cachePath = 'foo.js';
+        $webPath   = '/baz';
+        $content   = 'bar';
+
+        $this->jsMinifierMock->expects($this->atLeastOnce())->method('minify')->willReturn($content);
+
+        $this->cacheManagerMock->expects($this->any())->method('has')->willReturn(false);
+        $this->cacheManagerMock->expects($this->atLeastOnce())->method('write')->with($cachePath, $content);
+        $this->cacheManagerMock->expects($this->any())->method('getWebPath')->with($cachePath)->willReturn($webPath);
+
+        $actualResult = $this->sut->ensureJsWebPath($groupName);
+
+        $this->assertSame($webPath, $actualResult);
+    }
+
+    public function testEnsureImgWebPathRendersIfCacheDoesNotExist()
+    {
+        $cachePath = 'foo.js';
+        $webPath   = '/baz';
+        $content   = 'bar';
+
+        $this->cacheManagerMock->expects($this->any())->method('has')->willReturn(false);
+        $this->fileFinderMock->expects($this->atLeastOnce())->method('read')->willReturn($content);
+        $this->cacheManagerMock->expects($this->any())->method('getWebPath')->with($cachePath)->willReturn($webPath);
+
+        $actualResult = $this->sut->ensureImgWebPath($cachePath);
+
+        $this->assertSame($webPath, $actualResult);
     }
 }
