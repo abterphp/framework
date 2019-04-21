@@ -34,7 +34,7 @@ class FileFinder implements IFileFinder
      * @param string $path
      * @param string $key
      *
-     * @return string|null
+     * @return bool
      */
     public function has(string $path, string $groupName = IFileFinder::DEFAULT_KEY): bool
     {

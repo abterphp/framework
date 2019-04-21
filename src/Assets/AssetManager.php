@@ -132,6 +132,9 @@ class AssetManager
     public function renderImg(string $cachePath): string
     {
         $content = $this->fileFinder->read($cachePath);
+        if (null === $content) {
+            return '';
+        }
 
         $this->cacheManager->write($cachePath, $content);
 

@@ -25,7 +25,7 @@ interface IFileFinder
      * @param string $path
      * @param string $key
      *
-     * @return string|null
+     * @return bool
      */
     public function has(string $path, string $key = IFileFinder::DEFAULT_KEY): bool;
 

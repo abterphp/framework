@@ -79,7 +79,12 @@ class CacheManager implements ICacheManager
             return null;
         }
 
-        return $fs->read($path);
+        $content = $fs->read($path);
+        if (!$content) {
+            return null;
+        }
+
+        return $content;
     }
 
     /**
