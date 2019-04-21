@@ -452,7 +452,6 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                     'Module2\Http\Middleware\Security',
                 ],
             ],
-
         ];
     }
 

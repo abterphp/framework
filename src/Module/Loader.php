@@ -91,6 +91,10 @@ class Loader
         $paths = [];
 
         foreach ($this->sourceRoots as $root) {
+            if (empty($root)) {
+                continue;
+            }
+
             $paths = array_merge($paths, $this->scanDirectories(new \DirectoryIterator($root)));
         }
 

@@ -10,12 +10,19 @@ use Opulence\Ioc\IContainer;
 use Opulence\Views\Caching\ArrayCache;
 use Opulence\Views\Caching\FileCache;
 use Opulence\Views\Caching\ICache;
+use Opulence\Views\Factories\IO\IViewNameResolver;
+use Opulence\Views\Factories\IO\IViewReader;
+use Opulence\Views\Factories\IO\FileViewNameResolver;
+use Opulence\Views\Factories\IViewFactory;
+use Opulence\Views\Factories\ViewFactory;
 
 /**
  * Defines the view bootstrapper
  */
 class ViewBootstrapper extends BaseBootstrapper
 {
+    const VIEWS_PATH = 'views/';
+
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
@@ -39,6 +46,54 @@ class ViewBootstrapper extends BaseBootstrapper
                     Config::get('views', 'gc.chance'),
                     Config::get('views', 'gc.divisor')
                 );
+        }
+    }
+
+    /**
+     * Gets the view view factory
+     * To use a different view factory than the one returned here, extend this class and override this method
+     *
+     * @param IContainer $container The dependency injection container
+     * @return IViewFactory The view factory
+     */
+    protected function getViewFactory(IContainer $container) : IViewFactory
+    {
+        $resolver = new FileViewNameResolver();
+        $resolver->registerExtension('fortune');
+        $resolver->registerExtension('fortune.php');
+        $resolver->registerExtension('php');
+        $viewReader = $this->getViewReader($container);
+        $container->bindInstance(IViewNameResolver::class, $resolver);
+        $container->bindInstance(IViewReader::class, $viewReader);
+
+        $this->registerPaths($resolver);
+
+        return new ViewFactory($resolver, $viewReader);
+    }
+
+    /**
+     * @param FileViewNameResolver $resolver
+     */
+    protected function registerPaths(FileViewNameResolver $resolver)
+    {
+        global $abterModuleManager;
+
+        $globalPath = Config::get('paths', 'views.raw');
+        if ($globalPath) {
+            $resolver->registerPath($globalPath);
+        }
+
+        $resourcePaths = $abterModuleManager->getResourcePaths();
+
+        $priority = count($resourcePaths);
+        foreach ($resourcePaths as $path) {
+            $modulePath = sprintf('%s/%s', $path, static::VIEWS_PATH);
+
+            if (!is_dir($modulePath)) {
+                continue;
+            }
+
+            $resolver->registerPath($modulePath, $priority--);
         }
     }
 }

@@ -38,10 +38,10 @@ return [
         Bootstrappers\Dashboard\DashboardBootstrapper::class,
         Bootstrappers\Grid\GridBootstrapper::class,
         Bootstrappers\Http\SessionBootstrapper::class,
+        Bootstrappers\Http\Views\BuildersBootstrapper::class,
         Bootstrappers\I18n\I18nBootstrapper::class,
         Bootstrappers\Navigation\NavigationBootstrapper::class,
         Bootstrappers\Views\ViewFunctionsBootstrapper::class,
-        Bootstrappers\Http\Views\BuildersBootstrapper::class,
     ],
     Module::COMMANDS           => [
         Console\Commands\Assets\FlushCache::class,
@@ -67,4 +67,5 @@ return [
             __DIR__ . '/asset-routes.php',
         ],
     ],
+    Module::RESOURCE_PATH    => realpath(__DIR__ . '/resources'),
 ];
