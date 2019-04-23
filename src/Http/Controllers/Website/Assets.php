@@ -47,10 +47,7 @@ class Assets extends ControllerAbstract
 
         $response = new Response();
         $response->setContent($content);
-
-        if ($contentType) {
-            $response->getHeaders()->add('Content-Type', $contentType);
-        }
+        $response->getHeaders()->add('Content-Type', $contentType);
 
         return $response;
     }
@@ -58,9 +55,9 @@ class Assets extends ControllerAbstract
     /**
      * @param string $path
      *
-     * @return string|null
+     * @return string
      */
-    protected function getContentType(string $path): ?string
+    protected function getContentType(string $path): string
     {
         $ext = substr($path, strrpos($path, '.'));
         switch ($ext) {
@@ -68,6 +65,9 @@ class Assets extends ControllerAbstract
                 return 'text/css';
             case '.js':
                 return 'text/css';
+            case '.htm':
+            case '.html':
+                return 'text/html';
             case '.jpg':
             case '.jpeg':
                 return 'image/jpeg';
@@ -81,7 +81,7 @@ class Assets extends ControllerAbstract
                 return 'image/x-icon';
         }
 
-        return null;
+        return 'text/plain';
     }
 
     protected function create404(): Response

@@ -22,7 +22,7 @@ $router->group(
             'Website\Assets@asset',
             [
                 OPTION_NAME => Routes::ROUTE_ASSET,
-                OPTION_VARS => [Routes::VAR_PATH => '(.+)\.(css|js|jpg|jpeg|gif|png|svg|ico|webp)'],
+                OPTION_VARS => [Routes::VAR_PATH => '(.+)\.([\w\d]+)'],
             ]
         );
     }

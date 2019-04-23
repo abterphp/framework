@@ -20,7 +20,6 @@ use Opulence\Views\Compilers\Fortune\ITranspiler;
 
 class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
-    const TMP_DIR   = 'tmp';
     const ASSET_DIR = 'rawassets';
 
     /**
@@ -73,9 +72,8 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
     private function registerCachePaths(CacheManager $cacheManager)
     {
         $dirPublic = rtrim(getenv(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
-        $dirTmp    = $dirPublic . DIRECTORY_SEPARATOR . static::TMP_DIR;
 
-        $cacheManager->registerFilesystem(new Filesystem(new Local($dirTmp)));
+        $cacheManager->registerFilesystem(new Filesystem(new Local($dirPublic)));
     }
 
     /**
@@ -92,9 +90,8 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
         }
 
         $dirPublic = rtrim(getenv(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
-        $dirTmp    = $dirPublic . DIRECTORY_SEPARATOR . static::TMP_DIR;
 
-        $fileFinder->registerFilesystem(new Filesystem(new Local($dirTmp)));
+        $fileFinder->registerFilesystem(new Filesystem(new Local($dirPublic)));
     }
 
     /**
