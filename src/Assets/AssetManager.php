@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Assets;
 
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
+use League\Flysystem\FileNotFoundException;
 use MatthiasMullie\Minify\CSS as CssMinifier;
 use MatthiasMullie\Minify\JS as JsMinifier;
 
@@ -126,14 +127,19 @@ class AssetManager
     /**
      * @param string $cachePath
      *
-     * @return string
+     * @return string|null
      * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
      */
-    public function renderImg(string $cachePath): string
+    public function renderRaw(string $cachePath): ?string
     {
         $content = $this->fileFinder->read($cachePath);
         if (null === $content) {
-            return '';
+            return null;
+        }
+
+        if ($content === '' && !$this->fileFinder->has($cachePath)) {
+            return null;
         }
 
         $this->cacheManager->write($cachePath, $content);
@@ -187,7 +193,9 @@ class AssetManager
     public function ensureImgWebPath(string $cachePath): string
     {
         if (!$this->cacheManager->has($cachePath)) {
-            $this->renderImg($cachePath);
+            if ($this->renderRaw($cachePath) === null) {
+                throw new FileNotFoundException($cachePath);
+            }
         }
 
         return $this->cacheManager->getWebPath($cachePath);

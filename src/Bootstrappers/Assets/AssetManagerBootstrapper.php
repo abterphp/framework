@@ -8,10 +8,11 @@ use AbterPhp\Framework\Assets\AssetManager;
 use AbterPhp\Framework\Assets\CacheManager;
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
 use AbterPhp\Framework\Assets\FileFinder;
+use AbterPhp\Framework\Assets\ICacheManager;
+use AbterPhp\Framework\Assets\IFileFinder;
 use AbterPhp\Framework\Constant\Env;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
-use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -19,6 +20,9 @@ use Opulence\Views\Compilers\Fortune\ITranspiler;
 
 class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
+    const TMP_DIR   = 'tmp';
+    const ASSET_DIR = 'rawassets';
+
     /**
      * @return array
      */
@@ -26,6 +30,10 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
     {
         return [
             AssetManager::class,
+            FileFinder::class,
+            CacheManager::class,
+            ICacheManager::class,
+            IFileFinder::class,
         ];
     }
 
@@ -47,18 +55,46 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
         $fileFinder      = new FileFinder();
         $cacheManager    = new CacheManager();
 
-        $dirPublic = rtrim(getenv(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
-        $dirTmp    = $dirPublic . DIRECTORY_SEPARATOR . 'tmp';
-
-        $fileFinderAdapter = new Local($dirPublic);
-        $cacheManagerAdapter = new Local($dirTmp);
-
-        $fileFinder->registerFilesystem(new Filesystem($fileFinderAdapter));
-        $cacheManager->registerFilesystem(new Filesystem($cacheManagerAdapter));
+        $this->registerResourcePaths($fileFinder);
+        $this->registerCachePaths($cacheManager);
 
         $assetManager = new AssetManager($minifierFactory, $fileFinder, $cacheManager);
 
+        $container->bindInstance(FileFinder::class, $fileFinder);
+        $container->bindInstance(IFileFinder::class, $fileFinder);
+        $container->bindInstance(CacheManager::class, $cacheManager);
+        $container->bindInstance(ICacheManager::class, $cacheManager);
         $container->bindInstance(AssetManager::class, $assetManager);
+    }
+
+    /**
+     * @param CacheManager $cacheManager
+     */
+    private function registerCachePaths(CacheManager $cacheManager)
+    {
+        $dirPublic = rtrim(getenv(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
+        $dirTmp    = $dirPublic . DIRECTORY_SEPARATOR . static::TMP_DIR;
+
+        $cacheManager->registerFilesystem(new Filesystem(new Local($dirTmp)));
+    }
+
+    /**
+     * @param FileFinder $fileFinder
+     */
+    private function registerResourcePaths(FileFinder $fileFinder)
+    {
+        global $abterModuleManager;
+
+        $assetsPaths = $abterModuleManager->getAssetsPaths();
+
+        foreach ($assetsPaths as $key => $path) {
+            $fileFinder->registerFilesystem(new Filesystem(new Local($path)), $key);
+        }
+
+        $dirPublic = rtrim(getenv(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
+        $dirTmp    = $dirPublic . DIRECTORY_SEPARATOR . static::TMP_DIR;
+
+        $fileFinder->registerFilesystem(new Filesystem(new Local($dirTmp)));
     }
 
     /**

@@ -63,12 +63,13 @@ class FileFinderTest extends TestCase
         $fs = $this->createFilesystemMock();
 
         $path           = '/vendor-one/foo';
+        $realPath       = '/foo';
         $expectedResult = 'bar';
 
         $this->sut->registerFilesystem($fs, 'vendor-one', 1);
 
         $fs->expects($this->any())->method('has')->willReturn(true);
-        $fs->expects($this->once())->method('read')->with($path)->willReturn($expectedResult);
+        $fs->expects($this->once())->method('read')->with($realPath)->willReturn($expectedResult);
 
         $actualResult = $this->sut->read($path);
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Assets;
 
+use League\Flysystem\FileExistsException;
 use League\Flysystem\FilesystemInterface;
 
 class CacheManager implements ICacheManager
@@ -80,30 +81,35 @@ class CacheManager implements ICacheManager
         }
 
         $content = $fs->read($path);
-        if (!$content) {
+        if ($content === false) {
             return null;
         }
 
-        return $content;
+        return (string)$content;
     }
 
     /**
      * @param string $path
      * @param string $content
+     * @param string $force
      *
      * @return bool
      * @throws \League\Flysystem\FileExistsException
      */
-    public function write(string $path, string $content): bool
+    public function write(string $path, string $content, bool $force = true): bool
     {
         $fs = $this->getFilesystem($path);
 
-        $result = $fs->write($path, $content);
-        if (!$result) {
-            throw new \RuntimeException();
+        try {
+            return (bool)$fs->write($path, $content);
+        } catch (FileExistsException $e) {
+            if ($force) {
+                $fs->delete($path);
+                return (bool)$fs->write($path, $content);
+            }
         }
 
-        return true;
+        return false;
     }
 
     /**

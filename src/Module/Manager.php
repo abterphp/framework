@@ -19,6 +19,7 @@ class Manager
     const CACHE_KEY_MIDDLEWARE         = 'AbterPhp:Middleware';
     const CACHE_KEY_MIGRATION_PATHS    = 'AbterPhp:MigrationPaths';
     const CACHE_KEY_RESOURCE_PATH      = 'AbterPhp:ResourcePaths';
+    const CACHE_KEY_ASSETS_PATHS       = 'AbterPhp:AssetsPaths';
     const CACHE_KEY_VIEWS              = 'AbterPhp:Views';
 
     /** @var Loader */
@@ -69,6 +70,7 @@ class Manager
         } catch (\Exception $e) {
             // It's always safe to skip writing the cache
         }
+
         // phpcs:enable Generic.CodeAnalysis.EmptyStatement
 
         return $bootstrappers;
@@ -186,6 +188,17 @@ class Manager
         return $this->cacheWrapper(
             static::CACHE_KEY_RESOURCE_PATH,
             $this->simpleOptionCallback(Module::RESOURCE_PATH)
+        );
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAssetsPaths(): array
+    {
+        return $this->cacheWrapper(
+            static::CACHE_KEY_ASSETS_PATHS,
+            $this->simpleNamedOptions(Module::ASSETS_PATHS)
         );
     }
 
@@ -320,7 +333,6 @@ class Manager
             return $flattened;
         };
     }
-
 
 
     /**

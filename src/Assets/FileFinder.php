@@ -11,6 +11,9 @@ class FileFinder implements IFileFinder
     /** @var FilesystemInterface[][][] */
     protected $filesystems = [];
 
+    /** @var string[] */
+    protected $filesystemKeys = [];
+
     /**
      * @param FilesystemInterface $filesystem
      * @param string              $key
@@ -28,6 +31,8 @@ class FileFinder implements IFileFinder
         $this->filesystems[$key][$priority][] = $filesystem;
 
         krsort($this->filesystems[$key]);
+
+        $this->filesystemKeys[spl_object_id($filesystem)] = $key;
     }
 
     /**
@@ -38,7 +43,7 @@ class FileFinder implements IFileFinder
      */
     public function has(string $path, string $groupName = IFileFinder::DEFAULT_KEY): bool
     {
-        return $this->find($path, $groupName) !== null;
+        return $this->findFilesystem($path, $groupName) !== null;
     }
 
     /**
@@ -50,13 +55,15 @@ class FileFinder implements IFileFinder
      */
     public function read(string $path, string $groupName = IFileFinder::DEFAULT_KEY): ?string
     {
-        $filesystem = $this->find($path, $groupName);
+        $filesystem = $this->findFilesystem($path, $groupName);
         if (!$filesystem) {
             return null;
         }
 
         try {
-            return (string)$filesystem->read($path);
+            $filesystemPath = $this->getFilesystemPath($filesystem, $path);
+
+            return (string)$filesystem->read($filesystemPath);
         } catch (\Exception $e) {
             return null;
         }
@@ -68,22 +75,46 @@ class FileFinder implements IFileFinder
      *
      * @return FilesystemInterface|null
      */
-    protected function find(string $path, string $key): ?FilesystemInterface
+    protected function findFilesystem(string $path, string $key): ?FilesystemInterface
     {
         $possibleKeys = $this->getPossibleKeys($path, $key);
         foreach ($possibleKeys as $rootKey) {
             foreach ($this->filesystems[$rootKey] as $filesystems) {
                 foreach ($filesystems as $filesystem) {
-                    if (!$filesystem->has($path)) {
-                        continue;
+                    $realPath = $this->getFilesystemPath($filesystem, $path);
+                    if ($filesystem->has($realPath)) {
+                        return $filesystem;
                     }
-
-                    return $filesystem;
                 }
             }
         }
 
         return null;
+    }
+
+    /**
+     * @param FilesystemInterface $filesystem
+     * @param string              $path
+     *
+     * @return string
+     */
+    protected function getFilesystemPath(FilesystemInterface $filesystem, string $path): string
+    {
+        if (empty($this->filesystemKeys[spl_object_id($filesystem)])) {
+            return $path;
+        }
+
+        $rootKey = $this->filesystemKeys[spl_object_id($filesystem)];
+        if ($rootKey === static::DEFAULT_KEY) {
+            return $path;
+        }
+
+        $fixedPath = ltrim($path, '/');
+        if (strpos($fixedPath, $rootKey) === 0) {
+            return substr($fixedPath, strlen($rootKey));
+        }
+
+        return $path;
     }
 
     /**

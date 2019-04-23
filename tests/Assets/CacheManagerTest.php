@@ -121,10 +121,7 @@ class CacheManagerTest extends TestCase
         $this->sut->write($path, $content);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
-    public function testWriteThrowsExceptionIfWritingFails()
+    public function testWriteReturnsFalseIfWritingFails()
     {
         $fs = $this->createFilesystemMock();
 
