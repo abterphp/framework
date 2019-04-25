@@ -53,7 +53,7 @@ class Assets extends ControllerAbstract
 
         $ext = substr($path, strrpos($path, '.') + 1);
         if (!$this->isExtAllowed($ext)) {
-            return $this->createNotAllowed();
+            return $this->createForbidden();
         }
 
         $contentType = $this->getContentType($ext);
