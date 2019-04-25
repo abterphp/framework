@@ -14,8 +14,8 @@ use MatthiasMullie\Minify\JS as JsMinifier;
  */
 class AssetManager
 {
-    const FILE_EXTENSION_CSS = '.css';
-    const FILE_EXTENSION_JS  = '.js';
+    const EXT_CSS = '.css';
+    const EXT_JS  = '.js';
 
     const ERROR_EMPTY_GROUP_NAME = 'Group name must not be empty.';
 
@@ -56,7 +56,12 @@ class AssetManager
      */
     public function addCss(string $groupName, string $rawPath)
     {
-        $content = $this->fileFinder->read($rawPath . static::FILE_EXTENSION_CSS, $groupName);
+        $fixedPath = $rawPath;
+        if ($this->getExtension($rawPath) !== static:: EXT_CSS) {
+            $fixedPath = $rawPath . static::EXT_CSS;
+        }
+
+        $content = $this->fileFinder->read($fixedPath, $groupName);
 
         $this->getCssMinifier($groupName)->add($content);
     }
@@ -69,9 +74,30 @@ class AssetManager
      */
     public function addJs(string $groupName, string $rawPath)
     {
-        $content = $this->fileFinder->read($rawPath . static::FILE_EXTENSION_JS, $groupName);
+        $fixedPath = $rawPath;
+        if ($this->getExtension($rawPath) !== static:: EXT_JS) {
+            $fixedPath = $rawPath . static::EXT_JS;
+        }
+
+        $content = $this->fileFinder->read($fixedPath, $groupName);
 
         $this->getJsMinifier($groupName)->add($content);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function getExtension(string $path): string
+    {
+        $dotrpos = strrpos($path, '.');
+
+        if ($dotrpos === false) {
+            return '';
+        }
+
+        return substr($path, $dotrpos);
     }
 
     /**
@@ -101,7 +127,7 @@ class AssetManager
     public function renderCss(string $groupName): string
     {
         $content   = $this->getCssMinifier($groupName)->minify();
-        $cachePath = $groupName . static::FILE_EXTENSION_CSS;
+        $cachePath = $groupName . static::EXT_CSS;
 
         $this->cacheManager->write($cachePath, $content);
 
@@ -117,7 +143,7 @@ class AssetManager
     public function renderJs(string $groupName): string
     {
         $content   = $this->getJsMinifier($groupName)->minify();
-        $cachePath = $groupName . static::FILE_EXTENSION_JS;
+        $cachePath = $groupName . static::EXT_JS;
 
         $this->cacheManager->write($cachePath, $content);
 
@@ -156,7 +182,7 @@ class AssetManager
      */
     public function ensureCssWebPath(string $groupName): string
     {
-        $cachePath = $groupName . static::FILE_EXTENSION_CSS;
+        $cachePath = $groupName . static::EXT_CSS;
 
         if (!$this->cacheManager->has($cachePath)) {
             $this->renderCss($groupName);
@@ -174,7 +200,7 @@ class AssetManager
      */
     public function ensureJsWebPath(string $groupName): string
     {
-        $cachePath = $groupName . static::FILE_EXTENSION_JS;
+        $cachePath = $groupName . static::EXT_JS;
 
         if (!$this->cacheManager->has($cachePath)) {
             $this->renderJs($groupName);

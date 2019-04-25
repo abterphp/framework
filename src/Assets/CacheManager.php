@@ -105,6 +105,7 @@ class CacheManager implements ICacheManager
         } catch (FileExistsException $e) {
             if ($force) {
                 $fs->delete($path);
+
                 return (bool)$fs->write($path, $content);
             }
         }
@@ -123,6 +124,8 @@ class CacheManager implements ICacheManager
         $fs = $this->getFilesystem($path);
 
         $timestamp = (string)$fs->getTimestamp($path);
+
+        $path = '/' . ltrim($path, '/');
 
         return sprintf('%s?%s', $path, substr(md5($timestamp), 0, 5));
     }
