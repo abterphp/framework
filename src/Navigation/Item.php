@@ -53,7 +53,7 @@ class Item extends Component implements IResourcable
     }
 
     /**
-     * @return $this
+     * @return string
      */
     public function getRole(): string
     {
