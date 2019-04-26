@@ -295,16 +295,16 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                     [
                         Module::EVENTS             => [
                             Event::TEMPLATE_ENGINE_READY => [
-                                'Events\Listeners\TemplateRegistrar@register',
+                                10 => ['Events\Listeners\TemplateRegistrar@register'],
                             ],
                             Event::NAVIGATION_READY      => [
-                                'Events\Listeners\NavigationRegistrar@register',
+                                10 => ['Events\Listeners\NavigationRegistrar@register'],
                             ],
                             Event::ENTITY_POST_CHANGE    => [
-                                'Events\Listeners\PageInvalidator@register',
+                                10 => ['Events\Listeners\PageInvalidator@register'],
                             ],
                             Event::DASHBOARD_READY       => [
-                                'Events\Listeners\DashboardRegistrar@register',
+                                10 => ['Events\Listeners\DashboardRegistrar@register'],
                             ],
                         ],
                     ],
@@ -329,32 +329,32 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                     [
                         Module::EVENTS             => [
                             Event::TEMPLATE_ENGINE_READY => [
-                                'Module1\Events\Listeners\TemplateRegistrar@register',
+                                10 => ['Module1\Events\Listeners\TemplateRegistrar@register'],
                             ],
                             Event::NAVIGATION_READY      => [
-                                'Module1\Events\Listeners\NavigationRegistrar@register',
+                                10 => ['Module1\Events\Listeners\NavigationRegistrar@register'],
                             ],
                             Event::ENTITY_POST_CHANGE    => [
-                                'Module1\Events\Listeners\PageInvalidator@register',
+                                10 => ['Module1\Events\Listeners\PageInvalidator@register'],
                             ],
                             Event::DASHBOARD_READY       => [
-                                'Module1\Events\Listeners\DashboardRegistrar@register',
+                                10 => ['Module1\Events\Listeners\DashboardRegistrar@register'],
                             ],
                         ],
                     ],
                     [
                         Module::EVENTS             => [
                             Event::AUTH_READY         => [
-                                'Module2\Events\Listeners\AuthRegistrar@register',
+                                10 => ['Module2\Events\Listeners\AuthRegistrar@register'],
                             ],
                             Event::NAVIGATION_READY   => [
-                                'Module2\Events\Listeners\NavigationRegistrar@register',
+                                10 => ['Module2\Events\Listeners\NavigationRegistrar@register'],
                             ],
                             Event::ENTITY_POST_CHANGE => [
-                                'Module2\Events\Listeners\AuthInvalidator@register',
+                                10 => ['Module2\Events\Listeners\AuthInvalidator@register'],
                             ],
                             Event::DASHBOARD_READY    => [
-                                'Module2\Events\Listeners\DashboardRegistrar@register',
+                                10 => ['Module2\Events\Listeners\DashboardRegistrar@register'],
                             ],
                         ],
                     ]

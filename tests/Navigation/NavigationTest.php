@@ -13,7 +13,6 @@ use PHPUnit\Framework\TestCase;
 
 class NavigationTest extends TestCase
 {
-    const USERNAME   = 'foo';
     const INTENTS    = ['bar', 'baz'];
     const ATTRIBUTES = ['data-quix' => 'quix'];
     const RESOURCE   = 'quint';
@@ -170,7 +169,7 @@ class NavigationTest extends TestCase
             75  => [$rawItems[3]],
         ];
 
-        $sut = new Navigation(static::USERNAME, static::INTENTS, static::ATTRIBUTES);
+        $sut = new Navigation(static::INTENTS, static::ATTRIBUTES);
 
         foreach ($items as $weight => $itemsByWeight) {
             foreach ($itemsByWeight as $item) {
@@ -181,108 +180,5 @@ class NavigationTest extends TestCase
         $rendered = (string)$sut;
 
         $this->assertRegexp('/^\s*\<ul.*CCC.*DDD.*AAA.*BBB.*\<\/ul\>\s*$/Ums', $rendered);
-    }
-
-    public function testEnforcerIsIgnoredIfNoResourceIsRequired()
-    {
-        $rawItems = [new Item('AAA'), new Item('BBB'), new Item('CCC'), new Item('DDD')];
-        $items = [
-            100 => [$rawItems[0], $rawItems[1]],
-            50  => [$rawItems[2]],
-            75  => [$rawItems[3]],
-        ];
-
-        $this->enforcerMock->expects($this->any())->method('enforce')->willReturn(false);
-
-        $sut = new Navigation(static::USERNAME, static::INTENTS, static::ATTRIBUTES, $this->enforcerMock);
-
-        foreach ($items as $weight => $itemsByWeight) {
-            foreach ($itemsByWeight as $item) {
-                $sut->addItem($item, $weight);
-            }
-        }
-
-        $nodes = $sut->getNodes();
-
-        $this->assertContains($rawItems[0], $nodes);
-        $this->assertContains($rawItems[1], $nodes);
-        $this->assertContains($rawItems[2], $nodes);
-        $this->assertContains($rawItems[3], $nodes);
-    }
-
-    public function testAddingItemIsSkippedIfResourceIsSetButEnforcerIsMissing()
-    {
-        $rawItems = [new Item('AAA'), new Item('BBB'), new Item('CCC'), new Item('DDD')];
-        $items = [
-            100 => [$rawItems[0], $rawItems[1]],
-            50  => [$rawItems[2]],
-            75  => [$rawItems[3]],
-        ];
-
-        $sut = new Navigation(static::USERNAME, static::INTENTS, static::ATTRIBUTES);
-
-        foreach ($items as $weight => $itemsByWeight) {
-            foreach ($itemsByWeight as $item) {
-                $sut->addItem($item, $weight, static::RESOURCE);
-            }
-        }
-
-        $nodes = $sut->getNodes();
-
-        $this->assertSame([], $nodes);
-    }
-
-    public function testAddingItemIsSkippedIfResourceIsSetButEnforcerThrowsException()
-    {
-        $rawItems = [new Item('AAA'), new Item('BBB'), new Item('CCC'), new Item('DDD')];
-        $items = [
-            100 => [$rawItems[0], $rawItems[1]],
-            50  => [$rawItems[2]],
-            75  => [$rawItems[3]],
-        ];
-
-        $this->enforcerMock->expects($this->at(0))->method('enforce')->willThrowException(new \Exception());
-
-        $sut = new Navigation(static::USERNAME, static::INTENTS, static::ATTRIBUTES, $this->enforcerMock);
-
-        foreach ($items as $weight => $itemsByWeight) {
-            foreach ($itemsByWeight as $item) {
-                $sut->addItem($item, $weight, static::RESOURCE);
-            }
-        }
-
-        $nodes = $sut->getNodes();
-
-        $this->assertSame([], $nodes);
-    }
-
-    public function testEnforcerSilentlySkipsItemsNotAllowed()
-    {
-        $rawItems = [new Item('AAA'), new Item('BBB'), new Item('CCC'), new Item('DDD')];
-        $items = [
-            100 => [$rawItems[0], $rawItems[1]],
-            50  => [$rawItems[2]],
-            75  => [$rawItems[3]],
-        ];
-
-        $this->enforcerMock->expects($this->at(0))->method('enforce')->willReturn(false);
-        $this->enforcerMock->expects($this->at(1))->method('enforce')->willReturn(true);
-        $this->enforcerMock->expects($this->at(2))->method('enforce')->willReturn(true);
-        $this->enforcerMock->expects($this->at(3))->method('enforce')->willReturn(true);
-
-        $sut = new Navigation(static::USERNAME, static::INTENTS, static::ATTRIBUTES, $this->enforcerMock);
-
-        foreach ($items as $weight => $itemsByWeight) {
-            foreach ($itemsByWeight as $item) {
-                $sut->addItem($item, $weight, static::RESOURCE);
-            }
-        }
-
-        $nodes = $sut->getNodes();
-
-        $this->assertNotContains($rawItems[0], $nodes);
-        $this->assertContains($rawItems[1], $nodes);
-        $this->assertContains($rawItems[2], $nodes);
-        $this->assertContains($rawItems[3], $nodes);
     }
 }

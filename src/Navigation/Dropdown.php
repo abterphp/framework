@@ -18,8 +18,6 @@ class Dropdown extends Component
 
     const WRAPPER_INTENT = 'dropdown-wrapper-intent';
 
-    const CONTENT = 'framework:logout';
-
     /** @var IComponent|null */
     protected $wrapper;
 

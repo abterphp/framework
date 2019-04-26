@@ -9,6 +9,9 @@ use Opulence\Cache\ICacheBridge;
 use Opulence\Console\Commands\Command;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class Manager
 {
     const CACHE_KEY_HTTP_BOOTSTRAPPERS = 'AbterPhp:HttpBootstrappers';
@@ -144,7 +147,7 @@ class Manager
      */
     public function getEvents(): array
     {
-        return $this->cacheWrapper(static::CACHE_KEY_EVENTS, $this->namedOptionsCallback(Module::EVENTS));
+        return $this->cacheWrapper(static::CACHE_KEY_EVENTS, $this->namedPrioritizedOptionsCallback(Module::EVENTS));
     }
 
     /**
@@ -259,30 +262,48 @@ class Manager
     }
 
     /**
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     *
      * Creates a callback that will simply merge a 2-dimensions array
      *
      * Examples
-     * Module A: ['A' => ['a', 'b', 'c'], 'B' => ['d', 'b']]
-     * Module B: ['A' => ['a', 'b'], 'C' => ['a']]
-     * Result:   ['A' => ['a', 'b', 'c', 'a', 'b'], 'B' => ['d', 'b'], 'C' => ['a']]
+     * Module A: ['A' => [5 => ['z'], 10 => ['a', 'b', 'c']], 'B' => [10 => ['d', 'b']]]
+     * Module B: ['A' => [10 => ['a', 'b']], 'C' => [10 => ['a']]]
+     * Result:   ['A' => ['z', 'a', 'b', 'c', 'a', 'b'], 'B' => ['d', 'b'], 'C' => ['a']]
      *
      * @param string $option
      *
      * @return callable
      */
-    protected function namedOptionsCallback(string $option): callable
+    protected function namedPrioritizedOptionsCallback(string $option): callable
     {
         return function ($modules) use ($option) {
-            $merged = [];
+            $prioritized = [];
             foreach ($modules as $module) {
                 if (!isset($module[$option])) {
                     continue;
                 }
-                foreach ($module[$option] as $eventType => $events) {
-                    if (!isset($merged[$eventType])) {
+                foreach ($module[$option] as $eventType => $prioritizedEvents) {
+                    if (!$prioritizedEvents) {
+                        continue;
+                    }
+                    foreach ($prioritizedEvents as $priority => $events) {
+                        if (!isset($prioritized[$eventType][$priority])) {
+                            $prioritized[$eventType][$priority] = [];
+                        }
+                        $prioritized[$eventType][$priority] = array_merge($prioritized[$eventType][$priority], $events);
+                    }
+                }
+            }
+
+            $merged = [];
+            foreach ($prioritized as $eventType => $events) {
+                krsort($events);
+                foreach ($events as $priority => $priorityEvents) {
+                    if (empty($merged[$eventType])) {
                         $merged[$eventType] = [];
                     }
-                    $merged[$eventType] = array_merge($merged[$eventType], $events);
+                    $merged[$eventType] = array_merge($merged[$eventType], $priorityEvents);
                 }
             }
 

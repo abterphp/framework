@@ -46,15 +46,8 @@ class NavigationBootstrapper extends Bootstrapper implements ILazyBootstrapper
         /** @var IEventDispatcher $eventDispatcher */
         $eventDispatcher = $container->resolve(IEventDispatcher::class);
 
-        /** @var ISession $session */
-        $session  = $container->resolve(ISession::class);
-        $username = (string)$session->get(Session::USERNAME, '');
-
-        /** @var Enforcer $enforcer */
-        $enforcer = $container->hasBinding(Enforcer::class) ? $container->resolve(Enforcer::class) : null;
-
         foreach ($this->bindingIntents as $name => $intents) {
-            $navigation = $this->createNavigation($enforcer, $username, ...$intents);
+            $navigation = new Navigation($intents);
 
             $container->bindInstance($name, $navigation);
 
@@ -62,24 +55,5 @@ class NavigationBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
             $navigation->setTranslator($translator);
         }
-    }
-
-    /**
-     * @param Enforcer|null $enforcer
-     * @param string        $username
-     * @param string        ...$intents
-     *
-     * @return Navigation
-     */
-    protected function createNavigation(?Enforcer $enforcer, string $username, string ...$intents): Navigation
-    {
-        $navigation = new Navigation(
-            $username,
-            $intents,
-            [],
-            $enforcer
-        );
-
-        return $navigation;
     }
 }

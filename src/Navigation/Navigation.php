@@ -29,9 +29,6 @@ class Navigation extends Tag implements INodeContainer
     const INTENT_PRIMARY   = 'primary';
     const INTENT_SECONDARY = 'secondary';
 
-    /** @var string */
-    protected $username;
-
     /** @var ICollection */
     protected $prefix;
 
@@ -40,9 +37,6 @@ class Navigation extends Tag implements INodeContainer
 
     /** @var IComponent|null */
     protected $wrapper;
-
-    /** @var Enforcer|null */
-    protected $enforcer;
 
     /** @var Item[][] */
     protected $itemsByWeight = [];
@@ -53,22 +47,12 @@ class Navigation extends Tag implements INodeContainer
     /**
      * Navigation constructor.
      *
-     * @param string        $username
      * @param string[]      $intents
      * @param array         $attributes
-     * @param Enforcer|null $enforcer
      * @param string|null   $tag
      */
-    public function __construct(
-        string $username = '',
-        array $intents = [],
-        array $attributes = [],
-        ?Enforcer $enforcer = null,
-        ?string $tag = null
-    ) {
-        $this->username = $username;
-        $this->enforcer = $enforcer;
-
+    public function __construct(array $intents = [], array $attributes = [], ?string $tag = null)
+    {
         parent::__construct(null, $intents, $attributes, $tag);
 
         $this->prefix  = new Collection();
@@ -78,47 +62,14 @@ class Navigation extends Tag implements INodeContainer
     /**
      * @param Item   $component
      * @param int    $weight
-     * @param string $resource
-     * @param string $role
      *
      * @return $this
      */
-    public function addItem(
-        Item $component,
-        int $weight = PHP_INT_MAX,
-        string $resource = '',
-        string $role = Role::READ
-    ): Navigation {
-        if (!$this->isAllowed($resource, $role)) {
-            return $this;
-        }
-
+    public function addItem(Item $component, int $weight = PHP_INT_MAX): Navigation
+    {
         $this->itemsByWeight[$weight][] = $component;
 
         return $this;
-    }
-
-    /**
-     * @param string $resource
-     * @param string $role
-     *
-     * @return bool
-     */
-    protected function isAllowed(string $resource, string $role): bool
-    {
-        if (!$resource) {
-            return true;
-        }
-
-        if (!$this->enforcer) {
-            return false;
-        }
-
-        try {
-            return (bool)$this->enforcer->enforce($this->username, $resource, $role);
-        } catch (\Exception $e) {
-            return false;
-        }
     }
 
     protected function resort()
