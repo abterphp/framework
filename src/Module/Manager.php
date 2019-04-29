@@ -195,7 +195,7 @@ class Manager
     }
 
     /**
-     * @return string[]
+     * @return string[][]
      */
     public function getAssetsPaths(): array
     {
@@ -238,7 +238,7 @@ class Manager
      * Examples
      * Module A: ['a' => 'a', 'b' => 'b']
      * Module B: ['b' => 'c', 'c' => 'd']
-     * Result:   ['a' => 'a', 'b' => 'c', 'c' => 'd']
+     * Result:   ['a' => ['a'], 'b' => ['b', 'c'], 'c' => ['d']]
      *
      * @param string $option
      *
@@ -253,7 +253,7 @@ class Manager
                     continue;
                 }
                 foreach ($module[$option] as $key => $value) {
-                    $merged[$key] = $value;
+                    $merged[$key][] = $value;
                 }
             }
 

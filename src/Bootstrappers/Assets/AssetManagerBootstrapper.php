@@ -85,8 +85,13 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
         $assetsPaths = $abterModuleManager->getAssetsPaths();
 
-        foreach ($assetsPaths as $key => $path) {
-            $fileFinder->registerFilesystem(new Filesystem(new Local($path)), $key);
+        foreach ($assetsPaths as $key => $paths) {
+            foreach ($paths as $path) {
+                if (!$path) {
+                    continue;
+                }
+                $fileFinder->registerFilesystem(new Filesystem(new Local($path)), $key);
+            }
         }
 
         $dirPublic = rtrim(getenv(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
