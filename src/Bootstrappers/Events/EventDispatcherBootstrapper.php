@@ -28,6 +28,9 @@ class EventDispatcherBootstrapper extends BaseBootstrapper
         $allEvents = require Config::get('paths', 'config') . '/events.php';
 
         foreach ($abterModuleManager->getEvents() as $type => $events) {
+            if (empty($events)) {
+                throw new \RuntimeException(sprintf('Invalid events: %s - %s', $type, json_encode($events)));
+            }
             if (!isset($allEvents[$type])) {
                 $allEvents[$type] = [];
             }
