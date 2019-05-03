@@ -9,7 +9,7 @@ interface IResourcable
     /**
      * @param string|null $resource
      *
-     * @return IResourcable
+     * @return $this
      */
     public function setResource(?string $resource): IResourcable;
 
@@ -21,7 +21,7 @@ interface IResourcable
     /**
      * @param string $role
      *
-     * @return IResourcable
+     * @return $this
      */
     public function setRole(string $role): IResourcable;
 
@@ -29,4 +29,9 @@ interface IResourcable
      * @return string|null
      */
     public function getRole(): string;
+
+    /**
+     * @return $this
+     */
+    public function disable(): IResourcable;
 }

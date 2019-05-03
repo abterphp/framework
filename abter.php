@@ -2,8 +2,10 @@
 
 use AbterPhp\Framework\Bootstrappers;
 use AbterPhp\Framework\Console;
+use AbterPhp\Framework\Constant\Event;
 use AbterPhp\Framework\Constant\Module;
 use AbterPhp\Framework\Constant\Priorities;
+use AbterPhp\Framework\Events;
 use AbterPhp\Framework\Http;
 
 return [
@@ -67,5 +69,11 @@ return [
             __DIR__ . '/asset-routes.php',
         ],
     ],
-    Module::RESOURCE_PATH    => realpath(__DIR__ . '/resources'),
+    Module::EVENTS             => [
+        Event::NAVIGATION_READY => [
+            /** @see Events\Listeners\NavigationBuilder::handle */
+            Priorities::MINIMUM => [sprintf('%s@handle', Events\Listeners\NavigationBuilder::class)],
+        ],
+    ],
+    Module::RESOURCE_PATH      => realpath(__DIR__ . '/resources'),
 ];

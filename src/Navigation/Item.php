@@ -20,6 +20,9 @@ class Item extends Component implements IResourcable
     /** @var string */
     protected $role = Role::READ;
 
+    /** @var bool */
+    protected $enabled = true;
+
     /**
      * @param string|null $resource
      *
@@ -58,5 +61,27 @@ class Item extends Component implements IResourcable
     public function getRole(): string
     {
         return $this->role;
+    }
+
+    /**
+     * @return $this
+     */
+    public function disable(): IResourcable
+    {
+        $this->enabled = false;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        if (!$this->enabled) {
+            return '';
+        }
+
+        return parent::__toString();
     }
 }
