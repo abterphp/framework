@@ -45,9 +45,10 @@ class Textarea extends Tag implements IElement
         }
 
         $attributes[Html5::ATTR_NAME]  = $name;
-        $attributes[Html5::ATTR_VALUE] = htmlspecialchars($value);
 
         parent::__construct(null, $intents, $attributes, $tag);
+
+        $this->setValue($value);
     }
 
     /**
@@ -78,7 +79,9 @@ class Textarea extends Tag implements IElement
             throw new \InvalidArgumentException();
         }
 
-        return $this->setAttribute(Html5::ATTR_VALUE, $value);
+        $this->attributes[Html5::ATTR_VALUE] = [htmlspecialchars($value)];
+
+        return $this;
     }
 
     /**
