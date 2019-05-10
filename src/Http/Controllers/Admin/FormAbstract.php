@@ -37,6 +37,11 @@ abstract class FormAbstract extends AdminAbstract
 
     const URL_NEW = '%s-new';
 
+    const RESOURCE_DEFAULT = '%s-form';
+    const RESOURCE_HEADER  = '%s-header-form';
+    const RESOURCE_FOOTER  = '%s-footer-form';
+    const RESOURCE_TYPE    = 'form';
+
     /** @var IGridRepo */
     protected $repo;
 

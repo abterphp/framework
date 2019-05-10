@@ -22,6 +22,7 @@ abstract class AdminAbstract extends ControllerAbstract
     const RESOURCE_DEFAULT = '%s';
     const RESOURCE_HEADER  = '%s-header';
     const RESOURCE_FOOTER  = '%s-footer';
+    const RESOURCE_TYPE    = 'void';
 
     /** @var ITranslator */
     protected $translator;
@@ -57,9 +58,17 @@ abstract class AdminAbstract extends ControllerAbstract
      */
     protected function addCustomAssets(?IStringerEntity $entity = null)
     {
+        $this->prepareCustomAssets();
+    }
+
+    protected function prepareCustomAssets()
+    {
         $this->view->setVar('page', $this->getResourceName(static::RESOURCE_DEFAULT));
         $this->view->setVar('pageHeader', $this->getResourceName(static::RESOURCE_HEADER));
         $this->view->setVar('pageFooter', $this->getResourceName(static::RESOURCE_FOOTER));
+        $this->view->setVar('pageType', $this->getResourceTypeName(static::RESOURCE_DEFAULT));
+        $this->view->setVar('pageTypeHeader', $this->getResourceTypeName(static::RESOURCE_HEADER));
+        $this->view->setVar('pageTypeFooter', $this->getResourceTypeName(static::RESOURCE_FOOTER));
     }
 
     /**
@@ -70,5 +79,15 @@ abstract class AdminAbstract extends ControllerAbstract
     protected function getResourceName(string $template)
     {
         return sprintf($template, static::ENTITY_SINGULAR);
+    }
+
+    /**
+     * @param string $template
+     *
+     * @return string
+     */
+    protected function getResourceTypeName(string $template)
+    {
+        return sprintf($template, static::RESOURCE_TYPE);
     }
 }

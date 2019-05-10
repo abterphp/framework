@@ -33,6 +33,11 @@ abstract class GridAbstract extends AdminAbstract
 
     const URL_CREATE = '%s-create';
 
+    const RESOURCE_DEFAULT = '%s-grid';
+    const RESOURCE_HEADER  = '%s-header-grid';
+    const RESOURCE_FOOTER  = '%s-footer-grid';
+    const RESOURCE_TYPE    = 'grid';
+
     /** @var IGridRepo */
     protected $gridRepo;
 
@@ -108,13 +113,19 @@ abstract class GridAbstract extends AdminAbstract
      */
     protected function addCustomAssets(?IStringerEntity $entity = null)
     {
-        parent::addCustomAssets($entity);
+        $this->prepareCustomAssets();
 
-        $footer = $this->getResourceName(static::RESOURCE_FOOTER);
-        $this->assets->addJs($footer, '/admin-assets/js/hideable-container.js');
-        $this->assets->addJs($footer, '/admin-assets/js/filters.js');
-        $this->assets->addJs($footer, '/admin-assets/js/tooltips.js');
-        $this->assets->addJs($footer, '/admin-assets/js/pagination.js');
+        $this->addTypeAssets();
+    }
+
+    protected function addTypeAssets()
+    {
+        $groupName = $this->getResourceTypeName(static::RESOURCE_FOOTER);
+
+        $this->assets->addJs($groupName, '/admin-assets/js/hideable-container.js');
+        $this->assets->addJs($groupName, '/admin-assets/js/filters.js');
+        $this->assets->addJs($groupName, '/admin-assets/js/tooltips.js');
+        $this->assets->addJs($groupName, '/admin-assets/js/pagination.js');
     }
 
     /**
