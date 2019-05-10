@@ -79,7 +79,7 @@ class Sortable extends Cell implements ICell, ITemplater
         $this->fieldName = $fieldName;
         $this->inputName = static::NAME_PREFIX . $inputName;
 
-        $this->sortBtn = new Button(null, [static::BTN_INTENT_SHOARTING], [], Html5::TAG_A);
+        $this->sortBtn = new Component(null, [static::BTN_INTENT_SHOARTING], [], Html5::TAG_A);
     }
 
     /**
@@ -90,6 +90,8 @@ class Sortable extends Cell implements ICell, ITemplater
     public function setBaseUrl(string $baseUrl): Sortable
     {
         $this->baseUrl = $baseUrl;
+
+        $this->setSortBtnDirection();
 
         return $this;
     }
@@ -161,9 +163,9 @@ class Sortable extends Cell implements ICell, ITemplater
     }
 
     /**
-     * @return Button
+     * @return Component
      */
-    public function getSortBtn(): Button
+    public function getSortBtn(): Component
     {
         return $this->sortBtn;
     }
