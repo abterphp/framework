@@ -155,7 +155,10 @@ class Pagination extends Tag implements IPagination, ITemplater
         );
 
         foreach ($pageSizes as $pageSize) {
-            $this->sizeOptions[] = new Option((string)$pageSize, (string)$pageSize);
+            $isSelected = ($pageSize === $this->pageSize);
+            $option     = new Option((string)$pageSize, (string)$pageSize, $isSelected);
+
+            $this->sizeOptions[] = $option;
         }
     }
 
