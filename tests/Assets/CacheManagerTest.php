@@ -205,10 +205,10 @@ class CacheManagerTest extends TestCase
         $this->sut->registerFilesystem($fs1);
         $this->sut->registerFilesystem($fs2);
 
-        $obj1 = ['path' => 'foo'];
-        $obj2 = ['path' => 'bar'];
-        $obj3 = ['path' => 'baz'];
-        $obj4 = ['path' => 'quix'];
+        $obj1 = ['path' => 'foo', 'basename' => ''];
+        $obj2 = ['path' => 'bar', 'basename' => ''];
+        $obj3 = ['path' => 'baz', 'basename' => ''];
+        $obj4 = ['path' => 'quix', 'basename' => ''];
 
         $fs1->expects($this->once())->method('listContents')->willReturn([$obj1, $obj2]);
         $fs2->expects($this->once())->method('listContents')->willReturn([$obj3, $obj4]);

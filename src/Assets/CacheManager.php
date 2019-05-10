@@ -17,6 +17,36 @@ class CacheManager implements ICacheManager
     /** @var callable[] */
     protected $checkers = [];
 
+    /** @var closure used to decide if a file can be deleted or not */
+    protected $isFlushable;
+
+    public function __construct()
+    {
+        $this->isFlushable = function (array $obj) {
+            if ($obj['basename'] === '.gitignore') {
+                return false;
+            }
+
+            if (!empty($obj['extension']) && strtolower($obj['extension']) === 'php') {
+                return false;
+            }
+
+            return true;
+        };
+    }
+
+    /**
+     * @param callable $isFlushable must expect an array containing file information and return a boolean
+     *
+     * @return CacheManager
+     */
+    public function setIsFlushable(callable $isFlushable): CacheManager
+    {
+        $this->isFlushable = $isFlushable;
+
+        return $this;
+    }
+
     /**
      * @param string $path
      *
@@ -139,6 +169,9 @@ class CacheManager implements ICacheManager
             $objects = $filesystem->listContents('/', false);
 
             foreach ($objects as $object) {
+                if (!call_user_func($this->isFlushable, $object)) {
+                    continue;
+                }
                 $filesystem->delete($object['path']);
             }
         }
