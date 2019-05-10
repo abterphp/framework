@@ -17,9 +17,10 @@ abstract class Filter extends Component implements IFilter, ITemplater
 
     /**
      * %1$s - input
-     * %2$s - help
+     * %2$s - label
+     * %3$s - help
      */
-    const DEFAULT_TEMPLATE = '%1$s %2$s';
+    const DEFAULT_TEMPLATE = '%1$s %2$s %3$s';
 
     const NAME_PREFIX = 'filter-';
 
@@ -85,6 +86,7 @@ abstract class Filter extends Component implements IFilter, ITemplater
         $this->wrapper = new Component(null, [], [], Html5::TAG_DIV);
 
         $this->label = new Label($this->inputName);
+        $this->label->setContent($fieldName);
 
         $this->helpBlock = new Component(static::HELP_CONTENT, [static::INTENT_HELP_BLOCK], [], Html5::TAG_P);
     }
@@ -178,29 +180,16 @@ abstract class Filter extends Component implements IFilter, ITemplater
      */
     public function __toString(): string
     {
-        $inputContent = parent::__toString();
-        if ($this->label) {
-            $inputContent = $this->wrapInputContent($inputContent);
-        }
+        $input = parent::__toString();
+
+        $label = (string)$this->label;
 
         $help = (string)$this->helpBlock;
 
-        $content = sprintf($this->template, $inputContent, $help);
+        $content = sprintf($this->template, $label, $input, $help);
 
         $this->wrapper->setContent($content);
 
         return (string)$this->wrapper;
-    }
-
-    /**
-     * @param string $inputContent
-     *
-     * @return string
-     */
-    protected function wrapInputContent(string $inputContent): string
-    {
-        $this->label->setContent($inputContent);
-
-        return (string)$this->label;
     }
 }
