@@ -14,8 +14,9 @@ class DefaultButtonsTest extends \PHPUnit\Framework\TestCase
     public function renderProvider()
     {
         $simpleExpected = [
-            "<div><button name=\"continue\" type=\"submit\" value=\"0\">framework:save</button>",
-            "<button name=\"continue\" type=\"submit\" value=\"1\">framework:saveAndEdit</button>",
+            "<div><button name=\"next\" type=\"submit\" value=\"back\">framework:saveAndBack</button>",
+            "<button name=\"next\" type=\"submit\" value=\"edit\">framework:saveAndEdit</button>",
+            "<button name=\"next\" type=\"submit\" value=\"create\">framework:saveAndCreate</button>",
             "<a href=\"/url\">framework:backToGrid</a></div>",
         ];
 
@@ -65,9 +66,14 @@ class DefaultButtonsTest extends \PHPUnit\Framework\TestCase
     ): DefaultButtons {
         $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
 
-        $defaultButtons = new DefaultButtons($showUrl, [], $attributes, $tag);
+        $defaultButtons = new DefaultButtons(null, [], $attributes, $tag);
 
-        $defaultButtons->setTranslator($translatorMock);
+        $defaultButtons
+            ->setTranslator($translatorMock)
+            ->addSaveAndBack()
+            ->addSaveAndEdit()
+            ->addSaveAndCreate()
+            ->addBackToGrid($showUrl);
 
         return $defaultButtons;
     }
