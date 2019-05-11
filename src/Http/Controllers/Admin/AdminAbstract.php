@@ -15,7 +15,7 @@ abstract class AdminAbstract extends ControllerAbstract
     const ENTITY_PLURAL   = '';
     const ENTITY_SINGULAR = '';
 
-    const ENTITY_LOAD_FAILURE = 'message:load-failure';
+    const ENTITY_LOAD_FAILURE = 'framework:load-failure';
 
     const URL_EDIT = '%s-edit';
 

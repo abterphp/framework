@@ -6,6 +6,7 @@ namespace AbterPhp\Framework\Http\Service\RepoGrid;
 
 use AbterPhp\Framework\Databases\Queries\FoundRows;
 use AbterPhp\Framework\Grid\Factory\IBase as GridFactory;
+use AbterPhp\Framework\Grid\Grid;
 use AbterPhp\Framework\Grid\IGrid;
 use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\Orm\IGridRepo;
@@ -60,9 +61,9 @@ abstract class RepoGridAbstract implements IRepoGrid
         $pageSize  = $grid->getPageSize();
         $limitFrom = $this->getOffset($query, $pageSize);
 
-        $sortBy = $grid->getSortConditions();
-        $where  = $grid->getWhereConditions();
-        $params = $grid->getSqlParams();
+        $sortBy = $this->getSortConditions($grid);
+        $where  = $this->getWhereConditions($grid);
+        $params = $this->getSqlParams($grid);
 
         $entities = $this->repo->getPage($limitFrom, $pageSize, $sortBy, $where, $params);
         $maxCount = $this->foundRows->get();
@@ -70,6 +71,36 @@ abstract class RepoGridAbstract implements IRepoGrid
         $grid->setTotalCount($maxCount)->setEntities($entities);
 
         return $grid;
+    }
+
+    /**
+     * @param Grid $grid
+     *
+     * @return array
+     */
+    protected function getSortConditions(Grid $grid): array
+    {
+        return $grid->getSortConditions();
+    }
+
+    /**
+     * @param Grid $grid
+     *
+     * @return array
+     */
+    protected function getWhereConditions(Grid $grid): array
+    {
+        return $grid->getWhereConditions();
+    }
+
+    /**
+     * @param Grid $grid
+     *
+     * @return array
+     */
+    protected function getSqlParams(Grid $grid): array
+    {
+        return $grid->getSqlParams();
     }
 
     /**

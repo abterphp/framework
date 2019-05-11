@@ -105,7 +105,15 @@ abstract class Base implements IFormFactory
      */
     protected function addDefaultButtons(string $showUrl): Base
     {
-        $this->form[] = new DefaultButtons($showUrl);
+        $buttons = new DefaultButtons();
+
+        $buttons
+            ->addSaveAndBack()
+            ->addBackToGrid($showUrl)
+            ->addSaveAndEdit()
+            ->addSaveAndCreate();
+
+        $this->form[] = $buttons;
 
         return $this;
     }

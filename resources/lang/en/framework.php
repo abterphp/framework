@@ -20,7 +20,9 @@ return [
     // Form
     'backToGrid'     => 'Back to grid page',
     'save'           => 'Save',
+    'saveAndBack'    => 'Save and Back',
     'saveAndEdit'    => 'Save and Edit',
+    'saveAndCreate'  => 'Save and New',
 
     'none'       => "None",
 

@@ -19,8 +19,10 @@ return [
 
     // Form
     'backToGrid'     => 'Vissza a listához',
-    'save'           => 'Ment és vissza',
-    'saveAndEdit'    => 'Ment és folytat',
+    'save'           => 'Ment',
+    'saveAndBack'    => 'Ment és vissza',
+    'saveAndEdit'    => 'Ment és tovább szerkeszt',
+    'saveAndCreate'  => 'Ment és új',
 
     'none'       => "Egyik sem",
 

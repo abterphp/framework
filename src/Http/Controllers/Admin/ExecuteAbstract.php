@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Http\Controllers\Admin;
 
+use AbterPhp\Framework\Form\Extra\DefaultButtons;
 use AbterPhp\Framework\Http\Service\Execute\IRepoService;
 use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\Session\FlashService;
@@ -21,7 +22,7 @@ abstract class ExecuteAbstract extends AdminAbstract
     use UrlTrait;
     use MessageTrait;
 
-    const INPUT_CONTINUE = 'continue';
+    const INPUT_NEXT = 'next';
 
     const URL_CREATE = '%s-create';
 
@@ -221,9 +222,9 @@ abstract class ExecuteAbstract extends AdminAbstract
      */
     protected function redirectToList(?string $entityId = null): Response
     {
-        $continue = (bool)$this->request->getInput(static::INPUT_CONTINUE);
+        $next = $this->request->getInput(static::INPUT_NEXT);
 
-        $url = $this->getUrl($continue, $entityId);
+        $url = $this->getUrl($next, $entityId);
 
         $response = new RedirectResponse($url);
         $response->send();
@@ -232,18 +233,21 @@ abstract class ExecuteAbstract extends AdminAbstract
     }
 
     /**
-     * @param bool        $continue
+     * @param string        $next
      * @param string|null $entityId
      *
      * @return string
      * @throws URLException
      */
-    protected function getUrl(bool $continue, string $entityId = null)
+    protected function getUrl(string $next, string $entityId = null)
     {
-        if (!$continue) {
-            return $this->getShowUrl();
-        } elseif ($entityId) {
-            return $this->getEditUrl($entityId);
+        switch ($next) {
+            case DefaultButtons::BTN_VALUE_NEXT_BACK:
+                return $this->getShowUrl();
+            case DefaultButtons::BTN_VALUE_NEXT_EDIT:
+                return $this->getEditUrl($entityId);
+            case DefaultButtons::BTN_VALUE_NEXT_CREATE:
+                return $this->getCreateUrl();
         }
 
         return $this->getCreateUrl();
