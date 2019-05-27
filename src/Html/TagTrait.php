@@ -66,7 +66,7 @@ trait TagTrait
     public function getAttribute(string $key): ?string
     {
         if (!array_key_exists($key, $this->attributes)) {
-            throw new \RuntimeException('attribute does not exist');
+            return null;
         }
 
         if (null === $this->attributes[$key]) {

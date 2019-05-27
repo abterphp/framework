@@ -125,7 +125,6 @@ class ContentlessTest extends TestCase
 
     /**
      * @dataProvider getAttributeProvider
-     * @expectedException \RuntimeException
      *
      * @param             $value
      * @param string|null $expectedResult
@@ -144,7 +143,9 @@ class ContentlessTest extends TestCase
 
         $sut->unsetAttribute($key);
 
-        $sut->getAttribute($key);
+        $repeatedResult = $sut->getAttribute($key);
+
+        $this->assertNull($repeatedResult);
     }
 
     public function testSetAttributesOverridesExistingAttributesSet()

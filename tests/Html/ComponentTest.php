@@ -178,7 +178,6 @@ class ComponentTest extends CollectionTest
 
     /**
      * @dataProvider getAttributeProvider
-     * @expectedException \RuntimeException
      *
      * @param             $value
      * @param string|null $expectedResult
@@ -197,7 +196,9 @@ class ComponentTest extends CollectionTest
 
         $sut->unsetAttribute($key);
 
-        $sut->getAttribute($key);
+        $repeatedResult = $sut->getAttribute($key);
+
+        $this->assertNull($repeatedResult);
     }
 
     public function testSetAttributesOverridesExistingAttributesSet()
