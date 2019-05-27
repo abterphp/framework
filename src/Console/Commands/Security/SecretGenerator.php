@@ -32,6 +32,9 @@ class SecretGenerator extends Command
         Env::OAUTH2_PRIVATE_KEY_PASSWORD => 16,
     ];
 
+    /** @var null|string */
+    protected $envFile;
+
     /**
      * @inheritdoc
      */
@@ -74,7 +77,26 @@ class SecretGenerator extends Command
         }
 
         $key = Key::createNewRandomKey()->saveToAsciiSafeString();
-        $this->handleOauth2EncryptionKey($response, Env::OAUTH2_ENCRYPTION_KEY, $key, $maxNameLength);
+        $this->handleKey($response, Env::OAUTH2_ENCRYPTION_KEY, $key, $maxNameLength);
+    }
+
+    /**
+     * @return string|null
+     */
+    protected function getEnvFile()
+    {
+        if (null !== $this->envFile) {
+            return $this->envFile;
+        }
+
+        $fileName = Config::get('paths', 'config') . '/environment/.env.app.php';
+
+        $this->envFile = '';
+        if (file_exists($fileName)) {
+            $this->envFile = $fileName;
+        }
+
+        return $this->envFile;
     }
 
     /**
@@ -87,16 +109,14 @@ class SecretGenerator extends Command
      */
     protected function handleKey(IResponse $response, string $name, string $key, int $maxNameLength)
     {
-        $envConfigPath = Config::get('paths', 'config') . '/environment/.env.app.php';
-
-        if (!$this->optionIsSet('show') && file_exists($envConfigPath)) {
-            $contents    = file_get_contents($envConfigPath);
+        if (!$this->optionIsSet('show') && $this->getEnvFile()) {
+            $contents    = file_get_contents($this->getEnvFile());
             $newContents = preg_replace(
                 sprintf("/\"%s\",\s*\"[^\"]*\"/U", $name),
                 sprintf('"%s", "' . $key . '"', $name),
                 $contents
             );
-            file_put_contents($envConfigPath, $newContents);
+            file_put_contents($this->getEnvFile(), $newContents);
         }
 
         $pad = str_repeat(' ', $maxNameLength - strlen($name));
