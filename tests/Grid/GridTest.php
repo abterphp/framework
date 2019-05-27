@@ -336,7 +336,7 @@ class GridTest extends \PHPUnit\Framework\TestCase
     public function testSetEntitiesCallsTable()
     {
         $entity = $this->getMockBuilder(IStringerEntity::class)
-                ->setMethods(['__toString', 'getId', 'setId'])
+                ->setMethods(['__toString', 'getId', 'setId', 'toJSON'])
                 ->getMock();
 
         /** @var Table|MockObject $table */

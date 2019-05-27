@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Http\Controllers\Admin;
 
+use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Form\Extra\DefaultButtons;
 use AbterPhp\Framework\Http\Service\Execute\IRepoService;
 use AbterPhp\Framework\I18n\ITranslator;
@@ -95,7 +96,7 @@ abstract class ExecuteAbstract extends AdminAbstract
         }
 
         try {
-            $entityId = $this->repoService->create($postData, $fileData);
+            $entity = $this->repoService->create($postData, $fileData);
 
             $this->logger->info(sprintf(static::LOG_MSG_CREATE_SUCCESS, static::ENTITY_SINGULAR));
             $this->flashService->mergeSuccessMessages([$this->getMessage(static::CREATE_SUCCESS)]);
@@ -109,7 +110,7 @@ abstract class ExecuteAbstract extends AdminAbstract
             return $this->redirectToList();
         }
 
-        return $this->redirectToList($entityId);
+        return $this->redirectToList($entity);
     }
 
     /**
@@ -135,8 +136,10 @@ abstract class ExecuteAbstract extends AdminAbstract
             return $this->redirectToList($entityId);
         }
 
+        $entity = $this->repoService->retrieveEntity($entityId);
+
         try {
-            $this->repoService->update($entityId, $postData, $fileData);
+            $this->repoService->update($entity, $postData, $fileData);
             $this->logger->info(sprintf(static::LOG_MSG_UPDATE_SUCCESS, static::ENTITY_SINGULAR, $entityId));
             $this->flashService->mergeSuccessMessages([$this->getMessage(static::UPDATE_SUCCESS)]);
         } catch (\Exception $e) {
@@ -147,7 +150,7 @@ abstract class ExecuteAbstract extends AdminAbstract
             $this->flashService->mergeErrorMessages([$this->getMessage(static::UPDATE_FAILURE)]);
         }
 
-        return $this->redirectToList($entityId);
+        return $this->redirectToList($entity);
     }
 
     /**
@@ -161,8 +164,10 @@ abstract class ExecuteAbstract extends AdminAbstract
      */
     public function delete(string $entityId): Response
     {
+        $entity = $this->repoService->retrieveEntity($entityId);
+
         try {
-            $this->repoService->delete($entityId);
+            $this->repoService->delete($entity);
             $this->logger->info(sprintf(static::LOG_MSG_DELETE_SUCCESS, static::ENTITY_SINGULAR, $entityId));
             $this->flashService->mergeSuccessMessages([$this->getMessage(static::DELETE_SUCCESS)]);
         } catch (\Exception $e) {
@@ -197,16 +202,16 @@ abstract class ExecuteAbstract extends AdminAbstract
     }
 
     /**
-     * @param string|null $entityId
+     * @param IStringerEntity|null $entity
      *
      * @return Response
      * @throws URLException
      */
-    protected function redirectToList(?string $entityId = null): Response
+    protected function redirectToList(?IStringerEntity $entity = null): Response
     {
         $next = $this->request->getInput(static::INPUT_NEXT, DefaultButtons::BTN_VALUE_NEXT_BACK);
 
-        $url = $this->getUrl($next, $entityId);
+        $url = $this->getUrl($next, $entity->getId());
 
         $response = new RedirectResponse($url);
         $response->send();

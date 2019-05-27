@@ -105,7 +105,7 @@ class TableTest extends TestCase
     public function testSetEntitiesCallsBody()
     {
         $entity = $this->getMockBuilder(IStringerEntity::class)
-            ->setMethods(['__toString', 'getId', 'setId'])
+            ->setMethods(['__toString', 'getId', 'setId', 'toJSON'])
             ->getMock();
 
         $stubEntities = [$entity];

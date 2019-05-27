@@ -18,7 +18,7 @@ class RowTest extends \PHPUnit\Framework\TestCase
 
         /** @var MockObject|IStringerEntity $mockEntity */
         $mockEntity = $this->getMockBuilder(IStringerEntity::class)
-            ->setMethods(['getId', 'setId', '__toString'])
+            ->setMethods(['getId', 'setId', '__toString', 'toJSON'])
             ->getMock();
 
         $sut->setEntity($mockEntity);
@@ -30,7 +30,7 @@ class RowTest extends \PHPUnit\Framework\TestCase
     {
         /** @var MockObject|IStringerEntity $mockEntity */
         $mockEntity = $this->getMockBuilder(IStringerEntity::class)
-            ->setMethods(['getId', 'setId', '__toString'])
+            ->setMethods(['getId', 'setId', '__toString', 'toJSON'])
             ->getMock();
 
         $actionCount = 2;
@@ -56,7 +56,7 @@ class RowTest extends \PHPUnit\Framework\TestCase
     {
         /** @var MockObject|IStringerEntity $mockEntity */
         $mockEntity = $this->getMockBuilder(IStringerEntity::class)
-            ->setMethods(['getId', 'setId', '__toString'])
+            ->setMethods(['getId', 'setId', '__toString', 'toJSON'])
             ->getMock();
         $mockEntity->expects($this->any())->method('__toString')->willReturn('foo');
         $mockEntity->expects($this->any())->method('getId')->with(1);

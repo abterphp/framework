@@ -117,7 +117,7 @@ class BodyTest extends \PHPUnit\Framework\TestCase
         /** @var IStringerEntity|MockObject $entity */
         $entity = $this->getMockBuilder(IStringerEntity::class)
             ->disableOriginalConstructor()
-            ->setMethods(['__toString', 'getId', 'setId', 'getFoo', 'getBar'])
+            ->setMethods(['__toString', 'getId', 'setId', 'getFoo', 'getBar', 'toJSON'])
             ->getMock();
 
         $entity->expects($this->any())->method('__toString')->willReturn($string);

@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Http\Controllers\Admin;
 
+use AbterPhp\Framework\Domain\Entities\IStringerEntity;
+use AbterPhp\Framework\Domain\Entities\IToJsoner;
 use AbterPhp\Framework\Http\Service\Execute\RepoServiceAbstract;
 use Opulence\Http\Responses\Response;
 use Opulence\Http\Responses\ResponseHeaders;
+use Opulence\Orm\IEntity;
 use Opulence\Routing\Controller;
 use Psr\Log\LoggerInterface;
 
@@ -59,14 +62,14 @@ abstract class ApiAbstract extends Controller
         }
 
         try {
-            $entityId = $this->repoService->create($data, []);
+            $entity = $this->repoService->create($data, []);
         } catch (\Exception $e) {
             $msg = sprintf(static::LOG_MSG_CREATE_FAILURE, static::ENTITY_SINGULAR);
 
             return $this->handleException($msg, $e);
         }
 
-        return $this->handleCreateSuccess($entityId);
+        return $this->handleCreateSuccess($entity);
     }
 
     /**
@@ -86,15 +89,17 @@ abstract class ApiAbstract extends Controller
             return $this->handleErrors($msg, $errors);
         }
 
+        $entity = $this->repoService->retrieveEntity($entityId);
+
         try {
-            $this->repoService->update($entityId, $data, []);
+            $this->repoService->update($entity, $data, []);
         } catch (\Exception $e) {
             $msg = sprintf(static::LOG_MSG_UPDATE_FAILURE, static::ENTITY_SINGULAR, $entityId);
 
             return $this->handleException($msg, $e);
         }
 
-        return $this->handleUpdateSuccess($entityId);
+        return $this->handleUpdateSuccess($entity);
     }
 
     /**
@@ -104,15 +109,17 @@ abstract class ApiAbstract extends Controller
      */
     public function delete(string $entityId): Response
     {
+        $entity = $this->repoService->retrieveEntity($entityId);
+
         try {
-            $entityId = $this->repoService->delete($entityId);
+            $this->repoService->delete($entity);
         } catch (\Exception $e) {
             $msg = sprintf(static::LOG_MSG_DELETE_FAILURE, static::ENTITY_SINGULAR, $entityId);
 
             return $this->handleException($msg, $e);
         }
 
-        return $this->handleDeleteSuccess($entityId);
+        return $this->handleDeleteSuccess();
     }
 
     /**
@@ -195,15 +202,33 @@ abstract class ApiAbstract extends Controller
     }
 
     /**
+     * @param IStringerEntity $entity
+     *
      * @return Response
      */
-    protected function handleCreateSuccess(string $entityId): Response
+    protected function handleCreateSuccess(IStringerEntity $entity): Response
     {
         $response = new Response();
 
         $response->setStatusCode(ResponseHeaders::HTTP_CREATED);
 
-        $response->setContent(json_encode(['id' => $entityId]));
+        $response->setContent($entity->toJSON());
+
+        return $response;
+    }
+
+    /**
+     * @param IStringerEntity $entity
+     *
+     * @return Response
+     */
+    protected function handleUpdateSuccess(IStringerEntity $entity): Response
+    {
+        $response = new Response();
+
+        $response->setStatusCode(ResponseHeaders::HTTP_OK);
+
+        $response->setContent($entity->toJSON());
 
         return $response;
     }
@@ -211,27 +236,11 @@ abstract class ApiAbstract extends Controller
     /**
      * @return Response
      */
-    protected function handleUpdateSuccess(string $entityId): Response
+    protected function handleDeleteSuccess(): Response
     {
         $response = new Response();
 
         $response->setStatusCode(ResponseHeaders::HTTP_OK);
-
-        $response->setContent(json_encode(['id' => $entityId]));
-
-        return $response;
-    }
-
-    /**
-     * @return Response
-     */
-    protected function handleDeleteSuccess(string $entityId): Response
-    {
-        $response = new Response();
-
-        $response->setStatusCode(ResponseHeaders::HTTP_OK);
-
-        $response->setContent(json_encode(['id' => $entityId]));
 
         return $response;
     }

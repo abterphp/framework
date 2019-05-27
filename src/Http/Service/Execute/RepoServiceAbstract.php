@@ -84,10 +84,10 @@ abstract class RepoServiceAbstract implements IRepoService
      * @param string[]       $postData
      * @param UploadedFile[] $fileData
      *
-     * @return string
+     * @return IStringerEntity
      * @throws OrmException
      */
-    public function create(array $postData, array $fileData): string
+    public function create(array $postData, array $fileData): IStringerEntity
     {
         $entity = $this->fillEntity($this->createEntity(''), $postData, $fileData);
 
@@ -95,21 +95,19 @@ abstract class RepoServiceAbstract implements IRepoService
 
         $this->commitCreate($entity);
 
-        return $entity->getId();
+        return $entity;
     }
 
     /**
-     * @param string         $entityId
-     * @param string[]       $postData
-     * @param UploadedFile[] $fileData
+     * @param IStringerEntity $entity
+     * @param string[]        $postData
+     * @param UploadedFile[]  $fileData
      *
      * @return bool
      * @throws OrmException
      */
-    public function update(string $entityId, array $postData, array $fileData): bool
+    public function update(IStringerEntity $entity, array $postData, array $fileData): bool
     {
-        $entity = $this->retrieveEntity($entityId);
-
         $this->fillEntity($entity, $postData, $fileData);
 
         $this->commitUpdate($entity);
@@ -118,15 +116,13 @@ abstract class RepoServiceAbstract implements IRepoService
     }
 
     /**
-     * @param string $entityId
+     * @param IStringerEntity $entity
      *
      * @return bool
      * @throws OrmException
      */
-    public function delete(string $entityId): bool
+    public function delete(IStringerEntity $entity): bool
     {
-        $entity = $this->createEntity($entityId);
-
         $this->repo->delete($entity);
 
         $this->commitDelete($entity);
@@ -188,7 +184,7 @@ abstract class RepoServiceAbstract implements IRepoService
      * @return IStringerEntity
      * @throws OrmException
      */
-    protected function retrieveEntity(string $entityId): IStringerEntity
+    public function retrieveEntity(string $entityId): IStringerEntity
     {
         /** @var IStringerEntity $entity */
         $entity = $this->repo->getById($entityId);
@@ -201,7 +197,7 @@ abstract class RepoServiceAbstract implements IRepoService
      *
      * @return IStringerEntity
      */
-    abstract protected function createEntity(string $entityId): IStringerEntity;
+    abstract public function createEntity(string $entityId): IStringerEntity;
 
     /**
      * @param IStringerEntity $entity
