@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AbterPhp\Framework\Console\Commands\Cache;
+namespace AbterPhp\Framework\Console\Commands\AbterPhp;
 
 use AbterPhp\Framework\Console\Commands\Assets\FlushCache as AssetsFlushCacheCommand;
 use AbterPhp\Framework\Console\Commands\Authorization\FlushCache as AuthorizationFlushCacheCommand;

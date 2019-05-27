@@ -31,6 +31,7 @@ return [
     ],
     Module::CLI_BOOTSTRAPPERS  => [
         Bootstrappers\Console\Commands\Cache\FlushCacheBootstrapper::class,
+        Bootstrappers\Console\Commands\Oauth2\GenerateKeysBootstrapper::class,
         Bootstrappers\Console\Commands\Security\SecretGeneratorBootstrapper::class,
         Bootstrappers\Databases\QueryFileLoaderBootstrapper::class,
         Bootstrappers\Databases\MigrationsBootstrapper::class,
@@ -46,9 +47,11 @@ return [
         Bootstrappers\Views\ViewFunctionsBootstrapper::class,
     ],
     Module::COMMANDS           => [
+        Console\Commands\AbterPhp\FlushCache::class,
+        Console\Commands\AbterPhp\Setup::class,
         Console\Commands\Assets\FlushCache::class,
         Console\Commands\Authorization\FlushCache::class,
-        Console\Commands\Cache\FlushCache::class,
+        Console\Commands\Oauth2\GenerateKeys::class,
         Console\Commands\Security\SecretGenerator::class,
         Console\Commands\Template\FlushCache::class,
     ],
