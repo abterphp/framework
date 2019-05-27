@@ -39,8 +39,6 @@ abstract class ExecuteAbstract extends AdminAbstract
     const LOG_MSG_UPDATE_SUCCESS = 'Updating %1$s with id "%2$s" was successful.';
     const LOG_MSG_DELETE_FAILURE = 'Deleting %1$s with id "%2$s" failed.';
     const LOG_MSG_DELETE_SUCCESS = 'Deleting %1$s with id "%2$s" was successful.';
-    const LOG_CONTEXT_EXCEPTION  = 'Exception';
-    const LOG_PREVIOUS_EXCEPTION = 'Previous exception #%d';
 
     const ENTITY_TITLE_SINGULAR = '';
     const ENTITY_TITLE_PLURAL   = '';
@@ -51,32 +49,28 @@ abstract class ExecuteAbstract extends AdminAbstract
     /** @var ISession */
     protected $session;
 
-    /** @var LoggerInterface */
-    protected $logger;
-
     /**
      * ExecuteAbstract constructor.
      *
      * @param FlashService    $flashService
      * @param ITranslator     $translator
      * @param UrlGenerator    $urlGenerator
+     * @param LoggerInterface $logger
      * @param IRepoService    $repoService
      * @param ISession        $session
-     * @param LoggerInterface $logger
      */
     public function __construct(
         FlashService $flashService,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
+        LoggerInterface $logger,
         IRepoService $repoService,
-        ISession $session,
-        LoggerInterface $logger
+        ISession $session
     ) {
-        parent::__construct($flashService, $translator, $urlGenerator);
+        parent::__construct($flashService, $translator, $urlGenerator, $logger);
 
         $this->repoService = $repoService;
         $this->session     = $session;
-        $this->logger      = $logger;
     }
 
     /**
@@ -156,18 +150,6 @@ abstract class ExecuteAbstract extends AdminAbstract
         return $this->redirectToList($entityId);
     }
 
-    protected function getExceptionContext(\Exception $exception): array
-    {
-        $result = [static::LOG_CONTEXT_EXCEPTION => $exception->getMessage()];
-
-        $i = 1;
-        while ($exception = $exception->getPrevious()) {
-            $result[sprintf(static::LOG_PREVIOUS_EXCEPTION, $i++)] = $exception->getMessage();
-        }
-
-        return $result;
-    }
-
     /**
      * @param string $entityId
      *
@@ -222,7 +204,7 @@ abstract class ExecuteAbstract extends AdminAbstract
      */
     protected function redirectToList(?string $entityId = null): Response
     {
-        $next = $this->request->getInput(static::INPUT_NEXT);
+        $next = $this->request->getInput(static::INPUT_NEXT, DefaultButtons::BTN_VALUE_NEXT_BACK);
 
         $url = $this->getUrl($next, $entityId);
 
@@ -245,6 +227,9 @@ abstract class ExecuteAbstract extends AdminAbstract
             case DefaultButtons::BTN_VALUE_NEXT_BACK:
                 return $this->getShowUrl();
             case DefaultButtons::BTN_VALUE_NEXT_EDIT:
+                if (null === $entityId) {
+                    return $this->getCreateUrl();
+                }
                 return $this->getEditUrl($entityId);
             case DefaultButtons::BTN_VALUE_NEXT_CREATE:
                 return $this->getCreateUrl();

@@ -11,6 +11,7 @@
 namespace AbterPhp\Framework\Console\Commands\Security;
 
 use AbterPhp\Framework\Constant\Env;
+use Defuse\Crypto\Key;
 use Opulence\Console\Commands\Command;
 use Opulence\Console\Requests\Option;
 use Opulence\Console\Requests\OptionTypes;
@@ -24,10 +25,11 @@ class SecretGenerator extends Command
 {
     /** @var array */
     protected $keys = [
-        Env::DB_PASSWORD              => 12,
-        Env::ENCRYPTION_KEY           => 32,
-        Env::CRYPTO_FRONTEND_SALT     => 8,
-        Env::CRYPTO_ENCRYPTION_PEPPER => 16,
+        Env::DB_PASSWORD                 => 12,
+        Env::ENCRYPTION_KEY              => 32,
+        Env::CRYPTO_FRONTEND_SALT        => 8,
+        Env::CRYPTO_ENCRYPTION_PEPPER    => 16,
+        Env::OAUTH2_PRIVATE_KEY_PASSWORD => 16,
     ];
 
     /**
@@ -61,27 +63,30 @@ class SecretGenerator extends Command
      */
     protected function doExecute(IResponse $response)
     {
-        $maxNameLength = 0;
+        $maxNameLength = strlen(Env::OAUTH2_ENCRYPTION_KEY);
         foreach ($this->keys as $name => $length) {
             $maxNameLength = (int)max($maxNameLength, strlen($name));
         }
 
         foreach ($this->keys as $name => $length) {
-            $this->handleKey($response, $name, $length, $maxNameLength);
+            $key = \bin2hex(\random_bytes($length));
+            $this->handleKey($response, $name, $key, $maxNameLength);
         }
+
+        $key = Key::createNewRandomKey()->saveToAsciiSafeString();
+        $this->handleOauth2EncryptionKey($response, Env::OAUTH2_ENCRYPTION_KEY, $key, $maxNameLength);
     }
 
     /**
      * @param IResponse $response
      * @param string    $name
-     * @param int       $length
+     * @param string    $key
      * @param int       $maxNameLength
      *
      * @throws \Exception
      */
-    protected function handleKey(IResponse $response, string $name, int $length, int $maxNameLength)
+    protected function handleKey(IResponse $response, string $name, string $key, int $maxNameLength)
     {
-        $key           = \bin2hex(\random_bytes($length));
         $envConfigPath = Config::get('paths', 'config') . '/environment/.env.app.php';
 
         if (!$this->optionIsSet('show') && file_exists($envConfigPath)) {

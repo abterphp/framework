@@ -114,6 +114,10 @@ trait TagTrait
 
         unset($this->attributes[$key][$value]);
 
+        if (empty($this->attributes[$key])) {
+            unset($this->attributes[$key]);
+        }
+
         return $this;
     }
 

@@ -22,10 +22,10 @@ class AssetManager
     /** @var MinifierFactory */
     protected $minifierFactory;
 
-    /** @var FileFinder */
+    /** @var IFileFinder */
     protected $fileFinder;
 
-    /** @var CacheManager */
+    /** @var ICacheManager */
     protected $cacheManager;
 
     /** @var JsMinifier[] */
@@ -37,11 +37,11 @@ class AssetManager
     /**
      * AssetManager constructor.
      *
-     * @param MinifierFactory $minifierFactory
-     * @param FileFinder      $fileFinder
-     * @param CacheManager    $cacheManager
+     * @param MinifierFactory  $minifierFactory
+     * @param IFileFinder      $fileFinder
+     * @param ICacheManager    $cacheManager
      */
-    public function __construct(MinifierFactory $minifierFactory, FileFinder $fileFinder, CacheManager $cacheManager)
+    public function __construct(MinifierFactory $minifierFactory, IFileFinder $fileFinder, ICacheManager $cacheManager)
     {
         $this->minifierFactory = $minifierFactory;
         $this->fileFinder      = $fileFinder;

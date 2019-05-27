@@ -18,6 +18,7 @@ use AbterPhp\Framework\Session\FlashService;
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Http\Responses\Response;
 use Opulence\Routing\Urls\UrlGenerator;
+use Psr\Log\LoggerInterface;
 
 abstract class GridAbstract extends AdminAbstract
 {
@@ -65,6 +66,7 @@ abstract class GridAbstract extends AdminAbstract
      * @param FlashService     $flashService
      * @param ITranslator      $translator
      * @param UrlGenerator     $urlGenerator
+     * @param LoggerInterface  $logger
      * @param AssetManager     $assets
      * @param IRepoGrid        $repoGrid
      * @param IEventDispatcher $eventDispatcher
@@ -73,11 +75,12 @@ abstract class GridAbstract extends AdminAbstract
         FlashService $flashService,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
+        LoggerInterface $logger,
         AssetManager $assets,
         IRepoGrid $repoGrid,
         IEventDispatcher $eventDispatcher
     ) {
-        parent::__construct($flashService, $translator, $urlGenerator);
+        parent::__construct($flashService, $translator, $urlGenerator, $logger);
 
         $this->assets          = $assets;
         $this->repoGrid        = $repoGrid;

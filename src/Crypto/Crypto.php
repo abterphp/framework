@@ -27,7 +27,7 @@ class Crypto
     protected $hashOptions = [];
 
     /** @var string */
-    protected $salt = '';
+    protected $frontendSalt = '';
 
     /** @var string */
     protected $rawSecretRegexp;
@@ -39,20 +39,20 @@ class Crypto
      * @param IHasher    $hasher
      * @param string     $pepper
      * @param array      $hashOptions
-     * @param string     $salt
+     * @param string     $frontendSalt
      */
     public function __construct(
         IEncrypter $encrypter,
         IHasher $hasher,
         string $pepper,
         array $hashOptions,
-        string $salt
+        string $frontendSalt
     ) {
-        $this->hasher      = $hasher;
-        $this->encrypter   = $encrypter;
-        $this->pepper      = $pepper;
-        $this->hashOptions = $hashOptions;
-        $this->salt        = $salt;
+        $this->hasher       = $hasher;
+        $this->encrypter    = $encrypter;
+        $this->pepper       = $pepper;
+        $this->hashOptions  = $hashOptions;
+        $this->frontendSalt = $frontendSalt;
 
         $this->rawSecretRegexp = sprintf('/^[0-9a-f]{%s}$/', static::SECRET_HASH_LENGTH);
     }
@@ -66,7 +66,7 @@ class Crypto
      */
     public function prepareSecret(string $rawText)
     {
-        return hash('sha3-512', $this->salt . $rawText);
+        return hash('sha3-512', $this->frontendSalt . $rawText);
     }
 
     /**
@@ -91,7 +91,7 @@ class Crypto
     }
 
     /**
-     * @param string $secret SHA3-512 encoded secret in hexadecimal
+     * @param string $secret       SHA3-512 encoded secret in hexadecimal
      * @param string $storedSecret hashed and encrypted secret to compare $secret against
      *
      * @return bool

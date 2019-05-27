@@ -36,7 +36,11 @@
     "swiftmailer/swiftmailer": "^6.1",
     "mikey179/vfsstream": "^1.6",
     "bjeavons/zxcvbn-php": "^0.4",
-    "dflydev/apache-mime-types": "^1.0"
+    "dflydev/apache-mime-types": "^1.0",
+    "psr/http-message": "^1.0",
+    "nyholm/psr7": "^1.1",
+    "league/oauth2-server": "^7.4",
+    "nyholm/psr7-server": "^0.3.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^6.1",

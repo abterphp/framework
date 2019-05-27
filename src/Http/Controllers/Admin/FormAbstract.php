@@ -19,11 +19,14 @@ use Opulence\Orm\OrmException;
 use Opulence\Routing\Urls\URLException;
 use Opulence\Routing\Urls\UrlGenerator;
 use Opulence\Sessions\ISession;
+use Psr\Log\LoggerInterface;
 
 abstract class FormAbstract extends AdminAbstract
 {
     use UrlTrait;
     use MessageTrait;
+
+    const LOG_MSG_LOAD_FAILURE = 'Loading %1$s failed.';
 
     const ENTITY_TITLE_SINGULAR = '';
 
@@ -60,6 +63,7 @@ abstract class FormAbstract extends AdminAbstract
      * @param FlashService     $flashService
      * @param ITranslator      $translator
      * @param UrlGenerator     $urlGenerator
+     * @param LoggerInterface  $logger
      * @param IGridRepo        $repo
      * @param ISession         $session
      * @param IFormFactory     $formFactory
@@ -69,12 +73,13 @@ abstract class FormAbstract extends AdminAbstract
         FlashService $flashService,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
+        LoggerInterface $logger,
         IGridRepo $repo,
         ISession $session,
         IFormFactory $formFactory,
         IEventDispatcher $eventDispatcher
     ) {
-        parent::__construct($flashService, $translator, $urlGenerator);
+        parent::__construct($flashService, $translator, $urlGenerator, $logger);
 
         $this->repo            = $repo;
         $this->session         = $session;
@@ -155,6 +160,11 @@ abstract class FormAbstract extends AdminAbstract
             $errorMessage = $this->getMessage(static::ENTITY_LOAD_FAILURE);
 
             $flashService->mergeErrorMessages([$errorMessage]);
+
+            $this->logger->info(
+                sprintf(static::LOG_MSG_LOAD_FAILURE, static::ENTITY_SINGULAR),
+                $this->getExceptionContext($e)
+            );
 
             return $this->createEntity('');
         }

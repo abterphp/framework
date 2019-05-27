@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Html\Component;
 
-use AbterPhp\Framework\Html\ITemplater;
 use AbterPhp\Framework\Html\Helper\StringHelper;
 use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\INode;
-use AbterPhp\Framework\I18n\ITranslator;
+use AbterPhp\Framework\Html\ITemplater;
 
 class ButtonWithIcon extends Button implements ITemplater
 {
@@ -18,8 +17,8 @@ class ButtonWithIcon extends Button implements ITemplater
      */
     const DEFAULT_TEMPLATE = '%2$s %1$s';
 
-    const ICON_INTENT = 'button-icon';
-    const TEXT_INTENT = 'button-text';
+    const INTENT_BUTTON_ICON = 'button-icon';
+    const INTENT_BUTTON_TEXT = 'button-text';
 
     /** @var string */
     protected $template = self::DEFAULT_TEMPLATE;
@@ -48,8 +47,8 @@ class ButtonWithIcon extends Button implements ITemplater
     ) {
         parent::__construct(null, $intents, $attributes, $tag);
 
-        $this->text = $text->addIntent(static::TEXT_INTENT);
-        $this->icon = $icon->addIntent(static::ICON_INTENT);
+        $this->text = $text->addIntent(static::INTENT_BUTTON_TEXT);
+        $this->icon = $icon->addIntent(static::INTENT_BUTTON_ICON);
     }
 
     /**
@@ -70,6 +69,16 @@ class ButtonWithIcon extends Button implements ITemplater
     public function getExtendedNodes(): array
     {
         return array_merge([$this->text, $this->icon], $this->getNodes());
+    }
+
+    public function getText(): IComponent
+    {
+        return $this->text;
+    }
+
+    public function getIcon(): IComponent
+    {
+        return $this->icon;
     }
 
     /**

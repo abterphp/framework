@@ -6,6 +6,7 @@ namespace AbterPhp\Framework\Bootstrappers\Assets;
 
 use AbterPhp\Framework\Assets\AssetManager;
 use AbterPhp\Framework\Assets\CacheManager;
+use AbterPhp\Framework\Assets\DevCacheManager;
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
 use AbterPhp\Framework\Assets\FileFinder;
 use AbterPhp\Framework\Assets\ICacheManager;
@@ -13,6 +14,7 @@ use AbterPhp\Framework\Assets\IFileFinder;
 use AbterPhp\Framework\Constant\Env;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
+use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -53,6 +55,9 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
         $minifierFactory = new MinifierFactory();
         $fileFinder      = new FileFinder();
         $cacheManager    = new CacheManager();
+        if (getenv(\AbterPhp\Framework\Constant\Env::ENV_NAME) === Environment::DEVELOPMENT) {
+            $cacheManager = new DevCacheManager();
+        }
 
         $this->registerResourcePaths($fileFinder);
         $this->registerCachePaths($cacheManager);

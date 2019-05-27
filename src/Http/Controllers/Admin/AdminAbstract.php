@@ -9,6 +9,7 @@ use AbterPhp\Framework\Http\Controllers\ControllerAbstract;
 use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\Session\FlashService;
 use Opulence\Routing\Urls\UrlGenerator;
+use Psr\Log\LoggerInterface;
 
 abstract class AdminAbstract extends ControllerAbstract
 {
@@ -24,11 +25,17 @@ abstract class AdminAbstract extends ControllerAbstract
     const RESOURCE_FOOTER  = '%s-footer';
     const RESOURCE_TYPE    = 'void';
 
+    const LOG_CONTEXT_EXCEPTION  = 'Exception';
+    const LOG_PREVIOUS_EXCEPTION = 'Previous exception #%d';
+
     /** @var ITranslator */
     protected $translator;
 
     /** @var UrlGenerator */
     protected $urlGenerator;
+
+    /** @var LoggerInterface */
+    protected $logger;
 
     /** @var string */
     protected $resource = '';
@@ -36,19 +43,22 @@ abstract class AdminAbstract extends ControllerAbstract
     /**
      * AdminAbstract constructor.
      *
-     * @param FlashService $flashService
-     * @param ITranslator  $translator
-     * @param UrlGenerator $urlGenerator
+     * @param FlashService    $flashService
+     * @param ITranslator     $translator
+     * @param UrlGenerator    $urlGenerator
+     * @param LoggerInterface $logger
      */
     public function __construct(
         FlashService $flashService,
         ITranslator $translator,
-        UrlGenerator $urlGenerator
+        UrlGenerator $urlGenerator,
+        LoggerInterface $logger
     ) {
         parent::__construct($flashService);
 
         $this->translator   = $translator;
         $this->urlGenerator = $urlGenerator;
+        $this->logger       = $logger;
     }
 
     /**
@@ -89,5 +99,22 @@ abstract class AdminAbstract extends ControllerAbstract
     protected function getResourceTypeName(string $template)
     {
         return sprintf($template, static::RESOURCE_TYPE);
+    }
+
+    /**
+     * @param \Exception $exception
+     *
+     * @return array
+     */
+    protected function getExceptionContext(\Exception $exception): array
+    {
+        $result = [static::LOG_CONTEXT_EXCEPTION => $exception->getMessage()];
+
+        $i = 1;
+        while ($exception = $exception->getPrevious()) {
+            $result[sprintf(static::LOG_PREVIOUS_EXCEPTION, $i++)] = $exception->getMessage();
+        }
+
+        return $result;
     }
 }

@@ -131,7 +131,7 @@ class ButtonFactory
      *
      * @return Button
      */
-    protected function createSimple(string $text, array $intents, array $attributes, ?string $tag): Button
+    public function createSimple(string $text, array $intents, array $attributes, ?string $tag): Button
     {
         $attributes = ArrayHelper::unsafeMergeAttributes($this->attributes, $attributes);
 
@@ -151,7 +151,7 @@ class ButtonFactory
      *
      * @return ButtonWithIcon
      */
-    protected function createWithIcon(
+    public function createWithIcon(
         string $text,
         string $icon,
         array $textAttribs,

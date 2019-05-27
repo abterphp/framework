@@ -89,7 +89,7 @@ abstract class RepoServiceAbstract implements IRepoService
      */
     public function create(array $postData, array $fileData): string
     {
-        $entity = $this->fillEntity($this->createEntity(''), $postData);
+        $entity = $this->fillEntity($this->createEntity(''), $postData, $fileData);
 
         $this->repo->add($entity);
 
@@ -110,7 +110,7 @@ abstract class RepoServiceAbstract implements IRepoService
     {
         $entity = $this->retrieveEntity($entityId);
 
-        $this->fillEntity($entity, $postData);
+        $this->fillEntity($entity, $postData, $fileData);
 
         $this->commitUpdate($entity);
 
@@ -205,9 +205,10 @@ abstract class RepoServiceAbstract implements IRepoService
 
     /**
      * @param IStringerEntity $entity
-     * @param array           $data
+     * @param array           $postData
+     * @param UploadedFile[]  $fileData
      *
      * @return IStringerEntity
      */
-    abstract protected function fillEntity(IStringerEntity $entity, array $data): IStringerEntity;
+    abstract protected function fillEntity(IStringerEntity $entity, array $postData, array $fileData): IStringerEntity;
 }
