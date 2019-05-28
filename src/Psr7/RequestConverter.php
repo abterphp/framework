@@ -29,7 +29,7 @@ class RequestConverter
 
         $request = $creator->fromGlobals();
 
-        if ($opulenceRequest->isJson()) {
+        if ($opulenceRequest->isJson() && $opulenceRequest->getRawBody()) {
             $request = $request->withParsedBody($opulenceRequest->getJsonBody());
         }
 

@@ -10,6 +10,7 @@ use AbterPhp\Framework\Http\Service\Execute\RepoServiceAbstract;
 use Opulence\Http\Responses\Response;
 use Opulence\Http\Responses\ResponseHeaders;
 use Opulence\Orm\IEntity;
+use Opulence\Orm\OrmException;
 use Opulence\Routing\Controller;
 use Psr\Log\LoggerInterface;
 
@@ -89,11 +90,15 @@ abstract class ApiAbstract extends Controller
             return $this->handleErrors($msg, $errors);
         }
 
-        $entity = $this->repoService->retrieveEntity($entityId);
 
         try {
+            $entity = $this->repoService->retrieveEntity($entityId);
             $this->repoService->update($entity, $data, []);
         } catch (\Exception $e) {
+            if ($this->isEntityNotFound($e)) {
+                return $this->handleNotFound();
+            }
+
             $msg = sprintf(static::LOG_MSG_UPDATE_FAILURE, static::ENTITY_SINGULAR, $entityId);
 
             return $this->handleException($msg, $e);
@@ -109,17 +114,35 @@ abstract class ApiAbstract extends Controller
      */
     public function delete(string $entityId): Response
     {
-        $entity = $this->repoService->retrieveEntity($entityId);
 
         try {
+            $entity = $this->repoService->retrieveEntity($entityId);
             $this->repoService->delete($entity);
         } catch (\Exception $e) {
+            if ($this->isEntityNotFound($e)) {
+                return $this->handleNotFound();
+            }
+
             $msg = sprintf(static::LOG_MSG_DELETE_FAILURE, static::ENTITY_SINGULAR, $entityId);
 
             return $this->handleException($msg, $e);
         }
 
         return $this->handleDeleteSuccess();
+    }
+
+    /**
+     * @param \Exception $e
+     *
+     * @return bool
+     */
+    protected function isEntityNotFound(\Exception $e): bool
+    {
+        if (!($e instanceof OrmException)) {
+            return false;
+        }
+
+        return $e->getMessage() === 'Failed to find entity';
     }
 
     /**
@@ -240,7 +263,19 @@ abstract class ApiAbstract extends Controller
     {
         $response = new Response();
 
-        $response->setStatusCode(ResponseHeaders::HTTP_OK);
+        $response->setStatusCode(ResponseHeaders::HTTP_NO_CONTENT);
+
+        return $response;
+    }
+
+    /**
+     * @return Response
+     */
+    protected function handleNotFound(): Response
+    {
+        $response = new Response();
+
+        $response->setStatusCode(ResponseHeaders::HTTP_NOT_FOUND);
 
         return $response;
     }
