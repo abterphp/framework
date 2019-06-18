@@ -50,22 +50,22 @@ class GenerateKeys extends Command
      */
     protected function doExecute(IResponse $response)
     {
-        exec(
-            sprintf(
-                'openssl genrsa -passout pass:%s -out %s 2048',
-                $this->privateKeyPassword,
-                $this->privateKeyPath
-            )
+        $genPrivateKeyCmd = sprintf(
+            'openssl genrsa -passout pass:%s -out %s 2048',
+            $this->privateKeyPassword,
+            $this->privateKeyPath
         );
+        $response->writeln(sprintf('<comment>%s</comment>', $genPrivateKeyCmd));
+        exec($genPrivateKeyCmd);
 
-        exec(
-            sprintf(
-                'openssl rsa -in %s -passin pass:%s -pubout -out %s',
-                $this->privateKeyPath,
-                $this->privateKeyPassword,
-                $this->publicKeyPath
-            )
+        $genPublicKeyCmd = sprintf(
+            'openssl rsa -in %s -passin pass:%s -pubout -out %s',
+            $this->privateKeyPath,
+            $this->privateKeyPassword,
+            $this->publicKeyPath
         );
+        $response->writeln(sprintf('<comment>%s</comment>', $genPublicKeyCmd));
+        exec($genPublicKeyCmd);
 
         chmod($this->privateKeyPath, 0600);
         chmod($this->publicKeyPath, 0600);
