@@ -43,10 +43,10 @@ class PasswordGeneratorBootstrapper extends Bootstrapper implements ILazyBootstr
     }
 
     /**
-     * @return string
+     * @return int
      */
-    private function getSecretLength(): string
+    private function getSecretLength(): int
     {
-        return getenv(Env::OAUTH2_SECRET_LENGTH);
+        return (int)getenv(Env::OAUTH2_SECRET_LENGTH);
     }
 }
