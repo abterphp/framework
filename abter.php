@@ -17,6 +17,7 @@ return [
         Bootstrappers\Authorization\CacheManagerBootstrapper::class,
         Bootstrappers\Cache\CacheBootstrapper::class,
         Bootstrappers\Crypto\CryptoBootstrapper::class,
+        Bootstrappers\Crypto\PasswordGeneratorBootstrapper::class,
         Bootstrappers\Databases\SqlBootstrapper::class,
         Bootstrappers\Email\SenderBootstrapper::class,
         Bootstrappers\Email\TransportBootstrapper::class,
