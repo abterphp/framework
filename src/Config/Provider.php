@@ -15,4 +15,20 @@ class Provider
     {
         return getenv(Env::API_PROBLEM_BASE_URL);
     }
+
+    /**
+     * @return string
+     */
+    public function getAdminDateFormat(): string
+    {
+        return getenv(Env::ADMIN_DATE_FORMAT);
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdminDateTimeFormat(): string
+    {
+        return getenv(Env::ADMIN_DATETIME_FORMAT);
+    }
 }
