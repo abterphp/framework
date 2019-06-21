@@ -155,6 +155,8 @@ abstract class ApiAbstract extends Controller
     }
 
     /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * 
      * @param array $data
      *
      * @return UploadedFile[]
