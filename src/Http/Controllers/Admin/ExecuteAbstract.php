@@ -211,7 +211,9 @@ abstract class ExecuteAbstract extends AdminAbstract
     {
         $next = $this->request->getInput(static::INPUT_NEXT, DefaultButtons::BTN_VALUE_NEXT_BACK);
 
-        $url = $this->getUrl($next, $entity->getId());
+        $entityId = $entity ? $entity->getId() : null;
+
+        $url = $this->getUrl($next, $entityId);
 
         $response = new RedirectResponse($url);
         $response->send();

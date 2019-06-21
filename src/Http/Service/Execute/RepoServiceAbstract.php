@@ -193,6 +193,20 @@ abstract class RepoServiceAbstract implements IRepoService
     }
 
     /**
+     * @param int      $offset
+     * @param int      $limit
+     * @param string[] $orders
+     * @param array    $conditions
+     * @param array    $params
+     *
+     * @return IStringerEntity[]
+     */
+    public function retrieveList(int $offset, int $limit, array $orders, array $conditions, array $params): array
+    {
+        return $this->repo->getPage($offset, $limit, $orders, $conditions, $params);
+    }
+
+    /**
      * @param string $entityId
      *
      * @return IStringerEntity
