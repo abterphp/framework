@@ -81,4 +81,6 @@ class Env
     const LOGIN_LOG_IP       = 'LOGIN_LOG_IP';
 
     const VIEW_CACHE = 'VIEW_CACHE';
+
+    const API_PROBLEM_BASE_URL = 'API_PROBLEM_BASE_URL';
 }

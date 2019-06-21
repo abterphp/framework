@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Http\Controllers;
 
+use AbterPhp\Framework\Config\Provider as ConfigProvider;
 use AbterPhp\Framework\Databases\Queries\FoundRows;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Domain\Entities\IToJsoner;
@@ -47,18 +48,18 @@ abstract class ApiAbstract extends Controller
      * @param LoggerInterface     $logger
      * @param RepoServiceAbstract $repoService
      * @param FoundRows           $foundRows
-     * @param string              $problemBaseUrl
+     * @param ConfigProvider      $configProvider
      */
     public function __construct(
         LoggerInterface $logger,
         RepoServiceAbstract $repoService,
         FoundRows $foundRows,
-        string $problemBaseUrl
+        ConfigProvider $configProvider
     ) {
         $this->logger         = $logger;
         $this->repoService    = $repoService;
         $this->foundRows      = $foundRows;
-        $this->problemBaseUrl = $problemBaseUrl;
+        $this->problemBaseUrl = $configProvider->getProblemBaseUrl();
     }
 
     /**
@@ -255,7 +256,7 @@ abstract class ApiAbstract extends Controller
 
         $status  = ResponseHeaders::HTTP_BAD_REQUEST;
         $content = [
-            'type'   => sprintf('%sbad-request', $this->problemUrlBase),
+            'type'   => sprintf('%sbad-request', $this->problemBaseUrl),
             'title'  => 'Bad Request',
             'status' => $status,
             'detail' => implode("\n", $detail),
@@ -280,7 +281,7 @@ abstract class ApiAbstract extends Controller
 
         $status  = ResponseHeaders::HTTP_INTERNAL_SERVER_ERROR;
         $content = [
-            'type'   => sprintf('%sinternal-server-error', $this->problemUrlBase),
+            'type'   => sprintf('%sinternal-server-error', $this->problemBaseUrl),
             'title'  => 'Internal Server Error',
             'status' => $status,
             'detail' => $exception->getMessage(),
