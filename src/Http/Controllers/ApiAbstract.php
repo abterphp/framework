@@ -72,7 +72,7 @@ abstract class ApiAbstract extends Controller
         try {
             $entity = $this->repoService->retrieveEntity($entityId);
         } catch (\Exception $e) {
-            $msg = sprintf(static::LOG_MSG_GET_FAILURE, static::ENTITY_SINGULAR);
+            $msg = sprintf(static::LOG_MSG_GET_FAILURE, static::ENTITY_SINGULAR, $entityId);
 
             return $this->handleException($msg, $e);
         }
