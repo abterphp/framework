@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Email;
 
 use Swift_Mailer;
-use Swift_Message;
 
-class Sender
+class Sender implements ISender
 {
     /** @var Swift_Mailer */
     protected $mailer;
@@ -34,14 +33,23 @@ class Sender
      * @param string $subject
      * @param string $body
      * @param array  $recipients
-     * @param array  $senders
-     * @param array  $replyTo
+     * @param array  $fromAddresses
+     * @param array  $replyToAddresses
      *
      * @return int
      */
-    public function send(string $subject, string $body, array $recipients, array $senders, array $replyTo): int
-    {
-        $message = $this->messageFactory->create($subject)->setBody($body)->setFrom($senders)->setReplyTo($replyTo);
+    public function send(
+        string $subject,
+        string $body,
+        array $recipients,
+        array $fromAddresses,
+        array $replyToAddresses
+    ): int {
+        $message = $this->messageFactory
+            ->create($subject)
+            ->setBody($body)
+            ->setFrom($fromAddresses)
+            ->setReplyTo($replyToAddresses);
 
         $this->failedRecipients = [];
 
