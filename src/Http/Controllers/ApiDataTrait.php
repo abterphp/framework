@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Http\Controllers;
 
-use AbterPhp\Framework\Domain\Entities\IToJsoner;
-
 trait ApiDataTrait
 {
     /** @var string */

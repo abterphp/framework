@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Http\Controllers;
 
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
-use AbterPhp\Framework\Domain\Entities\IToJsoner;
 use Opulence\Http\Responses\Response;
 use Opulence\Http\Responses\ResponseHeaders;
 

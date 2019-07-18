@@ -6,7 +6,6 @@ namespace AbterPhp\Framework\Http\Controllers;
 
 use AbterPhp\Framework\Config\Provider as ConfigProvider;
 use AbterPhp\Framework\Databases\Queries\FoundRows;
-use AbterPhp\Framework\Domain\Entities\IToJsoner;
 use AbterPhp\Framework\Http\Service\Execute\RepoServiceAbstract;
 use Opulence\Http\Responses\Response;
 use Opulence\Orm\OrmException;
