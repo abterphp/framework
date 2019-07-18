@@ -6,18 +6,19 @@ namespace AbterPhp\Framework\Http\Controllers;
 
 use AbterPhp\Framework\Config\Provider as ConfigProvider;
 use AbterPhp\Framework\Databases\Queries\FoundRows;
-use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Domain\Entities\IToJsoner;
 use AbterPhp\Framework\Http\Service\Execute\RepoServiceAbstract;
-use Opulence\Http\Requests\UploadedFile;
 use Opulence\Http\Responses\Response;
-use Opulence\Http\Responses\ResponseHeaders;
 use Opulence\Orm\OrmException;
 use Opulence\Routing\Controller;
 use Psr\Log\LoggerInterface;
 
 abstract class ApiAbstract extends Controller
 {
+    use ApiResponseTrait;
+    use ApiIssueTrait;
+    use ApiDataTrait;
+
     const LOG_MSG_CREATE_FAILURE = 'Creating %1$s failed.';
     const LOG_MSG_UPDATE_FAILURE = 'Updating %1$s with id "%2$s" failed.';
     const LOG_MSG_DELETE_FAILURE = 'Deleting %1$s with id "%2$s" failed.';
@@ -38,9 +39,6 @@ abstract class ApiAbstract extends Controller
 
     /** @var FoundRows */
     protected $foundRows;
-
-    /** @var string */
-    protected $problemBaseUrl;
 
     /**
      * ApiAbstract constructor.
@@ -165,18 +163,6 @@ abstract class ApiAbstract extends Controller
     }
 
     /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     *
-     * @param array $data
-     *
-     * @return UploadedFile[]
-     */
-    protected function getFileData(array $data): array
-    {
-        return [];
-    }
-
-    /**
      * @param string $entityId
      *
      * @return Response
@@ -211,188 +197,5 @@ abstract class ApiAbstract extends Controller
         }
 
         return $e->getMessage() === 'Failed to find entity';
-    }
-
-    /**
-     * @return array
-     */
-    public function getCreateData(): array
-    {
-        return $this->getSharedData();
-    }
-
-    /**
-     * @return array
-     */
-    public function getUpdateData(): array
-    {
-        return $this->getSharedData();
-    }
-
-    /**
-     * @return array
-     */
-    public function getSharedData(): array
-    {
-        return $this->request->getJsonBody();
-    }
-
-    /**
-     * @param string $msg
-     * @param array  $errors
-     *
-     * @return Response
-     */
-    protected function handleErrors(string $msg, array $errors): Response
-    {
-        $this->logger->debug($msg);
-
-        $detail = [];
-        foreach ($errors as $key => $keyErrors) {
-            foreach ($keyErrors as $keyError) {
-                $detail[] = sprintf('%s: %s', $key, $keyError);
-            }
-        }
-
-        $status  = ResponseHeaders::HTTP_BAD_REQUEST;
-        $content = [
-            'type'   => sprintf('%sbad-request', $this->problemBaseUrl),
-            'title'  => 'Bad Request',
-            'status' => $status,
-            'detail' => implode("\n", $detail),
-        ];
-
-        $response = new Response();
-        $response->setStatusCode($status);
-        $response->setContent(json_encode($content));
-
-        return $response;
-    }
-
-    /**
-     * @param string     $msg
-     * @param \Exception $exception
-     *
-     * @return Response
-     */
-    protected function handleException(string $msg, \Exception $exception): Response
-    {
-        $this->logger->error($msg, $this->getExceptionContext($exception));
-
-        $status  = ResponseHeaders::HTTP_INTERNAL_SERVER_ERROR;
-        $content = [
-            'type'   => sprintf('%sinternal-server-error', $this->problemBaseUrl),
-            'title'  => 'Internal Server Error',
-            'status' => $status,
-            'detail' => $exception->getMessage(),
-        ];
-
-        $response = new Response();
-        $response->setStatusCode($status);
-        $response->setContent(json_encode($content));
-
-        return $response;
-    }
-
-    /**
-     * @param \Exception $exception
-     *
-     * @return array
-     */
-    protected function getExceptionContext(\Exception $exception): array
-    {
-        $result = [static::LOG_CONTEXT_EXCEPTION => $exception->getMessage()];
-
-        $i = 1;
-        while ($exception = $exception->getPrevious()) {
-            $result[sprintf(static::LOG_PREVIOUS_EXCEPTION, $i++)] = $exception->getMessage();
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param IStringerEntity $entity
-     *
-     * @return Response
-     */
-    protected function handleGetSuccess(IStringerEntity $entity): Response
-    {
-        $response = new Response();
-        $response->setStatusCode(ResponseHeaders::HTTP_OK);
-        $response->setContent($entity->toJSON());
-
-        return $response;
-    }
-
-    /**
-     * @param array $entities
-     * @param int   $total
-     *
-     * @return Response
-     */
-    protected function handleListSuccess(array $entities, int $total): Response
-    {
-        $data = [];
-        foreach ($entities as $entity) {
-            $data[] = $entity->toJSON();
-        }
-        $content = sprintf('{"total":%d,"data":[%s]}', $total, implode(',', $data));
-
-        $response = new Response();
-        $response->setStatusCode(ResponseHeaders::HTTP_OK);
-        $response->setContent($content);
-
-        return $response;
-    }
-
-    /**
-     * @param IStringerEntity $entity
-     *
-     * @return Response
-     */
-    protected function handleCreateSuccess(IStringerEntity $entity): Response
-    {
-        $response = new Response();
-        $response->setStatusCode(ResponseHeaders::HTTP_CREATED);
-        $response->setContent($entity->toJSON());
-
-        return $response;
-    }
-
-    /**
-     * @param IStringerEntity $entity
-     *
-     * @return Response
-     */
-    protected function handleUpdateSuccess(IStringerEntity $entity): Response
-    {
-        $response = new Response();
-        $response->setStatusCode(ResponseHeaders::HTTP_OK);
-        $response->setContent($entity->toJSON());
-
-        return $response;
-    }
-
-    /**
-     * @return Response
-     */
-    protected function handleDeleteSuccess(): Response
-    {
-        $response = new Response();
-        $response->setStatusCode(ResponseHeaders::HTTP_NO_CONTENT);
-
-        return $response;
-    }
-
-    /**
-     * @return Response
-     */
-    protected function handleNotFound(): Response
-    {
-        $response = new Response();
-        $response->setStatusCode(ResponseHeaders::HTTP_NOT_FOUND);
-
-        return $response;
     }
 }
