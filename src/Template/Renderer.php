@@ -27,10 +27,14 @@ class Renderer
     /**
      * @param string  $templateType
      * @param ILoader $loader
+     *
+     * @return Renderer
      */
-    public function addLoader(string $templateType, ILoader $loader)
+    public function addLoader(string $templateType, ILoader $loader): Renderer
     {
         $this->loaders[$templateType] = $loader;
+
+        return $this;
     }
 
     /**

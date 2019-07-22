@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Bootstrappers\Template;
 
+use AbterPhp\Framework\Config\Provider as ConfigProvider;
 use AbterPhp\Framework\Constant\Event;
 use AbterPhp\Framework\Events\TemplateEngineReady;
 use AbterPhp\Framework\Template\CacheManager;
@@ -42,7 +43,10 @@ class EngineBootstrapper extends Bootstrapper implements ILazyBootstrapper
         /** @var Renderer $renderer */
         $renderer = $container->resolve(Renderer::class);
 
-        $templateEngine = new Engine($renderer, $cacheManager);
+        /** @var ConfigProvider $configProvider */
+        $configProvider = $container->resolve(ConfigProvider::class);
+
+        $templateEngine = new Engine($renderer, $cacheManager, $configProvider);
         $eventDispatcher->dispatch(Event::TEMPLATE_ENGINE_READY, new TemplateEngineReady($templateEngine));
 
         $container->bindInstance(Engine::class, $templateEngine);

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Template;
 
+use AbterPhp\Framework\Config\Provider as ConfigProvider;
+
 class Engine
 {
     const ERROR_MSG_CACHING_FAILURE = 'Caching failure';
@@ -25,16 +27,21 @@ class Engine
     /** @var CacheManager */
     protected $cacheManager;
 
+    /** @var bool */
+    protected $isCacheAllowed;
+
     /**
      * Engine constructor.
      *
-     * @param Renderer     $renderer
-     * @param CacheManager $cache
+     * @param Renderer       $renderer
+     * @param CacheManager   $cache
+     * @param ConfigProvider $configProvider
      */
-    public function __construct(Renderer $renderer, CacheManager $cache)
+    public function __construct(Renderer $renderer, CacheManager $cache, ConfigProvider $configProvider)
     {
-        $this->renderer     = $renderer;
-        $this->cacheManager = $cache;
+        $this->renderer       = $renderer;
+        $this->cacheManager   = $cache;
+        $this->isCacheAllowed = $configProvider->isCacheAllowed();
     }
 
     /**
@@ -91,6 +98,10 @@ class Engine
      */
     protected function hasValidCache(string $cacheId): bool
     {
+        if (!$this->isCacheAllowed) {
+            return false;
+        }
+
         $cacheData = $this->cacheManager->getCacheData($cacheId);
         if ($cacheData === null) {
             return false;
