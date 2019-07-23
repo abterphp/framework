@@ -140,7 +140,7 @@ class Template
         preg_match_all($pattern, $rawAttributes, $matches);
 
         $attributes = [];
-        foreach ($matches[0] as $idx => $match) {
+        foreach (array_keys($matches[0]) as $idx) {
             $attributes[$matches[1][$idx]] = $matches[2][$idx];
         }
 
