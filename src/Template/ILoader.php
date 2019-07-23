@@ -7,11 +7,11 @@ namespace AbterPhp\Framework\Template;
 interface ILoader
 {
     /**
-     * @param string[] $identifiers
+     * @param ParsedTemplate[][] $parsedTemplates
      *
      * @return IData[]
      */
-    public function load(array $identifiers): array;
+    public function load(array $parsedTemplates): array;
 
     /**
      * @param string[] $identifiers

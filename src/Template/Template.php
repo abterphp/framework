@@ -9,8 +9,8 @@ class Template
     /** @var string */
     protected $rawContent = '';
 
-    /** @var array */
-    protected $subTemplates = [];
+    /** @var ParsedTemplate[][][] */
+    protected $parsedTemplates = [];
 
     /** @var string[] */
     protected $vars = [];
@@ -69,7 +69,7 @@ class Template
     }
 
     /**
-     * @return string[][]
+     * @return ParsedData[][][]
      */
     public function parse(): array
     {
@@ -79,11 +79,9 @@ class Template
 
         $this->replaceVars();
 
-        $this->subTemplates = $this->parseTemplates();
+        $this->parsedTemplates = $this->parseTemplates();
 
-        $this->filterUniqueMatches();
-
-        return $this->parseResult();
+        return $this->parsedTemplates;
     }
 
     /**
@@ -106,62 +104,81 @@ class Template
     }
 
     /**
-     * @return string[][][]
+     * @return ParsedTemplate[][][]
      */
     private function parseTemplates(): array
     {
         $matches = [];
-        $pattern = sprintf('/\{\{\s*(%s)\/([\w-]+)\s*\}\}/', implode('|', $this->types));
+        $pattern = sprintf('/\{\{\s*(%s)\/([\w-]+)(\s+[^}]*)?\s*\}\}/Ums', implode('|', $this->types));
         preg_match_all($pattern, $this->rawContent, $matches);
 
-        $subTemplates = [];
+        $parsedTemplates = [];
         foreach ($matches[0] as $idx => $occurrence) {
             $type       = $matches[1][$idx];
-            $templateId = $matches[2][$idx];
+            $identifier = $matches[2][$idx];
+            $attributes = $this->parseAttributes($matches[3][$idx]);
 
-            if (!isset($subTemplates[$type][$templateId])) {
-                $subTemplates[$type][$templateId] = [];
-            }
-
-            $subTemplates[$type][$templateId][] = $occurrence;
+            $this->addOccurence($parsedTemplates, $type, $identifier, $attributes, $occurrence);
         }
 
-        return $subTemplates;
+        return $parsedTemplates;
     }
 
     /**
-     * @return bool
-     */
-    protected function filterUniqueMatches(): bool
-    {
-        foreach ($this->subTemplates as $type => $typeTemplates) {
-            foreach ($typeTemplates as $templateId => $instances) {
-                if (count($instances) < 2) {
-                    continue;
-                }
-
-                $this->subTemplates[$type][$templateId] = array_values(array_flip(array_flip($instances)));
-            }
-
-            ksort($this->subTemplates[$type]);
-        }
-
-        ksort($this->subTemplates);
-
-        return true;
-    }
-
-    /**
+     * @param string $rawAttributes
+     *
      * @return string[]
      */
-    protected function parseResult(): array
+    private function parseAttributes(string $rawAttributes): array
     {
-        return array_map(
-            function ($typeArray) {
-                return array_keys($typeArray);
-            },
-            $this->subTemplates
-        );
+        if (trim($rawAttributes) === '') {
+            return [];
+        }
+
+        $matches = [];
+        $pattern = '/\s*(\w*)\s*\=\s*\"([^"]*)\"\s*/Ums';
+        preg_match_all($pattern, $rawAttributes, $matches);
+
+        $attributes = [];
+        foreach ($matches[0] as $idx => $match) {
+            $attributes[$matches[1][$idx]] = $matches[2][$idx];
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * @param ParsedTemplate[][][] &$parsedTemplates
+     * @param string                $type
+     * @param string                $identifier
+     * @param array                 $attributes
+     * @param string                $occurence
+     */
+    private function addOccurence(
+        array &$parsedTemplates,
+        string $type,
+        string $identifier,
+        array $attributes,
+        string $occurence
+    ): void {
+        if (!isset($parsedTemplates[$type][$identifier])) {
+            $parsedTemplates[$type][$identifier][] = new ParsedTemplate($type, $identifier, $attributes, [$occurence]);
+
+            return;
+        }
+
+        foreach ($parsedTemplates[$type][$identifier] as $parsedTemplate) {
+            // Note: == is used on purpose here!
+            if ($parsedTemplate->getAttributes() != $attributes) {
+                continue;
+            }
+
+            $parsedTemplate->addOccurence($occurence);
+
+            return;
+        }
+
+        $parsedTemplates[$type][$identifier][] = new ParsedTemplate($type, $identifier, $attributes, [$occurence]);
     }
 
     /**
@@ -173,17 +190,19 @@ class Template
     {
         $content = $this->rawContent;
 
-        foreach ($this->subTemplates as $type => $typeTemplates) {
+        foreach ($this->parsedTemplates as $type => $typeTemplates) {
             if (!array_key_exists($type, $subTemplateValues)) {
                 $subTemplateValues[$type] = [];
             }
-            foreach ($typeTemplates as $templateId => $occurrences) {
+            foreach ($typeTemplates as $identifier => $identifierTemplates) {
                 $replace = '';
-                if (array_key_exists($templateId, $subTemplateValues[$type])) {
-                    $replace = $subTemplateValues[$type][$templateId];
+                if (array_key_exists($identifier, $subTemplateValues[$type])) {
+                    $replace = $subTemplateValues[$type][$identifier];
                 }
 
-                $content = str_replace($occurrences, $replace, $content);
+                foreach ($identifierTemplates as $parsedTemplate) {
+                    $content = str_replace($parsedTemplate->getOccurences(), $replace, $content);
+                }
             }
         }
 

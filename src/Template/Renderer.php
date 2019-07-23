@@ -72,34 +72,33 @@ class Renderer
             ->setVars($vars)
             ->setTypes(array_keys($this->loaders));
 
-        $subTemplateIds = $template->parse();
+        $parsedTemplates = $template->parse();
 
-        $subTemplates = $this->loadSubTemplates($subTemplateIds);
+        $subTemplates = $this->loadSubTemplates($parsedTemplates);
 
         return $template->render($subTemplates);
     }
 
     /**
-     * @param string[][] $subTemplateIds
+     * @param ParsedTemplate[][] $groupedTemplates
      *
      * @return string[]
      */
-    protected function loadSubTemplates(array $subTemplateIds): array
+    protected function loadSubTemplates(array $groupedTemplates): array
     {
-        if (count($subTemplateIds) === 0) {
+        if (count($groupedTemplates) === 0) {
             return [];
         }
 
         $templates = [];
-        foreach ($subTemplateIds as $type => $identifiers) {
+        foreach ($groupedTemplates as $type => $parsedTemplates) {
             $this->assertType($type);
 
             $loader = $this->loaders[$type];
 
-            /** @var Data[] $entities */
-            $entities = $loader->load($identifiers);
+            $templateData = $loader->load($parsedTemplates);
 
-            $templates = $this->populateTemplates($type, $entities, $templates);
+            $templates = $this->populateTemplates($type, $templateData, $templates);
         }
 
         return $templates;
@@ -107,21 +106,21 @@ class Renderer
 
     /**
      * @param string $type
-     * @param Data[] $entities
+     * @param Data[] $templateData
      * @param array  $templates
      *
      * @return array
      */
-    protected function populateTemplates(string $type, array $entities, array $templates): array
+    protected function populateTemplates(string $type, array $templateData, array $templates): array
     {
-        foreach ($entities as $entity) {
-            $vars    = $entity->getVars();
+        foreach ($templateData as $templateDataItem) {
+            $vars    = $templateDataItem->getVars();
             $content = '';
-            foreach ($entity->getTemplates() as $key => $template) {
+            foreach ($templateDataItem->getTemplates() as $key => $template) {
                 $content    = $this->render($template, $vars);
                 $vars[$key] = $content;
             }
-            $templates[$type][$entity->getIdentifier()] = $content;
+            $templates[$type][$templateDataItem->getIdentifier()] = $content;
         }
 
         return $templates;

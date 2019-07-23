@@ -72,13 +72,7 @@ class Engine
             $vars[$key] = $content;
         }
 
-        if (!$this->cacheManager->storeCacheData($cacheId, $this->allSubTemplateIds)) {
-            throw new Exception(static::ERROR_MSG_CACHING_FAILURE);
-        }
-
-        if (!$this->cacheManager->storeDocument($cacheId, $content)) {
-            throw new Exception(static::ERROR_MSG_CACHING_FAILURE);
-        }
+        $this->updateCache($cacheId, $content);
 
         return $content;
     }
@@ -89,6 +83,25 @@ class Engine
     public function getRenderer()
     {
         return $this->renderer;
+    }
+
+    /**
+     * @param string $cacheId
+     * @param string $content
+     */
+    protected function updateCache(string $cacheId, string $content): void
+    {
+        if (!$this->isCacheAllowed) {
+            return;
+        }
+
+        if (!$this->cacheManager->storeCacheData($cacheId, $this->allSubTemplateIds)) {
+            throw new Exception(static::ERROR_MSG_CACHING_FAILURE);
+        }
+
+        if (!$this->cacheManager->storeDocument($cacheId, $content)) {
+            throw new Exception(static::ERROR_MSG_CACHING_FAILURE);
+        }
     }
 
     /**
