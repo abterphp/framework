@@ -34,7 +34,6 @@ return [
         Bootstrappers\Console\Commands\Cache\FlushCacheBootstrapper::class,
         Bootstrappers\Console\Commands\Oauth2\GenerateKeysBootstrapper::class,
         Bootstrappers\Console\Commands\Security\SecretGeneratorBootstrapper::class,
-        Bootstrappers\Databases\QueryFileLoaderBootstrapper::class,
         Bootstrappers\Databases\MigrationsBootstrapper::class,
     ],
     Module::HTTP_BOOTSTRAPPERS => [
