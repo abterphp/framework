@@ -68,9 +68,9 @@ class Config
      * @param string      $envName
      * @param string|null $value
      *
-     * @return string
+     * @return $this
      */
-    public function set(string $envName, ?string $value): Provider
+    public function set(string $envName, ?string $value): Config
     {
         Environment::setVar($envName, $value);
 
