@@ -197,4 +197,12 @@ abstract class ApiAbstract extends Controller
 
         return $e->getMessage() === 'Failed to find entity';
     }
+
+    /**
+     * @return string
+     */
+    protected function getUserIdentifier(): string
+    {
+        return $this->request->getHeaders()->get('xxx-user-username');
+    }
 }
