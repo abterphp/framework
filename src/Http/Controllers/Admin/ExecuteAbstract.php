@@ -92,7 +92,7 @@ abstract class ExecuteAbstract extends AdminAbstract
             $this->flashService->mergeErrorMessages($errors);
             $this->logger->info(sprintf(static::LOG_MSG_CREATE_FAILURE, static::ENTITY_SINGULAR), $errors);
 
-            return $this->redirectToList();
+            return $this->redirectToNext();
         }
 
         try {
@@ -107,10 +107,10 @@ abstract class ExecuteAbstract extends AdminAbstract
                 $this->getExceptionContext($e)
             );
 
-            return $this->redirectToList();
+            return $this->redirectToNext();
         }
 
-        return $this->redirectToList($entity);
+        return $this->redirectToNext($entity);
     }
 
     /**
@@ -129,14 +129,18 @@ abstract class ExecuteAbstract extends AdminAbstract
 
         $errors = $this->repoService->validateForm(array_merge($postData, $fileData));
 
+        try {
+            $entity = $this->repoService->retrieveEntity($entityId);
+        } catch (OrmException $e) {
+            return $this->redirectToNext();
+        }
+
         if (count($errors) > 0) {
             $this->logger->info(sprintf(static::LOG_MSG_UPDATE_FAILURE, static::ENTITY_SINGULAR, $entityId), $errors);
             $this->flashService->mergeErrorMessages($errors);
 
-            return $this->redirectToList($entityId);
+            return $this->redirectToNext($entity);
         }
-
-        $entity = $this->repoService->retrieveEntity($entityId);
 
         try {
             $this->repoService->update($entity, $postData, $fileData);
@@ -150,7 +154,7 @@ abstract class ExecuteAbstract extends AdminAbstract
             $this->flashService->mergeErrorMessages([$this->getMessage(static::UPDATE_FAILURE)]);
         }
 
-        return $this->redirectToList($entity);
+        return $this->redirectToNext($entity);
     }
 
     /**
@@ -178,7 +182,7 @@ abstract class ExecuteAbstract extends AdminAbstract
             $this->flashService->mergeErrorMessages([$this->getMessage(static::DELETE_FAILURE)]);
         }
 
-        return $this->redirectToList();
+        return $this->redirectToNext();
     }
 
     /**
@@ -207,7 +211,7 @@ abstract class ExecuteAbstract extends AdminAbstract
      * @return Response
      * @throws URLException
      */
-    protected function redirectToList(?IStringerEntity $entity = null): Response
+    protected function redirectToNext(?IStringerEntity $entity = null): Response
     {
         $next = $this->request->getInput(static::INPUT_NEXT, DefaultButtons::BTN_VALUE_NEXT_BACK);
 
