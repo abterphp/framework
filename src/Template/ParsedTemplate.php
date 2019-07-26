@@ -57,6 +57,20 @@ class ParsedTemplate
     }
 
     /**
+     * @param string $attribute
+     *
+     * @return string|null
+     */
+    public function getAttribute(string $attribute): ?string
+    {
+        if (array_key_exists($attribute, $this->attributes)) {
+            return $this->attributes[$attribute];
+        }
+
+        return null;
+    }
+
+    /**
      * @param string $occurence
      *
      * @return ParsedTemplate

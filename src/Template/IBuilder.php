@@ -14,4 +14,9 @@ interface IBuilder
      * @return IData
      */
     public function build(array $entities): IData;
+
+    /**
+     * @return string
+     */
+    public function getIdentifier(): string;
 }
