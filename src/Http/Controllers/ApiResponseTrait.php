@@ -98,6 +98,17 @@ trait ApiResponseTrait
     /**
      * @return Response
      */
+    protected function handleUnauthorized(): Response
+    {
+        $response = new Response();
+        $response->setStatusCode(ResponseHeaders::HTTP_UNAUTHORIZED);
+
+        return $response;
+    }
+
+    /**
+     * @return Response
+     */
     protected function handleNotImplemented(): Response
     {
         $response = new Response();
