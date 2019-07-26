@@ -42,36 +42,38 @@ class Config
     }
 
     /**
-     * @param string $envName
-     * @param mixed  $expected
-     * @param mixed  $default
+     * @param string      $envName
+     * @param string      $expected
+     * @param string|null $default
      *
      * @return bool
      */
-    public function is(string $envName, $expected, $default = null): bool
+    public function is(string $envName, string $expected, $default = null): bool
     {
         return $this->get($envName, $default) === $expected;
     }
 
     /**
-     * @param string $envName
-     * @param mixed  $default
+     * @param string      $envName
+     * @param string|null $default
      *
-     * @return string
+     * @return string|null
      */
-    public function get(string $envName, $default = null): string
+    public function get(string $envName, $default = null): ?string
     {
         return Environment::getVar($envName, $default);
     }
 
     /**
-     * @param string $envName
-     * @param mixed  $value
+     * @param string      $envName
+     * @param string|null $value
      *
      * @return string
      */
-    public function set(string $envName, string $value): Provider
+    public function set(string $envName, ?string $value): Provider
     {
         Environment::setVar($envName, $value);
+
+        return $this;
     }
 }
