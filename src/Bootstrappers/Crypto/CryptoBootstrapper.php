@@ -9,6 +9,7 @@ use AbterPhp\Framework\Crypto\Crypto;
 use Opulence\Cryptography\Encryption\IEncrypter;
 use Opulence\Cryptography\Hashing\BcryptHasher;
 use Opulence\Cryptography\Hashing\IHasher;
+use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -49,7 +50,7 @@ class CryptoBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     private function getPepper(): string
     {
-        return getenv(Env::CRYPTO_ENCRYPTION_PEPPER);
+        return Environment::getVar(Env::CRYPTO_ENCRYPTION_PEPPER);
     }
 
     /**
@@ -57,7 +58,7 @@ class CryptoBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     private function getSalt(): string
     {
-        return getenv(Env::CRYPTO_FRONTEND_SALT);
+        return Environment::getVar(Env::CRYPTO_FRONTEND_SALT);
     }
 
     /**
@@ -70,12 +71,12 @@ class CryptoBootstrapper extends Bootstrapper implements ILazyBootstrapper
         $options = [];
         switch (get_class($hasher)) {
             case BcryptHasher::class:
-                $salt = getenv(Env::CRYPTO_BCRYPT_SALT);
+                $salt = Environment::getVar(Env::CRYPTO_BCRYPT_SALT);
                 if ($salt) {
                     $options['salt'] = $salt;
                 }
 
-                $cost = getenv(Env::CRYPTO_BCRYPT_COST);
+                $cost = Environment::getVar(Env::CRYPTO_BCRYPT_COST);
                 if ($cost) {
                     $options['cost'] = $cost;
                 }

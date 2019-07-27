@@ -7,7 +7,7 @@ namespace AbterPhp\Framework\Config;
 use AbterPhp\Framework\Constant\Env;
 use Opulence\Environments\Environment;
 
-class Config
+class EnvReader
 {
     /**
      * @return bool
@@ -65,12 +65,14 @@ class Config
     }
 
     /**
+     * @deprecated This method should probably only be used in tests. No removal is planned.
+     *
      * @param string      $envName
      * @param string|null $value
      *
      * @return $this
      */
-    public function set(string $envName, ?string $value): Config
+    public function set(string $envName, ?string $value): EnvReader
     {
         Environment::setVar($envName, $value);
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Template;
 
-use AbterPhp\Framework\Config\Provider as ConfigProvider;
+use AbterPhp\Framework\Config\EnvReader;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class EngineTest extends \PHPUnit\Framework\TestCase
@@ -17,9 +17,6 @@ class EngineTest extends \PHPUnit\Framework\TestCase
 
     /** @var CacheManager|MockObject */
     protected $cacheManagerMock;
-
-    /** @var ConfigProvider|MockObject */
-    protected $configProvider;
 
     public function setUp()
     {
@@ -35,13 +32,7 @@ class EngineTest extends \PHPUnit\Framework\TestCase
             ->setMethods(['getCacheData', 'storeCacheData', 'getDocument', 'storeDocument'])
             ->getMock();
 
-        $this->configProvider = $this->getMockBuilder(ConfigProvider::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['isCacheAllowed'])
-            ->getMock();
-        $this->configProvider->expects($this->any())->method('isCacheAllowed')->willReturn(true);
-
-        $this->sut = new Engine($this->rendererMock, $this->cacheManagerMock, $this->configProvider);
+        $this->sut = new Engine($this->rendererMock, $this->cacheManagerMock, true);
     }
 
     /**

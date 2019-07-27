@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Bootstrappers\Email;
 
 use AbterPhp\Framework\Constant\Env;
+use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -30,9 +31,9 @@ class TransportBootstrapper extends Bootstrapper implements ILazyBootstrapper
     public function registerBindings(IContainer $container)
     {
         $transport = null;
-        if (getenv(Env::EMAIL_SMTP_HOST)) {
+        if (Environment::getVar(Env::EMAIL_SMTP_HOST)) {
             $transport = $this->createSmtpTransport();
-        } elseif (getenv(Env::EMAIL_SENDMAIL_COMMAND)) {
+        } elseif (Environment::getVar(Env::EMAIL_SENDMAIL_COMMAND)) {
             $transport = $this->createSendmailTransport();
         }
 
@@ -48,9 +49,9 @@ class TransportBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     private function createSmtpTransport(): Swift_SmtpTransport
     {
-        $host       = (string)getenv(Env::EMAIL_SMTP_HOST);
-        $port       = (int)getenv(Env::EMAIL_SMTP_PORT);
-        $encryption = (string)getenv(Env::EMAIL_SMTP_ENCRYPTION);
+        $host       = (string)Environment::getVar(Env::EMAIL_SMTP_HOST);
+        $port       = (int)Environment::getVar(Env::EMAIL_SMTP_PORT);
+        $encryption = (string)Environment::getVar(Env::EMAIL_SMTP_ENCRYPTION);
 
         if (!$encryption) {
             $encryption = null;
@@ -58,8 +59,8 @@ class TransportBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
         $transport = new Swift_SmtpTransport($host, $port, $encryption);
 
-        $username = (string)getenv(Env::EMAIL_SMTP_USERNAME);
-        $password = (string)getenv(Env::EMAIL_SMTP_PASSWORD);
+        $username = (string)Environment::getVar(Env::EMAIL_SMTP_USERNAME);
+        $password = (string)Environment::getVar(Env::EMAIL_SMTP_PASSWORD);
 
         if ($username && $password) {
             $transport->setUsername($username)->setPassword($password);
@@ -73,7 +74,7 @@ class TransportBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     private function createSendmailTransport(): Swift_SendmailTransport
     {
-        $command = (string)getenv(Env::EMAIL_SENDMAIL_COMMAND);
+        $command = (string)Environment::getVar(Env::EMAIL_SENDMAIL_COMMAND);
 
         return new Swift_SendmailTransport($command);
     }

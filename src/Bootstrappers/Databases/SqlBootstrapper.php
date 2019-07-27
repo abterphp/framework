@@ -11,6 +11,7 @@ use Opulence\Databases\ConnectionPools\SingleServerConnectionPool;
 use Opulence\Databases\IConnection;
 use Opulence\Databases\Providers\Types\Factories\TypeMapperFactory;
 use Opulence\Databases\Server;
+use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -36,11 +37,11 @@ class SqlBootstrapper extends Bootstrapper implements ILazyBootstrapper
         $connectionPool = new SingleServerConnectionPool(
             new Driver(),
             new Server(
-                getenv(Env::DB_HOST),
-                getenv(Env::DB_USER),
-                getenv(Env::DB_PASSWORD),
-                getenv(Env::DB_NAME),
-                (int)getenv(Env::DB_PORT)
+                Environment::getVar(Env::DB_HOST),
+                Environment::getVar(Env::DB_USER),
+                Environment::getVar(Env::DB_PASSWORD),
+                Environment::getVar(Env::DB_NAME),
+                (int)Environment::getVar(Env::DB_PORT)
             )
         );
         $container->bindInstance(ConnectionPool::class, $connectionPool);

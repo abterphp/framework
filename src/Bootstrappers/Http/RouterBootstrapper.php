@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Bootstrappers\Http;
 
+use AbterPhp\Framework\Constant\Env;
 use Opulence\Environments\Environment;
 use Opulence\Framework\Configuration\Config;
 use Opulence\Framework\Routing\Bootstrappers\RouterBootstrapper as BaseBootstrapper;
@@ -30,7 +31,7 @@ class RouterBootstrapper extends BaseBootstrapper
         $routingConfig    = require "$httpConfigPath/routing.php";
         $routesConfigPath = "$httpConfigPath/routes.php";
 
-        if (empty($routingConfig['cache']) && getenv('ENV_NAME') === Environment::PRODUCTION) {
+        if (empty($routingConfig['cache']) && Environment::getVar(Env::ENV_NAME) === Environment::PRODUCTION) {
             $cachedRoutesPath = Config::get('paths', 'routes.cache') . '/' . ICache::DEFAULT_CACHED_ROUTES_FILE_NAME;
             $routes           = $this->cache->get($cachedRoutesPath, $router, $routesConfigPath);
             $router->setRouteCollection($routes);

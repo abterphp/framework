@@ -16,6 +16,7 @@ use Casbin\Persist\Adapter as AdapterContract;
 use CasbinAdapter\Database\Adapter as DatabaseAdapter;
 use Opulence\Databases\Adapters\Pdo\MySql\Driver as MySqlDriver;
 use Opulence\Databases\Adapters\Pdo\PostgreSql\Driver as PostgreSqlDriver;
+use Opulence\Environments\Environment;
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
@@ -69,7 +70,7 @@ class EnforcerBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     protected function createModel(IContainer $container)
     {
-        $dirAuthConfig = getenv(Env::DIR_AUTH_CONFIG);
+        $dirAuthConfig = Environment::getVar(Env::DIR_AUTH_CONFIG);
 
         return "$dirAuthConfig/model.conf";
     }
@@ -104,7 +105,7 @@ class EnforcerBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     protected function createDefaultAdapter(IContainer $container): AdapterContract
     {
-        $driverClass = getenv('DB_DRIVER') ?: PostgreSqlDriver::class;
+        $driverClass = Environment::getVar('DB_DRIVER') ?: PostgreSqlDriver::class;
 
         switch ($driverClass) {
             case MySqlDriver::class:
@@ -121,11 +122,11 @@ class EnforcerBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
         $config = [
             'type'     => $dirDriver,
-            'hostname' => getenv(Env::DB_HOST),
-            'database' => getenv(Env::DB_NAME),
-            'username' => getenv(Env::DB_USER),
-            'password' => getenv(Env::DB_PASSWORD),
-            'hostport' => getenv(Env::DB_PORT),
+            'hostname' => Environment::getVar(Env::DB_HOST),
+            'database' => Environment::getVar(Env::DB_NAME),
+            'username' => Environment::getVar(Env::DB_USER),
+            'password' => Environment::getVar(Env::DB_PASSWORD),
+            'hostport' => Environment::getVar(Env::DB_PORT),
         ];
 
         return DatabaseAdapter::newAdapter($config);

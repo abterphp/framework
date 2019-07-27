@@ -55,7 +55,7 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
         $minifierFactory = new MinifierFactory();
         $fileFinder      = new FileFinder();
         $cacheManager    = new CacheManager();
-        if (getenv(\AbterPhp\Framework\Constant\Env::ENV_NAME) === Environment::DEVELOPMENT) {
+        if (Environment::getVar(Env::ENV_NAME) === Environment::DEVELOPMENT) {
             $cacheManager = new DevCacheManager();
         }
 

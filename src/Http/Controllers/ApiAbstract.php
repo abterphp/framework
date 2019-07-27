@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Http\Controllers;
 
-use AbterPhp\Framework\Config\Provider as ConfigProvider;
+use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Databases\Queries\FoundRows;
 use AbterPhp\Framework\Http\Service\Execute\RepoServiceAbstract;
 use Opulence\Http\Responses\Response;
@@ -45,18 +45,18 @@ abstract class ApiAbstract extends Controller
      * @param LoggerInterface     $logger
      * @param RepoServiceAbstract $repoService
      * @param FoundRows           $foundRows
-     * @param ConfigProvider      $configProvider
+     * @param EnvReader           $envReader
      */
     public function __construct(
         LoggerInterface $logger,
         RepoServiceAbstract $repoService,
         FoundRows $foundRows,
-        ConfigProvider $configProvider
+        EnvReader $envReader
     ) {
         $this->logger         = $logger;
         $this->repoService    = $repoService;
         $this->foundRows      = $foundRows;
-        $this->problemBaseUrl = $configProvider->getProblemBaseUrl();
+        $this->problemBaseUrl = $envReader->get(Env::API_PROBLEM_BASE_URL);
     }
 
     /**
