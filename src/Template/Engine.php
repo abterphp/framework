@@ -89,7 +89,7 @@ class Engine
      */
     protected function updateCache(string $cacheId, string $content): void
     {
-        if ($this->isCacheAllowed) {
+        if (!$this->isCacheAllowed) {
             return;
         }
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Template;
 
-use AbterPhp\Framework\Config\EnvReader;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class EngineTest extends \PHPUnit\Framework\TestCase
