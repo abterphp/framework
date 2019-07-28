@@ -508,4 +508,14 @@ class CellsTest extends CollectionTest
     {
         return new Cells($content);
     }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testCreateNodeThrowsLogicException()
+    {
+        $sut = $this->createNode();
+
+        $sut->setContent('');
+    }
 }

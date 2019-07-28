@@ -67,11 +67,7 @@ class Action extends Button implements IAction
     {
         $nodes = [];
         foreach ($this->nodes as $node) {
-            if (is_object($node)) {
-                $nodes[] = clone $node;
-            } else {
-                $nodes[] = $node;
-            }
+            $nodes[] = clone $node;
         }
 
         return new Action($nodes, $this->intents, $this->attributes, $this->attributeCallbacks, $this->tag);
