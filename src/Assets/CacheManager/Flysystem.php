@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Assets\CacheManager;
 
 use League\Flysystem\FileExistsException;
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 
 class Flysystem implements ICacheManager
@@ -38,6 +39,7 @@ class Flysystem implements ICacheManager
     /**
      * @param callable $isFlushable must expect an array containing file information and return a true if a file is
      *                              flushable
+     *
      * @return $this
      */
     public function setIsFlushable(callable $isFlushable): ICacheManager
@@ -100,7 +102,7 @@ class Flysystem implements ICacheManager
      * @param string $path
      *
      * @return string|null
-     * @throws \League\Flysystem\FileNotFoundException
+     * @throws FileNotFoundException
      */
     public function read(string $path): ?string
     {
@@ -121,10 +123,11 @@ class Flysystem implements ICacheManager
     /**
      * @param string $path
      * @param string $content
-     * @param string $force
+     * @param bool   $force
      *
      * @return bool
-     * @throws \League\Flysystem\FileExistsException
+     * @throws FileExistsException
+     * @throws FileNotFoundException
      */
     public function write(string $path, string $content, bool $force = true): bool
     {
@@ -147,7 +150,7 @@ class Flysystem implements ICacheManager
      * @param string $path
      *
      * @return string
-     * @throws \League\Flysystem\FileNotFoundException
+     * @throws FileNotFoundException
      */
     public function getWebPath(string $path): string
     {
@@ -162,7 +165,7 @@ class Flysystem implements ICacheManager
     }
 
     /**
-     * @throws \League\Flysystem\FileNotFoundException
+     * @throws FileNotFoundException
      */
     public function flush()
     {

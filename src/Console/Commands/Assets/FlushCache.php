@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Console\Commands\Assets;
 
 use AbterPhp\Framework\Assets\AssetManager;
-use AbterPhp\Framework\Assets\ICacheManager;
+use AbterPhp\Framework\Assets\CacheManager\ICacheManager;
 use Opulence\Console\Commands\Command;
 use Opulence\Console\Responses\IResponse;
 

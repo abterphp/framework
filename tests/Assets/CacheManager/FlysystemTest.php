@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Assets\CacheManager;
 
+use League\Flysystem\FileExistsException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -282,6 +283,42 @@ class FlysystemTest extends TestCase
         $actualResult = $this->sut->write($path, $content);
 
         $this->assertTrue($actualResult);
+    }
+
+    public function testWriteReturnsFalseOnFileExistExceptionIfWritingIsNotForced()
+    {
+        $fs = $this->createFilesystemMock();
+
+        $this->sut->registerFilesystem($fs);
+
+        $path    = 'foo.ext';
+        $content = 'bar';
+
+        $fs->expects($this->once())->method('write')->willThrowException(new FileExistsException($path));
+
+        $actualResult = $this->sut->write($path, $content, false);
+
+        $this->assertFalse($actualResult);
+    }
+
+    public function testWriteTriesToDeleteExistingFileIfWritingIsForcedAndFileExists()
+    {
+        $expectedResult = true;
+
+        $fs = $this->createFilesystemMock();
+
+        $this->sut->registerFilesystem($fs);
+
+        $path    = 'foo.ext';
+        $content = 'bar';
+
+        $fs->expects($this->at(0))->method('write')->willThrowException(new FileExistsException($path));
+        $fs->expects($this->once())->method('delete');
+        $fs->expects($this->at(2))->method('write')->willReturn($expectedResult);
+
+        $actualResult = $this->sut->write($path, $content, true);
+
+        $this->assertSame($expectedResult, $actualResult);
     }
 
     public function testGetWebPath()
