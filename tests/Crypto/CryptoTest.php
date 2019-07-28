@@ -130,24 +130,18 @@ class CryptoTest extends TestCase
         $this->sut->hashCrypt($secret);
     }
 
-    /**
-     * @expectedException \AbterPhp\Framework\Security\SecurityException
-     */
     public function testVerifySecretThrowsSecurityExceptionIfEncrypterThrowsException()
     {
-        $this->markTestSkipped('Hasher::verify is static...');
+        $this->markTestIncomplete('Hasher::verify is static...');
     }
 
-    /**
-     * @expectedException \AbterPhp\Framework\Security\SecurityException
-     */
     public function testVerifySecretThrowsSecurityExceptionIfHasherThrowsException()
     {
-        $this->markTestSkipped('Hasher::verify is static...');
+        $this->markTestIncomplete('Hasher::verify is static...');
     }
 
     public function testVerifySecret()
     {
-        $this->markTestSkipped('Hasher::verify is static...');
+        $this->markTestIncomplete('Hasher::verify is static...');
     }
 }
