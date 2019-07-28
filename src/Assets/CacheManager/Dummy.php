@@ -2,12 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AbterPhp\Framework\Assets;
+namespace AbterPhp\Framework\Assets\CacheManager;
 
-use League\Flysystem\FileExistsException;
-use League\Flysystem\FilesystemInterface;
-
-class DevCacheManager extends CacheManager
+class Dummy extends Flysystem
 {
     /**
      * @param string $path

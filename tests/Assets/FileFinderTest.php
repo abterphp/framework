@@ -114,6 +114,22 @@ class FileFinderTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
+    public function testReadSuppressesExceptionsInReading()
+    {
+        $fs1 = $this->createFilesystemMock();
+
+        $path = 'foo';
+
+        $this->sut->registerFilesystem($fs1, 'vendor-one', 1);
+
+        $fs1->expects($this->any())->method('has')->willReturn(true);
+        $fs1->expects($this->once())->method('read')->willThrowException(new \Exception('baz'));
+
+        $actualResult = $this->sut->read($path, 'vendor-one');
+
+        $this->assertNull($actualResult);
+    }
+
     public function testHasWithoutFilesystems()
     {
         $path = 'foo';

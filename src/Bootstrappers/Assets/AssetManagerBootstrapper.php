@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Bootstrappers\Assets;
 
 use AbterPhp\Framework\Assets\AssetManager;
-use AbterPhp\Framework\Assets\CacheManager;
-use AbterPhp\Framework\Assets\DevCacheManager;
+use AbterPhp\Framework\Assets\CacheManager\Flysystem as FlysystemCacheManager;
+use AbterPhp\Framework\Assets\CacheManager\Dummy as DummyCacheManager;
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
 use AbterPhp\Framework\Assets\FileFinder;
-use AbterPhp\Framework\Assets\ICacheManager;
+use AbterPhp\Framework\Assets\CacheManager\ICacheManager;
 use AbterPhp\Framework\Assets\IFileFinder;
 use AbterPhp\Framework\Constant\Env;
 use League\Flysystem\Adapter\Local;
@@ -32,7 +32,8 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
         return [
             AssetManager::class,
             FileFinder::class,
-            CacheManager::class,
+            DummyCacheManager::class,
+            FlysystemCacheManager::class,
             ICacheManager::class,
             IFileFinder::class,
         ];
@@ -54,9 +55,10 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
     {
         $minifierFactory = new MinifierFactory();
         $fileFinder      = new FileFinder();
-        $cacheManager    = new CacheManager();
         if (Environment::getVar(Env::ENV_NAME) === Environment::DEVELOPMENT) {
-            $cacheManager = new DevCacheManager();
+            $cacheManager = new DummyCacheManager();
+        } else {
+            $cacheManager = new FlysystemCacheManager();
         }
 
         $this->registerResourcePaths($fileFinder);
@@ -66,15 +68,14 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
         $container->bindInstance(FileFinder::class, $fileFinder);
         $container->bindInstance(IFileFinder::class, $fileFinder);
-        $container->bindInstance(CacheManager::class, $cacheManager);
         $container->bindInstance(ICacheManager::class, $cacheManager);
         $container->bindInstance(AssetManager::class, $assetManager);
     }
 
     /**
-     * @param CacheManager $cacheManager
+     * @param ICacheManager $cacheManager
      */
-    private function registerCachePaths(CacheManager $cacheManager)
+    private function registerCachePaths(ICacheManager $cacheManager)
     {
         $dirPublic = rtrim(getenv(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
 

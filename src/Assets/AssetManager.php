@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Assets;
 
+use AbterPhp\Framework\Assets\CacheManager\ICacheManager;
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
 use League\Flysystem\FileNotFoundException;
 use MatthiasMullie\Minify\CSS as CssMinifier;
@@ -16,8 +17,6 @@ class AssetManager
 {
     const EXT_CSS = '.css';
     const EXT_JS  = '.js';
-
-    const ERROR_EMPTY_GROUP_NAME = 'Group name must not be empty.';
 
     /** @var MinifierFactory */
     protected $minifierFactory;
@@ -37,9 +36,9 @@ class AssetManager
     /**
      * AssetManager constructor.
      *
-     * @param MinifierFactory  $minifierFactory
-     * @param IFileFinder      $fileFinder
-     * @param ICacheManager    $cacheManager
+     * @param MinifierFactory $minifierFactory
+     * @param IFileFinder     $fileFinder
+     * @param ICacheManager   $cacheManager
      */
     public function __construct(MinifierFactory $minifierFactory, IFileFinder $fileFinder, ICacheManager $cacheManager)
     {
@@ -161,10 +160,6 @@ class AssetManager
     {
         $content = $this->fileFinder->read($cachePath);
         if (null === $content) {
-            return null;
-        }
-
-        if ($content === '' && !$this->fileFinder->has($cachePath)) {
             return null;
         }
 

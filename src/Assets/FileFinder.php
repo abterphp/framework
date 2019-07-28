@@ -100,10 +100,6 @@ class FileFinder implements IFileFinder
      */
     protected function getFilesystemPath(FilesystemInterface $filesystem, string $path): string
     {
-        if (empty($this->filesystemKeys[spl_object_id($filesystem)])) {
-            return $path;
-        }
-
         $rootKey = $this->filesystemKeys[spl_object_id($filesystem)];
         if ($rootKey === static::DEFAULT_KEY) {
             return $path;

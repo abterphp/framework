@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace AbterPhp\Framework\Assets;
+namespace AbterPhp\Framework\Assets\CacheManager;
 
 use League\Flysystem\FileExistsException;
 use League\Flysystem\FilesystemInterface;
 
-class CacheManager implements ICacheManager
+class Flysystem implements ICacheManager
 {
     const ERROR_FILESYSTEM_NOT_FOUND = 'filesystem not found';
 
     /** @var FilesystemInterface[] */
     protected $filesystems = [];
 
-    /** @var callable[] */
-    protected $checkers = [];
+    /** @var callable[] callables that can check if a filesystem is suited to be used for a given path */
+    protected $pathCheckers = [];
 
-    /** @var closure used to decide if a file can be deleted or not */
+    /** @var callable used to decide if a file can be deleted or not */
     protected $isFlushable;
 
     public function __construct()
@@ -36,11 +36,11 @@ class CacheManager implements ICacheManager
     }
 
     /**
-     * @param callable $isFlushable must expect an array containing file information and return a boolean
-     *
-     * @return CacheManager
+     * @param callable $isFlushable must expect an array containing file information and return a true if a file is
+     *                              flushable
+     * @return $this
      */
-    public function setIsFlushable(callable $isFlushable): CacheManager
+    public function setIsFlushable(callable $isFlushable): ICacheManager
     {
         $this->isFlushable = $isFlushable;
 
@@ -55,11 +55,11 @@ class CacheManager implements ICacheManager
     protected function getFilesystem(string $path): FilesystemInterface
     {
         foreach ($this->filesystems as $priority => $filesystem) {
-            if (empty($this->checkers[$priority])) {
+            if (empty($this->pathCheckers[$priority])) {
                 return $filesystem;
             }
 
-            if (call_user_func($this->checkers[$priority], $path)) {
+            if (call_user_func($this->pathCheckers[$priority], $path)) {
                 return $filesystem;
             }
         }
@@ -76,11 +76,11 @@ class CacheManager implements ICacheManager
     {
         $priority = $priority === null ? count($this->filesystems) * -1 : $priority;
 
-        $this->filesystems[$priority] = $filesystem;
-        $this->checkers[$priority]    = $checker;
+        $this->filesystems[$priority]  = $filesystem;
+        $this->pathCheckers[$priority] = $checker;
 
         krsort($this->filesystems);
-        krsort($this->checkers);
+        krsort($this->pathCheckers);
     }
 
     /**
@@ -156,8 +156,9 @@ class CacheManager implements ICacheManager
         $timestamp = (string)$fs->getTimestamp($path);
 
         $path = '/' . ltrim($path, '/');
+        $rand = substr(md5($timestamp), 0, 5);
 
-        return sprintf('%s?%s', $path, substr(md5($timestamp), 0, 5));
+        return sprintf('%s?%s', $path, $rand);
     }
 
     /**

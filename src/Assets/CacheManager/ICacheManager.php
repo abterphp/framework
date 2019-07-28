@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AbterPhp\Framework\Assets;
+namespace AbterPhp\Framework\Assets\CacheManager;
 
 use League\Flysystem\FilesystemInterface;
 
@@ -47,4 +47,12 @@ interface ICacheManager
     public function getWebPath(string $path): string;
 
     public function flush();
+
+    /**
+     * @param callable $isFlushable must expect an array containing file information and return a true if a file is
+     *                              flushable
+     *
+     * @return $this
+     */
+    public function setIsFlushable(callable $isFlushable): ICacheManager;
 }

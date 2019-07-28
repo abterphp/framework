@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Assets;
 
+use AbterPhp\Framework\Assets\CacheManager\Flysystem as CacheManager;
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
 use MatthiasMullie\Minify\CSS as CssMinifier;
 use MatthiasMullie\Minify\JS as JsMinifier;
@@ -80,10 +81,38 @@ class AssetManagerTest extends TestCase
         $this->sut->addCss($groupName, $rawPath);
     }
 
+    public function testAddCssWithPathWtihExtension()
+    {
+        $groupName = 'foo';
+        $rawPath   = 'bar.css';
+        $path      = 'bar.css';
+        $content   = 'baz';
+
+        $this->fileFinderMock->expects($this->once())->method('read')->with($path, $groupName)->willReturn($content);
+
+        $this->cssMinifierMock->expects($this->once())->method('add')->with($content);
+
+        $this->sut->addCss($groupName, $rawPath);
+    }
+
     public function testAddJs()
     {
         $groupName = 'foo';
         $rawPath   = 'bar';
+        $path      = 'bar.js';
+        $content   = 'baz';
+
+        $this->fileFinderMock->expects($this->once())->method('read')->with($path, $groupName)->willReturn($content);
+
+        $this->jsMinifierMock->expects($this->once())->method('add')->with($content);
+
+        $this->sut->addJs($groupName, $rawPath);
+    }
+
+    public function testAddJsWithPathWithExtension()
+    {
+        $groupName = 'foo';
+        $rawPath   = 'bar.js';
         $path      = 'bar.js';
         $content   = 'baz';
 
@@ -112,6 +141,37 @@ class AssetManagerTest extends TestCase
         $this->jsMinifierMock->expects($this->once())->method('add')->with($content);
 
         $this->sut->addJsContent($groupName, $content);
+    }
+
+    public function testRenderRawReturnsNullIfReadingFails()
+    {
+        $cachePath = 'foo.css';
+
+        $actualResult = $this->sut->renderRaw($cachePath);
+
+        $this->assertNull($actualResult);
+    }
+
+    public function testRenderRawWritesCacheIfContentIsRead()
+    {
+        $expectedResult = 'baz';
+
+        $cachePath = 'foo.css';
+
+        $this->fileFinderMock
+            ->expects($this->once())
+            ->method('read')
+            ->with($cachePath)
+            ->willReturn($expectedResult);
+
+        $this->cacheManagerMock
+            ->expects($this->once())
+            ->method('write')
+            ->with($cachePath, $expectedResult);
+
+        $actualResult = $this->sut->renderRaw($cachePath);
+
+        $this->assertEquals($expectedResult, $actualResult);
     }
 
     public function testRenderCss()
@@ -174,6 +234,19 @@ class AssetManagerTest extends TestCase
         $actualResult = $this->sut->ensureJsWebPath($groupName);
 
         $this->assertSame($webPath, $actualResult);
+    }
+
+    /**
+     * @expectedException \League\Flysystem\FileNotFoundException
+     */
+    public function testEnsureImgWebPathThrowsExceptionIfRenderingFails()
+    {
+        $cachePath = 'foo.js';
+
+        $this->cacheManagerMock->expects($this->any())->method('has')->willReturn(false);
+        $this->fileFinderMock->expects($this->once())->method('read')->willReturn(null);
+
+        $this->sut->ensureImgWebPath($cachePath);
     }
 
     public function testEnsureImgWebPathUsesCacheByDefault()
