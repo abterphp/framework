@@ -132,13 +132,13 @@ class DecoratorTest extends TestCase
         $this->assertContains($callbackClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
     }
 
-    public function testDecorateNonTagNodeWorks()
+    public function testDecorateMatchingNonTagNodeWorks()
     {
         $node = $this->getMockBuilder(Node::class)
             ->disableOriginalConstructor()
             ->setMethods(['isMatch'])
             ->getMock();
-        $node->expects($this->once())->method('isMatch')->willReturn(false);
+        $node->expects($this->once())->method('isMatch')->willReturn(true);
 
         $this->sut->addRule(new Rule([], null, []));
 
