@@ -42,39 +42,60 @@ class EnvReader
     }
 
     /**
-     * @param string      $envName
+     * @param string      $name
      * @param string      $expected
      * @param string|null $default
      *
      * @return bool
      */
-    public function is(string $envName, string $expected, $default = null): bool
+    public function is(string $name, string $expected, ?string $default = null): bool
     {
-        return $this->get($envName, $default) === $expected;
+        return $this->get($name, $default) === $expected;
     }
 
     /**
-     * @param string      $envName
+     * @param string      $name
      * @param string|null $default
      *
      * @return string|null
      */
-    public function get(string $envName, $default = null): ?string
+    public function get(string $name, ?string $default = null): ?string
     {
-        return Environment::getVar($envName, $default);
+        $value = Environment::getVar($name, $default);
+        if (null === $value || false === $value) {
+            return null;
+        }
+
+        return (string)$value;
     }
 
     /**
-     * @deprecated This method should probably only be used in tests. No removal is planned.
-     *
-     * @param string      $envName
+     * @param string      $name
      * @param string|null $value
      *
      * @return $this
+     * @deprecated Don't use this method without understanding consequences! No removal is planned.
      */
-    public function set(string $envName, ?string $value): EnvReader
+    public function set(string $name, ?string $value): EnvReader
     {
-        Environment::setVar($envName, $value);
+        putenv("$name=$value");
+        $_ENV[$name]    = $value;
+        $_SERVER[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return $this
+     * @deprecated Don't use this method without understanding consequences! No removal is planned.
+     */
+    public function clear(string $name): EnvReader
+    {
+        putenv("$name");
+        unset($_ENV[$name]);
+        unset($_SERVER[$name]);
 
         return $this;
     }
