@@ -26,7 +26,7 @@ interface IResourcable
     public function setRole(string $role): IResourcable;
 
     /**
-     * @return string|null
+     * @return string
      */
     public function getRole(): string;
 
