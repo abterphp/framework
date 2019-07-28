@@ -218,7 +218,7 @@ class UploaderTest extends TestCase
         $this->assertNull($actualResult);
     }
 
-    public function testGetSizeReturnsFalseIfFileSystemThrowsException()
+    public function testGetSizeReturnsNullIfFileSystemThrowsException()
     {
         $path = 'example.foo';
 
@@ -226,6 +226,18 @@ class UploaderTest extends TestCase
 
         $this->filesystemMock->expects($this->any())->method('has')->willReturn(true);
         $this->filesystemMock->expects($this->once())->method('getSize')->willThrowException($exception);
+
+        $actualResult = $this->sut->getSize($path);
+
+        $this->assertNull($actualResult);
+    }
+
+    public function testGetSizeReturnsNullIfSizeIsNotAvailable()
+    {
+        $path = 'example.foo';
+
+        $this->filesystemMock->expects($this->any())->method('has')->willReturn(true);
+        $this->filesystemMock->expects($this->once())->method('getSize')->willReturn(false);
 
         $actualResult = $this->sut->getSize($path);
 

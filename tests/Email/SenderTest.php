@@ -48,18 +48,26 @@ class SenderTest extends TestCase
             ->disableOriginalConstructor()
             ->setMethods(['send'])
             ->getMock();
-        $this->mailerMock->expects($this->once())->method('send')->willReturn(count($this->recipients));
 
         $this->sut = new Sender($this->mailerMock, $this->messageFactory);
     }
 
     public function testSend()
     {
+        $this->mailerMock->expects($this->once())->method('send')->willReturn(count($this->recipients));
+
         $senders = ['sender@example.com'];
         $replyTo = ['no-reply@example.com'];
         $subject = 'foo';
         $body    = 'bar';
 
         $this->sut->send($subject, $body, $this->recipients, $senders, $replyTo);
+    }
+
+    public function testGetFailedRecipientsIsEmptyByDefault()
+    {
+        $recipients = $this->sut->getFailedRecipients();
+
+        $this->assertSame([], $recipients);
     }
 }
