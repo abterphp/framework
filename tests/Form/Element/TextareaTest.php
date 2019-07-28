@@ -165,4 +165,17 @@ class TextareaTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals($expectedResult, $actualResult);
     }
+
+    public function testGetNameReturnEmptyStringIfAttributeIsNull()
+    {
+        $expectedResult = '';
+
+        $sut = new Textarea('id', $expectedResult);
+
+        $sut->setAttribute(Html5::ATTR_NAME, null);
+
+        $actualResult = $sut->getName();
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
 }

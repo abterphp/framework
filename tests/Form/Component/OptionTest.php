@@ -90,6 +90,19 @@ class OptionTest extends \PHPUnit\Framework\TestCase
 
         $sut->unsetAttribute(Html5::ATTR_VALUE);
 
-        $this->assertSame('', $sut->getValue());
+        $actualResult = $sut->getValue();
+
+        $this->assertSame('', $actualResult);
+    }
+
+    public function testGetValueReturnsEmptyStringIfValueIsNull()
+    {
+        $sut = new Option('foo', 'Foo');
+
+        $sut->setAttribute(Html5::ATTR_VALUE, null);
+
+        $actualResult = $sut->getValue();
+
+        $this->assertSame('', $actualResult);
     }
 }

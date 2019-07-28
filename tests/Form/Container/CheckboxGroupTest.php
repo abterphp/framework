@@ -8,6 +8,7 @@ use AbterPhp\Framework\Form\Element\Input;
 use AbterPhp\Framework\Form\Extra\Help;
 use AbterPhp\Framework\Form\Label\Label;
 use AbterPhp\Framework\Form\Label\ToggleLabelTest;
+use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\I18n\MockTranslatorFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -98,5 +99,26 @@ class CheckboxGroupTest extends \PHPUnit\Framework\TestCase
         $checkboxGroup->setTranslator($translatorMock);
 
         return $checkboxGroup;
+    }
+
+    public function testGetCheckboxSpan()
+    {
+        /** @var Input|MockObject $input */
+        $input = $this->getMockBuilder(Input::class)
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
+
+        /** @var Label|MockObject $label */
+        $label = $this->getMockBuilder(Label::class)
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
+
+        $sut = new CheckboxGroup($input, $label);
+
+        $actualResult = $sut->getCheckboxSpan();
+
+        $this->assertInstanceOf(Component::class, $actualResult);
     }
 }

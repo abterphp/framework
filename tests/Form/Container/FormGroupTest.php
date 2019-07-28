@@ -9,6 +9,7 @@ use AbterPhp\Framework\Form\Element\IElement;
 use AbterPhp\Framework\Form\Element\Input;
 use AbterPhp\Framework\Form\Extra\Help;
 use AbterPhp\Framework\Form\Label\Label;
+use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\I18n\MockTranslatorFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -160,5 +161,74 @@ class FormGroupTest extends \PHPUnit\Framework\TestCase
         $actualResult = (string)$sut;
 
         $this->assertContains($expectedResult, $actualResult);
+    }
+
+    public function testGetInput()
+    {
+        /** @var Input|MockObject $input */
+        $input = $this->getMockBuilder(Input::class)
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
+
+        /** @var Label|MockObject $label */
+        $label = $this->getMockBuilder(Label::class)
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
+
+        $sut = new FormGroup($input, $label);
+
+        $actualResult = $sut->getInput();
+
+        $this->assertSame($input, $actualResult);
+    }
+
+    public function testGetLabel()
+    {
+        /** @var Input|MockObject $input */
+        $input = $this->getMockBuilder(Input::class)
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
+
+        /** @var Label|MockObject $label */
+        $label = $this->getMockBuilder(Label::class)
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
+
+        $sut = new FormGroup($input, $label);
+
+        $actualResult = $sut->getLabel();
+
+        $this->assertSame($label, $actualResult);
+    }
+
+    public function testGetHelp()
+    {
+        /** @var Input|MockObject $input */
+        $input = $this->getMockBuilder(Input::class)
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
+
+        /** @var Label|MockObject $label */
+        $label = $this->getMockBuilder(Label::class)
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
+
+        /** @var INode|MockObject $help */
+        $help = $this->getMockBuilder(INode::class)
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
+
+        $sut = new FormGroup($input, $label, $help);
+
+        $actualResult = $sut->getHelp();
+
+        $this->assertSame($help, $actualResult);
     }
 }
