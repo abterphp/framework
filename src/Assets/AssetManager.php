@@ -6,6 +6,7 @@ namespace AbterPhp\Framework\Assets;
 
 use AbterPhp\Framework\Assets\CacheManager\ICacheManager;
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
+use AbterPhp\Framework\Filesystem\IFileFinder;
 use League\Flysystem\FileNotFoundException;
 use MatthiasMullie\Minify\CSS as CssMinifier;
 use MatthiasMullie\Minify\JS as JsMinifier;

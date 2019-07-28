@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AbterPhp\Framework\Assets;
+namespace AbterPhp\Framework\Filesystem;
 
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;

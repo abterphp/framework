@@ -6,6 +6,7 @@ namespace AbterPhp\Framework\Assets;
 
 use AbterPhp\Framework\Assets\CacheManager\Flysystem as CacheManager;
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
+use AbterPhp\Framework\Filesystem\FileFinder;
 use MatthiasMullie\Minify\CSS as CssMinifier;
 use MatthiasMullie\Minify\JS as JsMinifier;
 use PHPUnit\Framework\MockObject\MockObject;

@@ -4,23 +4,20 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Databases\Migrations;
 
-use AbterPhp\Framework\Databases\QueryFileLoader;
+use AbterPhp\Framework\Filesystem\FileFinder;
 use DateTime;
 use Opulence\Databases\IConnection;
 use Opulence\Databases\Migrations\Migration;
 
-abstract class RawMigration extends Migration
+class BaseMigration extends Migration
 {
-    const FILENAME = '';
+    const FILENAME = 'foo-bar';
 
     const UP   = 'up';
     const DOWN = 'down';
 
-    /** @var string */
-    protected $migrationsPath;
-
-    /** @var string */
-    protected $driver;
+    /** @var FileFinder */
+    protected $fileFinder;
 
     /**
      * Init constructor.
@@ -29,12 +26,11 @@ abstract class RawMigration extends Migration
      * @param string      $migrationsPath
      * @param string      $driver
      */
-    public function __construct(IConnection $connection, string $migrationsPath, string $driver)
+    public function __construct(IConnection $connection, FileFinder $fileFinder)
     {
         parent::__construct($connection);
 
-        $this->migrationsPath = $migrationsPath;
-        $this->driver = $driver;
+        $this->fileFinder = $fileFinder;
     }
 
     /**
@@ -42,7 +38,10 @@ abstract class RawMigration extends Migration
      *
      * @return DateTime The date this migration was created
      */
-    abstract public static function getCreationDate(): DateTime;
+    public static function getCreationDate(): DateTime
+    {
+        return new DateTime();
+    }
 
     /**
      * Executes the query that rolls back the migration
@@ -72,8 +71,6 @@ abstract class RawMigration extends Migration
      */
     protected function load(string $filename, string $direction): string
     {
-        $fullPath = sprintf('%s/%s/%s/%s', $this->migrationsPath, $this->driver, $direction, $filename);
-
-        return (string)file_get_contents($fullPath);
+        return $this->fileFinder->read(sprintf('%s/%s', $direction, $filename));
     }
 }
