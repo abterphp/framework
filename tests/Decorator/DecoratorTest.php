@@ -7,6 +7,7 @@ namespace AbterPhp\Framework\Decorator;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\IComponent;
+use AbterPhp\Framework\Html\Node;
 use PHPUnit\Framework\TestCase;
 
 class DecoratorTest extends TestCase
@@ -129,5 +130,18 @@ class DecoratorTest extends TestCase
         $this->assertContains($defaultClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
         $this->assertContains($mapClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
         $this->assertContains($callbackClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
+    }
+
+    public function testDecorateNonTagNodeWorks()
+    {
+        $node = $this->getMockBuilder(Node::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['isMatch'])
+            ->getMock();
+        $node->expects($this->once())->method('isMatch')->willReturn(false);
+
+        $this->sut->addRule(new Rule([], null, []));
+
+        $this->sut->decorate([$node]);
     }
 }
