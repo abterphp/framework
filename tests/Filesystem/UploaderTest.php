@@ -1,8 +1,7 @@
 <?php
 
-namespace AbterPhp\Framework\Filesystem\Uploader;
+namespace AbterPhp\Framework\Filesystem;
 
-use AbterPhp\Framework\Filesystem\Uploader;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
 use Opulence\Http\Requests\UploadedFile;
@@ -154,6 +153,18 @@ class UploaderTest extends TestCase
         $actualResult = $this->sut->getContent($path);
 
         $this->assertEquals($content, $actualResult);
+    }
+
+    public function testGetContentReturnsNullIfReadingFails()
+    {
+        $path    = 'example.foo';
+
+        $this->filesystemMock->expects($this->any())->method('has')->willReturn(true);
+        $this->filesystemMock->expects($this->once())->method('read')->willReturn(false);
+
+        $actualResult = $this->sut->getContent($path);
+
+        $this->assertNull($actualResult);
     }
 
     public function testGetStreamReturnsFalselIfPathDoesNotExist()

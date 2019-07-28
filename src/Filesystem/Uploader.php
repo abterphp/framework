@@ -144,10 +144,11 @@ class Uploader
             if (false === $content) {
                 return null;
             }
-            return (string)$content;
         } catch (FileNotFoundException $e) {
             return null;
         }
+
+        return (string)$content;
     }
 
     /**
