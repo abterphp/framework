@@ -59,6 +59,69 @@ class TagTest extends NodeTestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
+    public function testUnsetAttributeWorksIfAttributeIsNotSet()
+    {
+        $key   = 'foo';
+        $value = 'bar';
+
+        $sut = $this->createNode();
+
+        $sut->setAttribute($key, $value);
+
+        $sut->unsetAttribute($key);
+
+        $actualResult = $sut->getAttribute($key);
+
+        $this->assertNull($actualResult);
+    }
+
+    public function testUnsetAttributeValueWorksIfAttributeIsNotSet()
+    {
+        $key   = 'foo';
+        $value = 'bar';
+
+        $sut = $this->createNode();
+
+        $sut->unsetAttributeValue($key, $value);
+
+        $actualResult = $sut->getAttribute($key);
+
+        $this->assertNull($actualResult);
+    }
+
+    public function testUnsetAttributeValueWorksIfAttributeIsSet()
+    {
+        $key   = 'foo';
+        $value = 'bar';
+
+        $sut = $this->createNode();
+
+        $sut->setAttribute($key, $value);
+
+        $sut->unsetAttributeValue($key, $value);
+
+        $actualResult = $sut->getAttribute($key);
+
+        $this->assertNull($actualResult);
+    }
+
+    public function testUnsetAttributeValueWorksIfAttributeIsSetButValueIsNot()
+    {
+        $key   = 'foo';
+        $value1 = 'bar';
+        $value2 = 'baz';
+
+        $sut = $this->createNode();
+
+        $sut->setAttribute($key, $value1);
+
+        $sut->unsetAttributeValue($key, $value2);
+
+        $actualResult = $sut->getAttribute($key);
+
+        $this->assertSame($value1, $actualResult);
+    }
+
     /**
      * @param INode[]|INode|string|null $content
      *
