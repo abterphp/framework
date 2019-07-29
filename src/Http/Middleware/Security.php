@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Http\Middleware;
 
 use AbterPhp\Framework\Constant\Env;
-use AbterPhp\Framework\Security\SecurityException;
+use AbterPhp\Framework\Exception\Security as SecurityException;
 use Closure;
 use Opulence\Cache\ICacheBridge;
 use Opulence\Environments\Environment;

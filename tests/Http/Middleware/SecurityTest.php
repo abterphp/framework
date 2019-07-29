@@ -148,56 +148,136 @@ class SecurityTest extends TestCase
     public function handleThrowsSecurityExceptionIfNeededProvider(): array
     {
         return [
-            'test-password'          => [
+            'test-password'                    => [
                 [
-                    Env::DB_PASSWORD              => Security::TEST_DB_PASSWORD,
-                    Env::ENCRYPTION_KEY           => 'bcd',
-                    Env::CRYPTO_FRONTEND_SALT     => 'cde',
-                    Env::CRYPTO_ENCRYPTION_PEPPER => 'def',
+                    Env::DB_PASSWORD                 => Security::TEST_DB_PASSWORD,
+                    Env::ENCRYPTION_KEY              => 'bcd',
+                    Env::CRYPTO_FRONTEND_SALT        => 'cde',
+                    Env::CRYPTO_ENCRYPTION_PEPPER    => 'def',
+                    Env::OAUTH2_PRIVATE_KEY_PATH     => 'efg',
+                    Env::OAUTH2_PRIVATE_KEY_PASSWORD => 'fgh',
+                    Env::OAUTH2_PUBLIC_KEY_PATH      => 'ghi',
+                    Env::OAUTH2_ENCRYPTION_KEY       => 'hij',
                 ],
                 [
                     'display_errors' => '',
                 ],
             ],
-            'test-encryption-key'    => [
+            'test-encryption-key'              => [
                 [
-                    Env::DB_PASSWORD              => 'abc',
-                    Env::ENCRYPTION_KEY           => Security::TEST_ENCRYPTION_KEY,
-                    Env::CRYPTO_FRONTEND_SALT     => 'cde',
-                    Env::CRYPTO_ENCRYPTION_PEPPER => 'def',
+                    Env::DB_PASSWORD                 => 'abc',
+                    Env::ENCRYPTION_KEY              => Security::TEST_ENCRYPTION_KEY,
+                    Env::CRYPTO_FRONTEND_SALT        => 'cde',
+                    Env::CRYPTO_ENCRYPTION_PEPPER    => 'def',
+                    Env::OAUTH2_PRIVATE_KEY_PATH     => 'efg',
+                    Env::OAUTH2_PRIVATE_KEY_PASSWORD => 'fgh',
+                    Env::OAUTH2_PUBLIC_KEY_PATH      => 'ghi',
+                    Env::OAUTH2_ENCRYPTION_KEY       => 'hij',
                 ],
                 [
                     'display_errors' => '',
                 ],
             ],
-            'test-frontend-salt'     => [
+            'test-frontend-salt'               => [
                 [
-                    Env::DB_PASSWORD              => 'abc',
-                    Env::ENCRYPTION_KEY           => 'bcd',
-                    Env::CRYPTO_FRONTEND_SALT     => Security::TEST_CRYPTO_FRONTEND_SALT,
-                    Env::CRYPTO_ENCRYPTION_PEPPER => 'def',
+                    Env::DB_PASSWORD                 => 'abc',
+                    Env::ENCRYPTION_KEY              => 'bcd',
+                    Env::CRYPTO_FRONTEND_SALT        => Security::TEST_CRYPTO_FRONTEND_SALT,
+                    Env::CRYPTO_ENCRYPTION_PEPPER    => 'def',
+                    Env::OAUTH2_PRIVATE_KEY_PATH     => 'efg',
+                    Env::OAUTH2_PRIVATE_KEY_PASSWORD => 'fgh',
+                    Env::OAUTH2_PUBLIC_KEY_PATH      => 'ghi',
+                    Env::OAUTH2_ENCRYPTION_KEY       => 'hij',
                 ],
                 [
                     'display_errors' => '',
                 ],
             ],
-            'test-encryption-pepper' => [
+            'test-encryption-pepper'           => [
                 [
-                    Env::DB_PASSWORD              => 'abc',
-                    Env::ENCRYPTION_KEY           => 'bcd',
-                    Env::CRYPTO_FRONTEND_SALT     => 'cde',
-                    Env::CRYPTO_ENCRYPTION_PEPPER => Security::TEST_CRYPTO_ENCRYPTION_PEPPER,
+                    Env::DB_PASSWORD                 => 'abc',
+                    Env::ENCRYPTION_KEY              => 'bcd',
+                    Env::CRYPTO_FRONTEND_SALT        => 'cde',
+                    Env::CRYPTO_ENCRYPTION_PEPPER    => Security::TEST_CRYPTO_ENCRYPTION_PEPPER,
+                    Env::OAUTH2_PRIVATE_KEY_PATH     => 'efg',
+                    Env::OAUTH2_PRIVATE_KEY_PASSWORD => 'fgh',
+                    Env::OAUTH2_PUBLIC_KEY_PATH      => 'ghi',
+                    Env::OAUTH2_ENCRYPTION_KEY       => 'hij',
                 ],
                 [
                     'display_errors' => '',
                 ],
             ],
-            'display_errors-on' => [
+            'test-oauth2-private-key-path'     => [
                 [
-                    Env::DB_PASSWORD              => 'abc',
-                    Env::ENCRYPTION_KEY           => 'bcd',
-                    Env::CRYPTO_FRONTEND_SALT     => 'cde',
-                    Env::CRYPTO_ENCRYPTION_PEPPER => 'def',
+                    Env::DB_PASSWORD                 => 'abc',
+                    Env::ENCRYPTION_KEY              => 'bcd',
+                    Env::CRYPTO_FRONTEND_SALT        => 'cde',
+                    Env::CRYPTO_ENCRYPTION_PEPPER    => 'def',
+                    Env::OAUTH2_PRIVATE_KEY_PATH     => Security::TEST_OAUTH2_PRIVATE_KEY_PATH,
+                    Env::OAUTH2_PRIVATE_KEY_PASSWORD => 'fgh',
+                    Env::OAUTH2_PUBLIC_KEY_PATH      => 'ghi',
+                    Env::OAUTH2_ENCRYPTION_KEY       => 'hij',
+                ],
+                [
+                    'display_errors' => '',
+                ],
+            ],
+            'test-oauth2-private-key-password' => [
+                [
+                    Env::DB_PASSWORD                 => 'abc',
+                    Env::ENCRYPTION_KEY              => 'bcd',
+                    Env::CRYPTO_FRONTEND_SALT        => 'cde',
+                    Env::CRYPTO_ENCRYPTION_PEPPER    => 'def',
+                    Env::OAUTH2_PRIVATE_KEY_PATH     => 'efg',
+                    Env::OAUTH2_PRIVATE_KEY_PASSWORD => Security::TEST_OAUTH2_PRIVATE_KEY_PASSWORD,
+                    Env::OAUTH2_PUBLIC_KEY_PATH      => 'ghi',
+                    Env::OAUTH2_ENCRYPTION_KEY       => 'hij',
+                ],
+                [
+                    'display_errors' => '',
+                ],
+            ],
+            'test-oauth2-public-key-path'      => [
+                [
+                    Env::DB_PASSWORD                 => 'abc',
+                    Env::ENCRYPTION_KEY              => 'bcd',
+                    Env::CRYPTO_FRONTEND_SALT        => 'cde',
+                    Env::CRYPTO_ENCRYPTION_PEPPER    => 'def',
+                    Env::OAUTH2_PRIVATE_KEY_PATH     => 'efg',
+                    Env::OAUTH2_PRIVATE_KEY_PASSWORD => 'fgh',
+                    Env::OAUTH2_PUBLIC_KEY_PATH      => Security::TEST_OAUTH2_PUBLIC_KEY_PATH,
+                    Env::OAUTH2_ENCRYPTION_KEY       => 'hij',
+                ],
+                [
+                    'display_errors' => '',
+                ],
+            ],
+            'test-oauth2-encryption-key'       => [
+                [
+                    Env::DB_PASSWORD                 => 'abc',
+                    Env::ENCRYPTION_KEY              => 'bcd',
+                    Env::CRYPTO_FRONTEND_SALT        => 'cde',
+                    Env::CRYPTO_ENCRYPTION_PEPPER    => 'def',
+                    Env::OAUTH2_PRIVATE_KEY_PATH     => 'efg',
+                    Env::OAUTH2_PRIVATE_KEY_PASSWORD => 'fgh',
+                    Env::OAUTH2_PUBLIC_KEY_PATH      => 'ghi',
+                    Env::OAUTH2_ENCRYPTION_KEY       => Security::TEST_OAUTH2_ENCRYPTION_KEY,
+                ],
+                [
+                    'display_errors' => '',
+                ],
+            ],
+            'display_errors-on'                => [
+                [
+                    Env::DB_PASSWORD                 => 'abc',
+                    Env::ENCRYPTION_KEY              => 'bcd',
+                    Env::CRYPTO_FRONTEND_SALT        => 'cde',
+                    Env::CRYPTO_ENCRYPTION_PEPPER    => 'def',
+                    Env::OAUTH2_PRIVATE_KEY_PATH     => 'efg',
+                    Env::OAUTH2_PRIVATE_KEY_PASSWORD => 'fgh',
+                    Env::OAUTH2_PUBLIC_KEY_PATH      => 'ghi',
+                    Env::OAUTH2_ENCRYPTION_KEY       => 'hij',
                 ],
                 [
                     'display_errors' => '1',
@@ -209,7 +289,7 @@ class SecurityTest extends TestCase
     /**
      * @dataProvider handleThrowsSecurityExceptionIfNeededProvider
      *
-     * @expectedException \AbterPhp\Framework\Security\SecurityException
+     * @expectedException \AbterPhp\Framework\Exception\Security
      *
      * @param array $environmentData
      * @param array $settingsData

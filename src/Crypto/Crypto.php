@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Crypto;
 
-use AbterPhp\Framework\Security\SecurityException;
+use AbterPhp\Framework\Exception\Security as SecurityException;
 use Opulence\Cryptography\Encryption\IEncrypter;
 use Opulence\Cryptography\Hashing\IHasher;
 

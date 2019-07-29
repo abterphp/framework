@@ -91,7 +91,7 @@ class CryptoTest extends TestCase
     /**
      * @dataProvider hashCryptThrowsExceptionIfSecretIsInvalidProvider
      *
-     * @expectedException \AbterPhp\Framework\Security\SecurityException
+     * @expectedException \AbterPhp\Framework\Exception\Security
      *
      * @param string $secret
      */
@@ -104,7 +104,7 @@ class CryptoTest extends TestCase
     }
 
     /**
-     * @expectedException \AbterPhp\Framework\Security\SecurityException
+     * @expectedException \AbterPhp\Framework\Exception\Security
      */
     public function testHashCryptThrowsSecurityExceptionIfHasherThrowsException()
     {
@@ -117,7 +117,7 @@ class CryptoTest extends TestCase
     }
 
     /**
-     * @expectedException \AbterPhp\Framework\Security\SecurityException
+     * @expectedException \AbterPhp\Framework\Exception\Security
      */
     public function testHashCryptThrowsSecurityExceptionIfEncrypterThrowsException()
     {
