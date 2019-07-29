@@ -54,4 +54,11 @@ class UuidTest extends TestCase
 
         $this->assertEquals($expectedResult, $actualResult);
     }
+
+    public function testGetSlug()
+    {
+        $actualResult = $this->sut->getSlug();
+
+        $this->assertSame('uuid', $actualResult);
+    }
 }

@@ -76,4 +76,11 @@ class AtLeastOneTest extends TestCase
     {
         $this->sut->setArgs([123]);
     }
+
+    public function testGetSlug()
+    {
+        $actualResult = $this->sut->getSlug();
+
+        $this->assertSame('atLeastOne', $actualResult);
+    }
 }
