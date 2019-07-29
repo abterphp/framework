@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Http\Middleware;
 
-use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Html\Helper\ArrayHelper;
 use AbterPhp\Framework\I18n\ITranslator;
 use Closure;
@@ -25,32 +24,13 @@ class EnvironmentWarning implements IMiddleware
      * EnvironmentWarning constructor.
      *
      * @param ITranslator $translator
+     * @param string      $environment
      */
-    public function __construct(ITranslator $translator)
+    public function __construct(ITranslator $translator, string $environment)
     {
-        $this->translator = $translator;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEnvironment(): string
-    {
-        if (null === $this->environment) {
-            $this->environment = getenv(Env::ENV_NAME);
-        }
-
-        return $this->environment;
-    }
-
-    /**
-     * @param string $environment
-     */
-    public function setEnvironment(string $environment): void
-    {
+        $this->translator  = $translator;
         $this->environment = $environment;
     }
-
 
     /**
      * @param Request $request
@@ -63,11 +43,11 @@ class EnvironmentWarning implements IMiddleware
         /** @var Response $response */
         $response = $next($request);
 
-        if ($this->getEnvironment() == Environment::PRODUCTION) {
+        if ($this->environment == Environment::PRODUCTION) {
             return $response;
         }
 
-        $warning = $this->getWarningHtml($this->getEnvironment());
+        $warning = $this->getWarningHtml($this->environment);
 
         $response->setContent(preg_replace('/<body([^>]*)>/', '<body${1}>' . $warning, $response->getContent(), 1));
 

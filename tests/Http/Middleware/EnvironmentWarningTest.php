@@ -14,22 +14,17 @@ use PHPUnit\Framework\TestCase;
 
 class EnvironmentWarningTest extends TestCase
 {
-    /** @var EnvironmentWarning - System Under Test */
-    protected $sut;
-
     /** @var ITranslator|MockObject */
     protected $translatorMock;
 
     public function setUp()
     {
         $this->translatorMock = MockTranslatorFactory::createSimpleTranslator($this, []);
-
-        $this->sut = new EnvironmentWarning($this->translatorMock);
     }
 
     public function testHandleInProduction()
     {
-        $this->sut->setEnvironment(Environment::PRODUCTION);
+        $sut = new EnvironmentWarning($this->translatorMock, Environment::PRODUCTION);
 
         /** @var Request|MockObject $requestMock */
         $requestMock = $this->getMockBuilder(Request::class)
@@ -49,14 +44,14 @@ class EnvironmentWarningTest extends TestCase
 
         $responseMock->expects($this->never())->method('setContent');
 
-        $actualResult = $this->sut->handle($requestMock, $next);
+        $actualResult = $sut->handle($requestMock, $next);
 
         $this->assertSame($responseMock, $actualResult);
     }
 
     public function testHandleInTesting()
     {
-        $this->sut->setEnvironment(Environment::TESTING);
+        $sut = new EnvironmentWarning($this->translatorMock, Environment::TESTING);
 
         /** @var Request|MockObject $requestMock */
         $requestMock = $this->getMockBuilder(Request::class)
@@ -76,7 +71,7 @@ class EnvironmentWarningTest extends TestCase
 
         $responseMock->expects($this->atLeastOnce())->method('setContent');
 
-        $actualResult = $this->sut->handle($requestMock, $next);
+        $actualResult = $sut->handle($requestMock, $next);
 
         $this->assertSame($responseMock, $actualResult);
     }

@@ -39,6 +39,8 @@ return [
         Bootstrappers\Authorization\EnforcerBootstrapper::class,
         Bootstrappers\Dashboard\DashboardBootstrapper::class,
         Bootstrappers\Grid\GridBootstrapper::class,
+        Bootstrappers\Http\Middleware\EnvironmentWarningBootstrapper::class,
+        Bootstrappers\Http\Middleware\SecurityBootstrapper::class,
         Bootstrappers\Http\SessionBootstrapper::class,
         Bootstrappers\Http\Views\BuildersBootstrapper::class,
         Bootstrappers\I18n\I18nBootstrapper::class,

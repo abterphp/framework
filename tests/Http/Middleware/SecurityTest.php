@@ -14,9 +14,6 @@ use PHPUnit\Framework\TestCase;
 
 class SecurityTest extends TestCase
 {
-    /** @var Security - System Under Test */
-    protected $sut;
-
     /** @var ArrayBridge|MockObject */
     protected $cacheBridgeMock;
 
@@ -26,13 +23,11 @@ class SecurityTest extends TestCase
             ->disableOriginalConstructor()
             ->setMethods(['get', 'set'])
             ->getMock();
-
-        $this->sut = new Security($this->cacheBridgeMock);
     }
 
     public function testHandleSkipsAllIfEnvironmentIsNotProduction()
     {
-        $this->sut->setEnvironment(Environment::TESTING);
+        $sut = new Security($this->cacheBridgeMock, Environment::TESTING);
 
         /** @var Request|MockObject $requestMock */
         $requestMock = $this->createMock(Request::class);
@@ -49,14 +44,14 @@ class SecurityTest extends TestCase
 
         $this->cacheBridgeMock->expects($this->never())->method('get');
 
-        $actualResult = $this->sut->handle($requestMock, $next);
+        $actualResult = $sut->handle($requestMock, $next);
 
         $this->assertSame($responseMock, $actualResult);
     }
 
     public function testHandleSkipsAllIfCacheIsSet()
     {
-        $this->sut->setEnvironment(Environment::PRODUCTION);
+        $sut = new Security($this->cacheBridgeMock, Environment::PRODUCTION);
 
         /** @var Request|MockObject $requestMock */
         $requestMock = $this->createMock(Request::class);
@@ -73,14 +68,14 @@ class SecurityTest extends TestCase
 
         $this->cacheBridgeMock->expects($this->once())->method('get')->willReturn(true);
 
-        $actualResult = $this->sut->handle($requestMock, $next);
+        $actualResult = $sut->handle($requestMock, $next);
 
         $this->assertSame($responseMock, $actualResult);
     }
 
     public function testHandleSetsCacheIfAllGood()
     {
-        $this->sut->setEnvironment(Environment::PRODUCTION);
+        $sut = new Security($this->cacheBridgeMock, Environment::PRODUCTION);
 
         /** @var Request|MockObject $requestMock */
         $requestMock = $this->createMock(Request::class);
@@ -95,7 +90,7 @@ class SecurityTest extends TestCase
             return $responseMock;
         };
 
-        $this->sut->setEnvironmentData(
+        $sut->setVar(
             [
                 Env::DB_PASSWORD              => 'abc',
                 Env::ENCRYPTION_KEY           => 'bcd',
@@ -104,19 +99,19 @@ class SecurityTest extends TestCase
             ]
         );
 
-        $this->sut->setSettings(['display_errors' => '']);
+        $sut->setSettings(['display_errors' => '']);
 
         $this->cacheBridgeMock->expects($this->any())->method('get')->willReturn(false);
         $this->cacheBridgeMock->expects($this->once())->method('set')->willReturn(true);
 
-        $actualResult = $this->sut->handle($requestMock, $next);
+        $actualResult = $sut->handle($requestMock, $next);
 
         $this->assertSame($responseMock, $actualResult);
     }
 
     public function testHandleRunsNormalIfCacheGetThrowsException()
     {
-        $this->sut->setEnvironment(Environment::PRODUCTION);
+        $sut = new Security($this->cacheBridgeMock, Environment::PRODUCTION);
 
         /** @var Request|MockObject $requestMock */
         $requestMock = $this->createMock(Request::class);
@@ -131,7 +126,7 @@ class SecurityTest extends TestCase
             return $responseMock;
         };
 
-        $this->sut->setEnvironmentData(
+        $sut->setVar(
             [
                 Env::DB_PASSWORD              => 'abc',
                 Env::ENCRYPTION_KEY           => 'bcd',
@@ -140,12 +135,12 @@ class SecurityTest extends TestCase
             ]
         );
 
-        $this->sut->setSettings(['display_errors' => '']);
+        $sut->setSettings(['display_errors' => '']);
 
         $this->cacheBridgeMock->expects($this->any())->method('get')->willThrowException(new \Exception());
         $this->cacheBridgeMock->expects($this->once())->method('set')->willReturn(true);
 
-        $actualResult = $this->sut->handle($requestMock, $next);
+        $actualResult = $sut->handle($requestMock, $next);
 
         $this->assertSame($responseMock, $actualResult);
     }
@@ -221,7 +216,7 @@ class SecurityTest extends TestCase
      */
     public function testHandleThrowsSecurityExceptionIfNeeded(array $environmentData, array $settingsData)
     {
-        $this->sut->setEnvironment(Environment::PRODUCTION);
+        $sut = new Security($this->cacheBridgeMock, Environment::PRODUCTION);
 
         /** @var Request|MockObject $requestMock */
         $requestMock = $this->createMock(Request::class);
@@ -236,13 +231,13 @@ class SecurityTest extends TestCase
             return $responseMock;
         };
 
-        $this->sut->setEnvironmentData($environmentData);
+        $sut->setVar($environmentData);
 
-        $this->sut->setSettings($settingsData);
+        $sut->setSettings($settingsData);
 
         $this->cacheBridgeMock->expects($this->any())->method('get')->willReturn(false);
 
-        $actualResult = $this->sut->handle($requestMock, $next);
+        $actualResult = $sut->handle($requestMock, $next);
 
         $this->assertSame($responseMock, $actualResult);
     }

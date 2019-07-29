@@ -42,29 +42,11 @@ class Security implements IMiddleware
      * Security constructor.
      *
      * @param ICacheBridge $cacheBridge
+     * @param string       $environment
      */
-    public function __construct(ICacheBridge $cacheBridge)
+    public function __construct(ICacheBridge $cacheBridge, string $environment)
     {
         $this->cacheBridge = $cacheBridge;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEnvironment(): string
-    {
-        if (null === $this->environment) {
-            $this->environment = getenv(Env::ENV_NAME);
-        }
-
-        return $this->environment;
-    }
-
-    /**
-     * @param string $environment
-     */
-    public function setEnvironment(string $environment): void
-    {
         $this->environment = $environment;
     }
 
@@ -73,10 +55,10 @@ class Security implements IMiddleware
      *
      * @return string
      */
-    public function getEnvironmentData(string $key): string
+    public function getVar(string $key): string
     {
         if (!isset($this->environmentData[$key])) {
-            return (string)getenv($key);
+            return (string)Environment::getVar($key);
         }
 
         return (string)$this->environmentData[$key];
@@ -87,7 +69,7 @@ class Security implements IMiddleware
      *
      * @return $this
      */
-    public function setEnvironmentData(array $environmentData): Security
+    public function setVar(array $environmentData): Security
     {
         $this->environmentData = $environmentData;
 
@@ -102,7 +84,7 @@ class Security implements IMiddleware
     public function getSetting(string $key): string
     {
         if (!isset($this->settings[$key])) {
-            return (string)getenv($key);
+            return (string)ini_get($key);
         }
 
         return (string)$this->settings[$key];
@@ -123,7 +105,7 @@ class Security implements IMiddleware
     // $next consists of the next middleware in the pipeline
     public function handle(Request $request, Closure $next): Response
     {
-        if ($this->getEnvironment() !== Environment::PRODUCTION) {
+        if ($this->environment !== Environment::PRODUCTION) {
             return $next($request);
         }
 
@@ -147,20 +129,36 @@ class Security implements IMiddleware
 
     private function checkSecrets()
     {
-        if ($this->getEnvironmentData(Env::DB_PASSWORD) === static::TEST_DB_PASSWORD) {
+        if ($this->getVar(Env::DB_PASSWORD) === static::TEST_DB_PASSWORD) {
             throw new SecurityException('Invalid DB_PASSWORD environment variable.');
         }
 
-        if ($this->getEnvironmentData(Env::ENCRYPTION_KEY) === static::TEST_ENCRYPTION_KEY) {
+        if ($this->getVar(Env::ENCRYPTION_KEY) === static::TEST_ENCRYPTION_KEY) {
             throw new SecurityException('Invalid ENCRYPTION_KEY environment variable.');
         }
 
-        if ($this->getEnvironmentData(Env::CRYPTO_FRONTEND_SALT) === static::TEST_CRYPTO_FRONTEND_SALT) {
+        if ($this->getVar(Env::CRYPTO_FRONTEND_SALT) === static::TEST_CRYPTO_FRONTEND_SALT) {
             throw new SecurityException('Invalid CRYPTO_FRONTEND_SALT environment variable.');
         }
 
-        if ($this->getEnvironmentData(Env::CRYPTO_ENCRYPTION_PEPPER) === static::TEST_CRYPTO_ENCRYPTION_PEPPER) {
+        if ($this->getVar(Env::CRYPTO_ENCRYPTION_PEPPER) === static::TEST_CRYPTO_ENCRYPTION_PEPPER) {
             throw new SecurityException('Invalid CRYPTO_ENCRYPTION_PEPPER environment variable.');
+        }
+
+        if ($this->getVar(Env::OAUTH2_PRIVATE_KEY_PATH) === static::TEST_OAUTH2_PRIVATE_KEY_PATH) {
+            throw new SecurityException('Invalid OAUTH2_PRIVATE_KEY_PATH environment variable.');
+        }
+
+        if ($this->getVar(Env::OAUTH2_PRIVATE_KEY_PASSWORD) === static::TEST_OAUTH2_PRIVATE_KEY_PASSWORD) {
+            throw new SecurityException('Invalid OAUTH2_PRIVATE_KEY_PASSWORD environment variable.');
+        }
+
+        if ($this->getVar(Env::OAUTH2_PUBLIC_KEY_PATH) === static::TEST_OAUTH2_PUBLIC_KEY_PATH) {
+            throw new SecurityException('Invalid OAUTH2_PUBLIC_KEY_PATH environment variable.');
+        }
+
+        if ($this->getVar(Env::OAUTH2_ENCRYPTION_KEY) === static::TEST_OAUTH2_ENCRYPTION_KEY) {
+            throw new SecurityException('Invalid OAUTH2_ENCRYPTION_KEY environment variable.');
         }
     }
 
