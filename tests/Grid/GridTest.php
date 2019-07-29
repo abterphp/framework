@@ -351,4 +351,20 @@ class GridTest extends \PHPUnit\Framework\TestCase
 
         $sut->setEntities([$entity]);
     }
+
+    public function testGetExtendedNodes()
+    {
+        /** @var Table|MockObject $tableStub */
+        $tableStub = $this->getMockBuilder(Table::class)
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock()
+        ;
+
+        $sut = new Grid($tableStub);
+
+        $actualResult = $sut->getExtendedNodes();
+
+        $this->assertSame([$tableStub], $actualResult);
+    }
 }

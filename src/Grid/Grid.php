@@ -181,7 +181,19 @@ class Grid extends Component implements IGrid, ITemplater
      */
     public function getExtendedNodes(): array
     {
-        return array_merge([$this->filters, $this->pagination, $this->table], $this->getNodes());
+        $extendedNodes = [];
+        if ($this->filters) {
+            $extendedNodes[] = $this->filters;
+        }
+        if ($this->pagination) {
+            $extendedNodes[] = $this->pagination;
+        }
+        if ($this->table) {
+            $extendedNodes[] = $this->table;
+        }
+        $extendedNodes = array_merge($extendedNodes, $this->getNodes());
+
+        return $extendedNodes;
     }
 
     /**

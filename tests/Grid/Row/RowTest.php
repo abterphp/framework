@@ -6,6 +6,7 @@ namespace AbterPhp\Framework\Grid\Row;
 
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Grid\Action\Action;
+use AbterPhp\Framework\Grid\Cell\Cell;
 use AbterPhp\Framework\Grid\Collection\Cells;
 use AbterPhp\Framework\Grid\Component\Actions;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -80,11 +81,37 @@ class RowTest extends \PHPUnit\Framework\TestCase
 
         $sut->setEntity($mockEntity);
 
-        $actualResult = (string)$sut;
+        $actualResult   = (string)$sut;
         $repeatedResult = (string)$sut;
 
         $this->assertContains('action-0', $actualResult);
         $this->assertContains('action-1', $actualResult);
         $this->assertContains($actualResult, $repeatedResult);
+    }
+
+    public function testGetNodes()
+    {
+        $cells   = new Cells(new Cell('foo', 'foo-group'));
+        $actions = new Actions();
+
+        $sut = new Row($cells, $actions);
+
+        $nodes = $sut->getNodes();
+
+        $this->assertCount(0, $nodes);
+    }
+
+    public function testGetExtendedNodes()
+    {
+        $cells   = new Cells(new Cell('foo', 'foo-group'));
+        $actions = new Actions();
+
+        $sut = new Row($cells, $actions);
+
+        $nodes = $sut->getExtendedNodes();
+
+        $this->assertCount(2, $nodes);
+        $this->assertSame($cells, $nodes[0]);
+        $this->assertInstanceOf(Cell::class, $nodes[1]);
     }
 }

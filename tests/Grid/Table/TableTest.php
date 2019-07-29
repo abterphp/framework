@@ -114,4 +114,11 @@ class TableTest extends TestCase
 
         $this->sut->setEntities($stubEntities);
     }
+
+    public function testGetExtendedNodes()
+    {
+        $actualResult = $this->sut->getExtendedNodes();
+
+        $this->assertSame([$this->header, $this->body], $actualResult);
+    }
 }

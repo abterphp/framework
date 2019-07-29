@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Pagination;
 
+use AbterPhp\Framework\Form\Element\Select;
 use PHPUnit\Framework\TestCase;
 
 class PaginationTest extends TestCase
@@ -101,5 +102,25 @@ class PaginationTest extends TestCase
         $sut = new Pagination($params, '', 5, 10, [10], [], []);
 
         $sut->setTotalCount(0);
+    }
+
+    public function testGetNodes()
+    {
+        $sut = new Pagination([], '', 5, 10, [10], [], []);
+
+        $actualResult = $sut->getNodes();
+
+        $this->assertSame([], $actualResult);
+    }
+
+    public function testGetExtendedNodes()
+    {
+        $sut = new Pagination([], '', 5, 10, [10], [], []);
+
+        $actualResult = $sut->getExtendedNodes();
+
+        $this->assertCount(2, $actualResult);
+        $this->assertInstanceOf(Numbers::class, $actualResult[0]);
+        $this->assertInstanceOf(Select::class, $actualResult[1]);
     }
 }

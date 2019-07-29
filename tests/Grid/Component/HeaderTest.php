@@ -238,4 +238,13 @@ class HeaderTest extends \PHPUnit\Framework\TestCase
 
         return $sut;
     }
+
+    public function testGetQueryParams()
+    {
+        $sut = $this->createHeader([], [], ['a' => 'A', 'b' => 'B'], ['c' => 'A', 'd' => 'B']);
+
+        $actualResult = $sut->getQueryParams();
+
+        $this->assertSame([], $actualResult);
+    }
 }

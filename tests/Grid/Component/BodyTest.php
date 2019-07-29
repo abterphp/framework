@@ -128,4 +128,42 @@ class BodyTest extends \PHPUnit\Framework\TestCase
 
         return $entity;
     }
+
+    public function testGetExtendedNodesWithoutActions()
+    {
+        $entities   = [];
+        $entities[] = $this->createEntity('foo', 1);
+        $entities[] = $this->createEntity('bar', 2);
+
+        $getters = [
+            'foo' => 'getFoo',
+            'bar' => [$entities[0], 'getBar'],
+        ];
+
+        $sut = new Body($getters, [], null);
+
+        $nodes = $sut->getExtendedNodes();
+
+        $this->assertSame([], $nodes);
+    }
+
+    public function testGetExtendedNodesWithActions()
+    {
+        $actions = new Actions();
+
+        $entities   = [];
+        $entities[] = $this->createEntity('foo', 1);
+        $entities[] = $this->createEntity('bar', 2);
+
+        $getters = [
+            'foo' => 'getFoo',
+            'bar' => [$entities[0], 'getBar'],
+        ];
+
+        $sut = new Body($getters, [], $actions);
+
+        $nodes = $sut->getExtendedNodes();
+
+        $this->assertSame([$actions], $nodes);
+    }
 }
