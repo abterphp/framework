@@ -50,7 +50,7 @@ class SortableTest extends ComponentTest
         ?string $tag,
         string $expectedResult
     ) {
-        $sut = $this->createElement($content, $group, $inputName, $fieldName, $attributes, $translations, $tag);
+        $sut = $this->createNode($content, $group, $inputName, $fieldName, $attributes, $translations, $tag);
 
         $actualResult1 = (string)$sut;
         $actualResult2 = (string)$sut;
@@ -244,6 +244,75 @@ class SortableTest extends ComponentTest
     }
 
     /**
+     * @return array
+     */
+    public function toStringReturnsRawContentByDefaultProvider(): array
+    {
+        return [
+            'string' => ['foo', '<th>foo <a></a></th>'],
+        ];
+    }
+
+    /**
+     * @dataProvider toStringReturnsRawContentByDefaultProvider
+     *
+     * @param mixed  $rawContent
+     * @param string $expectedResult
+     */
+    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult)
+    {
+        $sut = $this->createNode($rawContent, 'g', 'i', 'f', [], null, null);
+
+        $this->assertContains($expectedResult, (string)$sut);
+    }
+
+    /**
+     * @return array
+     */
+    public function toStringCanReturnTranslatedContentProvider(): array
+    {
+        $translations = ['foo' => 'bar'];
+
+        return [
+            'string' => ['foo', $translations, 'bar'],
+        ];
+    }
+
+    /**
+     * @dataProvider toStringCanReturnTranslatedContentProvider
+     *
+     * @param mixed  $rawContent
+     * @param string $expectedResult
+     */
+    public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
+    {
+        $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
+
+        $sut = $this->createNode($rawContent, 'g', 'i', 'f', [], null, null);
+
+        $sut->setTranslator($translatorMock);
+
+        $this->assertContains($expectedResult, (string)$sut);
+    }
+
+    /**
+     * @dataProvider isMatchProvider
+     *
+     * @param string|null $className
+     * @param string[]    $intents
+     * @param int|null    $expectedResult
+     */
+    public function testIsMatch(?string $className, array $intents, bool $expectedResult)
+    {
+        $sut = $this->createNode(null, 'g', 'i', 'f', [], null, null);
+        $sut->setIntent('foo', 'bar');
+
+        $actualResult = $sut->isMatch($className, ...$intents);
+
+        $this->assertSame($expectedResult, $actualResult);
+    }
+
+    /**
      * @param string      $content
      * @param string      $group
      * @param string      $inputName
@@ -253,7 +322,7 @@ class SortableTest extends ComponentTest
      *
      * @return Sortable
      */
-    protected function createElement(
+    private function createNode(
         $content,
         string $group,
         string $inputName,

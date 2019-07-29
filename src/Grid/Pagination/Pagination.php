@@ -52,9 +52,6 @@ class Pagination extends Tag implements IPagination, ITemplater
     protected $numberCount = 5;
 
     /** @var array */
-    protected $pageSizes = [10, 50, 200];
-
-    /** @var array */
     protected $attributes = [];
 
     /** @var Numbers */

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Html;
 
+use AbterPhp\Framework\I18n\MockTranslatorFactory;
+
 class CollectionTest extends NodeTestCase
 {
     /**
@@ -19,6 +21,19 @@ class CollectionTest extends NodeTestCase
     }
 
     /**
+     * @dataProvider toStringReturnsRawContentByDefaultProvider
+     *
+     * @param mixed  $rawContent
+     * @param string $expectedResult
+     */
+    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult)
+    {
+        $sut = $this->createNode($rawContent);
+
+        $this->assertContains($expectedResult, (string)$sut);
+    }
+
+    /**
      * @return array
      */
     public function toStringCanReturnTranslatedContentProvider(): array
@@ -30,6 +45,40 @@ class CollectionTest extends NodeTestCase
             'INode'   => [new Node('foo'), $translations, 'bar'],
             'INode[]' => [[new Node('foo')], $translations, 'bar'],
         ];
+    }
+
+    /**
+     * @dataProvider toStringCanReturnTranslatedContentProvider
+     *
+     * @param mixed $rawContent
+     * @param string $expectedResult
+     */
+    public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
+    {
+        $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
+
+        $sut = $this->createNode($rawContent);
+
+        $sut->setTranslator($translatorMock);
+
+        $this->assertContains($expectedResult, (string)$sut);
+    }
+
+    /**
+     * @dataProvider isMatchProvider
+     *
+     * @param string|null $className
+     * @param string[]    $intents
+     * @param int|null    $expectedResult
+     */
+    public function testIsMatch(?string $className, array $intents, bool $expectedResult)
+    {
+        $sut = $this->createNode();
+        $sut->setIntent('foo', 'bar');
+
+        $actualResult = $sut->isMatch($className, ...$intents);
+
+        $this->assertSame($expectedResult, $actualResult);
     }
 
     public function testCountWithoutOffset()
@@ -248,13 +297,15 @@ class CollectionTest extends NodeTestCase
 
         $sut->setContent('3');
 
-        $this->assertEquals($expectedNodes, $sut->getNodes());
+        $actualResult = $sut->getNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
     }
 
     public function testGetNodes()
     {
         $node1 = new Node('1');
-        $node2 = new Node('2');
+        $node2 = new Node(new Node('2'));
 
         $expectedNodes = [$node1, $node2, $node1, $node1, $node1];
 
@@ -267,7 +318,72 @@ class CollectionTest extends NodeTestCase
         $sut[3] = $node1;
         $sut[]  = $node1;
 
-        $this->assertEquals($expectedNodes, $sut->getNodes());
+        $actualResult = $sut->getNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
+    }
+
+    public function testGetExtendedNodes()
+    {
+        $node1 = new Node('1');
+        $node2 = new Node(new Node('2'));
+
+        $expectedNodes = [$node1, $node2, $node1, $node1, $node1];
+
+        $sut = $this->createNode();
+
+        $sut[]  = $node1;
+        $sut[]  = $node1;
+        $sut[1] = $node2;
+        $sut[2] = $node1;
+        $sut[3] = $node1;
+        $sut[]  = $node1;
+
+        $actualResult = $sut->getExtendedNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
+    }
+
+    public function testGetDescendantNodes()
+    {
+        $node1 = new Node('1');
+        $node2 = new Node(new Node('2'));
+
+        $expectedNodes = [$node1, $node2, $node1, $node1, $node1];
+
+        $sut = $this->createNode();
+
+        $sut[]  = $node1;
+        $sut[]  = $node1;
+        $sut[1] = $node2;
+        $sut[2] = $node1;
+        $sut[3] = $node1;
+        $sut[]  = $node1;
+
+        $actualResult = $sut->getDescendantNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
+    }
+
+    public function testGetExtendedDescendantNodes()
+    {
+        $node1 = new Node('1');
+        $node2 = new Node(new Node('2'));
+
+        $expectedNodes = [$node1, $node2, $node1, $node1, $node1];
+
+        $sut = $this->createNode();
+
+        $sut[]  = $node1;
+        $sut[]  = $node1;
+        $sut[1] = $node2;
+        $sut[2] = $node1;
+        $sut[3] = $node1;
+        $sut[]  = $node1;
+
+        $actualResult = $sut->getExtendedDescendantNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
     }
 
     public function testIterator()
@@ -644,7 +760,7 @@ class CollectionTest extends NodeTestCase
      *
      * @return Collection
      */
-    protected function createNode($content = null): INode
+    private function createNode($content = null): INode
     {
         return new Collection($content);
     }

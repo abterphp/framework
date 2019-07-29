@@ -43,6 +43,23 @@ class TagTest extends NodeTestCase
     }
 
     /**
+     * @dataProvider isMatchProvider
+     *
+     * @param string|null $className
+     * @param string[]    $intents
+     * @param int|null    $expectedResult
+     */
+    public function testIsMatch(?string $className, array $intents, bool $expectedResult)
+    {
+        $sut = $this->createNode();
+        $sut->setIntent('foo', 'bar');
+
+        $actualResult = $sut->isMatch($className, ...$intents);
+
+        $this->assertSame($expectedResult, $actualResult);
+    }
+
+    /**
      * @param INode[]|INode|string|null $content
      *
      * @return Tag

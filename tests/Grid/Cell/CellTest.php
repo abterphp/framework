@@ -8,10 +8,17 @@ use AbterPhp\Framework\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\Html\ComponentTest;
 use AbterPhp\Framework\Html\Helper\ArrayHelper;
 use AbterPhp\Framework\Html\INode;
+use AbterPhp\Framework\Html\Node;
 use AbterPhp\Framework\I18n\MockTranslatorFactory;
 
 class CellTest extends ComponentTest
 {
+    /** @var string */
+    protected $content = 'foo';
+
+    /** @var string */
+    protected $group = 'bar';
+
     /**
      * @return array
      */
@@ -56,6 +63,180 @@ class CellTest extends ComponentTest
         $this->assertSame($expectedResult, $actualResult2);
     }
 
+    public function testGetNodesDefault()
+    {
+        $defaultNode = new Node($this->content);
+
+        $expectedNodes = [$defaultNode];
+
+        $sut = $this->createNode();
+
+        $actualResult = $sut->getNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
+    }
+
+    public function testGetNodes()
+    {
+        $defaultNode = new Node($this->content);
+
+        $node1 = new Node('1');
+        $node2 = new Node(new Node('2'));
+
+        $expectedNodes = [$defaultNode, $node2, $node1, $node1, $node1];
+
+        $sut = $this->createNode();
+
+        $sut[]  = $node1;
+        $sut[]  = $node1;
+        $sut[1] = $node2;
+        $sut[2] = $node1;
+        $sut[3] = $node1;
+        $sut[]  = $node1;
+
+        $actualResult = $sut->getNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
+    }
+
+    public function testGetExtendedNodes()
+    {
+        $defaultNode = new Node($this->content);
+
+        $node1 = new Node('1');
+        $node2 = new Node(new Node('2'));
+
+        $expectedNodes = [$defaultNode, $node2, $node1, $node1, $node1];
+
+        $sut = $this->createNode();
+
+        $sut[]  = $node1;
+        $sut[]  = $node1;
+        $sut[1] = $node2;
+        $sut[2] = $node1;
+        $sut[3] = $node1;
+        $sut[]  = $node1;
+
+        $actualResult = $sut->getExtendedNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
+    }
+
+    public function testGetDescendantNodes()
+    {
+        $defaultNode = new Node($this->content);
+
+        $node1 = new Node('1');
+        $node2 = new Node(new Node('2'));
+
+        $expectedNodes = [$defaultNode, $node2, $node1, $node1, $node1];
+
+        $sut = $this->createNode();
+
+        $sut[]  = $node1;
+        $sut[]  = $node1;
+        $sut[1] = $node2;
+        $sut[2] = $node1;
+        $sut[3] = $node1;
+        $sut[]  = $node1;
+
+        $actualResult = $sut->getDescendantNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
+    }
+
+    public function testGetExtendedDescendantNodes()
+    {
+        $defaultNode = new Node($this->content);
+
+        $node1 = new Node('1');
+        $node2 = new Node(new Node('2'));
+
+        $expectedNodes = [$defaultNode, $node2, $node1, $node1, $node1];
+
+        $sut = $this->createNode();
+
+        $sut[]  = $node1;
+        $sut[]  = $node1;
+        $sut[1] = $node2;
+        $sut[2] = $node1;
+        $sut[3] = $node1;
+        $sut[]  = $node1;
+
+        $actualResult = $sut->getExtendedDescendantNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
+    }
+
+    /**
+     * @return array
+     */
+    public function toStringReturnsRawContentByDefaultProvider(): array
+    {
+        return [
+            'string' => ['foo', '<td>foo</td>'],
+        ];
+    }
+
+    /**
+     * @dataProvider toStringReturnsRawContentByDefaultProvider
+     *
+     * @param mixed  $rawContent
+     * @param string $expectedResult
+     */
+    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult)
+    {
+        $sut = $this->createNode($rawContent);
+
+        $this->assertContains($expectedResult, (string)$sut);
+    }
+
+    /**
+     * @return array
+     */
+    public function toStringCanReturnTranslatedContentProvider(): array
+    {
+        $translations = ['foo' => 'bar'];
+
+        return [
+            'string' => ['foo', $translations, '<td>bar</td>'],
+        ];
+    }
+
+    /**
+     * @dataProvider toStringCanReturnTranslatedContentProvider
+     *
+     * @param mixed $rawContent
+     * @param string $expectedResult
+     */
+    public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
+    {
+        $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
+
+        $sut = $this->createNode($rawContent);
+
+        $sut->setTranslator($translatorMock);
+
+        $this->assertContains($expectedResult, (string)$sut);
+    }
+
+    /**
+     * @dataProvider isMatchProvider
+     *
+     * @param string|null $className
+     * @param string[]    $intents
+     * @param int|null    $expectedResult
+     */
+    public function testIsMatch(?string $className, array $intents, bool $expectedResult)
+    {
+        $sut = $this->createNode();
+        $sut->setIntent('foo', 'bar');
+
+        $actualResult = $sut->isMatch($className, ...$intents);
+
+        $this->assertSame($expectedResult, $actualResult);
+    }
+
     /**
      * @param INode[]|INode|string|null $content
      * @param string                    $group
@@ -77,5 +258,17 @@ class CellTest extends ComponentTest
         $cell->setTranslator(MockTranslatorFactory::createSimpleTranslator($this, $translations));
 
         return $cell;
+    }
+
+    /**
+     * @param mixed $content
+     *
+     * @return Cell
+     */
+    private function createNode($content = null): INode
+    {
+        $content = $content ?: $this->content;
+
+        return $this->createElement($content, $this->group, [], null, null);
     }
 }

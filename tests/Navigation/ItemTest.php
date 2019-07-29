@@ -7,6 +7,7 @@ namespace AbterPhp\Framework\Navigation;
 use AbterPhp\Framework\Html\ComponentTest;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Node;
+use AbterPhp\Framework\I18n\MockTranslatorFactory;
 
 class ItemTest extends ComponentTest
 {
@@ -51,6 +52,53 @@ class ItemTest extends ComponentTest
             'INode'   => [new Node('foo'), $translations, '<li>bar</li>'],
             'INode[]' => [[new Node('foo')], $translations, '<li>bar</li>'],
         ];
+    }
+
+    /**
+     * @dataProvider toStringWithTranslationProvider
+     *
+     * @param        $content
+     * @param array  $translations
+     * @param string $expectedResult
+     */
+    public function testToStringWithTranslation($content, array $translations, string $expectedResult)
+    {
+        $translator = MockTranslatorFactory::createSimpleTranslator($this, $translations);
+
+        $sut = $this->createNode($content);
+        $sut->setTranslator($translator);
+
+        $this->assertSame($expectedResult, (string)$sut);
+    }
+
+    /**
+     * @dataProvider toStringReturnsRawContentByDefaultProvider
+     *
+     * @param mixed  $rawContent
+     * @param string $expectedResult
+     */
+    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult)
+    {
+        $sut = $this->createNode($rawContent);
+
+        $this->assertContains($expectedResult, (string)$sut);
+    }
+
+    /**
+     * @dataProvider toStringCanReturnTranslatedContentProvider
+     *
+     * @param mixed $rawContent
+     * @param string $expectedResult
+     */
+    public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
+    {
+        $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
+
+        $sut = $this->createNode($rawContent);
+
+        $sut->setTranslator($translatorMock);
+
+        $this->assertContains($expectedResult, (string)$sut);
     }
 
     /**

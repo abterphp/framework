@@ -13,7 +13,6 @@ use AbterPhp\Framework\Html\Helper\StringHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\NodeContainerTrait;
 use AbterPhp\Framework\Html\Tag;
-use AbterPhp\Framework\I18n\ITranslator;
 use Opulence\Orm\IEntity;
 
 class Row extends Tag implements IRow
@@ -98,11 +97,12 @@ class Row extends Tag implements IRow
      */
     public function getExtendedNodes(): array
     {
+        $nodes = [$this->cells];
         if ($this->actionCell) {
-            return [$this->cells, $this->actionCell];
+            $nodes[] = $this->actionCell;
         }
 
-        return array_merge([$this->cells], $this->getNodes());
+        return array_merge($nodes, $this->getNodes());
     }
 
     /**

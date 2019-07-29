@@ -419,11 +419,58 @@ class ComponentTest extends CollectionTest
     }
 
     /**
+     * @dataProvider toStringReturnsRawContentByDefaultProvider
+     *
+     * @param mixed  $rawContent
+     * @param string $expectedResult
+     */
+    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult)
+    {
+        $sut = $this->createNode($rawContent);
+
+        $this->assertContains($expectedResult, (string)$sut);
+    }
+
+    /**
+     * @dataProvider toStringCanReturnTranslatedContentProvider
+     *
+     * @param mixed $rawContent
+     * @param string $expectedResult
+     */
+    public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
+    {
+        $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
+
+        $sut = $this->createNode($rawContent);
+
+        $sut->setTranslator($translatorMock);
+
+        $this->assertContains($expectedResult, (string)$sut);
+    }
+
+    /**
+     * @dataProvider isMatchProvider
+     *
+     * @param string|null $className
+     * @param string[]    $intents
+     * @param int|null    $expectedResult
+     */
+    public function testIsMatch(?string $className, array $intents, bool $expectedResult)
+    {
+        $sut = $this->createNode();
+        $sut->setIntent('foo', 'bar');
+
+        $actualResult = $sut->isMatch($className, ...$intents);
+
+        $this->assertSame($expectedResult, $actualResult);
+    }
+
+    /**
      * @param INode[]|INode|string|null $content
      *
      * @return Component
      */
-    protected function createNode($content = null): INode
+    private function createNode($content = null): INode
     {
         return new Component($content);
     }

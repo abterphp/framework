@@ -48,4 +48,14 @@ class NodeTest extends NodeTestCase
 
         $this->assertContains($expectedResult, $sut->getRawContent());
     }
+
+    /**
+     * @param INode|string|null $content
+     *
+     * @return Node
+     */
+    private function createNode($content = null): INode
+    {
+        return new Node($content);
+    }
 }

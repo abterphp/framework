@@ -141,11 +141,11 @@ class Collection implements ICollection
     }
 
     /**
-     * @see Node::$intents
-     *
      * @param string $intent
      *
      * @return bool
+     * @see Node::$intents
+     *
      */
     public function hasIntent(string $intent): bool
     {
@@ -153,9 +153,9 @@ class Collection implements ICollection
     }
 
     /**
+     * @return string[]
      * @see Node::$intents
      *
-     * @return string[]
      */
     public function getIntents(): array
     {
@@ -163,11 +163,11 @@ class Collection implements ICollection
     }
 
     /**
-     * @see Node::$intents
-     *
      * @param string ...$intent
      *
      * @return INode
+     * @see Node::$intents
+     *
      */
     public function setIntent(string ...$intent): INode
     {
@@ -346,6 +346,7 @@ class Collection implements ICollection
         $key = $this->findNodeKey($nodeToFind);
         if ($key !== null) {
             array_splice($this->nodes, $key, 1, $nodes);
+
             return true;
         }
 
@@ -376,6 +377,7 @@ class Collection implements ICollection
         if ($key !== null) {
             unset($this->nodes[$key]);
             $this->nodes = array_values($this->nodes);
+
             return true;
         }
 

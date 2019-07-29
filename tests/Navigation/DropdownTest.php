@@ -10,6 +10,7 @@ use AbterPhp\Framework\Html\ComponentTest;
 use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Node;
+use AbterPhp\Framework\I18n\MockTranslatorFactory;
 
 class DropdownTest extends ComponentTest
 {
@@ -276,7 +277,9 @@ class DropdownTest extends ComponentTest
 
         $sut->setContent('3');
 
-        $this->assertEquals($expectedNodes, $sut->getNodes());
+        $actualResult = $sut->getNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
     }
 
     public function testGetNodes()
@@ -295,7 +298,98 @@ class DropdownTest extends ComponentTest
         $sut[3] = $item1;
         $sut[]  = $item1;
 
-        $this->assertEquals($expectedNodes, $sut->getNodes());
+        $actualResult = $sut->getNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
+    }
+
+    public function testGetExtendedNodes()
+    {
+        $item1 = new Item('1');
+        $item2 = new Item('2');
+
+        $expectedNodes = [$item1, $item2, $item1, $item1, $item1];
+
+        $sut = $this->createNode();
+
+        $sut[]  = $item1;
+        $sut[]  = $item1;
+        $sut[1] = $item2;
+        $sut[2] = $item1;
+        $sut[3] = $item1;
+        $sut[]  = $item1;
+
+        $actualResult = $sut->getExtendedNodes();
+
+        $this->assertCount(8, $actualResult);
+        $this->assertInstanceOf(Collection::class, $actualResult[0]);
+        $this->assertInstanceOf(Collection::class, $actualResult[1]);
+        $this->assertInstanceOf(Component::class, $actualResult[2]);
+        $this->assertSame($expectedNodes, array_slice($actualResult, 3));
+    }
+
+    public function testGetDescendantNodes()
+    {
+        $itemContent1 = new Node('1');
+        $itemContent2 = new Node('2');
+
+        $item1 = new Item($itemContent1);
+        $item2 = new Item($itemContent2);
+
+        $expectedNodes = [
+            $item1, $itemContent1,
+            $item2, $itemContent2,
+            $item1, $itemContent1,
+            $item1, $itemContent1,
+            $item1, $itemContent1
+        ];
+
+        $sut = $this->createNode();
+
+        $sut[]  = $item1;
+        $sut[]  = $item1;
+        $sut[1] = $item2;
+        $sut[2] = $item1;
+        $sut[3] = $item1;
+        $sut[]  = $item1;
+
+        $actualResult = $sut->getDescendantNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
+    }
+
+    public function testGetExtendedDescendantNodes()
+    {
+        $itemContent1 = new Node('1');
+        $itemContent2 = new Node('2');
+
+        $item1 = new Item($itemContent1);
+        $item2 = new Item($itemContent2);
+
+        $expectedNodes = [
+            $item1, $itemContent1,
+            $item2, $itemContent2,
+            $item1, $itemContent1,
+            $item1, $itemContent1,
+            $item1, $itemContent1
+        ];
+
+        $sut = $this->createNode();
+
+        $sut[]  = $item1;
+        $sut[]  = $item1;
+        $sut[1] = $item2;
+        $sut[2] = $item1;
+        $sut[3] = $item1;
+        $sut[]  = $item1;
+
+        $actualResult = $sut->getExtendedDescendantNodes();
+
+        $this->assertCount(13, $actualResult);
+        $this->assertInstanceOf(Collection::class, $actualResult[0]);
+        $this->assertInstanceOf(Collection::class, $actualResult[1]);
+        $this->assertInstanceOf(Component::class, $actualResult[2]);
+        $this->assertSame($expectedNodes, array_slice($actualResult, 3));
     }
 
     public function testIterator()
@@ -528,6 +622,40 @@ class DropdownTest extends ComponentTest
         unset($sut[0]);
 
         $this->assertfalse($sut->offsetExists(0));
+    }
+
+    /**
+     * @dataProvider toStringWithTranslationProvider
+     *
+     * @param        $content
+     * @param array  $translations
+     * @param string $expectedResult
+     */
+    public function testToStringWithTranslation($content, array $translations, string $expectedResult)
+    {
+        $translator = MockTranslatorFactory::createSimpleTranslator($this, $translations);
+
+        $sut = $this->createNode($content);
+        $sut->setTranslator($translator);
+
+        $this->assertSame($expectedResult, (string)$sut);
+    }
+
+    /**
+     * @dataProvider isMatchProvider
+     *
+     * @param string|null $className
+     * @param string[]    $intents
+     * @param int|null    $expectedResult
+     */
+    public function testIsMatch(?string $className, array $intents, bool $expectedResult)
+    {
+        $sut = $this->createNode();
+        $sut->setIntent('foo', 'bar');
+
+        $actualResult = $sut->isMatch($className, ...$intents);
+
+        $this->assertSame($expectedResult, $actualResult);
     }
 
     /**

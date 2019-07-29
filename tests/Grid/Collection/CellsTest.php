@@ -8,6 +8,8 @@ use AbterPhp\Framework\Grid\Cell\Cell;
 use AbterPhp\Framework\Grid\Cell\ICell;
 use AbterPhp\Framework\Html\CollectionTest;
 use AbterPhp\Framework\Html\INode;
+use AbterPhp\Framework\Html\Node;
+use AbterPhp\Framework\I18n\MockTranslatorFactory;
 
 class CellsTest extends CollectionTest
 {
@@ -30,7 +32,9 @@ class CellsTest extends CollectionTest
      */
     public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult)
     {
-        parent::testToStringReturnsRawContentByDefault($rawContent, $expectedResult);
+        $sut = $this->createNode($rawContent);
+
+        $this->assertContains($expectedResult, (string)$sut);
     }
 
     /**
@@ -54,7 +58,13 @@ class CellsTest extends CollectionTest
      */
     public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
     {
-        parent::testToStringCanReturnTranslatedContent($rawContent, $translations, $expectedResult);
+        $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
+
+        $sut = $this->createNode($rawContent);
+
+        $sut->setTranslator($translatorMock);
+
+        $this->assertContains($expectedResult, (string)$sut);
     }
 
     public function testCountWithoutOffset()
@@ -246,16 +256,15 @@ class CellsTest extends CollectionTest
         $node1 = new Cell('1', 'A');
         $node2 = new Cell('2', 'A');
 
-        $expectedNodes = [new Cell('3', 'A')];
-
-        $sut = $this->createNode();
-
+        $sut    = $this->createNode();
         $sut[]  = $node1;
         $sut[]  = $node1;
         $sut[1] = $node2;
         $sut[2] = $node1;
         $sut[3] = $node1;
         $sut[]  = $node1;
+
+        $expectedNodes = [new Cell('3', 'A')];
 
         $sut->setContent($expectedNodes[0]);
 
@@ -267,10 +276,7 @@ class CellsTest extends CollectionTest
         $node1 = new Cell('1', 'A');
         $node2 = new Cell('2', 'A');
 
-        $expectedNodes = [$node1, $node2, $node1, $node1, $node1];
-
-        $sut = $this->createNode();
-
+        $sut    = $this->createNode();
         $sut[]  = $node1;
         $sut[]  = $node1;
         $sut[1] = $node2;
@@ -278,7 +284,89 @@ class CellsTest extends CollectionTest
         $sut[3] = $node1;
         $sut[]  = $node1;
 
-        $this->assertEquals($expectedNodes, $sut->getExtendedNodes());
+        $expectedNodes = [$node1, $node2, $node1, $node1, $node1];
+
+        $actualResult = $sut->getNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
+    }
+
+    public function testGetExtendedNodes()
+    {
+        $node1 = new Cell('1', 'A');
+        $node2 = new Cell('2', 'A');
+
+        $expectedNodes = [$node1, $node2, $node1, $node1, $node1];
+
+        $sut    = $this->createNode();
+        $sut[]  = $node1;
+        $sut[]  = $node1;
+        $sut[1] = $node2;
+        $sut[2] = $node1;
+        $sut[3] = $node1;
+        $sut[]  = $node1;
+
+        $actualResult = $sut->getExtendedNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
+    }
+
+    public function testGetDescendantNodes()
+    {
+        $nodeContent1 = new Node('1');
+        $nodeContent2 = new Node('2');
+
+        $node1 = new Cell($nodeContent1, 'A');
+        $node2 = new Cell($nodeContent2, 'A');
+
+        $sut    = $this->createNode();
+        $sut[]  = $node1;
+        $sut[]  = $node1;
+        $sut[1] = $node2;
+        $sut[2] = $node1;
+        $sut[3] = $node1;
+        $sut[]  = $node1;
+
+        $expectedNodes = [
+            $node1, $nodeContent1,
+            $node2, $nodeContent2,
+            $node1, $nodeContent1,
+            $node1, $nodeContent1,
+            $node1, $nodeContent1,
+        ];
+
+        $actualResult = $sut->getDescendantNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
+    }
+
+    public function testGetExtendedDescendantNodes()
+    {
+        $nodeContent1 = new Node('1');
+        $nodeContent2 = new Node('2');
+
+        $node1 = new Cell($nodeContent1, 'A');
+        $node2 = new Cell($nodeContent2, 'A');
+
+        $sut    = $this->createNode();
+        $sut[]  = $node1;
+        $sut[]  = $node1;
+        $sut[1] = $node2;
+        $sut[2] = $node1;
+        $sut[3] = $node1;
+        $sut[]  = $node1;
+
+        $expectedNodes = [
+            $node1, $nodeContent1,
+            $node2, $nodeContent2,
+            $node1, $nodeContent1,
+            $node1, $nodeContent1,
+            $node1, $nodeContent1,
+        ];
+
+        $actualResult = $sut->getExtendedDescendantNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
     }
 
     public function testIterator()
@@ -500,16 +588,6 @@ class CellsTest extends CollectionTest
     }
 
     /**
-     * @param ICell[]|ICell|string|null $content
-     *
-     * @return Cells
-     */
-    protected function createNode($content = null): INode
-    {
-        return new Cells($content);
-    }
-
-    /**
      * @expectedException \LogicException
      */
     public function testCreateNodeThrowsLogicException()
@@ -517,5 +595,15 @@ class CellsTest extends CollectionTest
         $sut = $this->createNode();
 
         $sut->setContent('');
+    }
+
+    /**
+     * @param ICell[]|ICell|string|null $content
+     *
+     * @return Cells
+     */
+    private function createNode($content = null): INode
+    {
+        return new Cells($content);
     }
 }

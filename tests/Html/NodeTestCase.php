@@ -159,7 +159,7 @@ abstract class NodeTestCase extends TestCase
      *
      * @return Node
      */
-    protected function createNode($content = null): INode
+    private function createNode($content = null): INode
     {
         return new Node($content);
     }
