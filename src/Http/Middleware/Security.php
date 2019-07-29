@@ -119,7 +119,8 @@ class Security implements IMiddleware
         }
         // phpcs:enable Generic.CodeAnalysis.EmptyStatement
 
-        $this->checkSecrets();
+        $this->checkGeneralSecrets();
+        $this->checkOauth2Secrets();
         $this->checkPhpSettings();
 
         $this->cacheBridge->set(static::KEY, true, PHP_INT_MAX);
@@ -127,7 +128,7 @@ class Security implements IMiddleware
         return $next($request);
     }
 
-    private function checkSecrets()
+    private function checkGeneralSecrets()
     {
         if ($this->getVar(Env::DB_PASSWORD) === static::TEST_DB_PASSWORD) {
             throw new SecurityException('Invalid DB_PASSWORD environment variable.');
@@ -144,7 +145,10 @@ class Security implements IMiddleware
         if ($this->getVar(Env::CRYPTO_ENCRYPTION_PEPPER) === static::TEST_CRYPTO_ENCRYPTION_PEPPER) {
             throw new SecurityException('Invalid CRYPTO_ENCRYPTION_PEPPER environment variable.');
         }
+    }
 
+    private function checkOauth2Secrets()
+    {
         if ($this->getVar(Env::OAUTH2_PRIVATE_KEY_PATH) === static::TEST_OAUTH2_PRIVATE_KEY_PATH) {
             throw new SecurityException('Invalid OAUTH2_PRIVATE_KEY_PATH environment variable.');
         }
