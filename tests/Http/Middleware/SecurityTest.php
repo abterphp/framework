@@ -321,4 +321,30 @@ class SecurityTest extends TestCase
 
         $this->assertSame($responseMock, $actualResult);
     }
+
+    public function testGetSettingsCanUseValuesSet()
+    {
+        $key   = 'foo';
+        $value = 'bar';
+
+        $sut = new Security($this->cacheBridgeMock, Environment::PRODUCTION);
+
+        $sut->setSettings([$key => $value]);
+
+        $actualValue = $sut->getSetting($key);
+
+        $this->assertSame($actualValue, $value);
+    }
+
+    public function testGetSettingsCanCheckPhpSettingsIfValueIsNotSet()
+    {
+        $key   = 'memory_limit';
+        $value = ini_get($key);
+
+        $sut = new Security($this->cacheBridgeMock, Environment::PRODUCTION);
+
+        $actualValue = $sut->getSetting($key);
+
+        $this->assertSame($actualValue, $value);
+    }
 }
