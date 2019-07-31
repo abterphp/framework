@@ -10,6 +10,8 @@ use AbterPhp\Framework\Html\Helper\ArrayHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Node;
 use AbterPhp\Framework\I18n\MockTranslatorFactory;
+use Opulence\Orm\IEntity;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ActionTest extends TestCase
@@ -69,6 +71,32 @@ class ActionTest extends TestCase
 
         $this->assertSame($expectedResult, $actualResult1);
         $this->assertSame($expectedResult, $actualResult2);
+    }
+
+    public function testRenderCallsCallbackWithEntity()
+    {
+        $expectedResult = "<button foo=\"bar\">Button</button>";
+
+        /** @var IEntity|MockObject $entityMock */
+        $entityMock = $this->getMockBuilder(IEntity::class)
+            ->setMethods(['getId', 'setId'])
+            ->getMock();
+        $entityMock->expects($this->atLeastOnce())->method('getId')->willReturn('bar');
+
+        $content            = 'Button';
+        $attributes         = [];
+        $attributeCallbacks = [
+            StubAttributeFactory::ATTRIBUTE_FOO => function ($value, IEntity $entity) {
+                return [$entity->getId()];
+            },
+        ];
+
+        $sut = $this->createElement($content, $attributes, $attributeCallbacks, null, null);
+
+        $sut->setEntity($entityMock);
+
+        $actualResult = (string)$sut;
+        $this->assertSame($expectedResult, $actualResult);
     }
 
     public function testDuplicate()
