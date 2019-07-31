@@ -74,6 +74,16 @@ class Item extends Component implements IResourcable
     }
 
     /**
+     * @return $this
+     */
+    public function enable(): IResourcable
+    {
+        $this->enabled = true;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function __toString(): string

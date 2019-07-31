@@ -659,7 +659,7 @@ class DropdownTest extends ComponentTest
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testGetsPrefixGetsEmptyCollectionByDefault()
+    public function testGetPrefixGetsEmptyCollectionByDefault()
     {
         $sut = $this->createNode();
 
@@ -669,7 +669,7 @@ class DropdownTest extends ComponentTest
         $this->assertCount(0, $actualResult);
     }
 
-    public function testGetsPrefixGetsLastPrefixSet()
+    public function testGetPrefixGetsLastPrefixSet()
     {
         $sut = $this->createNode();
 
@@ -683,7 +683,7 @@ class DropdownTest extends ComponentTest
         $this->assertSame($collectionStub, $actualResult);
     }
 
-    public function testGetsPostfixGetsEmptyCollectionByDefault()
+    public function testGetPostfixGetsEmptyCollectionByDefault()
     {
         $sut = $this->createNode();
 
@@ -693,7 +693,7 @@ class DropdownTest extends ComponentTest
         $this->assertCount(0, $actualResult);
     }
 
-    public function testGetsPostfixGetsLastPrefixSet()
+    public function testGetPostfixGetsLastPrefixSet()
     {
         $sut = $this->createNode();
 
@@ -705,6 +705,40 @@ class DropdownTest extends ComponentTest
         $actualResult = $sut->getPostfix();
 
         $this->assertSame($collectionStub, $actualResult);
+    }
+
+    public function testGetWrapperCanReturnNull()
+    {
+        $sut = $this->createNode();
+
+        $sut->setWrapper(null);
+
+        $actualResult = $sut->getWrapper();
+
+        $this->assertNull($actualResult);
+    }
+
+    public function testGetWrapperReturnsComponentByDefault()
+    {
+        $sut = $this->createNode();
+
+        $actualResult = $sut->getWrapper();
+
+        $this->assertInstanceOf(IComponent::class, $actualResult);
+    }
+
+    public function testGetWrapperReturnsLastSetWrapper()
+    {
+        $sut = $this->createNode();
+
+        /** @var IComponent $componentStub */
+        $componentStub = $this->createMock(IComponent::class);
+
+        $sut->setWrapper($componentStub);
+
+        $actualResult = $sut->getWrapper();
+
+        $this->assertSame($componentStub, $actualResult);
     }
 
     /**

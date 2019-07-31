@@ -9,6 +9,7 @@ use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\ICollection;
 use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\Node;
+use AbterPhp\Framework\I18n\ITranslator;
 use Casbin\Enforcer;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -205,5 +206,29 @@ class NavigationTest extends TestCase
         $actualResult = $sut->getWrapper();
 
         $this->assertSame($componentStub, $actualResult);
+    }
+
+    public function testSetTranslatorSetsTranslatorOnNodes()
+    {
+        $sut = new Navigation();
+
+        /** @var ITranslator $translatorMock */
+        $translatorMock = $this->createMock(ITranslator::class);
+
+        /** @var Item|MockObject $itemMock */
+        $itemMock = $this->getMockBuilder(Item::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['setTranslator'])
+            ->getMock();
+
+        $itemMock
+            ->expects($this->atLeastOnce())
+            ->method('setTranslator')
+            ->with($translatorMock)
+            ->willReturn($sut);
+
+        $sut->addItem($itemMock);
+
+        $sut->setTranslator($translatorMock);
     }
 }

@@ -87,7 +87,7 @@ class ItemTest extends ComponentTest
     /**
      * @dataProvider toStringCanReturnTranslatedContentProvider
      *
-     * @param mixed $rawContent
+     * @param mixed  $rawContent
      * @param string $expectedResult
      */
     public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
@@ -99,6 +99,55 @@ class ItemTest extends ComponentTest
         $sut->setTranslator($translatorMock);
 
         $this->assertContains($expectedResult, (string)$sut);
+    }
+
+    public function testGetResourceGetsLastSetResource()
+    {
+        $content  = 'foo';
+        $resource = 'bar';
+
+        $sut = $this->createNode($content);
+
+        $sut->setResource($resource);
+
+        $actualResult = $sut->getResource();
+
+        $this->assertSame($resource, $actualResult);
+    }
+
+    public function testGetRoleGetsLastSetResource()
+    {
+        $content  = 'foo';
+        $role = 'bar';
+
+        $sut = $this->createNode($content);
+
+        $sut->setRole($role);
+
+        $actualResult = $sut->getRole();
+
+        $this->assertSame($role, $actualResult);
+    }
+
+    public function testDisabledItemCastsToEmptyString()
+    {
+        $content  = 'foo';
+        $sut = $this->createNode($content);
+
+        $sut->disable();
+
+        $this->assertSame('', (string)$sut);
+    }
+
+    public function testEnableCanRevertDisabling()
+    {
+        $content  = 'foo';
+        $sut = $this->createNode($content);
+
+        $sut->disable();
+        $sut->enable();
+
+        $this->assertNotSame('', (string)$sut);
     }
 
     /**
