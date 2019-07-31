@@ -9,7 +9,7 @@ use AbterPhp\Framework\I18n\ITranslator;
 interface INode
 {
     /**
-     * @param string|INode $content
+     * @param string|INode|null $content
      *
      * @return $this
      */

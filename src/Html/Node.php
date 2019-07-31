@@ -49,7 +49,7 @@ class Node implements INode
     }
 
     /**
-     * @param string|INode $content
+     * @param string|INode|null $content
      *
      * @return $this
      */
@@ -65,13 +65,13 @@ class Node implements INode
             $content = (string)$content;
         }
 
-        if (!is_string($content) && !($content instanceof INode)) {
-            throw new \InvalidArgumentException();
+        if (is_string($content) || ($content instanceof INode)) {
+            $this->content = $content;
+
+            return $this;
         }
 
-        $this->content = $content;
-
-        return $this;
+        throw new \InvalidArgumentException();
     }
 
     /**
