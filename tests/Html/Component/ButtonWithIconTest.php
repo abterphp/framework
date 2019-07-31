@@ -93,6 +93,30 @@ class ButtonWithIconTest extends TestCase
         $this->assertContains($template, $actualResult);
     }
 
+    public function testGetTextRetrievesText()
+    {
+        $text = new Component('A', [], [], Html5::TAG_B);
+        $icon = new Component('B', [], [], Html5::TAG_I);
+
+        $sut = new ButtonWithIcon($text, $icon);
+
+        $actualResult = $sut->getText();
+
+        $this->assertSame($text, $actualResult);
+    }
+
+    public function testGetIconRetrievesIcon()
+    {
+        $text = new Component('A', [], [], Html5::TAG_B);
+        $icon = new Component('B', [], [], Html5::TAG_I);
+
+        $sut = new ButtonWithIcon($text, $icon);
+
+        $actualResult = $sut->getIcon();
+
+        $this->assertSame($icon, $actualResult);
+    }
+
     /**
      * @param IComponent  $text
      * @param IComponent  $icon

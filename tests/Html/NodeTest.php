@@ -49,6 +49,28 @@ class NodeTest extends NodeTestCase
         $this->assertContains($expectedResult, $sut->getRawContent());
     }
 
+    public function testGetTranslatorReturnsNullByDefault()
+    {
+        $sut = $this->createNode();
+
+        $actualResult = $sut->getTranslator();
+
+        $this->assertNull($actualResult);
+    }
+
+    public function testGetTranslatorRetrievesTranslatorIfSet()
+    {
+        $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, []);
+
+        $sut = $this->createNode();
+
+        $sut->setTranslator($translatorMock);
+
+        $actualResult = $sut->getTranslator();
+
+        $this->assertSame($translatorMock, $actualResult);
+    }
+
     /**
      * @param INode|string|null $content
      *

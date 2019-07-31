@@ -50,7 +50,7 @@ class CollectionTest extends NodeTestCase
     /**
      * @dataProvider toStringCanReturnTranslatedContentProvider
      *
-     * @param mixed $rawContent
+     * @param mixed  $rawContent
      * @param string $expectedResult
      */
     public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
@@ -753,6 +753,40 @@ class CollectionTest extends NodeTestCase
             'fail-INode-foo-and-baz-intent' => [INode::class, ['foo', 'baz'], false],
             'fail-Node-foo-intent'          => [Node::class, ['foo'], false],
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function hasIntentProvider(): array
+    {
+        return [
+            [[], 'foo', false],
+            [['foo'], 'foo', true],
+            [['bar'], 'foo', false],
+            [['foo', 'bar', 'baz'], 'bar', true],
+        ];
+    }
+
+    /**
+     * @dataProvider hasIntentProvider
+     *
+     * @param array  $intents
+     * @param string $intentToCheck
+     * @param bool   $expectedResult
+     */
+    public function testHasIntentChecksIfAGivenIntentHasBeenSet(
+        array $intents,
+        string $intentToCheck,
+        bool $expectedResult
+    ) {
+        $sut = $this->createNode();
+
+        $sut->setIntent(...$intents);
+
+        $actualResult = $sut->hasIntent($intentToCheck);
+
+        $this->assertSame($expectedResult, $actualResult);
     }
 
     /**

@@ -201,6 +201,19 @@ class ComponentTest extends CollectionTest
         $this->assertNull($repeatedResult);
     }
 
+    public function testUnsetAttributeWorksOnNotSetAttributes()
+    {
+        $key = 'foo';
+
+        $sut = $this->createNode();
+
+        $sut->unsetAttribute($key);
+
+        $result = $sut->getAttribute($key);
+
+        $this->assertNull($result);
+    }
+
     public function testSetAttributesOverridesExistingAttributesSet()
     {
         $originalAttributes = ['foo' => 'bar'];
