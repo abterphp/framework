@@ -361,7 +361,7 @@ class Manager
      */
     protected function init(): Manager
     {
-        if ($this->modules) {
+        if (null !== $this->modules) {
             return $this;
         }
 

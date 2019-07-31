@@ -17,6 +17,15 @@ class LoaderTest extends \PHPUnit\Framework\TestCase
         $this->assertEmpty($actual);
     }
 
+    public function testEmptyRootsAreSkipped()
+    {
+        $loader = new Loader(['']);
+
+        $actual = $loader->loadModules();
+
+        $this->assertEmpty($actual);
+    }
+
     public function testEmptyRootWorks()
     {
         $loader = new Loader([__DIR__ . '/fixtures/empty'], static::MODULE_FILE_NAME);

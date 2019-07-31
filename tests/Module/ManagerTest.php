@@ -104,6 +104,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                             'Bootstrappers\Vendor\SlugifyBootstrapper',
                         ],
                     ],
+                    [],
                 ],
                 [
                     'Assets\Bootstrappers\AssetManagerBootstrapper',
@@ -192,6 +193,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                             'Bootstrappers\Vendor\SlugifyBootstrapper',
                         ],
                     ],
+                    [],
                 ],
                 [
                     'Assets\Bootstrappers\AssetManagerBootstrapper',
@@ -256,6 +258,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                             'Authorization\Command\FlushCache',
                         ],
                     ],
+                    [],
                 ],
                 [
                     'Console\Commands\User\Create',
@@ -344,20 +347,22 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                     ],
                     [
                         Module::EVENTS => [
-                            Event::AUTH_READY         => [
+                            Event::AUTH_READY          => [
                                 10 => ['Module2\Events\Listeners\AuthRegistrar@register'],
                             ],
-                            Event::NAVIGATION_READY   => [
+                            Event::NAVIGATION_READY    => [
                                 10 => ['Module2\Events\Listeners\NavigationRegistrar@register'],
                             ],
-                            Event::ENTITY_POST_CHANGE => [
+                            Event::ENTITY_POST_CHANGE  => [
                                 10 => ['Module2\Events\Listeners\AuthInvalidator@register'],
                             ],
-                            Event::DASHBOARD_READY    => [
+                            Event::DASHBOARD_READY     => [
                                 10 => ['Module2\Events\Listeners\DashboardRegistrar@register'],
                             ],
+                            Event::FLUSH_COMMAND_READY => [],
                         ],
                     ],
+                    [],
                 ],
                 [
                     Event::TEMPLATE_ENGINE_READY => [
@@ -443,6 +448,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                             ],
                         ],
                     ],
+                    [],
                 ],
                 [
                     'Module2\Http\Middleware\Session',
@@ -523,6 +529,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                             ],
                         ],
                     ],
+                    [],
                 ],
                 [
                     'Module1/routes-late.php',
@@ -604,6 +611,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                             ],
                         ],
                     ],
+                    [],
                 ],
                 [
                     'Module2/migrations-really-early.php',
@@ -660,6 +668,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                         Module::IDENTIFIER    => 'Module2',
                         Module::RESOURCE_PATH => 'Module2/resources',
                     ],
+                    [],
                 ],
                 [
                     'Module1' => 'Module1/resources',
@@ -695,16 +704,16 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                 [
                     [
                         Module::ASSETS_PATHS => [
-                            'foo'   => 'Module1/rawassets',
-                            'bar'   => 'Module1/rawassets',
+                            'foo' => 'Module1/rawassets',
+                            'bar' => 'Module1/rawassets',
                         ],
                     ],
                 ],
                 [
-                    'foo'   => [
+                    'foo' => [
                         'Module1/rawassets',
                     ],
-                    'bar'   => [
+                    'bar' => [
                         'Module1/rawassets',
                     ],
                 ],
@@ -713,26 +722,27 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                 [
                     [
                         Module::ASSETS_PATHS => [
-                            'foo'   => 'Module1/rawassets',
-                            'bar'   => 'Module1/rawassets',
+                            'foo' => 'Module1/rawassets',
+                            'bar' => 'Module1/rawassets',
                         ],
                     ],
                     [
                         Module::ASSETS_PATHS => [
-                            'bar'   => 'Module2/rawassets',
-                            'baz'   => 'Module2/rawassets',
+                            'bar' => 'Module2/rawassets',
+                            'baz' => 'Module2/rawassets',
                         ],
                     ],
+                    [],
                 ],
                 [
-                    'foo'   => [
+                    'foo' => [
                         'Module1/rawassets',
                     ],
-                    'bar'   => [
+                    'bar' => [
                         'Module1/rawassets',
                         'Module2/rawassets',
                     ],
-                    'baz'   => [
+                    'baz' => [
                         'Module2/rawassets',
                     ],
                 ],
@@ -753,5 +763,98 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
         $actualResult = $this->sut->getAssetsPaths();
 
         $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    public function testInitCachesLoadedModules()
+    {
+        $modules = [];
+
+        $this->loaderMock->expects($this->once())->method('loadModules')->willReturn($modules);
+
+        $this->sut->getAssetsPaths();
+        $this->sut->getAssetsPaths();
+    }
+
+    public function testCacheWrapperIgnoresCacheExceptionsOnChecking()
+    {
+        $this->cacheMock = $this->createCacheWrapper();
+        $this->cacheMock
+            ->expects($this->once())
+            ->method('has')
+            ->with(Manager::CACHE_KEY_ASSETS_PATHS)
+            ->willThrowException(new \Exception());
+
+        $this->sut = new Manager($this->loaderMock, $this->cacheMock);
+
+        $modules = [];
+
+        $this->loaderMock->expects($this->once())->method('loadModules')->willReturn($modules);
+
+        $this->sut->getAssetsPaths();
+    }
+
+    public function testCacheWrapperIgnoresCacheExceptionsOnRead()
+    {
+        $this->cacheMock = $this->createCacheWrapper();
+        $this->cacheMock
+            ->expects($this->once())
+            ->method('has')
+            ->with(Manager::CACHE_KEY_ASSETS_PATHS)
+            ->willReturn(true);
+        $this->cacheMock
+            ->expects($this->once())
+            ->method('get')
+            ->with(Manager::CACHE_KEY_ASSETS_PATHS)
+            ->willThrowException(new \Exception());
+
+        $this->sut = new Manager($this->loaderMock, $this->cacheMock);
+
+        $modules = [];
+
+        $this->loaderMock->expects($this->once())->method('loadModules')->willReturn($modules);
+
+        $this->sut->getAssetsPaths();
+    }
+
+    public function testCacheWrapperIgnoresCacheExceptionsOnWrite()
+    {
+        $this->cacheMock = $this->createCacheWrapper();
+        $this->cacheMock
+            ->expects($this->once())
+            ->method('has')
+            ->with(Manager::CACHE_KEY_ASSETS_PATHS)
+            ->willReturn(true);
+        $this->cacheMock
+            ->expects($this->once())
+            ->method('get')
+            ->with(Manager::CACHE_KEY_ASSETS_PATHS)
+            ->willThrowException(new \Exception());
+        $this->cacheMock
+            ->expects($this->once())
+            ->method('set')
+            ->with(Manager::CACHE_KEY_ASSETS_PATHS)
+            ->willThrowException(new \Exception());
+
+        $this->sut = new Manager($this->loaderMock, $this->cacheMock);
+
+        $modules = [];
+
+        $this->loaderMock->expects($this->once())->method('loadModules')->willReturn($modules);
+
+        $this->sut->getAssetsPaths();
+    }
+
+    /**
+     * @return ICacheBridge|MockObject
+     */
+    protected function createCacheWrapper()
+    {
+        /** @var ICacheBridge|MockObject $cacheBridge */
+        $cacheBridge = $this->getMockBuilder(ICacheBridge::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['has', 'get', 'set', 'decrement', 'increment', 'delete', 'flush'])
+            ->getMock();
+
+        return $cacheBridge;
     }
 }
