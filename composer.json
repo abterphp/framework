@@ -47,7 +47,8 @@
     "phpunit/phpunit": "^6.1",
     "squizlabs/php_codesniffer": "^3.4",
     "phpmd/phpmd": "^2.6",
-    "friendsofphp/php-cs-fixer": "^2.14"
+    "friendsofphp/php-cs-fixer": "^2.14",
+    "phan/phan": "^2.2"
   },
   "suggest": {
     "ext-redis": "Allows better caching"
