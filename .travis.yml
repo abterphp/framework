@@ -10,6 +10,7 @@ install:
   - make install
 
 script:
+  - pecl install ast
   - make build
   - make coverage
 
