@@ -7,6 +7,7 @@ namespace AbterPhp\Framework\Grid;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Grid\Component\Actions;
 use AbterPhp\Framework\Grid\Component\Filters;
+use AbterPhp\Framework\Grid\Pagination\IPagination;
 use AbterPhp\Framework\Grid\Pagination\Pagination;
 use AbterPhp\Framework\Grid\Table\Table;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -19,8 +20,7 @@ class GridTest extends \PHPUnit\Framework\TestCase
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
             ->setMethods(['__toString'])
-            ->getMock()
-        ;
+            ->getMock();
 
         $table->expects($this->any())->method('__toString')->willReturn('!A!');
 
@@ -35,15 +35,13 @@ class GridTest extends \PHPUnit\Framework\TestCase
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
             ->setMethods(['__toString'])
-            ->getMock()
-        ;
+            ->getMock();
 
         /** @var Pagination|MockObject $pagination */
         $pagination = $this->getMockBuilder(Pagination::class)
             ->disableOriginalConstructor()
             ->setMethods(['__toString'])
-            ->getMock()
-        ;
+            ->getMock();
 
         $table->expects($this->any())->method('__toString')->willReturn('!A!');
         $pagination->expects($this->any())->method('__toString')->willReturn('!B!');
@@ -59,15 +57,13 @@ class GridTest extends \PHPUnit\Framework\TestCase
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
             ->setMethods(['__toString'])
-            ->getMock()
-        ;
+            ->getMock();
 
         /** @var Filters|MockObject $filters */
         $filters = $this->getMockBuilder(Filters::class)
             ->disableOriginalConstructor()
             ->setMethods(['__toString'])
-            ->getMock()
-        ;
+            ->getMock();
 
         $table->expects($this->any())->method('__toString')->willReturn('!A!');
         $filters->expects($this->any())->method('__toString')->willReturn('!C!');
@@ -83,15 +79,13 @@ class GridTest extends \PHPUnit\Framework\TestCase
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
             ->setMethods(['__toString'])
-            ->getMock()
-        ;
+            ->getMock();
 
         /** @var Actions|MockObject $actions */
         $actions = $this->getMockBuilder(Actions::class)
             ->disableOriginalConstructor()
             ->setMethods(['__toString', 'appendToAttribute'])
-            ->getMock()
-        ;
+            ->getMock();
 
         $table->expects($this->any())->method('__toString')->willReturn('!A!');
         $actions->expects($this->any())->method('__toString')->willReturn('!D!');
@@ -107,8 +101,7 @@ class GridTest extends \PHPUnit\Framework\TestCase
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
             ->setMethods(['__toString'])
-            ->getMock()
-        ;
+            ->getMock();
 
         $table->expects($this->any())->method('__toString')->willReturn('A');
 
@@ -125,8 +118,7 @@ class GridTest extends \PHPUnit\Framework\TestCase
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
             ->setMethods(['__toString'])
-            ->getMock()
-        ;
+            ->getMock();
 
         $table->expects($this->any())->method('__toString')->willReturn('A');
 
@@ -145,8 +137,7 @@ class GridTest extends \PHPUnit\Framework\TestCase
         /** @var Table|MockObject $table */
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $sut = new Grid($table);
 
@@ -161,15 +152,13 @@ class GridTest extends \PHPUnit\Framework\TestCase
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
             ->setMethods(['__toString'])
-            ->getMock()
-        ;
+            ->getMock();
 
         /** @var Pagination|MockObject $pagination */
         $pagination = $this->getMockBuilder(Pagination::class)
             ->disableOriginalConstructor()
             ->setMethods(['getPageSize'])
-            ->getMock()
-        ;
+            ->getMock();
 
         $pagination->expects($this->once())->method('getPageSize')->willReturn($pageSize);
 
@@ -188,8 +177,7 @@ class GridTest extends \PHPUnit\Framework\TestCase
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
             ->setMethods(['getSortConditions'])
-            ->getMock()
-        ;
+            ->getMock();
         $table->expects($this->once())->method('getSortConditions')->willReturn($sortConditions);
 
         $sut = new Grid($table);
@@ -207,8 +195,7 @@ class GridTest extends \PHPUnit\Framework\TestCase
         /** @var Table|MockObject $table */
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $sut = new Grid($table);
 
@@ -223,15 +210,13 @@ class GridTest extends \PHPUnit\Framework\TestCase
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
             ->setMethods(['__toString'])
-            ->getMock()
-        ;
+            ->getMock();
 
         /** @var Filters|MockObject $filters */
         $filters = $this->getMockBuilder(Filters::class)
             ->disableOriginalConstructor()
             ->setMethods(['getWhereConditions'])
-            ->getMock()
-        ;
+            ->getMock();
         $filters->expects($this->once())->method('getWhereConditions')->willReturn($whereConditions);
 
         $sut = new Grid($table, null, $filters);
@@ -249,8 +234,7 @@ class GridTest extends \PHPUnit\Framework\TestCase
         /** @var Table|MockObject $table */
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $sut = new Grid($table);
 
@@ -266,15 +250,13 @@ class GridTest extends \PHPUnit\Framework\TestCase
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
             ->setMethods(['getSqlParams'])
-            ->getMock()
-        ;
+            ->getMock();
 
         /** @var Filters|MockObject $filters */
         $filters = $this->getMockBuilder(Filters::class)
             ->disableOriginalConstructor()
             ->setMethods(['getSqlParams'])
-            ->getMock()
-        ;
+            ->getMock();
 
         $table->expects($this->once())->method('getSqlParams')->willReturn($tableSqlParams);
         $filters->expects($this->once())->method('getSqlParams')->willReturn($filterSqlParams);
@@ -301,8 +283,7 @@ class GridTest extends \PHPUnit\Framework\TestCase
         /** @var Table|MockObject $table */
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $sut = new Grid($table);
 
@@ -317,15 +298,13 @@ class GridTest extends \PHPUnit\Framework\TestCase
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
             ->setMethods(['__toString'])
-            ->getMock()
-        ;
+            ->getMock();
 
         /** @var Pagination|MockObject $pagination */
         $pagination = $this->getMockBuilder(Pagination::class)
             ->disableOriginalConstructor()
             ->setMethods(['setTotalCount'])
-            ->getMock()
-        ;
+            ->getMock();
         $pagination->expects($this->once())->method('setTotalCount')->with($totalCount);
 
         $sut = new Grid($table, $pagination);
@@ -336,15 +315,14 @@ class GridTest extends \PHPUnit\Framework\TestCase
     public function testSetEntitiesCallsTable()
     {
         $entity = $this->getMockBuilder(IStringerEntity::class)
-                ->setMethods(['__toString', 'getId', 'setId', 'toJSON'])
-                ->getMock();
+            ->setMethods(['__toString', 'getId', 'setId', 'toJSON'])
+            ->getMock();
 
         /** @var Table|MockObject $table */
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
             ->setMethods(['setEntities'])
-            ->getMock()
-        ;
+            ->getMock();
         $table->expects($this->once())->method('setEntities')->with([$entity]);
 
         $sut = new Grid($table);
@@ -352,19 +330,52 @@ class GridTest extends \PHPUnit\Framework\TestCase
         $sut->setEntities([$entity]);
     }
 
-    public function testGetExtendedNodes()
+    public function getExtendNodesProvider(): array
     {
         /** @var Table|MockObject $tableStub */
         $tableStub = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
             ->setMethods([])
-            ->getMock()
-        ;
+            ->getMock();
 
-        $sut = new Grid($tableStub);
+        /** @var Filters|MockObject $filtersStub */
+        $filtersStub = $this->getMockBuilder(Filters::class)
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
+
+        /** @var IPagination|MockObject $paginationStub */
+        $paginationStub = $this->getMockBuilder(IPagination::class)
+            ->setMethods([])
+            ->getMock();
+
+        return [
+            'nay-filters-nay-pagination' => [$tableStub, null, null, [$tableStub]],
+            'nay-filters-yay-pagination' => [$tableStub, null, $paginationStub, [$paginationStub, $tableStub]],
+            'yay-filters-nay-pagination' => [$tableStub, $filtersStub, null, [$filtersStub, $tableStub]],
+            'yay-filters-yay-pagination' => [
+                $tableStub,
+                $filtersStub,
+                $paginationStub,
+                [$filtersStub, $paginationStub, $tableStub],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getExtendNodesProvider
+     *
+     * @param Table|MockObject $tableStub
+     * @param Filters|null     $filters
+     * @param IPagination|null $pagination
+     * @param array            $expectedResult
+     */
+    public function testGetExtendedNodes($tableStub, ?Filters $filters, ?IPagination $pagination, array $expectedResult)
+    {
+        $sut = new Grid($tableStub, $pagination, $filters);
 
         $actualResult = $sut->getExtendedNodes();
 
-        $this->assertSame([$tableStub], $actualResult);
+        $this->assertSame($expectedResult, $actualResult);
     }
 }

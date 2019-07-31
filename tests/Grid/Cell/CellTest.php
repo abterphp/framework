@@ -206,7 +206,7 @@ class CellTest extends ComponentTest
     /**
      * @dataProvider toStringCanReturnTranslatedContentProvider
      *
-     * @param mixed $rawContent
+     * @param mixed  $rawContent
      * @param string $expectedResult
      */
     public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
@@ -235,6 +235,15 @@ class CellTest extends ComponentTest
         $actualResult = $sut->isMatch($className, ...$intents);
 
         $this->assertSame($expectedResult, $actualResult);
+    }
+
+    public function testGroupRetrievesOriginallyProvidedGroup()
+    {
+        $sut = $this->createNode();
+
+        $actualResult = $sut->getGroup();
+
+        $this->assertSame($this->group, $actualResult);
     }
 
     /**
