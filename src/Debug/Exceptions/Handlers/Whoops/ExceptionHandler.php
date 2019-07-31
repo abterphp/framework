@@ -17,6 +17,9 @@ class ExceptionHandler implements IExceptionHandler
     /** @var ExceptionRenderer */
     protected $whoopsRenderer;
 
+    /** @var string|null */
+    protected $sapi;
+
     /**
      * @param LoggerInterface   $logger
      * @param ExceptionRenderer $whoopsRenderer
@@ -26,6 +29,30 @@ class ExceptionHandler implements IExceptionHandler
     {
         $this->logger         = $logger;
         $this->whoopsRenderer = $whoopsRenderer;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSapi(): ?string
+    {
+        if (null === $this->sapi) {
+            $this->sapi = PHP_SAPI;
+        }
+
+        return $this->sapi;
+    }
+
+    /**
+     * @param string|null $sapi
+     *
+     * @return $this
+     */
+    public function setSapi(?string $sapi): ExceptionHandler
+    {
+        $this->sapi = $sapi;
+
+        return $this;
     }
 
     /**
@@ -46,7 +73,7 @@ class ExceptionHandler implements IExceptionHandler
         $whoops = $this->whoopsRenderer->getRun();
 
         $whoops->pushHandler(new \Whoops\Handler\PlainTextHandler($this->logger));
-        if (PHP_SAPI !== 'cli') {
+        if ($this->getSapi() !== 'cli') {
             $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
         }
 

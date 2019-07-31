@@ -5,22 +5,22 @@ namespace AbterPhp\Framework\Debug\Exceptions\Handlers\Whoops;
 use Exception;
 use Opulence\Framework\Debug\Exceptions\Handlers\Http;
 use Throwable;
-use Whoops\Run;
+use Whoops\RunInterface;
 
 /**
  * @SuppressWarnings(PHPMD)
  */
 class ExceptionRenderer extends Http\ExceptionRenderer implements Http\IExceptionRenderer
 {
-    /** @var Run */
+    /** @var RunInterface */
     protected $run;
 
     /**
      * WhoopsRenderer constructor.
      *
-     * @param Run $run
+     * @param RunInterface $run
      */
-    public function __construct(Run $run, bool $inDevelopmentEnvironment = false)
+    public function __construct(RunInterface $run, bool $inDevelopmentEnvironment = false)
     {
         $this->run = $run;
 
@@ -28,7 +28,7 @@ class ExceptionRenderer extends Http\ExceptionRenderer implements Http\IExceptio
     }
 
     /**
-     * @return Run
+     * @return RunInterface
      */
     public function getRun()
     {
