@@ -6,6 +6,8 @@ namespace AbterPhp\Framework\Navigation;
 
 use AbterPhp\Framework\Html\Collection;
 use AbterPhp\Framework\Html\Component;
+use AbterPhp\Framework\Html\ICollection;
+use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\Node;
 use Casbin\Enforcer;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -180,5 +182,28 @@ class NavigationTest extends TestCase
         $rendered = (string)$sut;
 
         $this->assertRegexp('/^\s*\<ul.*CCC.*DDD.*AAA.*BBB.*\<\/ul\>\s*$/Ums', $rendered);
+    }
+
+    public function testGetWrapperReturnsNullByDefault()
+    {
+        $sut = new Navigation();
+        
+        $actualResult = $sut->getWrapper();
+        
+        $this->assertNull($actualResult);
+    }
+
+    public function testGetWrapperReturnsLastLestWrapper()
+    {
+        $sut = new Navigation();
+
+        /** @var IComponent $componentStub */
+        $componentStub = $this->createMock(IComponent::class);
+
+        $sut->setWrapper($componentStub);
+
+        $actualResult = $sut->getWrapper();
+
+        $this->assertSame($componentStub, $actualResult);
     }
 }

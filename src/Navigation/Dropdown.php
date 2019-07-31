@@ -80,11 +80,35 @@ class Dropdown extends Component
     }
 
     /**
+     * @param ICollection $collection
+     *
+     * @return Dropdown
+     */
+    public function setPrefix(ICollection $collection): Dropdown
+    {
+        $this->prefix = $collection;
+
+        return $this;
+    }
+
+    /**
      * @return ICollection
      */
     public function getPostfix(): ICollection
     {
         return $this->postfix;
+    }
+
+    /**
+     * @param ICollection $collection
+     *
+     * @return Dropdown
+     */
+    public function setPostfix(ICollection $collection): Dropdown
+    {
+        $this->postfix = $collection;
+
+        return $this;
     }
 
     /**

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Navigation;
 
 use AbterPhp\Framework\Constant\Session as SessionConstant;
+use AbterPhp\Framework\Html\Collection;
+use AbterPhp\Framework\Html\Component;
+use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Node;
 use AbterPhp\Framework\Html\TagTest;
@@ -118,6 +121,98 @@ class UserBlockTest extends TagTest
         $rendered = (string)$sut;
 
         $this->assertContains("<a>AAA\nBBB\nCCC</a>", $rendered);
+    }
+
+    public function testGetNodes()
+    {
+        $expectedNodes = [];
+
+        $sut = $this->createNode();
+
+        $actualResult = $sut->getNodes();
+
+        $this->assertEquals($expectedNodes, $actualResult);
+    }
+
+    public function testGetExtendedNodes()
+    {
+        $sut = $this->createNode();
+
+        $actualResult = $sut->getExtendedNodes();
+
+        $this->assertCount(3, $actualResult);
+        $this->assertInstanceOf(Component::class, $actualResult[0]);
+        $this->assertInstanceOf(Component::class, $actualResult[1]);
+        $this->assertInstanceOf(Component::class, $actualResult[2]);
+    }
+
+    public function testGetMediaLeftReturnsINodeByDefault()
+    {
+        $sut = $this->createNode();
+
+        $actualResult = $sut->getMediaLeft();
+
+        $this->assertInstanceOf(INode::class, $actualResult);
+    }
+
+    public function testGetMediaRightReturnsINodeByDefault()
+    {
+        $sut = $this->createNode();
+
+        $actualResult = $sut->getMediaRight();
+
+        $this->assertInstanceOf(INode::class, $actualResult);
+    }
+
+    public function testGetMediaBodyReturnsINodeByDefault()
+    {
+        $sut = $this->createNode();
+
+        $actualResult = $sut->getMediaBody();
+
+        $this->assertInstanceOf(INode::class, $actualResult);
+    }
+
+    public function testGetMediaLeftReturnsTheLastSetMediaLeft()
+    {
+        /** @var IComponent $mediaLeft */
+        $mediaLeft = $this->createMock(IComponent::class);
+
+        $sut = $this->createNode();
+
+        $sut->setMediaLeft($mediaLeft);
+
+        $actualResult = $sut->getMediaLeft();
+
+        $this->assertSame($mediaLeft, $actualResult);
+    }
+
+    public function testGetMediaRightReturnsTheLastSetMediaRight()
+    {
+        /** @var IComponent $mediaRight */
+        $mediaRight = $this->createMock(IComponent::class);
+
+        $sut = $this->createNode();
+
+        $sut->setMediaRight($mediaRight);
+
+        $actualResult = $sut->getMediaRight();
+
+        $this->assertSame($mediaRight, $actualResult);
+    }
+
+    public function testGetMediaBodyReturnsTheLastSetMediaBody()
+    {
+        /** @var IComponent $mediaBody */
+        $mediaBody = $this->createMock(IComponent::class);
+
+        $sut = $this->createNode();
+
+        $sut->setMediaBody($mediaBody);
+
+        $actualResult = $sut->getMediaBody();
+
+        $this->assertSame($mediaBody, $actualResult);
     }
 
     /**

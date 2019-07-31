@@ -7,6 +7,7 @@ namespace AbterPhp\Framework\Navigation;
 use AbterPhp\Framework\Html\Collection;
 use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\ComponentTest;
+use AbterPhp\Framework\Html\ICollection;
 use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Node;
@@ -656,6 +657,54 @@ class DropdownTest extends ComponentTest
         $actualResult = $sut->isMatch($className, ...$intents);
 
         $this->assertSame($expectedResult, $actualResult);
+    }
+
+    public function testGetsPrefixGetsEmptyCollectionByDefault()
+    {
+        $sut = $this->createNode();
+
+        $actualResult = $sut->getPrefix();
+
+        $this->assertInstanceOf(ICollection::class, $actualResult);
+        $this->assertCount(0, $actualResult);
+    }
+
+    public function testGetsPrefixGetsLastPrefixSet()
+    {
+        $sut = $this->createNode();
+
+        /** @var ICollection $collectionStub */
+        $collectionStub = $this->createMock(ICollection::class);
+
+        $sut->setPrefix($collectionStub);
+
+        $actualResult = $sut->getPrefix();
+
+        $this->assertSame($collectionStub, $actualResult);
+    }
+
+    public function testGetsPostfixGetsEmptyCollectionByDefault()
+    {
+        $sut = $this->createNode();
+
+        $actualResult = $sut->getPostfix();
+
+        $this->assertInstanceOf(ICollection::class, $actualResult);
+        $this->assertCount(0, $actualResult);
+    }
+
+    public function testGetsPostfixGetsLastPrefixSet()
+    {
+        $sut = $this->createNode();
+
+        /** @var ICollection $collectionStub */
+        $collectionStub = $this->createMock(ICollection::class);
+
+        $sut->setPostfix($collectionStub);
+
+        $actualResult = $sut->getPostfix();
+
+        $this->assertSame($collectionStub, $actualResult);
     }
 
     /**
