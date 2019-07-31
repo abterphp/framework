@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Assets\Factory;
 
 use MatthiasMullie\Minify\CSS as CssMinifier;
