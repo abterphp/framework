@@ -26,6 +26,15 @@ class LoaderTest extends \PHPUnit\Framework\TestCase
         $this->assertEmpty($actual);
     }
 
+    public function testDisabledModulesAreSkipped()
+    {
+        $loader = new Loader([__DIR__ . '/fixtures/disabled-only'], static::MODULE_FILE_NAME);
+
+        $actual = $loader->loadModules();
+
+        $this->assertEmpty($actual);
+    }
+
     public function testSingleNonEmptyWorks()
     {
         $loader = new Loader([__DIR__ . '/fixtures/src'], static::MODULE_FILE_NAME);

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Module;
 
+use AbterPhp\Framework\Constant\Event;
 use AbterPhp\Framework\Constant\Module;
 use Opulence\Cache\ICacheBridge;
 use PHPUnit\Framework\MockObject\MockObject;
-use AbterPhp\Framework\Constant\Event;
 
 class ManagerTest extends \PHPUnit\Framework\TestCase
 {
@@ -52,8 +52,8 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     public function getHttpBootstrapperProvider(): array
     {
         return [
-            'no-modules' => [[], []],
-            'one-module' => [
+            'no-modules'  => [[], []],
+            'one-module'  => [
                 [
                     [
                         Module::BOOTSTRAPPERS      => [
@@ -103,7 +103,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                             'Bootstrappers\Http\Controllers\Execute\LoginBootstrapper',
                             'Bootstrappers\Vendor\SlugifyBootstrapper',
                         ],
-                    ]
+                    ],
                 ],
                 [
                     'Assets\Bootstrappers\AssetManagerBootstrapper',
@@ -141,8 +141,8 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     public function getCliBootstrapperProvider(): array
     {
         return [
-            'no-modules' => [[], []],
-            'one-module' => [
+            'no-modules'  => [[], []],
+            'one-module'  => [
                 [
                     [
                         Module::BOOTSTRAPPERS      => [
@@ -191,7 +191,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                             'Bootstrappers\Http\Controllers\Execute\LoginBootstrapper',
                             'Bootstrappers\Vendor\SlugifyBootstrapper',
                         ],
-                    ]
+                    ],
                 ],
                 [
                     'Assets\Bootstrappers\AssetManagerBootstrapper',
@@ -227,11 +227,11 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     public function getCommandsProvider(): array
     {
         return [
-            'no-modules' => [[], []],
-            'one-module' => [
+            'no-modules'  => [[], []],
+            'one-module'  => [
                 [
                     [
-                        Module::COMMANDS           => [
+                        Module::COMMANDS => [
                             'Console\Commands\User\Create',
                             'Console\Commands\User\Delete',
                         ],
@@ -245,17 +245,17 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             'two-modules' => [
                 [
                     [
-                        Module::COMMANDS           => [
+                        Module::COMMANDS => [
                             'Console\Commands\User\Create',
                             'Console\Commands\User\Delete',
                         ],
                     ],
                     [
-                        Module::COMMANDS           => [
+                        Module::COMMANDS => [
                             'Assets\Command\FlushCache',
                             'Authorization\Command\FlushCache',
                         ],
-                    ]
+                    ],
                 ],
                 [
                     'Console\Commands\User\Create',
@@ -289,11 +289,11 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     public function getEventsProvider(): array
     {
         return [
-            'no-modules' => [[], []],
-            'one-module' => [
+            'no-modules'  => [[], []],
+            'one-module'  => [
                 [
                     [
-                        Module::EVENTS             => [
+                        Module::EVENTS => [
                             Event::TEMPLATE_ENGINE_READY => [
                                 10 => ['Events\Listeners\TemplateRegistrar@register'],
                             ],
@@ -327,7 +327,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             'two-modules' => [
                 [
                     [
-                        Module::EVENTS             => [
+                        Module::EVENTS => [
                             Event::TEMPLATE_ENGINE_READY => [
                                 10 => ['Module1\Events\Listeners\TemplateRegistrar@register'],
                             ],
@@ -343,7 +343,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                         ],
                     ],
                     [
-                        Module::EVENTS             => [
+                        Module::EVENTS => [
                             Event::AUTH_READY         => [
                                 10 => ['Module2\Events\Listeners\AuthRegistrar@register'],
                             ],
@@ -357,7 +357,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                                 10 => ['Module2\Events\Listeners\DashboardRegistrar@register'],
                             ],
                         ],
-                    ]
+                    ],
                 ],
                 [
                     Event::TEMPLATE_ENGINE_READY => [
@@ -375,7 +375,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                         'Module1\Events\Listeners\DashboardRegistrar@register',
                         'Module2\Events\Listeners\DashboardRegistrar@register',
                     ],
-                    Event::AUTH_READY         => [
+                    Event::AUTH_READY            => [
                         'Module2\Events\Listeners\AuthRegistrar@register',
                     ],
                 ],
@@ -405,11 +405,11 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     public function getMiddlewareProvider(): array
     {
         return [
-            'no-modules' => [[], []],
-            'one-module' => [
+            'no-modules'  => [[], []],
+            'one-module'  => [
                 [
                     [
-                        Module::MIDDLEWARE         => [
+                        Module::MIDDLEWARE => [
                             1000 => [
                                 'Http\Middleware\CheckCsrfToken',
                                 'Http\Middleware\Security',
@@ -425,7 +425,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             'two-modules' => [
                 [
                     [
-                        Module::MIDDLEWARE         => [
+                        Module::MIDDLEWARE => [
                             1000 => [
                                 'Module1\Http\Middleware\CheckCsrfToken',
                                 'Module1\Http\Middleware\Security',
@@ -433,8 +433,8 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                         ],
                     ],
                     [
-                        Module::MIDDLEWARE             => [
-                            500 => [
+                        Module::MIDDLEWARE => [
+                            500  => [
                                 'Module2\Http\Middleware\Session',
                             ],
                             1000 => [
@@ -442,7 +442,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                                 'Module2\Http\Middleware\Security',
                             ],
                         ],
-                    ]
+                    ],
                 ],
                 [
                     'Module2\Http\Middleware\Session',
@@ -476,12 +476,12 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     public function getRoutePathsProvider(): array
     {
         return [
-            'no-modules' => [[], []],
-            'one-module' => [
+            'no-modules'  => [[], []],
+            'one-module'  => [
                 [
                     [
-                        Module::ROUTE_PATHS        => [
-                            600 => [
+                        Module::ROUTE_PATHS => [
+                            600   => [
                                 'Module1/routes-early.php',
                                 'Module1/routes-early2.php',
                             ],
@@ -500,8 +500,8 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             'two-modules' => [
                 [
                     [
-                        Module::ROUTE_PATHS        => [
-                            600 => [
+                        Module::ROUTE_PATHS => [
+                            600   => [
                                 'Module1/routes-early.php',
                                 'Module1/routes-early2.php',
                             ],
@@ -511,18 +511,18 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                         ],
                     ],
                     [
-                        Module::ROUTE_PATHS        => [
-                            -20 => [
+                        Module::ROUTE_PATHS => [
+                            -20   => [
                                 'Module2/routes-really-early.php',
                             ],
-                            700 => [
+                            700   => [
                                 'Module2/routes-early.php',
                             ],
                             50000 => [
                                 'Module2/routes-late.php',
                             ],
                         ],
-                    ]
+                    ],
                 ],
                 [
                     'Module1/routes-late.php',
@@ -557,12 +557,12 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     public function getMigrationPathsProvider(): array
     {
         return [
-            'no-modules' => [[], []],
-            'one-module' => [
+            'no-modules'  => [[], []],
+            'one-module'  => [
                 [
                     [
-                        Module::MIGRATION_PATHS        => [
-                            600 => [
+                        Module::MIGRATION_PATHS => [
+                            600   => [
                                 'Module1/migrations-early.php',
                                 'Module1/migrations-early2.php',
                             ],
@@ -581,8 +581,8 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
             'two-modules' => [
                 [
                     [
-                        Module::MIGRATION_PATHS        => [
-                            600 => [
+                        Module::MIGRATION_PATHS => [
+                            600   => [
                                 'Module1/migrations-early.php',
                                 'Module1/migrations-early2.php',
                             ],
@@ -592,18 +592,18 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
                         ],
                     ],
                     [
-                        Module::MIGRATION_PATHS        => [
-                            -20 => [
+                        Module::MIGRATION_PATHS => [
+                            -20   => [
                                 'Module2/migrations-really-early.php',
                             ],
-                            700 => [
+                            700   => [
                                 'Module2/migrations-early.php',
                             ],
                             50000 => [
                                 'Module2/migrations-late.php',
                             ],
                         ],
-                    ]
+                    ],
                 ],
                 [
                     'Module2/migrations-really-early.php',
@@ -628,6 +628,129 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
         $this->loaderMock->expects($this->any())->method('loadModules')->willReturn($modules);
 
         $actualResult = $this->sut->getMigrationPaths();
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
+     * @return array
+     */
+    public function getResourcePathsProvider(): array
+    {
+        return [
+            'no-modules'  => [[], []],
+            'one-module'  => [
+                [
+                    [
+                        Module::IDENTIFIER    => 'Module1',
+                        Module::RESOURCE_PATH => 'Module1/resources',
+                    ],
+                ],
+                [
+                    'Module1' => 'Module1/resources',
+                ],
+            ],
+            'two-modules' => [
+                [
+                    [
+                        Module::IDENTIFIER    => 'Module1',
+                        Module::RESOURCE_PATH => 'Module1/resources',
+                    ],
+                    [
+                        Module::IDENTIFIER    => 'Module2',
+                        Module::RESOURCE_PATH => 'Module2/resources',
+                    ],
+                ],
+                [
+                    'Module1' => 'Module1/resources',
+                    'Module2' => 'Module2/resources',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getResourcePathsProvider
+     *
+     * @param array $modules
+     * @param array $expectedResult
+     */
+    public function testGetResourcePath(array $modules, array $expectedResult)
+    {
+        $this->loaderMock->expects($this->any())->method('loadModules')->willReturn($modules);
+
+        $actualResult = $this->sut->getResourcePaths();
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAssetsPathsProvider(): array
+    {
+        return [
+            'no-modules'  => [[], []],
+            'one-module'  => [
+                [
+                    [
+                        Module::ASSETS_PATHS => [
+                            'foo'   => 'Module1/rawassets',
+                            'bar'   => 'Module1/rawassets',
+                        ],
+                    ],
+                ],
+                [
+                    'foo'   => [
+                        'Module1/rawassets',
+                    ],
+                    'bar'   => [
+                        'Module1/rawassets',
+                    ],
+                ],
+            ],
+            'two-modules' => [
+                [
+                    [
+                        Module::ASSETS_PATHS => [
+                            'foo'   => 'Module1/rawassets',
+                            'bar'   => 'Module1/rawassets',
+                        ],
+                    ],
+                    [
+                        Module::ASSETS_PATHS => [
+                            'bar'   => 'Module2/rawassets',
+                            'baz'   => 'Module2/rawassets',
+                        ],
+                    ],
+                ],
+                [
+                    'foo'   => [
+                        'Module1/rawassets',
+                    ],
+                    'bar'   => [
+                        'Module1/rawassets',
+                        'Module2/rawassets',
+                    ],
+                    'baz'   => [
+                        'Module2/rawassets',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getAssetsPathsProvider
+     *
+     * @param array $modules
+     * @param array $expectedResult
+     */
+    public function testGetAssetsPaths(array $modules, array $expectedResult)
+    {
+        $this->loaderMock->expects($this->any())->method('loadModules')->willReturn($modules);
+
+        $actualResult = $this->sut->getAssetsPaths();
 
         $this->assertEquals($expectedResult, $actualResult);
     }
