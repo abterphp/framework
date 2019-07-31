@@ -37,7 +37,7 @@ class Manager
     /**
      * Manager constructor.
      *
-     * @param Loader            $sourceRoots
+     * @param Loader            $loader
      * @param ICacheBridge|null $cacheBridge
      */
     public function __construct(Loader $loader, ?ICacheBridge $cacheBridge = null)
@@ -47,7 +47,7 @@ class Manager
     }
 
     /**
-     * @return Bootstrapper[]
+     * @return array
      */
     protected function cacheWrapper(string $cacheKey, callable $callback): array
     {

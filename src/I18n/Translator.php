@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\I18n;
 
-use AbterPhp\Framework\Constant\Session;
-use Opulence\Sessions\ISession;
-
 class Translator implements ITranslator
 {
     /** @var array */
@@ -23,7 +20,7 @@ class Translator implements ITranslator
     }
 
     /**
-     * @param array  $translations
+     * @param array $translations
      */
     public function setTranslations(array $translations)
     {
@@ -32,11 +29,11 @@ class Translator implements ITranslator
 
     /**
      * @param string $key
-     * @param array  ...$args
+     * @param string ...$args
      *
      * @return string
      */
-    public function translate(string $key, ...$args): string
+    public function translate(string $key, string ...$args): string
     {
         return $this->translateByArgs($key, $args);
     }

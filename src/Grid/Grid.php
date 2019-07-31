@@ -54,12 +54,12 @@ class Grid extends Component implements IGrid, ITemplater
     /**
      * Grid constructor.
      *
-     * @param ITable       $rows
-     * @param IPagination  $pagination
-     * @param Filters|null $filters
-     * @param Actions|null $massActions
-     * @param string[]     $intents
-     * @param array        $attributes
+     * @param ITable           $table
+     * @param IPagination|null $pagination
+     * @param Filters|null     $filters
+     * @param Actions|null     $actions
+     * @param string[]         $intents
+     * @param array            $attributes
      */
     public function __construct(
         ITable $table,

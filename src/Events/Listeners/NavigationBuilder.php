@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Events\Listeners;
 
-use AbterPhp\Framework\Authorization\Constant\Role;
 use AbterPhp\Framework\Constant\Session;
 use AbterPhp\Framework\Events\NavigationReady;
 use AbterPhp\Framework\Navigation\IResourcable;

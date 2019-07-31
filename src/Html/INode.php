@@ -9,7 +9,7 @@ use AbterPhp\Framework\I18n\ITranslator;
 interface INode
 {
     /**
-     * @param string|INode
+     * @param string|INode $content
      *
      * @return $this
      */
@@ -36,7 +36,7 @@ interface INode
      *
      * @param string ...$intent
      *
-     * @return IComponent
+     * @return $this
      */
     public function setIntent(string ...$intent): INode;
 

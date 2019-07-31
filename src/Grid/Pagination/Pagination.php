@@ -140,7 +140,7 @@ class Pagination extends Tag implements IPagination, ITemplater
     {
         $baseUrl    = $this->getPageSizeUrl($baseUrl);
         $attributes = [
-            Html5::ATTR_CLASS => 'pagination-sizes',
+            Html5::ATTR_CLASS => ['pagination-sizes'],
         ];
 
         $this->numbers     = new Numbers($baseUrl);
@@ -172,7 +172,7 @@ class Pagination extends Tag implements IPagination, ITemplater
     /**
      * @param string $baseUrl
      *
-     * @return string
+     * @return $this
      */
     public function setSortedUrl(string $baseUrl): IPagination
     {

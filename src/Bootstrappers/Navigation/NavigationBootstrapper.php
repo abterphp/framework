@@ -6,16 +6,13 @@ namespace AbterPhp\Framework\Bootstrappers\Navigation;
 
 use AbterPhp\Framework\Constant\Event;
 use AbterPhp\Framework\Constant\Navigation as NavConstant;
-use AbterPhp\Framework\Constant\Session;
 use AbterPhp\Framework\Events\NavigationReady;
 use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\Navigation\Navigation;
-use Casbin\Enforcer;
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
-use Opulence\Sessions\ISession;
 
 class NavigationBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {

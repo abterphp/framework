@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Navigation;
 
-use AbterPhp\Framework\Authorization\Constant\Role;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Html\Collection;
 use AbterPhp\Framework\Html\Helper\StringHelper;
@@ -14,7 +13,6 @@ use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\INodeContainer;
 use AbterPhp\Framework\Html\Tag;
 use AbterPhp\Framework\I18n\ITranslator;
-use Casbin\Enforcer;
 
 class Navigation extends Tag implements INodeContainer
 {
@@ -47,9 +45,9 @@ class Navigation extends Tag implements INodeContainer
     /**
      * Navigation constructor.
      *
-     * @param string[]      $intents
-     * @param array         $attributes
-     * @param string|null   $tag
+     * @param string[]    $intents
+     * @param array       $attributes
+     * @param string|null $tag
      */
     public function __construct(array $intents = [], array $attributes = [], ?string $tag = null)
     {
@@ -60,8 +58,8 @@ class Navigation extends Tag implements INodeContainer
     }
 
     /**
-     * @param Item   $component
-     * @param int    $weight
+     * @param Item $component
+     * @param int  $weight
      *
      * @return $this
      */
@@ -224,11 +222,10 @@ class Navigation extends Tag implements INodeContainer
     }
 
     /**
-     * @param string|INode
+     * @param string|INode $content
      *
      * @return $this
-     * @deprecated
-     *
+     * @deprecated setContent is not supported on Navigation
      */
     public function setContent($content): INode
     {

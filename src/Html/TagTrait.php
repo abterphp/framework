@@ -5,6 +5,7 @@ namespace AbterPhp\Framework\Html;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Html\Helper\ArrayHelper;
 
+// TODO: See if recaftoring can help with removing suppressed issues
 trait TagTrait
 {
     /** @var array */
@@ -14,6 +15,8 @@ trait TagTrait
     protected $tag = '';
 
     /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn, PhanUndeclaredConstant
+     *
      * @param string|null $tag
      *
      * @return $this
@@ -26,6 +29,8 @@ trait TagTrait
     }
 
     /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     *
      * Retrieves all set attributes
      *
      * @return array of strings and nulls
@@ -41,6 +46,8 @@ trait TagTrait
     }
 
     /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     *
      * Checks if an attribute is set
      *
      * @param string $key
@@ -57,6 +64,8 @@ trait TagTrait
     }
 
     /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     *
      * Retrieves a single attribute
      *
      * @param string $key
@@ -77,6 +86,8 @@ trait TagTrait
     }
 
     /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     *
      * Unsets a single attribute
      *
      * @param string $key
@@ -95,6 +106,8 @@ trait TagTrait
     }
 
     /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     *
      * Removes a single attribute value
      *
      * @param string $key
@@ -122,6 +135,8 @@ trait TagTrait
     }
 
     /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     *
      * Unsets all existing attributes and replaces them with the newly provided attributes
      * Use addAttributes if you want to keep all existing attributes but the ones provided
      *
@@ -140,6 +155,8 @@ trait TagTrait
     }
 
     /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     *
      * Replaces all set provided attributes with new ones
      * Existing ones will be kept if not provided
      *
@@ -157,6 +174,8 @@ trait TagTrait
     }
 
     /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     *
      * @param string      $key
      * @param string|null ...$values
      *
@@ -170,6 +189,8 @@ trait TagTrait
     }
 
     /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     *
      * @param array $attributes
      *
      * @return $this
@@ -194,6 +215,8 @@ trait TagTrait
     }
 
     /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     *
      * @param string $key
      * @param string ...$values
      *
@@ -205,6 +228,8 @@ trait TagTrait
     }
 
     /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     *
      * @param string ...$values
      *
      * @return $this

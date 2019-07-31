@@ -6,7 +6,6 @@ namespace AbterPhp\Framework\Form\Element;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Html\Helper\StringHelper;
-use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Tag;
 
 class Input extends Tag implements IElement
@@ -67,7 +66,7 @@ class Input extends Tag implements IElement
             $attributes[Html5::ATTR_TYPE] = static::DEFAULT_TYPE;
         }
 
-        $attributes[Html5::ATTR_NAME]  = $name;
+        $attributes[Html5::ATTR_NAME] = $name;
 
         parent::__construct(null, $intents, $attributes, $tag);
 

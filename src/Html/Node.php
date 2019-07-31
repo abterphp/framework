@@ -49,7 +49,7 @@ class Node implements INode
     }
 
     /**
-     * @param string|INode
+     * @param string|INode $content
      *
      * @return $this
      */
@@ -101,7 +101,7 @@ class Node implements INode
      *
      * @param string ...$intent
      *
-     * @return INode
+     * @return $this
      */
     public function setIntent(string ...$intent): INode
     {

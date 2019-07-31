@@ -44,7 +44,7 @@ class Item extends Component implements IResourcable
     }
 
     /**
-     * @param string|null $resource
+     * @param string|null $role
      *
      * @return $this
      */

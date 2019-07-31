@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Console\Commands\Assets;
 
-use AbterPhp\Framework\Assets\AssetManager;
 use AbterPhp\Framework\Assets\CacheManager\ICacheManager;
 use Opulence\Console\Commands\Command;
 use Opulence\Console\Responses\IResponse;
@@ -19,7 +18,7 @@ class FlushCache extends Command
     /**
      * FlushCacheCommand constructor.
      *
-     * @param AssetManager $cacheManager
+     * @param ICacheManager $cacheManager
      */
     public function __construct(ICacheManager $cacheManager)
     {

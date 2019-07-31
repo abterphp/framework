@@ -11,7 +11,6 @@ use AbterPhp\Framework\Html\Component\Button;
 use AbterPhp\Framework\Html\Helper\StringHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\ITemplater;
-use AbterPhp\Framework\I18n\ITranslator;
 
 class Hideable extends Component implements ITemplater
 {
@@ -46,9 +45,9 @@ class Hideable extends Component implements ITemplater
     /**
      * Hideable constructor.
      *
-     * @param string      $hiderBtnLabel
-     * @param array       $intent
-     * @param array       $attributes
+     * @param string $hiderBtnLabel
+     * @param array $intent
+     * @param array $attributes
      * @param string|null $tag
      */
     public function __construct(
@@ -59,7 +58,11 @@ class Hideable extends Component implements ITemplater
     ) {
         parent::__construct(null, $intent, $attributes, $tag);
 
-        $this->hiderBtn = new Button($hiderBtnLabel, [Button::INTENT_INFO], [Html5::ATTR_TYPE => [Button::TYPE_BUTTON]]);
+        $this->hiderBtn = new Button(
+            $hiderBtnLabel,
+            [Button::INTENT_INFO],
+            [Html5::ATTR_TYPE => [Button::TYPE_BUTTON]]
+        );
     }
 
     /**

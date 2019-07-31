@@ -19,7 +19,7 @@ interface IComponent extends ICollection, ITag
      * @param string|null $className
      * @param string      ...$intents
      *
-     * @return IComponent
+     * @return IComponent|null
      */
     public function findFirstChild(?string $className = null, string ...$intents): ?IComponent;
 

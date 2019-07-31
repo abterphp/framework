@@ -34,10 +34,11 @@ interface ICacheManager
     /**
      * @param string $path
      * @param string $content
+     * @param bool   $force
      *
-     * @return int
+     * @return bool
      */
-    public function write(string $path, string $content): bool;
+    public function write(string $path, string $content, bool $force = true): bool;
 
     /**
      * @param string $path

@@ -57,6 +57,7 @@ class TransportBootstrapper extends Bootstrapper implements ILazyBootstrapper
             $encryption = null;
         }
 
+        // @phan-suppress-next-line PhanTypeMismatchArgumentNullable
         $transport = new Swift_SmtpTransport($host, $port, $encryption);
 
         $username = (string)Environment::getVar(Env::EMAIL_SMTP_USERNAME);

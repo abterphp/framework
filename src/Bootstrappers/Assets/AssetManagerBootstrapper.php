@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Bootstrappers\Assets;
 
 use AbterPhp\Framework\Assets\AssetManager;
-use AbterPhp\Framework\Assets\CacheManager\Flysystem as FlysystemCacheManager;
 use AbterPhp\Framework\Assets\CacheManager\Dummy as DummyCacheManager;
-use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
-use AbterPhp\Framework\Assets\FileFinder;
+use AbterPhp\Framework\Assets\CacheManager\Flysystem as FlysystemCacheManager;
 use AbterPhp\Framework\Assets\CacheManager\ICacheManager;
-use AbterPhp\Framework\Assets\IFileFinder;
+use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
 use AbterPhp\Framework\Constant\Env;
+use AbterPhp\Framework\Filesystem\FileFinder;
+use AbterPhp\Framework\Filesystem\IFileFinder;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Opulence\Environments\Environment;
@@ -22,8 +22,6 @@ use Opulence\Views\Compilers\Fortune\ITranspiler;
 
 class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
-    const ASSET_DIR = 'rawassets';
-
     /**
      * @return array
      */

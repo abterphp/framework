@@ -7,7 +7,7 @@ namespace AbterPhp\Framework\Session\Helper;
 class ArrayHelper
 {
     /**
-     * @param \DateTime $dateTime
+     * @param array $errors
      *
      * @return array
      */

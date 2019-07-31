@@ -87,7 +87,6 @@ class Flysystem implements ICacheManager
 
     /**
      * @param string $path
-     * @param string $groupName
      *
      * @return bool
      */

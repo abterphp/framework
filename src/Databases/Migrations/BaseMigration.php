@@ -23,8 +23,7 @@ class BaseMigration extends Migration
      * Init constructor.
      *
      * @param IConnection $connection
-     * @param string      $migrationsPath
-     * @param string      $driver
+     * @param FileFinder  $fileFinder
      */
     public function __construct(IConnection $connection, FileFinder $fileFinder)
     {

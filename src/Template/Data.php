@@ -31,9 +31,9 @@ class Data implements IData
     /**
      * TemplateData constructor.
      *
-     * @param string $identifier
-     * @param array  $templates
-     * @param array  $vars
+     * @param string   $identifier
+     * @param string[] $vars
+     * @param string[] $templates
      */
     public function __construct($identifier = '', $vars = [], $templates = [])
     {

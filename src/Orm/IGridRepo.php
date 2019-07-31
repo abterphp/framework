@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Orm;
 
+use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use Opulence\Orm\Repositories\IRepository;
 
 interface IGridRepo extends IRepository
@@ -15,7 +16,7 @@ interface IGridRepo extends IRepository
      * @param array $conditions
      * @param array $params
      *
-     * @return mixed
+     * @return IStringerEntity[]
      */
     public function getPage(int $limitFrom, int $pageSize, array $orders, array $conditions, array $params): array;
 }

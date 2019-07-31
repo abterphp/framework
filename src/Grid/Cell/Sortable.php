@@ -11,7 +11,6 @@ use AbterPhp\Framework\Html\Component\Button;
 use AbterPhp\Framework\Html\Helper\StringHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\ITemplater;
-use AbterPhp\Framework\I18n\ITranslator;
 
 class Sortable extends Cell implements ICell, ITemplater
 {
@@ -141,7 +140,7 @@ class Sortable extends Cell implements ICell, ITemplater
     }
 
     /**
-     * @return string
+     * @return $this
      */
     protected function setSortBtnDirection(): Sortable
     {

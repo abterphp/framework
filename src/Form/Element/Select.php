@@ -43,7 +43,7 @@ class Select extends Component implements IElement
     }
 
     /**
-     * @param string $value
+     * @param string|string[] $value
      *
      * @return $this
      */
@@ -57,7 +57,7 @@ class Select extends Component implements IElement
     }
 
     /**
-     * @param string[] $value
+     * @param string[] $values
      *
      * @return $this
      */

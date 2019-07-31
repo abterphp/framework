@@ -25,7 +25,7 @@ class Assets extends ControllerAbstract
      * Assets constructor.
      *
      * @param FlashService   $flashService
-     * @param AssetManager   $cacheManager
+     * @param AssetManager   $assetManager
      * @param FlatRepository $memeRepository
      */
     public function __construct(FlashService $flashService, AssetManager $assetManager, FlatRepository $memeRepository)

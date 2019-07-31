@@ -34,7 +34,7 @@ interface IRepoService
      * @param string[]       $postData
      * @param UploadedFile[] $fileData
      *
-     * @return string id of the created entity
+     * @return IStringerEntity
      */
     public function create(array $postData, array $fileData): IStringerEntity;
 

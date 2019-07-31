@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Bootstrappers\Email;
 
-use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Email\MessageFactory;
 use AbterPhp\Framework\Email\Sender;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
-use Swift_Transport;
 use Swift_Mailer;
+use Swift_Transport;
 
 class SenderBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {

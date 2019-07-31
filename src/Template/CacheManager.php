@@ -61,7 +61,7 @@ class CacheManager
     }
 
     /**
-     * @param string $documentId
+     * @param string $cacheId
      * @param array  $blocks
      *
      * @return bool

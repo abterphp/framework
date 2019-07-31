@@ -11,7 +11,6 @@ use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\Helper\StringHelper;
 use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\INode;
-use AbterPhp\Framework\Html\INodeContainer;
 
 class CheckboxGroup extends FormGroup
 {

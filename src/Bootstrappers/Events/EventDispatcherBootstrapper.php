@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Bootstrappers\Events;
 
-use AbterPhp\Framework\Module\Manager;
+use AbterPhp\Framework\Module\Manager;// @phan-suppress-current-line PhanUnreferencedUseNormal
 use Opulence\Framework\Configuration\Config;
 use Opulence\Framework\Events\Bootstrappers\EventDispatcherBootstrapper as BaseBootstrapper;
 
@@ -16,7 +16,7 @@ class EventDispatcherBootstrapper extends BaseBootstrapper
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      *
-     * Gets the list of event names to the list of listeners, which can be callables or "className@method" strings
+     * Gets the list of event names to the list of listeners, which can be callables or "className@classMethod" strings
      *
      * @return array The event listener config
      */

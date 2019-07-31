@@ -9,7 +9,7 @@ use AbterPhp\Framework\Console\Commands\Authorization\FlushCache as Authorizatio
 use AbterPhp\Framework\Console\Commands\Template\FlushCache as TemplateFlushCacheCommand;
 use Opulence\Console\Commands\Command;
 use Opulence\Console\Responses\IResponse;
-use Opulence\Framework\Console\Commands\FlushFrameworkCacheCommand;
+use Opulence\Framework\Console\Commands\FlushFrameworkCacheCommand;  // @phan-suppress-current-line PhanUnreferencedUseNormal
 
 class FlushCache extends Command
 {

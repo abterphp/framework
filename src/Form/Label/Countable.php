@@ -10,7 +10,6 @@ use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\Helper\StringHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\ITemplater;
-use AbterPhp\Framework\I18n\ITranslator;
 
 class Countable extends Label implements ITemplater
 {
@@ -52,7 +51,7 @@ class Countable extends Label implements ITemplater
     ) {
         parent::__construct($inputId, $content, $intents, $attributes, $tag);
 
-        $attributes = [
+        $attributes    = [
             static::ATTR_DATA_COUNT => $size,
             Html5::ATTR_CLASS       => static::CLASS_COUNT,
         ];

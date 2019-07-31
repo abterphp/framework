@@ -48,7 +48,7 @@ class ButtonFactory
         string $textTag = Html5::TAG_SPAN,
         string $iconTag = Html5::TAG_I
     ) {
-        $this->urlGenerator = $urlGenerator;
+        $this->urlGenerator   = $urlGenerator;
         $this->textAttributes = $textAttributes;
         $this->iconAttributes = $iconAttributes;
         $this->attributes     = $attributes;
@@ -88,6 +88,9 @@ class ButtonFactory
     }
 
     /**
+     * // TODO: Create Opulence issue
+     * @suppress PhanTypeMismatchArgument issue with Opulence\Routing\Urls\UrlGenerator::createFromName
+     *
      * @param string      $text
      * @param string      $urlName
      * @param string[]    $urlArgs

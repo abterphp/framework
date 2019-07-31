@@ -69,8 +69,8 @@ class Numbers extends Actions
     }
 
     /**
-     * @param bool $isFirstVisible
      * @param bool $isFirst
+     * @param bool $isFirstVisible
      * @param int  $currentPage
      */
     protected function attachLeft(bool $isFirst, bool $isFirstVisible, int $currentPage)
@@ -110,8 +110,8 @@ class Numbers extends Actions
     }
 
     /**
-     * @param bool $isLastVisible
      * @param bool $isLast
+     * @param bool $isLastVisible
      * @param int  $currentPage
      * @param int  $lastPage
      */

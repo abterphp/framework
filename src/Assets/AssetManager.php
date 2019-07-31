@@ -206,7 +206,7 @@ class AssetManager
     }
 
     /**
-     * @param string $groupName
+     * @param string $cachePath
      *
      * @return string
      * @throws \League\Flysystem\FileExistsException

@@ -80,9 +80,9 @@ class Renderer
     }
 
     /**
-     * @param ParsedTemplate[][] $groupedTemplates
+     * @param ParsedTemplate[][][] $groupedTemplates
      *
-     * @return string[]
+     * @return string[][]
      */
     protected function loadSubTemplates(array $groupedTemplates): array
     {
@@ -105,9 +105,9 @@ class Renderer
     }
 
     /**
-     * @param string $type
-     * @param Data[] $templateData
-     * @param array  $templates
+     * @param string  $type
+     * @param IData[] $templateData
+     * @param array   $templates
      *
      * @return array
      */

@@ -14,7 +14,7 @@ class TemplateEngineReady
     /**
      * TemplateEngineReady constructor.
      *
-     * @param Engine $adapter
+     * @param Engine $engine
      */
     public function __construct(Engine $engine)
     {

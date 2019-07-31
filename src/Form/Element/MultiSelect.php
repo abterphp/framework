@@ -30,7 +30,7 @@ class MultiSelect extends Select
     }
 
     /**
-     * @param string[] $value
+     * @param string|string[] $value
      *
      * @return $this
      */
@@ -39,6 +39,7 @@ class MultiSelect extends Select
         if (!is_array($value)) {
             throw new \InvalidArgumentException();
         }
+
         foreach ($value as $v) {
             if (!is_string($v)) {
                 throw new \InvalidArgumentException();

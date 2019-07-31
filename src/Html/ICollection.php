@@ -36,7 +36,6 @@ interface ICollection extends ArrayAccess, Countable, Iterator, INode, INodeCont
 
     /**
      * @param INode $node
-     * @param int   $maxDepth
      *
      * @return bool
      */

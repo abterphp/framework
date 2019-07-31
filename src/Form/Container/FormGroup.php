@@ -26,7 +26,7 @@ class FormGroup extends Tag implements ITemplater
 
     const CLASS_COUNTABLE = 'countable';
 
-    /** @var string[] */
+    /** @var string[][] */
     protected $attributes = [];
 
     /** @var IElement */

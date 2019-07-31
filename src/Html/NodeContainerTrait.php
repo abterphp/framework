@@ -6,9 +6,9 @@ namespace AbterPhp\Framework\Html;
 
 use AbterPhp\Framework\I18n\ITranslator;
 
+// TODO: See if recaftoring can help with removing suppressed issues
 trait NodeContainerTrait
 {
-
     /**
      * @return INode[]
      */
@@ -20,6 +20,8 @@ trait NodeContainerTrait
     abstract public function getExtendedNodes(): array;
 
     /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     *
      * @param int $depth
      *
      * @return INode[]
@@ -36,7 +38,10 @@ trait NodeContainerTrait
 
         return $nodes;
     }
+
     /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     *
      * @param int $depth
      *
      * @return INode[]
@@ -55,6 +60,8 @@ trait NodeContainerTrait
     }
 
     /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn, PhanUndeclaredProperty
+     *
      * @param ITranslator|null $translator
      *
      * @return $this

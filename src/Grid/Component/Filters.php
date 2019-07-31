@@ -171,7 +171,7 @@ EOT;
         $form = StringHelper::wrapInTag(
             $nodes,
             $this->tag,
-            static::ATTRIBUTES_FORM
+            [static::ATTRIBUTES_FORM]
         );
 
         return sprintf(

@@ -37,7 +37,7 @@ class FileFinder implements IFileFinder
 
     /**
      * @param string $path
-     * @param string $key
+     * @param string $groupName
      *
      * @return bool
      */
@@ -53,9 +53,9 @@ class FileFinder implements IFileFinder
      * @return string|null
      * @throws \League\Flysystem\FileNotFoundException
      */
-    public function read(string $path, string $groupName = IFileFinder::DEFAULT_KEY): ?string
+    public function read(string $path, string $key = IFileFinder::DEFAULT_KEY): ?string
     {
-        $filesystem = $this->findFilesystem($path, $groupName);
+        $filesystem = $this->findFilesystem($path, $key);
         if (!$filesystem) {
             return null;
         }

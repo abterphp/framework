@@ -17,7 +17,7 @@ interface IPagination extends ITag, INodeContainer
     /**
      * @param int $totalCount
      *
-     * @return IPagination
+     * @return $this
      */
     public function setTotalCount(int $totalCount): IPagination;
 
@@ -31,7 +31,7 @@ interface IPagination extends ITag, INodeContainer
     /**
      * @param string $baseUrl
      *
-     * @return string
+     * @return $this
      */
     public function setSortedUrl(string $baseUrl): IPagination;
 }

@@ -91,7 +91,7 @@ class Collection implements ICollection
     /**
      * @param int $offset
      *
-     * @return INode
+     * @return INode|null
      */
     public function offsetGet($offset)
     {
@@ -154,8 +154,6 @@ class Collection implements ICollection
 
     /**
      * @return string[]
-     * @see Node::$intents
-     *
      */
     public function getIntents(): array
     {
@@ -165,9 +163,7 @@ class Collection implements ICollection
     /**
      * @param string ...$intent
      *
-     * @return INode
-     * @see Node::$intents
-     *
+     * @return $this
      */
     public function setIntent(string ...$intent): INode
     {

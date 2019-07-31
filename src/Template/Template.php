@@ -69,7 +69,7 @@ class Template
     }
 
     /**
-     * @return ParsedData[][][]
+     * @return ParsedTemplate[][][]
      */
     public function parse(): array
     {

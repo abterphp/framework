@@ -9,14 +9,14 @@ use AbterPhp\Framework\Html\ITag;
 interface IElement extends ITag
 {
     /**
-     * @param string|array $value
+     * @param string|string[] $value
      *
      * @return $this
      */
     public function setValue($value): IElement;
 
     /**
-     * @return $this
+     * @return string
      */
     public function getName(): string;
 }

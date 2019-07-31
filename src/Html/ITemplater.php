@@ -9,7 +9,7 @@ interface ITemplater extends INodeContainer
     /**
      * @param string $template
      *
-     * @return $this
+     * @return INode
      */
     public function setTemplate(string $template): INode;
 }

@@ -8,11 +8,11 @@ interface ITranslator
 {
     /**
      * @param string $key
-     * @param array  ...$args
+     * @param string ...$args
      *
      * @return string
      */
-    public function translate(string $key, ...$args): string;
+    public function translate(string $key, string ...$args): string;
 
     /**
      * @param string $key

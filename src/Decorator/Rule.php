@@ -15,7 +15,7 @@ class Rule
     /** @var string[] */
     protected $defaultClasses = [];
 
-    /** @var string[] */
+    /** @var string[][] */
     protected $intentClassMap = [];
 
     /** @var callable|null */
@@ -27,7 +27,7 @@ class Rule
      * @param string[]      $requiredIntents
      * @param string|null   $requiredClassName
      * @param string[]      $defaultClasses
-     * @param string[]      $intentClassMap
+     * @param string[][]    $intentClassMap
      * @param callback|null $callback
      */
     public function __construct(
@@ -69,7 +69,7 @@ class Rule
     }
 
     /**
-     * @return string[]
+     * @return string[][]
      */
     public function getIntentClassMap(): array
     {

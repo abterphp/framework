@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Grid\Row;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Grid\Action\IAction;
+use AbterPhp\Framework\Grid\Action\IAction;  // @phan-suppress-current-line PhanUnreferencedUseNormal
 use AbterPhp\Framework\Grid\Cell\Cell;
 use AbterPhp\Framework\Grid\Collection\Cells;
 use AbterPhp\Framework\Grid\Component\Actions;
@@ -17,6 +17,8 @@ use Opulence\Orm\IEntity;
 
 class Row extends Tag implements IRow
 {
+    use NodeContainerTrait;
+
     const DEFAULT_TAG = Html5::TAG_TR;
 
     /** @var Cells */
@@ -30,8 +32,6 @@ class Row extends Tag implements IRow
 
     /** @var IEntity */
     protected $entity;
-
-    use NodeContainerTrait;
 
     /**
      * Row constructor.
@@ -60,7 +60,7 @@ class Row extends Tag implements IRow
     }
 
     /**
-     * @return string
+     * @return Cells
      */
     public function getCells(): Cells
     {

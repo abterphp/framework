@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Grid\Row;
 
 use AbterPhp\Framework\Grid\Collection\Cells;
-use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\INodeContainer;
 use Opulence\Orm\IEntity;
