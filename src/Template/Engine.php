@@ -8,13 +8,8 @@ class Engine
 {
     const ERROR_MSG_CACHING_FAILURE = 'Caching failure';
 
-    const ERROR_INVALID_LOADER = 'Loaders must be an instance of %s';
-
     /** @var ILoader[] */
     protected $loaders = [];
-
-    /** @var string[] */
-    protected $templateTypes = [];
 
     /** @var string[][] */
     protected $allSubTemplateIds = [];

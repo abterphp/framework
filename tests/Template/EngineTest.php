@@ -119,8 +119,24 @@ class EngineTest extends \PHPUnit\Framework\TestCase
         $this->rendererMock->expects($this->any())->method('hasAllValidLoaders')->willReturn(true);
         $this->cacheManagerMock->expects($this->once())->method('getDocument')->willReturn($expectedResult);
         $this->cacheManagerMock->expects($this->never())->method('storeCacheData');
-        $this->cacheManagerMock->expects($this->never())->method('storeCacheData');
 
         $this->sut->run($type, $documentId, $templates, $vars);
+    }
+
+    public function testRunWithoutValidCache()
+    {
+        $sut = new Engine($this->rendererMock, $this->cacheManagerMock, false);
+
+        $type       = 'foo';
+        $documentId = 'foo0';
+        $templates  = [];
+        $vars       = [];
+
+        $this->cacheManagerMock->expects($this->never())->method('getCacheData');
+        $this->rendererMock->expects($this->any())->method('hasAllValidLoaders')->willReturn(true);
+        $this->cacheManagerMock->expects($this->never())->method('getDocument');
+        $this->cacheManagerMock->expects($this->never())->method('storeCacheData');
+
+        $sut->run($type, $documentId, $templates, $vars);
     }
 }
