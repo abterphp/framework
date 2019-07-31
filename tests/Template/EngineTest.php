@@ -139,4 +139,11 @@ class EngineTest extends \PHPUnit\Framework\TestCase
 
         $sut->run($type, $documentId, $templates, $vars);
     }
+
+    public function testGetRendererReturnsRenderer()
+    {
+        $actualResult = $this->sut->getRenderer();
+
+        $this->assertInstanceOf(Renderer::class, $actualResult);
+    }
 }
