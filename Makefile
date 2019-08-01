@@ -13,7 +13,7 @@ build:
 	./vendor/bin/phpcs
 	./vendor/bin/phpcs -p --colors --cache --standard=PSR12 tests
 	./vendor/bin/phpmd src text .phpmd.xml
-	./vendor/bin/phan --color
+	PHAN_DISABLE_XDEBUG_WARN=1 ./vendor/bin/phan --color
 
 precommit:
 	./vendor/bin/phpunit --no-coverage
