@@ -22,6 +22,7 @@ return [
         Bootstrappers\Email\SenderBootstrapper::class,
         Bootstrappers\Email\TransportBootstrapper::class,
         Bootstrappers\Events\EventDispatcherBootstrapper::class,
+        Bootstrappers\Filesystem\FileFinderBootstrapper::class,
         Bootstrappers\Filesystem\FilesystemBootstrapper::class,
         Bootstrappers\Http\LoggerBootstrapper::class,
         Bootstrappers\Http\RouterBootstrapper::class,

@@ -11,7 +11,6 @@ use AbterPhp\Framework\Assets\CacheManager\ICacheManager;
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Filesystem\FileFinder;
-use AbterPhp\Framework\Filesystem\IFileFinder;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Opulence\Environments\Environment;
@@ -29,11 +28,9 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
     {
         return [
             AssetManager::class,
-            FileFinder::class,
             DummyCacheManager::class,
             FlysystemCacheManager::class,
             ICacheManager::class,
-            IFileFinder::class,
         ];
     }
 
@@ -51,21 +48,20 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     private function registerAssets(IContainer $container)
     {
+        /** @var FileFinder $fileFinder */
+        $fileFinder = $container->resolve(FileFinder::class);
+
         $minifierFactory = new MinifierFactory();
-        $fileFinder      = new FileFinder();
         if (Environment::getVar(Env::ENV_NAME) === Environment::DEVELOPMENT) {
             $cacheManager = new DummyCacheManager();
         } else {
             $cacheManager = new FlysystemCacheManager();
         }
 
-        $this->registerResourcePaths($fileFinder);
         $this->registerCachePaths($cacheManager);
 
         $assetManager = new AssetManager($minifierFactory, $fileFinder, $cacheManager);
 
-        $container->bindInstance(FileFinder::class, $fileFinder);
-        $container->bindInstance(IFileFinder::class, $fileFinder);
         $container->bindInstance(ICacheManager::class, $cacheManager);
         $container->bindInstance(AssetManager::class, $assetManager);
     }
@@ -78,29 +74,6 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
         $dirPublic = rtrim(getenv(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
 
         $cacheManager->registerFilesystem(new Filesystem(new Local($dirPublic)));
-    }
-
-    /**
-     * @param FileFinder $fileFinder
-     */
-    private function registerResourcePaths(FileFinder $fileFinder)
-    {
-        global $abterModuleManager;
-
-        $assetsPaths = $abterModuleManager->getAssetsPaths();
-
-        foreach ($assetsPaths as $key => $paths) {
-            foreach ($paths as $path) {
-                if (!$path) {
-                    continue;
-                }
-                $fileFinder->registerFilesystem(new Filesystem(new Local($path)), $key);
-            }
-        }
-
-        $dirPublic = rtrim(getenv(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
-
-        $fileFinder->registerFilesystem(new Filesystem(new Local($dirPublic)));
     }
 
     /**
