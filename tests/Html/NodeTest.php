@@ -46,7 +46,7 @@ class NodeTest extends NodeTestCase
 
         $sut->setTranslator($translatorMock);
 
-        $this->assertContains($expectedResult, $sut->getRawContent());
+        $this->assertStringContainsString($expectedResult, $sut->getRawContent());
     }
 
     public function testGetTranslatorReturnsNullByDefault()

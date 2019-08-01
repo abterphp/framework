@@ -13,14 +13,14 @@ class EnvReaderTest extends TestCase
     /** @var EnvReader - System Under Test */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->sut = new EnvReader();
 
         parent::setUp();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->sut->set(Env::ENV_NAME, Environment::TESTING);
     }

@@ -16,7 +16,7 @@ class AuthReadyTest extends TestCase
     /** @var AuthReady */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->adapterMock = $this->getMockBuilder(CombinedAdapter::class)
             ->disableOriginalConstructor()
@@ -24,6 +24,8 @@ class AuthReadyTest extends TestCase
             ->getMock();
 
         $this->sut = new AuthReady($this->adapterMock);
+
+        parent::setUp();
     }
 
     public function testGetAdapter()

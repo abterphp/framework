@@ -13,8 +13,10 @@ class DefaultBuilderTest extends TestCase
     /** @var DefaultBuilder */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->sut = new DefaultBuilder();
     }
 

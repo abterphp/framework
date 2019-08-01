@@ -34,7 +34,7 @@ class CellsTest extends CollectionTest
     {
         $sut = $this->createNode($rawContent);
 
-        $this->assertContains($expectedResult, (string)$sut);
+        $this->assertStringContainsString($expectedResult, (string)$sut);
     }
 
     /**
@@ -64,7 +64,7 @@ class CellsTest extends CollectionTest
 
         $sut->setTranslator($translatorMock);
 
-        $this->assertContains($expectedResult, (string)$sut);
+        $this->assertStringContainsString($expectedResult, (string)$sut);
     }
 
     public function testCountWithoutOffset()
@@ -144,11 +144,10 @@ class CellsTest extends CollectionTest
         $this->assertSame($node2, $sut[1]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testArrayAccessThrowExceptionWhenMadeDirty()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $node1 = new Cell('1', 'A');
 
         $sut = $this->createNode();
@@ -192,21 +191,21 @@ class CellsTest extends CollectionTest
 
     /**
      * @dataProvider contentFailureProvider
-     *
-     * @expectedException \InvalidArgumentException
      */
     public function testConstructFailure($item)
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->createNode($item);
     }
 
     /**
      * @dataProvider contentFailureProvider
-     *
-     * @expectedException \InvalidArgumentException
      */
     public function testSetContentFailure($item)
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $sut = $this->createNode();
 
         $sut->setContent($item);
@@ -229,11 +228,11 @@ class CellsTest extends CollectionTest
 
     /**
      * @dataProvider offsetSetFailureProvider
-     *
-     * @expectedException \InvalidArgumentException
      */
     public function testArrayAccessFailureWithoutOffset($item)
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $sut = $this->createNode();
 
         $sut[] = $item;
@@ -241,11 +240,11 @@ class CellsTest extends CollectionTest
 
     /**
      * @dataProvider offsetSetFailureProvider
-     *
-     * @expectedException \InvalidArgumentException
      */
     public function testArrayAccessFailureWithExplicitOffset($item)
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $sut = $this->createNode();
 
         $sut[] = $item;
@@ -587,11 +586,10 @@ class CellsTest extends CollectionTest
         $this->assertfalse($sut->offsetExists(0));
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testCreateNodeThrowsLogicException()
     {
+        $this->expectException(\LogicException::class);
+
         $sut = $this->createNode();
 
         $sut->setContent('');

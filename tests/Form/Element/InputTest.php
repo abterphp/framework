@@ -134,12 +134,13 @@ class InputTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider setValueFailureProvider
-     * @expectedException \InvalidArgumentException
      *
      * @param mixed $value
      */
     public function testSetValueThrowsExceptionOnInvalid($value)
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $sut = new Input('id', 'name');
 
         $sut->setValue($value);

@@ -11,7 +11,7 @@ class AtLeastOneTest extends TestCase
     /** @var AtLeastOne System Under Test */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -61,19 +61,17 @@ class AtLeastOneTest extends TestCase
         $this->assertEquals(['other1' => 'field2', 'other2' => 'field3'], $errorPlaceholders);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testSetArgsThrowsExceptionWithoutArgs()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->sut->setArgs([]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testSetArgsThrowsExceptionWithNonStringArgs()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->sut->setArgs([123]);
     }
 

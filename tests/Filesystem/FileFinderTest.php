@@ -14,7 +14,7 @@ class FileFinderTest extends TestCase
     /** @var FileFinder - System Under Test */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->sut = new FileFinder();
 

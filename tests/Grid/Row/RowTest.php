@@ -87,9 +87,9 @@ class RowTest extends \PHPUnit\Framework\TestCase
         $actualResult   = (string)$sut;
         $repeatedResult = (string)$sut;
 
-        $this->assertContains('action-0', $actualResult);
-        $this->assertContains('action-1', $actualResult);
-        $this->assertContains($actualResult, $repeatedResult);
+        $this->assertStringContainsString('action-0', $actualResult);
+        $this->assertStringContainsString('action-1', $actualResult);
+        $this->assertStringContainsString($actualResult, $repeatedResult);
     }
 
     public function testGetNodes()

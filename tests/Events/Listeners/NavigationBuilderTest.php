@@ -28,7 +28,7 @@ class NavigationBuilderTest extends TestCase
     /** @var Enforcer|MockObject */
     protected $enforcerMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->sessionMock = $this->getMockForAbstractClass(ISession::class, [], '', false, false, true, ['get']);
         $this->sessionMock->expects($this->any())->method('get')->willReturn($this->username);
@@ -66,7 +66,7 @@ class NavigationBuilderTest extends TestCase
             ->getMock();
         $itemMock->expects($this->once())->method('getResource')->willReturn(null);
         $itemMock->expects($this->once())->method('getRole')->willReturn('');
-        $itemMock->expects($this->never())->method('disable')->willReturn($role);
+        $itemMock->expects($this->never())->method('disable');
 
         $navigationReady = $this->createNavigationEvent([$itemMock], $this->once());
 

@@ -11,7 +11,7 @@ class FoundRowsTest extends SqlTestCase
     /** @var FoundRows System Under Test */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

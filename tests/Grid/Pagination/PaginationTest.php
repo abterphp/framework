@@ -44,47 +44,43 @@ class PaginationTest extends TestCase
         $actualResult = (string)$sut;
 
         foreach ($expectedResult as $number) {
-            $this->assertContains("$number", $actualResult);
+            $this->assertStringContainsString("$number", $actualResult);
         }
 
         $this->assertSame($actualResult, (string)$sut);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testConstructFailureOnEvenNumberCount()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $params = ['page' => '1'];
 
         new Pagination($params, '', 4, 10, [10], [], []);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testConstructFailureOnInvalidPageSize()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $params = ['page' => '1'];
 
         new Pagination($params, '', 5, 8, [10], [], []);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testConstructFailureOnInvalidPageSizeParam()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $params = ['page' => '1', 'page-size' => -8];
 
         new Pagination($params, '', 4, 10, [10], [], []);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testSetTotalCountFailureOnNegativeTotalCount()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $params = ['page' => '1'];
 
         $sut = new Pagination($params, '', 5, 10, [10], [], []);
@@ -92,11 +88,10 @@ class PaginationTest extends TestCase
         $sut->setTotalCount(-1);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testSetTotalCountFailureOutOfRangeTotalCount()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $params = ['page' => '2'];
 
         $sut = new Pagination($params, '', 5, 10, [10], [], []);
@@ -145,7 +140,7 @@ class PaginationTest extends TestCase
 
         $actualResult = (string)$sut;
 
-        $this->assertContains($url, $actualResult);
+        $this->assertStringContainsString($url, $actualResult);
     }
 
     public function testSetSortedUrlCanNotSetsUrlOnNumbersAfterTotalCountIsSet()
@@ -160,6 +155,6 @@ class PaginationTest extends TestCase
 
         $actualResult = (string)$sut;
 
-        $this->assertNotContains($url, $actualResult);
+        $this->assertStringNotContainsString($url, $actualResult);
     }
 }

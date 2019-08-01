@@ -143,7 +143,7 @@ class FormGroupTest extends \PHPUnit\Framework\TestCase
 
         $actualResult = $input->getAttribute(Html5::ATTR_VALUE);
 
-        $this->assertContains($expectedResult, $actualResult);
+        $this->assertStringContainsString($expectedResult, $actualResult);
     }
 
     public function testSetTemplateChangesRender()
@@ -160,7 +160,7 @@ class FormGroupTest extends \PHPUnit\Framework\TestCase
 
         $actualResult = (string)$sut;
 
-        $this->assertContains($expectedResult, $actualResult);
+        $this->assertStringContainsString($expectedResult, $actualResult);
     }
 
     public function testGetInput()

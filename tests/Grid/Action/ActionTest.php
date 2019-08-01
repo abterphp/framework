@@ -16,9 +16,6 @@ use PHPUnit\Framework\TestCase;
 
 class ActionTest extends TestCase
 {
-    /** @var Action */
-    protected $sut;
-
     /**
      * @return array
      */

@@ -20,7 +20,7 @@ class CombinedAdapterTest extends TestCase
     /** @var CacheManager|MockObject */
     protected $cacheManagerMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->defaultAdapterMock = $this->getMockBuilder(CasbinAdapter::class)
             ->setMethods(['loadPolicy', 'savePolicy', 'addPolicy', 'removePolicy', 'removeFilteredPolicy'])
@@ -32,6 +32,8 @@ class CombinedAdapterTest extends TestCase
             ->getMock();
 
         $this->sut = new CombinedAdapter($this->defaultAdapterMock, $this->cacheManagerMock);
+
+        parent::setUp();
     }
 
     public function createSutWithoutCacheManager()

@@ -9,7 +9,7 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
     /** @var Factory */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

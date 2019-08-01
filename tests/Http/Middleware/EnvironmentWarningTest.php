@@ -17,8 +17,10 @@ class EnvironmentWarningTest extends TestCase
     /** @var ITranslator|MockObject */
     protected $translatorMock;
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->translatorMock = MockTranslatorFactory::createSimpleTranslator($this, []);
     }
 

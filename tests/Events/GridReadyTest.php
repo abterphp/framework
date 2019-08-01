@@ -16,7 +16,7 @@ class GridReadyTest extends TestCase
     /** @var NavigationReady */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->gridMock = $this->getMockBuilder(Grid::class)
             ->disableOriginalConstructor()
@@ -24,6 +24,8 @@ class GridReadyTest extends TestCase
             ->getMock();
 
         $this->sut = new GridReady($this->gridMock);
+
+        parent::setUp();
     }
 
     public function testGetGrid()

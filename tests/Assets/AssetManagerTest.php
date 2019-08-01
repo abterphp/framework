@@ -7,6 +7,7 @@ namespace AbterPhp\Framework\Assets;
 use AbterPhp\Framework\Assets\CacheManager\Flysystem as CacheManager;
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
 use AbterPhp\Framework\Filesystem\FileFinder;
+use League\Flysystem\FileNotFoundException;
 use MatthiasMullie\Minify\CSS as CssMinifier;
 use MatthiasMullie\Minify\JS as JsMinifier;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -32,7 +33,7 @@ class AssetManagerTest extends TestCase
     /** @var CacheManager|MockObject */
     protected $cacheManagerMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->cssMinifierMock = $this->getMockBuilder(CssMinifier::class)
             ->setMethods(['add', 'minify'])
@@ -237,11 +238,10 @@ class AssetManagerTest extends TestCase
         $this->assertSame($webPath, $actualResult);
     }
 
-    /**
-     * @expectedException \League\Flysystem\FileNotFoundException
-     */
     public function testEnsureImgWebPathThrowsExceptionIfRenderingFails()
     {
+        $this->expectException(FileNotFoundException::class);
+
         $cachePath = 'foo.js';
 
         $this->cacheManagerMock->expects($this->any())->method('has')->willReturn(false);

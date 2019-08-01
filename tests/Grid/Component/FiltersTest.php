@@ -11,11 +11,10 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class FiltersTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testNodesMustBeFilters()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $sut = new Filters();
 
         $sut[] = new Component();

@@ -90,7 +90,7 @@ class ButtonWithIconTest extends TestCase
 
         $actualResult = (string)$sut;
 
-        $this->assertContains($template, $actualResult);
+        $this->assertStringContainsString($template, $actualResult);
     }
 
     public function testGetTextRetrievesText()

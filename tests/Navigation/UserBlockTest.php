@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Navigation;
 
 use AbterPhp\Framework\Constant\Session as SessionConstant;
-use AbterPhp\Framework\Html\Collection;
 use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\INode;
@@ -27,7 +26,7 @@ class UserBlockTest extends TagTest
         SessionConstant::IS_GRAVATAR_ALLOWED => true,
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -49,11 +48,10 @@ class UserBlockTest extends TagTest
         );
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testConstructThrowsExceptionIfUsernameIsNotRetrievable()
     {
+        $this->expectException(\LogicException::class);
+
         /** @var ISession|MockObject $sessionMock */
         $sessionMock = $this->getMockBuilder(Session::class)
             ->disableOriginalConstructor()
@@ -94,9 +92,12 @@ class UserBlockTest extends TagTest
 
         $rendered = (string)$sut;
 
-        $this->assertContains('<a><div><span src="https://via.placeholder.com/40/09f/fff.png" alt="Mr. Wolf"></div>', $rendered); // nolint
-        $this->assertContains('<div>Mr. Wolf</div>', $rendered);
-        $this->assertContains('<div></div></a>', $rendered);
+        $this->assertStringContainsString(
+            '<a><div><span src="https://via.placeholder.com/40/09f/fff.png" alt="Mr. Wolf"></div>',
+            $rendered
+        ); // nolint
+        $this->assertStringContainsString('<div>Mr. Wolf</div>', $rendered);
+        $this->assertStringContainsString('<div></div></a>', $rendered);
     }
 
     public function testDefaultToString()
@@ -105,9 +106,12 @@ class UserBlockTest extends TagTest
 
         $rendered = (string)$sut;
 
-        $this->assertContains('<a><div><div class="user-img" style="background: url(https://www.gravatar.com/avatar/2ea036c591050aa0bd31e5034c18012f) no-repeat;"><img src="https://www.gravatar.com/avatar/2ea036c591050aa0bd31e5034c18012f" alt="Mr. Wolf"></div></div>', $rendered); // nolint
-        $this->assertContains('<div>Mr. Wolf</div>', $rendered);
-        $this->assertContains('<div></div></a>', $rendered);
+        $this->assertStringContainsString(
+            '<a><div><div class="user-img" style="background: url(https://www.gravatar.com/avatar/2ea036c591050aa0bd31e5034c18012f) no-repeat;"><img src="https://www.gravatar.com/avatar/2ea036c591050aa0bd31e5034c18012f" alt="Mr. Wolf"></div></div>', // nolint
+            $rendered
+        );
+        $this->assertStringContainsString('<div>Mr. Wolf</div>', $rendered);
+        $this->assertStringContainsString('<div></div></a>', $rendered);
     }
 
     public function testToStringWithOptionalsSet()
@@ -120,7 +124,7 @@ class UserBlockTest extends TagTest
 
         $rendered = (string)$sut;
 
-        $this->assertContains("<a>AAA\nBBB\nCCC</a>", $rendered);
+        $this->assertStringContainsString("<a>AAA\nBBB\nCCC</a>", $rendered);
     }
 
     public function testGetNodes()

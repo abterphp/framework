@@ -8,7 +8,7 @@ use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Grid\Component\Body;
 use AbterPhp\Framework\Grid\Component\Header;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class TableTest extends TestCase
 {
@@ -21,8 +21,10 @@ class TableTest extends TestCase
     /** @var Header|MockObject */
     protected $header;
 
-    public function setUp()
+    public function setUp():void
     {
+        parent::setUp();
+
         $this->body = $this->getMockBuilder(Body::class)
             ->disableOriginalConstructor()
             ->setMethods(['__toString', 'setEntities'])
@@ -41,7 +43,7 @@ class TableTest extends TestCase
         $this->body->expects($this->any())->method('__toString')->willReturn('!A!');
         $this->header->expects($this->any())->method('__toString')->willReturn('!B!');
 
-        $this->assertContains('B', (string)$this->sut);
+        $this->assertStringContainsString('B', (string)$this->sut);
     }
 
     public function testToStringContainsRows()
@@ -49,7 +51,7 @@ class TableTest extends TestCase
         $this->body->expects($this->any())->method('__toString')->willReturn('!A!');
         $this->header->expects($this->any())->method('__toString')->willReturn('!B!');
 
-        $this->assertContains('!B!', (string)$this->sut);
+        $this->assertStringContainsString('!B!', (string)$this->sut);
     }
 
     public function testSetTemplateCanChangeContent()
@@ -63,9 +65,9 @@ class TableTest extends TestCase
 
         $actualResult = (string)$this->sut;
 
-        $this->assertNotContains('!A!', $actualResult);
-        $this->assertNotContains('!A!', $actualResult);
-        $this->assertContains($template, $actualResult);
+        $this->assertStringNotContainsString('!A!', $actualResult);
+        $this->assertStringNotContainsString('!A!', $actualResult);
+        $this->assertStringContainsString($template, $actualResult);
     }
 
     public function testGetSortedUrlCallsHeader()

@@ -13,7 +13,7 @@ class MinifierTest extends TestCase
     /** @var Minifier - System Under Test */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->sut = new Minifier();
 

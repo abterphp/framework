@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Http\Middleware;
 
-use AbterPhp\Framework\Constant\Env;
-use Opulence\Cache\ArrayBridge;
-use Opulence\Environments\Environment;
 use Opulence\Framework\Configuration\Config;
 use Opulence\Http\Requests\Request;
 use Opulence\Http\Responses\Response;
@@ -26,8 +23,10 @@ class SessionTest extends TestCase
     /** @var SessionHandlerInterface|MockObject */
     protected $sessionHandlerMock;
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->sessionMock = $this->getMockBuilder(ISession::class)
             ->disableOriginalConstructor()
             ->setMethods([])

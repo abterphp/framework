@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Crypto;
 
+use AbterPhp\Framework\Exception\Security;
 use Opulence\Cryptography\Encryption\IEncrypter;
 use Opulence\Cryptography\Hashing\IHasher;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -29,7 +30,7 @@ class CryptoTest extends TestCase
     /** @var string */
     protected $salt = '*?!-321-rab-oof';
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->encrypterMock = $this->getMockBuilder(IEncrypter::class)
             ->setMethods(['encrypt', 'decrypt', 'setSecret'])
@@ -46,6 +47,8 @@ class CryptoTest extends TestCase
             $this->hashOptions,
             $this->salt
         );
+
+        parent::setUp();
     }
 
     public function testPrepareSecret()
@@ -91,23 +94,22 @@ class CryptoTest extends TestCase
     /**
      * @dataProvider hashCryptThrowsExceptionIfSecretIsInvalidProvider
      *
-     * @expectedException \AbterPhp\Framework\Exception\Security
-     *
      * @param string $secret
      */
     public function testHashCryptThrowsSecurityExceptionIfSecretIsInvalid($secret)
     {
+        $this->expectException(Security::class);
+
         $this->hasherMock->expects($this->never())->method('hash');
         $this->encrypterMock->expects($this->never())->method('encrypt');
 
         $this->sut->hashCrypt($secret);
     }
 
-    /**
-     * @expectedException \AbterPhp\Framework\Exception\Security
-     */
     public function testHashCryptThrowsSecurityExceptionIfHasherThrowsException()
     {
+        $this->expectException(Security::class);
+
         $secret = str_repeat('f00ba788', 16);
 
         $this->hasherMock->expects($this->once())->method('hash')->willThrowException(new \Exception());
@@ -116,11 +118,10 @@ class CryptoTest extends TestCase
         $this->sut->hashCrypt($secret);
     }
 
-    /**
-     * @expectedException \AbterPhp\Framework\Exception\Security
-     */
     public function testHashCryptThrowsSecurityExceptionIfEncrypterThrowsException()
     {
+        $this->expectException(Security::class);
+
         $secret       = str_repeat('f00ba788', 16);
         $hashedSecret = 'bar';
 

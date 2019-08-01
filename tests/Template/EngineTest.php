@@ -17,7 +17,7 @@ class EngineTest extends \PHPUnit\Framework\TestCase
     /** @var CacheManager|MockObject */
     protected $cacheManagerMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -72,11 +72,10 @@ class EngineTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testRunThrowsExceptionIfDocumentStorageFails()
     {
+        $this->expectException(Exception::class);
+
         $templates = [];
         $vars      = [];
 
@@ -89,11 +88,10 @@ class EngineTest extends \PHPUnit\Framework\TestCase
         $this->sut->run($type, $documentId, $templates, $vars);
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testRunThrowsExceptionIfCacheDataStorageFails()
     {
+        $this->expectException(Exception::class);
+
         $templates = [];
         $vars      = [];
 

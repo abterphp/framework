@@ -150,8 +150,8 @@ class SelectTest extends \PHPUnit\Framework\TestCase
 
         $sut->setValue('2');
 
-        $this->assertNotContains(Html5::ATTR_SELECTED, (string)$option1);
-        $this->assertContains(Html5::ATTR_SELECTED, (string)$option2);
+        $this->assertStringNotContainsString(Html5::ATTR_SELECTED, (string)$option1);
+        $this->assertStringContainsString(Html5::ATTR_SELECTED, (string)$option2);
     }
 
     /**
@@ -170,12 +170,13 @@ class SelectTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider setValueFailureProvider
-     * @expectedException \InvalidArgumentException
      *
      * @param mixed $value
      */
     public function testSetValueThrowsExceptionOnInvalid($value)
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $sut = new Select('id', 'name');
 
         $sut->setValue($value);

@@ -12,7 +12,7 @@ class ContentlessTest extends TestCase
     {
         $sut = $this->createNode();
 
-        $this->assertContains('', (string)$sut);
+        $this->assertStringContainsString('', (string)$sut);
     }
 
     public function testSetIntentsCanOverwriteExistingIntents()
@@ -225,11 +225,10 @@ class ContentlessTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testFind()
     {
+        $this->expectException(\LogicException::class);
+
         $nodeToFind = new Node('');
 
         $sut = $this->createNode();
@@ -272,11 +271,10 @@ class ContentlessTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testFindFirstChild()
     {
+        $this->expectException(\LogicException::class);
+
         $className = 'foo';
         $intents   = ['bar'];
 
@@ -285,11 +283,10 @@ class ContentlessTest extends TestCase
         $sut->findFirstChild($className, ...$intents);
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testCollect()
     {
+        $this->expectException(\LogicException::class);
+
         $className = 'foo';
         $intents   = ['bar'];
         $depth     = -1;
@@ -299,11 +296,10 @@ class ContentlessTest extends TestCase
         $sut->collect($className, $intents, $depth);
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testSetContent()
     {
+        $this->expectException(\LogicException::class);
+
         $sut = $this->createNode();
 
         $sut->setContent(12);

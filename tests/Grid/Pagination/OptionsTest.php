@@ -17,11 +17,13 @@ class OptionsTest extends TestCase
     /** @var array */
     protected $pageSizeOptions = [5, 10, 25];
 
-    /** @var int  */
+    /** @var int */
     protected $numberCount = 33;
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->sut = new Options($this->defaultPageSize, $this->pageSizeOptions, $this->numberCount);
     }
 

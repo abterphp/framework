@@ -20,7 +20,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     /** @var ICacheBridge|null|MockObject */
     protected $cacheMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->cacheMock = null;
 

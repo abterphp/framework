@@ -16,7 +16,7 @@ class NavigationReadyTest extends TestCase
     /** @var NavigationReady */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->navigationMock = $this->getMockBuilder(Navigation::class)
             ->disableOriginalConstructor()
@@ -24,6 +24,8 @@ class NavigationReadyTest extends TestCase
             ->getMock();
 
         $this->sut = new NavigationReady($this->navigationMock);
+
+        parent::setUp();
     }
 
     public function testGetNavigation()

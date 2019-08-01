@@ -17,7 +17,7 @@ class HideableTest extends \PHPUnit\Framework\TestCase
         $actualResult   = (string)$sut;
         $repeatedResult = (string)$sut;
 
-        $this->assertContains($expectedResult, $actualResult);
+        $this->assertStringContainsString($expectedResult, $actualResult);
         $this->assertSame($actualResult, $repeatedResult);
     }
 
@@ -29,7 +29,7 @@ class HideableTest extends \PHPUnit\Framework\TestCase
 
         $actualResult = (string)$sut;
 
-        $this->assertContains((string)$sut->getHiderBtn(), $actualResult);
+        $this->assertStringContainsString((string)$sut->getHiderBtn(), $actualResult);
     }
 
     public function testGetExtendedNodesIncludesHiderBtn()
@@ -54,7 +54,7 @@ class HideableTest extends \PHPUnit\Framework\TestCase
 
         $sut->setTranslator($translatorMock);
 
-        $this->assertContains($expectedResult, (string)$sut->getHiderBtn());
+        $this->assertStringContainsString($expectedResult, (string)$sut->getHiderBtn());
     }
 
     public function testSetTemplateChangesRender()
@@ -67,6 +67,6 @@ class HideableTest extends \PHPUnit\Framework\TestCase
 
         $actualResult = (string)$sut;
 
-        $this->assertContains($expectedResult, $actualResult);
+        $this->assertStringContainsString($expectedResult, $actualResult);
     }
 }

@@ -9,8 +9,10 @@ class TemplateTest extends \PHPUnit\Framework\TestCase
     /** @var Template */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->sut = new Template();
     }
 

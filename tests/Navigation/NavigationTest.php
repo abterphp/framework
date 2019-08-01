@@ -6,7 +6,6 @@ namespace AbterPhp\Framework\Navigation;
 
 use AbterPhp\Framework\Html\Collection;
 use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\ICollection;
 use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\Node;
 use AbterPhp\Framework\I18n\ITranslator;
@@ -23,7 +22,7 @@ class NavigationTest extends TestCase
     /** @var Enforcer|MockObject */
     protected $enforcerMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -135,11 +134,10 @@ class NavigationTest extends TestCase
         $this->assertSame([$prefix, $postfix, $wrapper], $actualResult);
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testSetContent()
     {
+        $this->expectException(\LogicException::class);
+
         $sut = new Navigation();
 
         $sut->setContent('');
@@ -166,7 +164,7 @@ class NavigationTest extends TestCase
     public function testRenderDisplaysItemsInProperOrder()
     {
         $rawItems = [new Item('AAA'), new Item('BBB'), new Item('CCC'), new Item('DDD')];
-        $items = [
+        $items    = [
             100 => [$rawItems[0], $rawItems[1]],
             50  => [$rawItems[2]],
             75  => [$rawItems[3]],
@@ -188,9 +186,9 @@ class NavigationTest extends TestCase
     public function testGetWrapperReturnsNullByDefault()
     {
         $sut = new Navigation();
-        
+
         $actualResult = $sut->getWrapper();
-        
+
         $this->assertNull($actualResult);
     }
 

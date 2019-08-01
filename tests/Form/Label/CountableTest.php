@@ -107,6 +107,6 @@ class CountableTest extends \PHPUnit\Framework\TestCase
 
         $actualResult = (string)$sut;
 
-        $this->assertContains($expectedResult, $actualResult);
+        $this->assertStringContainsString($expectedResult, $actualResult);
     }
 }

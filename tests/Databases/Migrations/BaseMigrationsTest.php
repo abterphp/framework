@@ -28,7 +28,7 @@ class BaseMigrationTest extends TestCase
     /** @var string */
     protected $driverName = 'bar';
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
@@ -41,6 +41,8 @@ class BaseMigrationTest extends TestCase
             ->getMock();
 
         $this->sut = new BaseMigration($this->connectionMock, $this->fileFinderMock);
+
+        parent::setUp();
     }
 
     public function testGetCreationDateCreatesADateTime()

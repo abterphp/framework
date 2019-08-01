@@ -16,7 +16,7 @@ class DashboardReadyTest extends TestCase
     /** @var AuthReady */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->dashboardMock = $this->getMockBuilder(Dashboard::class)
             ->disableOriginalConstructor()
@@ -24,6 +24,8 @@ class DashboardReadyTest extends TestCase
             ->getMock();
 
         $this->sut = new DashboardReady($this->dashboardMock);
+
+        parent::setUp();
     }
 
     public function testGetDashboard()

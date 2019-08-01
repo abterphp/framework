@@ -21,7 +21,7 @@ class FlashServiceTest extends \PHPUnit\Framework\TestCase
     /** @var ITranslator|MockObject */
     protected $translatorMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

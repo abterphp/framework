@@ -133,12 +133,13 @@ class TextareaTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider setValueFailureProvider
-     * @expectedException \InvalidArgumentException
      *
      * @param mixed $value
      */
     public function testSetValueThrowsExceptionOnInvalid($value)
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $sut = new Textarea('id', 'name');
 
         $sut->setValue($value);

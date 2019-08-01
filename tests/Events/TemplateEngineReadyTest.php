@@ -16,7 +16,7 @@ class TemplateEngineReadyTest extends TestCase
     /** @var TemplateEngineReady */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->engineMock = $this->getMockBuilder(Engine::class)
             ->disableOriginalConstructor()
@@ -24,6 +24,8 @@ class TemplateEngineReadyTest extends TestCase
             ->getMock();
 
         $this->sut = new TemplateEngineReady($this->engineMock);
+
+        parent::setUp();
     }
 
     public function testGetEngine()

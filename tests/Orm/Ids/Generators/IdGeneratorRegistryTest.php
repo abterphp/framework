@@ -13,7 +13,7 @@ class IdGeneratorRegistryTest extends \PHPUnit\Framework\TestCase
     /** @var IdGeneratorRegistry System Under Test */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -50,7 +50,7 @@ class IdGeneratorRegistryTest extends \PHPUnit\Framework\TestCase
 
         $this->sut->registerIdGenerator($className, $idGenerator);
 
-        $actualResult   = $this->sut->getIdGenerator($className);
+        $actualResult = $this->sut->getIdGenerator($className);
 
         $this->assertSame($idGenerator, $actualResult);
     }

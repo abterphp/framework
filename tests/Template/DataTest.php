@@ -18,8 +18,10 @@ class DataTest extends \PHPUnit\Framework\TestCase
     /** @var string[] */
     protected $templates = ['one', 'two', 'three'];
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->sut = new Data($this->identifier, $this->vars, $this->templates);
     }
 

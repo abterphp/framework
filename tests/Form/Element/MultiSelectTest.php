@@ -152,9 +152,9 @@ class MultiSelectTest extends \PHPUnit\Framework\TestCase
 
         $sut->setValue(['2', '3']);
 
-        $this->assertNotContains(Html5::ATTR_SELECTED, (string)$option1);
-        $this->assertContains(Html5::ATTR_SELECTED, (string)$option2);
-        $this->assertContains(Html5::ATTR_SELECTED, (string)$option3);
+        $this->assertStringNotContainsString(Html5::ATTR_SELECTED, (string)$option1);
+        $this->assertStringContainsString(Html5::ATTR_SELECTED, (string)$option2);
+        $this->assertStringContainsString(Html5::ATTR_SELECTED, (string)$option3);
     }
 
     /**
@@ -174,12 +174,13 @@ class MultiSelectTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider setValueFailureProvider
-     * @expectedException \InvalidArgumentException
      *
      * @param mixed $value
      */
     public function testSetValueThrowsExceptionOnInvalid($value)
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $sut = new MultiSelect('id', 'name');
 
         $sut->setValue($value);

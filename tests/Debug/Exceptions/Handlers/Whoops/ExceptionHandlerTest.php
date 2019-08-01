@@ -20,7 +20,7 @@ class ExceptionHandlerTest extends TestCase
     /** @var ExceptionRenderer|MockObject */
     protected $exceptionRendererMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->loggerMock = $this->getMockBuilder(LoggerInterface::class)
             ->disableOriginalConstructor()

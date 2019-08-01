@@ -11,9 +11,9 @@ use PHPUnit\Framework\TestCase;
 class MockSessionFactory
 {
     /**
-     * @param TestCase $testCase
+     * @param TestCase   $testCase
      * @param array|null $sessionData
-     * @param string $name
+     * @param string     $name
      * @param string|int $id
      *
      * @return ISession|MockObject|null

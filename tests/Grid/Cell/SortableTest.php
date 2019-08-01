@@ -165,7 +165,7 @@ class SortableTest extends ComponentTest
         $sut->setBaseUrl($baseUrl);
         $sut->setParams($params);
 
-        $this->assertContains($baseUrl, (string)$sut);
+        $this->assertStringContainsString($baseUrl, (string)$sut);
     }
 
     /**
@@ -263,7 +263,7 @@ class SortableTest extends ComponentTest
     {
         $sut = $this->createNode($rawContent, 'g', 'i', 'f', [], null, null);
 
-        $this->assertContains($expectedResult, (string)$sut);
+        $this->assertStringContainsString($expectedResult, (string)$sut);
     }
 
     /**
@@ -292,7 +292,7 @@ class SortableTest extends ComponentTest
 
         $sut->setTranslator($translatorMock);
 
-        $this->assertContains($expectedResult, (string)$sut);
+        $this->assertStringContainsString($expectedResult, (string)$sut);
     }
 
     /**

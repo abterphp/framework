@@ -36,7 +36,7 @@ class NumbersTest extends \PHPUnit\Framework\TestCase
 
         $this->assertCount(count($expected), $sut);
         foreach ($expected as $idx => $content) {
-            $this->assertContains($content, (string)$sut[$idx]);
+            $this->assertStringContainsString($content, (string)$sut[$idx]);
         }
     }
 
@@ -56,10 +56,10 @@ class NumbersTest extends \PHPUnit\Framework\TestCase
 
         $sut->populate($currentPage, $pageNumbers, $lastPage);
 
-        $this->assertContains($finalUrl, (string)$sut[0]);
-        $this->assertContains($finalUrl, (string)$sut[1]);
-        $this->assertContains($finalUrl, (string)$sut[4]);
-        $this->assertContains($finalUrl, (string)$sut[6]);
-        $this->assertContains($finalUrl, (string)$sut[7]);
+        $this->assertStringContainsString($finalUrl, (string)$sut[0]);
+        $this->assertStringContainsString($finalUrl, (string)$sut[1]);
+        $this->assertStringContainsString($finalUrl, (string)$sut[4]);
+        $this->assertStringContainsString($finalUrl, (string)$sut[6]);
+        $this->assertStringContainsString($finalUrl, (string)$sut[7]);
     }
 }

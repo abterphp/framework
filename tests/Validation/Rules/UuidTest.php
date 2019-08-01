@@ -11,7 +11,7 @@ class UuidTest extends TestCase
     /** @var Uuid System Under Test */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

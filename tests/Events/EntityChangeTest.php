@@ -19,7 +19,7 @@ class EntityChangeTest extends TestCase
     /** @var string */
     protected $eventType = 'foo';
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->entityMock = $this->getMockBuilder(IStringerEntity::class)
             ->disableOriginalConstructor()
@@ -27,6 +27,8 @@ class EntityChangeTest extends TestCase
             ->getMock();
 
         $this->sut = new EntityChange($this->entityMock, $this->eventType);
+
+        parent::setUp();
     }
 
     public function testGetEntity()

@@ -16,13 +16,15 @@ class CacheManagerTest extends TestCase
     /** @var ICacheBridge|MockObject */
     protected $cacheBridgeMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->cacheBridgeMock = $this->getMockBuilder(ICacheBridge::class)
             ->setMethods(['decrement', 'delete', 'flush', 'get', 'has', 'increment', 'set'])
             ->getMock();
 
         $this->sut = new CacheManager($this->cacheBridgeMock);
+
+        parent::setUp();
     }
 
     public function testStoreAll()

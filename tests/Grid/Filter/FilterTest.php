@@ -23,8 +23,8 @@ abstract class FilterTest extends \PHPUnit\Framework\TestCase
         $actualResult   = (string)$sut;
         $repeatedResult = (string)$sut;
 
-        $this->assertContains($template, $actualResult);
-        $this->assertContains($actualResult, $repeatedResult);
+        $this->assertStringContainsString($template, $actualResult);
+        $this->assertStringContainsString($actualResult, $repeatedResult);
     }
 
     public function testGetExtendedNodesContainsLabelAndWrapper()

@@ -62,21 +62,19 @@ class LoaderTest extends \PHPUnit\Framework\TestCase
         $this->assertNotEmpty($actual);
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testSimpleCircularDependencyFound()
     {
+        $this->expectException(\LogicException::class);
+
         $loader = new Loader([__DIR__ . '/fixtures/self-referencing'], static::MODULE_FILE_NAME);
 
         $loader->loadModules();
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testComplexCircularDependencyFound()
     {
+        $this->expectException(\LogicException::class);
+
         $loader = new Loader([__DIR__ . '/fixtures/circular-dependency'], static::MODULE_FILE_NAME);
 
         $loader->loadModules();

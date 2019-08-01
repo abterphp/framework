@@ -199,11 +199,10 @@ class DropdownTest extends ComponentTest
         $this->assertSame($item2, $sut[1]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testArrayAccessThrowExceptionWhenMadeDirty()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $item1 = new Item('1');
 
         $sut = $this->createNode();

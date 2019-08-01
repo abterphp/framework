@@ -23,8 +23,10 @@ class ButtonFactoryTest extends TestCase
     /** @var string[][] */
     protected $textAttributes = [];
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->urlGeneratorMock = $this->getMockBuilder(UrlGenerator::class)
             ->disableOriginalConstructor()
             ->setMethods(['createFromName'])
@@ -119,7 +121,7 @@ class ButtonFactoryTest extends TestCase
 
     public function testCreateFromNameCanCreateComplexButtonWithIcon()
     {
-        $name = 'best-route-ever';
+        $name        = 'best-route-ever';
         $text        = 'button text';
         $icon        = 'hello';
         $textAttribs = ['attr5' => ['val7', 'val8'], 'attr6' => ['val9']];

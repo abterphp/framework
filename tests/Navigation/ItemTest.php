@@ -81,7 +81,7 @@ class ItemTest extends ComponentTest
     {
         $sut = $this->createNode($rawContent);
 
-        $this->assertContains($expectedResult, (string)$sut);
+        $this->assertStringContainsString($expectedResult, (string)$sut);
     }
 
     /**
@@ -98,7 +98,7 @@ class ItemTest extends ComponentTest
 
         $sut->setTranslator($translatorMock);
 
-        $this->assertContains($expectedResult, (string)$sut);
+        $this->assertStringContainsString($expectedResult, (string)$sut);
     }
 
     public function testGetResourceGetsLastSetResource()

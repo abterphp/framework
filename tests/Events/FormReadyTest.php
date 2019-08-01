@@ -16,7 +16,7 @@ class FormReadyTest extends TestCase
     /** @var FormReady */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->formMock = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
@@ -24,6 +24,8 @@ class FormReadyTest extends TestCase
             ->getMock();
 
         $this->sut = new FormReady($this->formMock);
+
+        parent::setUp();
     }
 
     public function testGetForm()

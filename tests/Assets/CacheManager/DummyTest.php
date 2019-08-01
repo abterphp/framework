@@ -14,7 +14,7 @@ class DummyTest extends TestCase
     /** @var Flysystem - System Under Test */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->sut = new Dummy();
 
@@ -63,21 +63,19 @@ class DummyTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testReadThrowsExceptionWhenThereAreNoFilesystemsRegistered()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $path = 'foo.ext';
 
         $this->sut->read($path);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testReadThrowsExceptionWhenNoMatchingFilesystemIsFound()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $fs = $this->createFilesystemMock();
 
         $this->sut->registerFilesystem(
@@ -166,22 +164,20 @@ class DummyTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testWriteThrowsExceptionWhenThereAreNoFilesystemsRegistered()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $path    = 'foo.ext';
         $content = 'bar';
 
         $this->sut->write($path, $content);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testWriteThrowsExceptionWhenNoMatchingFilesystemIsFound()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $fs = $this->createFilesystemMock();
 
         $this->sut->registerFilesystem(
@@ -269,7 +265,7 @@ class DummyTest extends TestCase
 
         $actualResult = $this->sut->getWebPath($path);
 
-        $this->assertContains($path, $actualResult);
+        $this->assertStringContainsString($path, $actualResult);
         $this->assertNotSame($path, $actualResult);
     }
 

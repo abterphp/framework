@@ -30,7 +30,7 @@ class CollectionTest extends NodeTestCase
     {
         $sut = $this->createNode($rawContent);
 
-        $this->assertContains($expectedResult, (string)$sut);
+        $this->assertStringContainsString($expectedResult, (string)$sut);
     }
 
     /**
@@ -61,7 +61,7 @@ class CollectionTest extends NodeTestCase
 
         $sut->setTranslator($translatorMock);
 
-        $this->assertContains($expectedResult, (string)$sut);
+        $this->assertStringContainsString($expectedResult, (string)$sut);
     }
 
     /**
@@ -158,11 +158,10 @@ class CollectionTest extends NodeTestCase
         $this->assertSame($node2, $sut[1]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testArrayAccessThrowExceptionWhenMadeDirty()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $node1 = new Node('1');
 
         $sut = $this->createNode();
@@ -205,21 +204,21 @@ class CollectionTest extends NodeTestCase
 
     /**
      * @dataProvider contentFailureProvider
-     *
-     * @expectedException \InvalidArgumentException
      */
     public function testConstructFailure($item)
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->createNode($item);
     }
 
     /**
      * @dataProvider contentFailureProvider
-     *
-     * @expectedException \InvalidArgumentException
      */
     public function testSetContentFailure($item)
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $sut = $this->createNode();
 
         $sut->setContent($item);
@@ -242,11 +241,11 @@ class CollectionTest extends NodeTestCase
 
     /**
      * @dataProvider offsetSetFailureProvider
-     *
-     * @expectedException \InvalidArgumentException
      */
     public function testArrayAccessFailureWithoutOffset($item)
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $sut = $this->createNode();
 
         $sut[] = $item;
@@ -254,11 +253,11 @@ class CollectionTest extends NodeTestCase
 
     /**
      * @dataProvider offsetSetFailureProvider
-     *
-     * @expectedException \InvalidArgumentException
      */
     public function testArrayAccessFailureWithExplicitOffset($item)
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $sut = $this->createNode();
 
         $sut[] = $item;

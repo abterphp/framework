@@ -22,24 +22,24 @@ abstract class NodeTestCase extends TestCase
     /**
      * @dataProvider setContentFailureProvider
      *
-     * @expectedException \InvalidArgumentException
-     *
      * @param mixed $content
      */
     public function testCreateFailure($content)
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->createNode($content);
     }
 
     /**
      * @dataProvider setContentFailureProvider
      *
-     * @expectedException \InvalidArgumentException
-     *
      * @param mixed $content
      */
     public function testSetContentFailure($content)
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $sut = $this->createNode();
 
         $sut->setContent($content);
@@ -72,7 +72,7 @@ abstract class NodeTestCase extends TestCase
     {
         $sut = $this->createNode($rawContent);
 
-        $this->assertContains($expectedResult, (string)$sut);
+        $this->assertStringContainsString($expectedResult, (string)$sut);
     }
 
     /**
@@ -101,7 +101,7 @@ abstract class NodeTestCase extends TestCase
 
         $sut->setTranslator($translatorMock);
 
-        $this->assertContains($expectedResult, (string)$sut);
+        $this->assertStringContainsString($expectedResult, (string)$sut);
     }
 
     /**

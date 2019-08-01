@@ -26,7 +26,7 @@ class GridTest extends \PHPUnit\Framework\TestCase
 
         $sut = new Grid($table);
 
-        $this->assertContains('!A!', (string)$sut);
+        $this->assertStringContainsString('!A!', (string)$sut);
     }
 
     public function testToStringContainsPagination()
@@ -48,7 +48,7 @@ class GridTest extends \PHPUnit\Framework\TestCase
 
         $sut = new Grid($table, $pagination);
 
-        $this->assertContains('!B!', (string)$sut);
+        $this->assertStringContainsString('!B!', (string)$sut);
     }
 
     public function testToStringContainsFilters()
@@ -70,7 +70,7 @@ class GridTest extends \PHPUnit\Framework\TestCase
 
         $sut = new Grid($table, null, $filters);
 
-        $this->assertContains('!C!', (string)$sut);
+        $this->assertStringContainsString('!C!', (string)$sut);
     }
 
     public function testToStringContainsActions()
@@ -92,7 +92,7 @@ class GridTest extends \PHPUnit\Framework\TestCase
 
         $sut = new Grid($table, null, null, $actions);
 
-        $this->assertContains('!D!', (string)$sut);
+        $this->assertStringContainsString('!D!', (string)$sut);
     }
 
     public function testToStringCanWrapContentInForm()
@@ -107,7 +107,7 @@ class GridTest extends \PHPUnit\Framework\TestCase
 
         $sut = new Grid($table);
 
-        $this->assertContains(Grid::TAG_GRID, (string)$sut);
+        $this->assertStringContainsString(Grid::TAG_GRID, (string)$sut);
     }
 
     public function testSetTemplateChangesToString()
@@ -126,14 +126,13 @@ class GridTest extends \PHPUnit\Framework\TestCase
 
         $sut->setTemplate($template);
 
-        $this->assertContains($template, (string)$sut);
+        $this->assertStringContainsString($template, (string)$sut);
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testGetPageThrowsExceptionIfPaginationIsMissing()
     {
+        $this->expectException(\LogicException::class);
+
         /** @var Table|MockObject $table */
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
@@ -187,11 +186,10 @@ class GridTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($sortConditions, $actualResult);
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testGetWhereConditionsThrowsExceptionIfFiltersIsMissing()
     {
+        $this->expectException(\LogicException::class);
+
         /** @var Table|MockObject $table */
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
@@ -226,11 +224,10 @@ class GridTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($whereConditions, $actualResult);
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testGetSqlParamsThrowsExceptionIfFiltersIsMissing()
     {
+        $this->expectException(\LogicException::class);
+
         /** @var Table|MockObject $table */
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()
@@ -275,11 +272,10 @@ class GridTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testSetTotalCountThrowsExceptionIfPaginationIsMissing()
     {
+        $this->expectException(\LogicException::class);
+
         /** @var Table|MockObject $table */
         $table = $this->getMockBuilder(Table::class)
             ->disableOriginalConstructor()

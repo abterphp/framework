@@ -441,7 +441,7 @@ class ComponentTest extends CollectionTest
     {
         $sut = $this->createNode($rawContent);
 
-        $this->assertContains($expectedResult, (string)$sut);
+        $this->assertStringContainsString($expectedResult, (string)$sut);
     }
 
     /**
@@ -458,7 +458,7 @@ class ComponentTest extends CollectionTest
 
         $sut->setTranslator($translatorMock);
 
-        $this->assertContains($expectedResult, (string)$sut);
+        $this->assertStringContainsString($expectedResult, (string)$sut);
     }
 
     /**

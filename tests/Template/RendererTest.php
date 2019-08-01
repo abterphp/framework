@@ -17,7 +17,7 @@ class RendererTest extends \PHPUnit\Framework\TestCase
     /** @var Factory|MockObject */
     protected $templateFactoryMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -175,11 +175,10 @@ class RendererTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testRenderThrowsExceptionIfLoaderIsNotSetForType()
     {
+        $this->expectException(\RuntimeException::class);
+
         $this->addTemplate(0, ['foo' => ['foo0']], 'rendered');
 
         $this->sut->render('', []);

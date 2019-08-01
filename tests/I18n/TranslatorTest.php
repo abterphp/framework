@@ -16,13 +16,15 @@ class TranslatorTest extends TestCase
      */
     protected $translationData = [
         'foo' => [
-            'bar' => 'baz',
+            'bar'        => 'baz',
             'replacable' => 'baz %2$s %1$s',
         ],
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->sut = new Translator($this->translationData);
     }
 

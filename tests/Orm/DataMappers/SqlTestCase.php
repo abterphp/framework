@@ -12,7 +12,7 @@ use Opulence\Databases\IStatement;
 use PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
 use PHPUnit\Framework\MockObject\Matcher\InvokedAtIndex;
 use PHPUnit\Framework\MockObject\Matcher\InvokedCount;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 abstract class SqlTestCase extends \PHPUnit\Framework\TestCase
 {
@@ -29,7 +29,7 @@ abstract class SqlTestCase extends \PHPUnit\Framework\TestCase
     /** @var ConnectionPool|MockObject */
     protected $connectionPoolMock;
 
-    public function setUp()
+    public function setUp():void
     {
         parent::setUp();
 

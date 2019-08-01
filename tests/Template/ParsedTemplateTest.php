@@ -21,8 +21,10 @@ class ParsedTemplateTest extends \PHPUnit\Framework\TestCase
     /** @var string[] */
     protected $occurences = ['one', 'two', 'three'];
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->sut = new ParsedTemplate($this->type, $this->identifier, $this->attributes, $this->occurences);
     }
 

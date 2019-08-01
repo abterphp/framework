@@ -20,8 +20,10 @@ class UploaderTest extends TestCase
     /** @var string */
     protected $fileManagerPath = '/root/to/path';
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->filesystemMock = $this->getMockBuilder(Filesystem::class)
             ->disableOriginalConstructor()
             ->setMethods(['has', 'read', 'delete', 'readStream', 'getSize'])

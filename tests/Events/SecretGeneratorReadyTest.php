@@ -16,7 +16,7 @@ class SecretGeneratorReadyTest extends TestCase
     /** @var SecretGeneratorReady */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->secretGeneratorMock = $this->getMockBuilder(SecretGenerator::class)
             ->disableOriginalConstructor()
@@ -24,6 +24,8 @@ class SecretGeneratorReadyTest extends TestCase
             ->getMock();
 
         $this->sut = new SecretGeneratorReady($this->secretGeneratorMock);
+
+        parent::setUp();
     }
 
     public function testGetSecretGenerator()

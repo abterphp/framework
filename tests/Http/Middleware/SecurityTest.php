@@ -17,8 +17,10 @@ class SecurityTest extends TestCase
     /** @var ArrayBridge|MockObject */
     protected $cacheBridgeMock;
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->cacheBridgeMock = $this->getMockBuilder(ArrayBridge::class)
             ->disableOriginalConstructor()
             ->setMethods(['get', 'set'])
@@ -289,13 +291,13 @@ class SecurityTest extends TestCase
     /**
      * @dataProvider handleThrowsSecurityExceptionIfNeededProvider
      *
-     * @expectedException \AbterPhp\Framework\Exception\Security
-     *
      * @param array $environmentData
      * @param array $settingsData
      */
     public function testHandleThrowsSecurityExceptionIfNeeded(array $environmentData, array $settingsData)
     {
+        $this->expectException(\AbterPhp\Framework\Exception\Security::class);
+
         $sut = new Security($this->cacheBridgeMock, Environment::PRODUCTION);
 
         /** @var Request|MockObject $requestMock */

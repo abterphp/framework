@@ -26,7 +26,7 @@ class SenderTest extends TestCase
     /** @var array */
     protected $recipients = ['john@example.com', 'jane' => 'jane@example.com'];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

@@ -216,12 +216,12 @@ class ArrayHelperTest extends TestCase
     /**
      * @dataProvider formatAttributeFailureProvider
      *
-     * @expectedException \InvalidArgumentException
-     *
      * @param mixed $value
      */
     public function testFormatAttributeFailure($value)
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         ArrayHelper::formatAttribute($value);
     }
 
