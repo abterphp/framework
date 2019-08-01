@@ -5,7 +5,7 @@ namespace AbterPhp\Framework\Bootstrappers\Filesystem;
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Filesystem\FileFinder;
 use AbterPhp\Framework\Filesystem\IFileFinder;
-use AbterPhp\Framework\Module\Manager;
+use AbterPhp\Framework\Module\Manager; // @phan-suppress-current-line PhanUnreferencedUseNormal
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;

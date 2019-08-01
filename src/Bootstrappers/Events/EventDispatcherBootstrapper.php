@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Bootstrappers\Events;
 
-use AbterPhp\Framework\Module\Manager;// @phan-suppress-current-line PhanUnreferencedUseNormal
+use AbterPhp\Framework\Module\Manager; // @phan-suppress-current-line PhanUnreferencedUseNormal
 use Opulence\Framework\Configuration\Config;
 use Opulence\Framework\Events\Bootstrappers\EventDispatcherBootstrapper as BaseBootstrapper;
 
