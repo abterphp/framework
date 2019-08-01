@@ -30,7 +30,7 @@ class NumbersTest extends \PHPUnit\Framework\TestCase
      */
     public function testPopulate(int $currentPage, array $pageNumbers, int $lastPage, array $expected)
     {
-        $sut = new Numbers('/foo');
+        $sut = new Numbers('/foo?');
 
         $sut->populate($currentPage, $pageNumbers, $lastPage);
 
@@ -38,5 +38,28 @@ class NumbersTest extends \PHPUnit\Framework\TestCase
         foreach ($expected as $idx => $content) {
             $this->assertContains($content, (string)$sut[$idx]);
         }
+    }
+
+    public function testPopulateWithChangedBaseUrl()
+    {
+        $originalUrl = '/foo?';
+        $finalUrl    = '/bar?';
+
+        $currentPage = 2;
+        $pageNumbers = [2, 3];
+        $lastPage    = 10;
+        // $expected    = ['<<', '<', '...', '2', '3', '...', '>', '>>'];
+
+        $sut = new Numbers($originalUrl);
+
+        $sut->setBaseUrl($finalUrl);
+
+        $sut->populate($currentPage, $pageNumbers, $lastPage);
+
+        $this->assertContains($finalUrl, (string)$sut[0]);
+        $this->assertContains($finalUrl, (string)$sut[1]);
+        $this->assertContains($finalUrl, (string)$sut[4]);
+        $this->assertContains($finalUrl, (string)$sut[6]);
+        $this->assertContains($finalUrl, (string)$sut[7]);
     }
 }

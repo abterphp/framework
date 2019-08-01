@@ -123,4 +123,43 @@ class PaginationTest extends TestCase
         $this->assertInstanceOf(Numbers::class, $actualResult[0]);
         $this->assertInstanceOf(Select::class, $actualResult[1]);
     }
+
+    public function testTemplateIsChangeable()
+    {
+        $sut = new Pagination([], '', 5, 10, [10], [], []);
+
+        $sut->setTemplate('<foo>%1$s</foo><bar>%2$s%3$s</bar>');
+
+        $this->assertRegExp('/\<foo\>.*\<\/foo\>\<bar\>.*\<\/bar\>/', (string)$sut);
+    }
+
+    public function testSetSortedUrlCanSetsUrlOnNumbersBeforeTotalCountIsSet()
+    {
+        $url = '/foo?';
+
+        $sut = new Pagination([], '', 5, 10, [10], [], []);
+
+        $sut->setSortedUrl($url);
+
+        $sut->setTotalCount(100);
+
+        $actualResult = (string)$sut;
+
+        $this->assertContains($url, $actualResult);
+    }
+
+    public function testSetSortedUrlCanNotSetsUrlOnNumbersAfterTotalCountIsSet()
+    {
+        $url = '/foo?';
+
+        $sut = new Pagination([], '', 5, 10, [10], [], []);
+
+        $sut->setTotalCount(100);
+
+        $sut->setSortedUrl($url);
+
+        $actualResult = (string)$sut;
+
+        $this->assertNotContains($url, $actualResult);
+    }
 }
