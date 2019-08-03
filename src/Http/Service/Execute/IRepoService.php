@@ -24,6 +24,17 @@ interface IRepoService
     public function retrieveEntity(string $entityId): IStringerEntity;
 
     /**
+     * @param int      $offset
+     * @param int      $limit
+     * @param string[] $orders
+     * @param array    $conditions
+     * @param array    $params
+     *
+     * @return IStringerEntity[]
+     */
+    public function retrieveList(int $offset, int $limit, array $orders, array $conditions, array $params): array;
+
+    /**
      * @param string $entityId
      *
      * @return IStringerEntity
