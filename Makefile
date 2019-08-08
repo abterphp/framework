@@ -21,9 +21,9 @@ precommit:
 	./vendor/bin/phpcs -p --colors --cache --standard=PSR12 tests
 
 unit:
-	./vendor/bin/phpunit --no-coverage --testsuite=unit
+	./vendor/bin/phpunit --no-coverage
 
 coverage:
-	./vendor/bin/phpunit --testsuite=unit
+	./vendor/bin/phpunit
 
 .PHONY: install update build precommit unit integration coverage
