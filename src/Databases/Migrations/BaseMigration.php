@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Databases\Migrations;
 
-use AbterPhp\Framework\Filesystem\FileFinder;
+use AbterPhp\Framework\Filesystem\IFileFinder;
 use DateTime;
+use Exception;
+use League\Flysystem\FileNotFoundException;
 use Opulence\Databases\IConnection;
 use Opulence\Databases\Migrations\Migration;
 
@@ -16,16 +18,16 @@ class BaseMigration extends Migration
     const UP   = 'up';
     const DOWN = 'down';
 
-    /** @var FileFinder */
+    /** @var IFileFinder */
     protected $fileFinder;
 
     /**
      * Init constructor.
      *
      * @param IConnection $connection
-     * @param FileFinder  $fileFinder
+     * @param IFileFinder $fileFinder
      */
-    public function __construct(IConnection $connection, FileFinder $fileFinder)
+    public function __construct(IConnection $connection, IFileFinder $fileFinder)
     {
         parent::__construct($connection);
 
@@ -33,9 +35,8 @@ class BaseMigration extends Migration
     }
 
     /**
-     * Gets the creation date, which is used for ordering
-     *
-     * @return DateTime The date this migration was created
+     * @return DateTime
+     * @throws Exception
      */
     public static function getCreationDate(): DateTime
     {
@@ -44,6 +45,8 @@ class BaseMigration extends Migration
 
     /**
      * Executes the query that rolls back the migration
+     *
+     * @throws FileNotFoundException
      */
     public function down(): void
     {
@@ -54,6 +57,8 @@ class BaseMigration extends Migration
 
     /**
      * Executes the query that commits the migration
+     *
+     * @throws FileNotFoundException
      */
     public function up(): void
     {
@@ -67,6 +72,7 @@ class BaseMigration extends Migration
      * @param string $direction
      *
      * @return string
+     * @throws FileNotFoundException
      */
     protected function load(string $filename, string $direction): string
     {
