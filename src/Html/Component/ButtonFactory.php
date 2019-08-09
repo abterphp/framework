@@ -34,9 +34,9 @@ class ButtonFactory
      * ButtonFactory constructor.
      *
      * @param UrlGenerator $urlGenerator
-     * @param string[][]   $textAttributes
-     * @param string[][]   $iconAttributes
-     * @param string[][]   $attributes
+     * @param array        $textAttributes
+     * @param array        $iconAttributes
+     * @param array        $attributes
      * @param string       $textTag
      * @param string       $iconTag
      */

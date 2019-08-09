@@ -24,7 +24,7 @@ class Select extends Component implements IElement
      * @param string      $inputId
      * @param string      $name
      * @param string[]    $intents
-     * @param string[][]  $attributes
+     * @param array       $attributes
      * @param string|null $tag
      */
     public function __construct(

@@ -28,7 +28,7 @@ class Label extends Component
      * @param string                    $inputId
      * @param INode[]|INode|string|null $content
      * @param string[]                  $intents
-     * @param string[][]                $attributes
+     * @param array                     $attributes
      * @param string|null               $tag
      */
     public function __construct(

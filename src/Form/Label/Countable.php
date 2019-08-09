@@ -38,7 +38,7 @@ class Countable extends Label implements ITemplater
      * @param INode[]|INode|string|null $content
      * @param int                       $size
      * @param string[]                  $intents
-     * @param string[][]                $attributes
+     * @param array                     $attributes
      * @param string|null               $tag
      */
     public function __construct(

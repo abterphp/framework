@@ -48,7 +48,7 @@ class Input extends Tag implements IElement
      * @param string      $name
      * @param string      $value
      * @param string[]    $intents
-     * @param string[][]  $attributes
+     * @param array       $attributes
      * @param string|null $tag
      */
     public function __construct(

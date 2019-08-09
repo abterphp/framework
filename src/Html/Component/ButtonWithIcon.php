@@ -35,7 +35,7 @@ class ButtonWithIcon extends Button implements ITemplater
      * @param IComponent  $text
      * @param IComponent  $icon
      * @param string[]    $intents
-     * @param string[][]  $attributes
+     * @param array       $attributes
      * @param string|null $tag
      */
     public function __construct(

@@ -11,7 +11,7 @@ class StringHelper
     /**
      * @param string|IComponent $content
      * @param string|null       $tag
-     * @param string[][]        $attributes
+     * @param array             $attributes
      * @param string            $whitespace
      *
      * @return string

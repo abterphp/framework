@@ -24,8 +24,8 @@ class ArrayHelper
     }
 
     /**
-     * @param string[][] $attributes
-     * @param string     $prefix string to prepend if the result is not empty
+     * @param array  $attributes
+     * @param string $prefix string to prepend if the result is not empty
      *
      * @return string
      */
