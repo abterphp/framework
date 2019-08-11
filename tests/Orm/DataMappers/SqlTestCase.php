@@ -107,7 +107,7 @@ abstract class SqlTestCase extends \PHPUnit\Framework\TestCase
     protected function assertCollection(array $expectedData, $collection)
     {
         $this->assertNotNull($collection);
-        $this->assertInternalType('array', $collection);
+        $this->assertIsArray($collection);
         $this->assertCount(count($expectedData), $collection);
 
         foreach ($collection as $key => $entity) {
