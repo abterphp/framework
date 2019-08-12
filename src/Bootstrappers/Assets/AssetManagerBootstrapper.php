@@ -27,9 +27,6 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
     {
         return [
             AssetManager::class,
-            DummyCacheManager::class,
-            FlysystemCacheManager::class,
-            ICacheManager::class,
         ];
     }
 
