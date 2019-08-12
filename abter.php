@@ -14,6 +14,7 @@ return [
     Module::ENABLED            => true,
     Module::BOOTSTRAPPERS      => [
         Bootstrappers\Assets\AssetManagerBootstrapper::class,
+        Bootstrappers\Assets\CacheManagerBootstrapper::class,
         Bootstrappers\Authorization\CacheManagerBootstrapper::class,
         Bootstrappers\Cache\CacheBootstrapper::class,
         Bootstrappers\Crypto\CryptoBootstrapper::class,

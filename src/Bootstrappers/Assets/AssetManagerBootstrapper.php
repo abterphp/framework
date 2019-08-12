@@ -13,7 +13,6 @@ use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Filesystem\FileFinder;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
-use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -51,12 +50,9 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
         /** @var FileFinder $fileFinder */
         $fileFinder = $container->resolve(FileFinder::class);
 
+        /** @var ICacheManager $cacheManager */
+        $cacheManager = $container->resolve(ICacheManager::class);
         $minifierFactory = new MinifierFactory();
-        if (Environment::getVar(Env::ENV_NAME) === Environment::DEVELOPMENT) {
-            $cacheManager = new DummyCacheManager();
-        } else {
-            $cacheManager = new FlysystemCacheManager();
-        }
 
         $this->registerCachePaths($cacheManager);
 
