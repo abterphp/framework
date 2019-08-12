@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Bootstrappers\Assets;
 
 use AbterPhp\Framework\Assets\AssetManager;
-use AbterPhp\Framework\Assets\CacheManager\Dummy as DummyCacheManager;
-use AbterPhp\Framework\Assets\CacheManager\Flysystem as FlysystemCacheManager;
 use AbterPhp\Framework\Assets\CacheManager\ICacheManager;
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
 use AbterPhp\Framework\Constant\Env;
