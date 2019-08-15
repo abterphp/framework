@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Cell;
 
-use AbterPhp\Framework\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\Html\ComponentTest;
 use AbterPhp\Framework\Html\Helper\ArrayHelper;
-use AbterPhp\Framework\I18n\MockTranslatorFactory;
+use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
+use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 
 class SortableTest extends ComponentTest
 {

@@ -8,10 +8,11 @@ use AbterPhp\Framework\Constant\Event;
 use AbterPhp\Framework\Constant\Module;
 use Opulence\Cache\ICacheBridge;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class ManagerTest extends \PHPUnit\Framework\TestCase
+class ManagerTest extends TestCase
 {
-    /** @var Manager */
+    /** @var Manager - System Under Test */
     protected $sut;
 
     /** @var Loader|MockObject */
@@ -26,7 +27,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
 
         $this->loaderMock = $this->getMockBuilder(Loader::class)
             ->disableOriginalConstructor()
-            ->setMethods(['loadModules'])
+            ->onlyMethods(['loadModules'])
             ->getMock();
 
         $this->sut = new Manager($this->loaderMock);
@@ -38,7 +39,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     {
         $this->cacheMock = $this->getMockBuilder(Loader::class)
             ->disableOriginalConstructor()
-            ->setMethods(['loadModules'])
+            ->onlyMethods(['loadModules'])
             ->getMock();
 
         $this->sut = new Manager($this->loaderMock, $this->cacheMock);
@@ -852,7 +853,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
         /** @var ICacheBridge|MockObject $cacheBridge */
         $cacheBridge = $this->getMockBuilder(ICacheBridge::class)
             ->disableOriginalConstructor()
-            ->setMethods(['has', 'get', 'set', 'decrement', 'increment', 'delete', 'flush'])
+            ->onlyMethods(['has', 'get', 'set', 'decrement', 'increment', 'delete', 'flush'])
             ->getMock();
 
         return $cacheBridge;

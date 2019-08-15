@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Databases\Queries;
 
-use AbterPhp\Framework\Orm\DataMappers\SqlTestCase;
+use AbterPhp\Framework\TestCase\Database\QueryTestCase;
 
-class FoundRowsTest extends SqlTestCase
+class FoundRowsTest extends QueryTestCase
 {
-    /** @var FoundRows System Under Test */
+    /** @var FoundRows - System Under Test */
     protected $sut;
 
     public function setUp(): void
@@ -25,9 +25,9 @@ class FoundRowsTest extends SqlTestCase
         $mockStatement = $this->createReadColumnStatement(
             [],
             "$expectedResult",
-            SqlTestCase::EXPECTATION_ANY,
-            SqlTestCase::EXPECTATION_ANY,
-            SqlTestCase::EXPECTATION_ANY
+            QueryTestCase::EXPECTATION_ANY,
+            QueryTestCase::EXPECTATION_ANY,
+            QueryTestCase::EXPECTATION_ANY
         );
 
         $this->readConnectionMock
@@ -48,9 +48,9 @@ class FoundRowsTest extends SqlTestCase
         $mockStatement = $this->createReadColumnStatement(
             [],
             "$returnValue",
-            SqlTestCase::EXPECTATION_ANY,
-            SqlTestCase::EXPECTATION_ANY,
-            SqlTestCase::EXPECTATION_ANY,
+            QueryTestCase::EXPECTATION_ANY,
+            QueryTestCase::EXPECTATION_ANY,
+            QueryTestCase::EXPECTATION_ANY,
             false
         );
 
@@ -62,13 +62,5 @@ class FoundRowsTest extends SqlTestCase
         $actualResult = $this->sut->get();
 
         $this->assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @param array  $expectedData
-     * @param object $entity
-     */
-    protected function assertEntity(array $expectedData, $entity)
-    {
     }
 }

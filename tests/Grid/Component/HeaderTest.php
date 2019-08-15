@@ -9,8 +9,9 @@ use AbterPhp\Framework\Grid\Cell\Sortable;
 use AbterPhp\Framework\Grid\Collection\Cells;
 use AbterPhp\Framework\Grid\Row\IRow;
 use AbterPhp\Framework\Grid\Row\Row;
+use PHPUnit\Framework\TestCase;
 
-class HeaderTest extends \PHPUnit\Framework\TestCase
+class HeaderTest extends TestCase
 {
     public function testSetBaseUrlSetsBaseUrlOfAllSortables()
     {

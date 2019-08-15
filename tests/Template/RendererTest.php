@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Template;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class RendererTest extends \PHPUnit\Framework\TestCase
+class RendererTest extends TestCase
 {
-    /** @var Renderer */
+    /** @var Renderer - System Under Test */
     protected $sut;
 
     /** @var Template|MockObject */
@@ -23,7 +24,7 @@ class RendererTest extends \PHPUnit\Framework\TestCase
 
         $this->templateFactoryMock = $this->getMockBuilder(Factory::class)
             ->disableOriginalConstructor()
-            ->setMethods(['create'])
+            ->onlyMethods(['create'])
             ->getMock();
 
         $this->sut = new Renderer($this->templateFactoryMock);
@@ -41,7 +42,7 @@ class RendererTest extends \PHPUnit\Framework\TestCase
         /** @var Template|MockObject $templateMock */
         $templateMock = $this->getMockBuilder(Template::class)
             ->disableOriginalConstructor()
-            ->setMethods(['setVars', 'setTypes', 'parse', 'render'])
+            ->onlyMethods(['setVars', 'setTypes', 'parse', 'render'])
             ->getMock();
         $templateMock->expects($this->any())->method('setVars')->willReturnSelf();
         $templateMock->expects($this->any())->method('setTypes')->willReturnSelf();
@@ -96,7 +97,7 @@ class RendererTest extends \PHPUnit\Framework\TestCase
             /** @var ILoader|MockObject $loaderMock */
             $loaderMock = $this->getMockBuilder(ILoader::class)
                 ->disableOriginalConstructor()
-                ->setMethods(['load', 'hasAnyChangedSince'])
+                ->onlyMethods(['load', 'hasAnyChangedSince'])
                 ->getMock();
             $loaderMock->expects($this->any())->method('hasAnyChangedSince')->willReturn($hasAnyChangedSinceValue);
 
@@ -163,7 +164,7 @@ class RendererTest extends \PHPUnit\Framework\TestCase
             /** @var ILoader|MockObject $loaderMock */
             $loaderMock = $this->getMockBuilder(ILoader::class)
                 ->disableOriginalConstructor()
-                ->setMethods(['load', 'hasAnyChangedSince'])
+                ->onlyMethods(['load', 'hasAnyChangedSince'])
                 ->getMock();
             $loaderMock->expects($this->any())->method('load')->willReturn($entities);
 

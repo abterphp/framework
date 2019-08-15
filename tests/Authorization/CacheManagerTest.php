@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class CacheManagerTest extends TestCase
 {
-    /** @var CacheManager */
+    /** @var CacheManager - System Under Test */
     protected $sut;
 
     /** @var ICacheBridge|MockObject */
@@ -19,7 +19,7 @@ class CacheManagerTest extends TestCase
     public function setUp(): void
     {
         $this->cacheBridgeMock = $this->getMockBuilder(ICacheBridge::class)
-            ->setMethods(['decrement', 'delete', 'flush', 'get', 'has', 'increment', 'set'])
+            ->onlyMethods(['decrement', 'delete', 'flush', 'get', 'has', 'increment', 'set'])
             ->getMock();
 
         $this->sut = new CacheManager($this->cacheBridgeMock);

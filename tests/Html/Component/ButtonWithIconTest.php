@@ -8,7 +8,8 @@ use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\Helper\ArrayHelper;
 use AbterPhp\Framework\Html\IComponent;
-use AbterPhp\Framework\I18n\MockTranslatorFactory;
+use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
+use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use PHPUnit\Framework\TestCase;
 
 class ButtonWithIconTest extends TestCase
@@ -66,17 +67,6 @@ class ButtonWithIconTest extends TestCase
         $this->assertSame($expectedResult, $actualResult2);
     }
 
-    /**
-     * @dataProvider renderProvider
-     *
-     * @param IComponent  $text
-     * @param IComponent  $icon
-     * @param array       $intents
-     * @param array       $attributes
-     * @param array|null  $translations
-     * @param string|null $tag
-     * @param string      $expectedResult
-     */
     public function testSetTemplateChangesToString()
     {
         $template = '--||--';

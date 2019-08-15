@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace AbterPhp\Framework\Html;
+namespace AbterPhp\Framework\TestCase\Html;
 
-use AbterPhp\Framework\I18n\MockTranslatorFactory;
+use AbterPhp\Framework\Html\INode;
+use AbterPhp\Framework\Html\Node;
+use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use PHPUnit\Framework\TestCase;
 
 abstract class NodeTestCase extends TestCase

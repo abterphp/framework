@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Template;
 
-class TemplateTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class TemplateTest extends TestCase
 {
-    /** @var Template */
+    /** @var Template - System Under Test */
     protected $sut;
 
     public function setUp(): void

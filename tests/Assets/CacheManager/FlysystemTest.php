@@ -29,7 +29,7 @@ class FlysystemTest extends TestCase
     {
         return $this->getMockBuilder(Filesystem::class)
             ->disableOriginalConstructor()
-            ->setMethods(['has', 'read', 'write', 'listContents', 'delete', 'getTimestamp'])
+            ->onlyMethods(['has', 'read', 'write', 'listContents', 'delete', 'getTimestamp'])
             ->getMock();
     }
 

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Grid\Component;
 
 use AbterPhp\Framework\Grid\Action\Action;
+use PHPUnit\Framework\TestCase;
 
-class ActionsTest extends \PHPUnit\Framework\TestCase
+class ActionsTest extends TestCase
 {
     public function testDuplicateWithEmptyNodes()
     {

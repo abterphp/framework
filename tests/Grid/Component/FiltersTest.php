@@ -6,10 +6,11 @@ namespace AbterPhp\Framework\Grid\Component;
 
 use AbterPhp\Framework\Grid\Filter\Filter;
 use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\I18n\MockTranslatorFactory;
+use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class FiltersTest extends \PHPUnit\Framework\TestCase
+class FiltersTest extends TestCase
 {
     public function testNodesMustBeFilters()
     {
@@ -26,12 +27,12 @@ class FiltersTest extends \PHPUnit\Framework\TestCase
 
         /** @var Filter|MockObject $filter0 */
         $filter0 = $this->getMockBuilder(Filter::class)
-            ->setMethods(['setParams'])
+            ->onlyMethods(['setParams'])
             ->getMock();
 
         /** @var Filter|MockObject $filter1 */
         $filter1 = $this->getMockBuilder(Filter::class)
-            ->setMethods(['setParams'])
+            ->onlyMethods(['setParams'])
             ->getMock();
 
         $sut = new Filters();
@@ -75,7 +76,7 @@ class FiltersTest extends \PHPUnit\Framework\TestCase
         foreach ($whereConditions as $queryPart) {
             /** @var Filter|MockObject $filter */
             $filter = $this->getMockBuilder(Filter::class)
-                ->setMethods(['getQueryPart'])
+                ->onlyMethods(['getQueryPart'])
                 ->getMock();
 
             $filter->expects($this->once())->method('getQueryPart')->willReturn($queryPart);
@@ -119,7 +120,7 @@ class FiltersTest extends \PHPUnit\Framework\TestCase
         foreach ($whereConditions as $whereCondition) {
             /** @var Filter|MockObject $filter */
             $filter = $this->getMockBuilder(Filter::class)
-                ->setMethods(['getWhereConditions'])
+                ->onlyMethods(['getWhereConditions'])
                 ->getMock();
 
             $filter->expects($this->once())->method('getWhereConditions')->willReturn($whereCondition);
@@ -163,7 +164,7 @@ class FiltersTest extends \PHPUnit\Framework\TestCase
         foreach ($sqlParams as $sqlParamsPiece) {
             /** @var Filter|MockObject $filter */
             $filter = $this->getMockBuilder(Filter::class)
-                ->setMethods(['getQueryParams'])
+                ->onlyMethods(['getQueryParams'])
                 ->getMock();
 
             $filter->expects($this->once())->method('getQueryParams')->willReturn($sqlParamsPiece);
@@ -200,7 +201,7 @@ class FiltersTest extends \PHPUnit\Framework\TestCase
         for ($i = 0; $i < $filterCount; $i++) {
             /** @var Filter|MockObject $filter */
             $filter = $this->getMockBuilder(Filter::class)
-                ->setMethods(['setTranslator'])
+                ->onlyMethods(['setTranslator'])
                 ->getMock();
 
             $filter->expects($this->once())->method('setTranslator')->with($mockTranslator);
@@ -265,7 +266,7 @@ class FiltersTest extends \PHPUnit\Framework\TestCase
 
         for ($i = 0; $i < $filterCount; $i++) {
             /** @var Filter|MockObject $filter */
-            $filter = $this->getMockBuilder(Filter::class)->setMethods(['__toString'])->getMock();
+            $filter = $this->getMockBuilder(Filter::class)->onlyMethods(['__toString'])->getMock();
             $filter->expects($this->atLeastOnce())->method('__toString')->willReturn("filter-$i");
             $sut[] = $filter;
         }

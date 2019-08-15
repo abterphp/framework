@@ -10,10 +10,11 @@ use AbterPhp\Framework\Form\Element\Input;
 use AbterPhp\Framework\Form\Extra\Help;
 use AbterPhp\Framework\Form\Label\Label;
 use AbterPhp\Framework\Html\INode;
-use AbterPhp\Framework\I18n\MockTranslatorFactory;
+use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class FormGroupTest extends \PHPUnit\Framework\TestCase
+class FormGroupTest extends TestCase
 {
     /**
      * @return array
@@ -75,18 +76,18 @@ class FormGroupTest extends \PHPUnit\Framework\TestCase
         /** @var IElement|MockObject $inputMock */
         $inputMock = $this->getMockBuilder(Input::class)
             ->disableOriginalConstructor()
-            ->setMethods(['__toString'])
+            ->onlyMethods(['__toString'])
             ->getMock();
 
         /** @var Label|MockObject $labelMock */
         $labelMock = $this->getMockBuilder(Label::class)
             ->disableOriginalConstructor()
-            ->setMethods(['__toString'])
+            ->onlyMethods(['__toString'])
             ->getMock();
 
         /** @var Help|MockObject $helpMock */
         $helpMock = $this->getMockBuilder(Help::class)
-            ->setMethods(['__toString'])
+            ->onlyMethods(['__toString'])
             ->getMock();
 
         $inputMock->expects($this->any())->method('__toString')->willReturn($inputOutput);
@@ -168,13 +169,13 @@ class FormGroupTest extends \PHPUnit\Framework\TestCase
         /** @var Input|MockObject $input */
         $input = $this->getMockBuilder(Input::class)
             ->disableOriginalConstructor()
-            ->setMethods([])
+            ->onlyMethods([])
             ->getMock();
 
         /** @var Label|MockObject $label */
         $label = $this->getMockBuilder(Label::class)
             ->disableOriginalConstructor()
-            ->setMethods([])
+            ->onlyMethods([])
             ->getMock();
 
         $sut = new FormGroup($input, $label);
@@ -189,13 +190,13 @@ class FormGroupTest extends \PHPUnit\Framework\TestCase
         /** @var Input|MockObject $input */
         $input = $this->getMockBuilder(Input::class)
             ->disableOriginalConstructor()
-            ->setMethods([])
+            ->onlyMethods([])
             ->getMock();
 
         /** @var Label|MockObject $label */
         $label = $this->getMockBuilder(Label::class)
             ->disableOriginalConstructor()
-            ->setMethods([])
+            ->onlyMethods([])
             ->getMock();
 
         $sut = new FormGroup($input, $label);
@@ -210,13 +211,13 @@ class FormGroupTest extends \PHPUnit\Framework\TestCase
         /** @var Input|MockObject $input */
         $input = $this->getMockBuilder(Input::class)
             ->disableOriginalConstructor()
-            ->setMethods([])
+            ->onlyMethods([])
             ->getMock();
 
         /** @var Label|MockObject $label */
         $label = $this->getMockBuilder(Label::class)
             ->disableOriginalConstructor()
-            ->setMethods([])
+            ->onlyMethods([])
             ->getMock();
 
         /** @var INode|MockObject $help */

@@ -12,7 +12,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class TableTest extends TestCase
 {
-    /** @var Table */
+    /** @var Table - System Under Test */
     protected $sut;
 
     /** @var Body|MockObject */
@@ -27,12 +27,12 @@ class TableTest extends TestCase
 
         $this->body = $this->getMockBuilder(Body::class)
             ->disableOriginalConstructor()
-            ->setMethods(['__toString', 'setEntities'])
+            ->onlyMethods(['__toString', 'setEntities'])
             ->getMock();
 
         $this->header = $this->getMockBuilder(Header::class)
             ->disableOriginalConstructor()
-            ->setMethods(['__toString', 'getSortedUrl', 'getSortConditions', 'getQueryParams'])
+            ->onlyMethods(['__toString', 'getSortedUrl', 'getSortConditions', 'getQueryParams'])
             ->getMock();
 
         $this->sut = new Table($this->body, $this->header);

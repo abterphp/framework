@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Grid\Filter;
 
 use AbterPhp\Framework\Html\ITemplater;
-use AbterPhp\Framework\I18n\MockTranslatorFactory;
+use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
+use PHPUnit\Framework\TestCase;
 
-abstract class FilterTest extends \PHPUnit\Framework\TestCase
+abstract class FilterTest extends TestCase
 {
     public function testSetTemplateCanOverrideContent()
     {
@@ -15,7 +16,7 @@ abstract class FilterTest extends \PHPUnit\Framework\TestCase
 
         $sut = $this->createFilter();
         if (!($sut instanceof ITemplater)) {
-            $this->markTestSkipped($sut);
+            $this->markTestSkipped();
         }
 
         $sut->setTemplate($template);

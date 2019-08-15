@@ -23,7 +23,7 @@ class SecurityTest extends TestCase
 
         $this->cacheBridgeMock = $this->getMockBuilder(ArrayBridge::class)
             ->disableOriginalConstructor()
-            ->setMethods(['get', 'set'])
+            ->onlyMethods(['get', 'set'])
             ->getMock();
     }
 
@@ -37,7 +37,7 @@ class SecurityTest extends TestCase
         /** @var Response|MockObject $requestMock */
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
-            ->setMethods(['setContent'])
+            ->onlyMethods(['setContent'])
             ->getMock();
 
         $next = function () use ($responseMock) {
@@ -61,7 +61,7 @@ class SecurityTest extends TestCase
         /** @var Response|MockObject $requestMock */
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
-            ->setMethods(['setContent'])
+            ->onlyMethods(['setContent'])
             ->getMock();
 
         $next = function () use ($responseMock) {
@@ -85,7 +85,7 @@ class SecurityTest extends TestCase
         /** @var Response|MockObject $requestMock */
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
-            ->setMethods(['setContent'])
+            ->onlyMethods(['setContent'])
             ->getMock();
 
         $next = function () use ($responseMock) {
@@ -121,7 +121,7 @@ class SecurityTest extends TestCase
         /** @var Response|MockObject $requestMock */
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
-            ->setMethods(['setContent'])
+            ->onlyMethods(['setContent'])
             ->getMock();
 
         $next = function () use ($responseMock) {
@@ -306,7 +306,7 @@ class SecurityTest extends TestCase
         /** @var Response|MockObject $requestMock */
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
-            ->setMethods(['setContent'])
+            ->onlyMethods(['setContent'])
             ->getMock();
 
         $next = function () use ($responseMock) {

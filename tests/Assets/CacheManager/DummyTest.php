@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class DummyTest extends TestCase
 {
-    /** @var Flysystem - System Under Test */
+    /** @var Dummy - System Under Test */
     protected $sut;
 
     public function setUp(): void
@@ -28,7 +28,7 @@ class DummyTest extends TestCase
     {
         return $this->getMockBuilder(Filesystem::class)
             ->disableOriginalConstructor()
-            ->setMethods(['has', 'read', 'write', 'listContents', 'delete', 'getTimestamp'])
+            ->onlyMethods(['has', 'read', 'write', 'listContents', 'delete', 'getTimestamp'])
             ->getMock();
     }
 

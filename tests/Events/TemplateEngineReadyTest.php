@@ -10,17 +10,17 @@ use PHPUnit\Framework\TestCase;
 
 class TemplateEngineReadyTest extends TestCase
 {
+    /** @var TemplateEngineReady - System Under Test */
+    protected $sut;
+
     /** @var Engine|MockObject */
     protected $engineMock;
-
-    /** @var TemplateEngineReady */
-    protected $sut;
 
     public function setUp(): void
     {
         $this->engineMock = $this->getMockBuilder(Engine::class)
             ->disableOriginalConstructor()
-            ->setMethods([])
+            ->onlyMethods([])
             ->getMock();
 
         $this->sut = new TemplateEngineReady($this->engineMock);

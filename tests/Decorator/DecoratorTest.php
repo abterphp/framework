@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class DecoratorTest extends TestCase
 {
-    /** @var Decorator */
+    /** @var Decorator - System Under Test */
     protected $sut;
 
     public function setUp(): void
@@ -136,7 +136,7 @@ class DecoratorTest extends TestCase
     {
         $node = $this->getMockBuilder(Node::class)
             ->disableOriginalConstructor()
-            ->setMethods(['isMatch'])
+            ->onlyMethods(['isMatch'])
             ->getMock();
         $node->expects($this->once())->method('isMatch')->willReturn(true);
 

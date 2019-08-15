@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Template;
 
-class FactoryTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class FactoryTest extends TestCase
 {
-    /** @var Factory */
+    /** @var Factory - System Under Test */
     protected $sut;
 
     public function setUp(): void

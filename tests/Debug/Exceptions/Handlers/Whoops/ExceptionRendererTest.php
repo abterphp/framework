@@ -41,7 +41,7 @@ class ExceptionRendererTest extends TestCase
     {
         $mock = $this->getMockBuilder(RunInterface::class)
             ->disableOriginalConstructor()
-            ->setMethods(
+            ->onlyMethods(
                 [
                     'pushHandler',
                     'popHandler',

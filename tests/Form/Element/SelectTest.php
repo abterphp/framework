@@ -6,11 +6,12 @@ namespace AbterPhp\Framework\Form\Element;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Form\Component\Option;
-use AbterPhp\Framework\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\Html\Helper\ArrayHelper;
-use AbterPhp\Framework\I18n\MockTranslatorFactory;
+use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
+use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
+use PHPUnit\Framework\TestCase;
 
-class SelectTest extends \PHPUnit\Framework\TestCase
+class SelectTest extends TestCase
 {
     /**
      * @return array

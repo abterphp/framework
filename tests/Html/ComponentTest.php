@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Html;
 
-use AbterPhp\Framework\I18n\MockTranslatorFactory;
+use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 
 class ComponentTest extends CollectionTest
 {

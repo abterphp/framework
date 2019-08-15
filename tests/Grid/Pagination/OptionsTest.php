@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class OptionsTest extends TestCase
 {
-    /** @var Options */
+    /** @var Options - System Under Test */
     protected $sut;
 
     /** @var int */

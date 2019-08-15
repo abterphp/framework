@@ -1,7 +1,8 @@
 <?php
 
-namespace AbterPhp\Framework\I18n;
+namespace AbterPhp\Framework\TestDouble\I18n;
 
+use AbterPhp\Framework\I18n\ITranslator;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -23,7 +24,7 @@ class MockTranslatorFactory
         /** @var ITranslator|MockObject $mockTranslator */
         $translatorMock = (new MockBuilder($testCase, ITranslator::class))
             ->disableOriginalConstructor()
-            ->setMethods(['translate', 'canTranslate'])
+            ->onlyMethods(['translate', 'canTranslate'])
             ->getMock();
 
         $translatorMock

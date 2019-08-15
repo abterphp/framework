@@ -7,8 +7,9 @@ namespace AbterPhp\Framework\Grid\Component;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Grid\Row\Row;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class BodyTest extends \PHPUnit\Framework\TestCase
+class BodyTest extends TestCase
 {
     public function testSetEntitiesWithEmptyEntities()
     {
@@ -117,7 +118,7 @@ class BodyTest extends \PHPUnit\Framework\TestCase
         /** @var IStringerEntity|MockObject $entity */
         $entity = $this->getMockBuilder(IStringerEntity::class)
             ->disableOriginalConstructor()
-            ->setMethods(['__toString', 'getId', 'setId', 'getFoo', 'getBar', 'toJSON'])
+            ->setMethods(['__toString', 'getId', 'setId', 'toJSON', 'getFoo', 'getBar'])
             ->getMock();
 
         $entity->expects($this->any())->method('__toString')->willReturn($string);

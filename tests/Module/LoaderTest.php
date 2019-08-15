@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Module;
 
-class LoaderTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class LoaderTest extends TestCase
 {
     const MODULE_FILE_NAME = 'module.php';
 

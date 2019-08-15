@@ -10,17 +10,17 @@ use PHPUnit\Framework\TestCase;
 
 class FormReadyTest extends TestCase
 {
+    /** @var FormReady - System Under Test */
+    protected $sut;
+
     /** @var Form|MockObject */
     protected $formMock;
-
-    /** @var FormReady */
-    protected $sut;
 
     public function setUp(): void
     {
         $this->formMock = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
-            ->setMethods([])
+            ->onlyMethods([])
             ->getMock();
 
         $this->sut = new FormReady($this->formMock);

@@ -32,7 +32,7 @@ class UserBlockTest extends TagTest
 
         $this->sessionMock = $this->getMockBuilder(Session::class)
             ->disableOriginalConstructor()
-            ->setMethods(['get', 'has'])
+            ->onlyMethods(['get', 'has'])
             ->getMock();
 
         $sessionData = &$this->sessionData;
@@ -55,7 +55,7 @@ class UserBlockTest extends TagTest
         /** @var ISession|MockObject $sessionMock */
         $sessionMock = $this->getMockBuilder(Session::class)
             ->disableOriginalConstructor()
-            ->setMethods(['get', 'has'])
+            ->onlyMethods(['get', 'has'])
             ->getMock();
 
         $sessionMock->expects($this->any())->method('has')->willReturn(false);
@@ -74,7 +74,7 @@ class UserBlockTest extends TagTest
         /** @var ISession|MockObject $sessionMock */
         $sessionMock = $this->getMockBuilder(Session::class)
             ->disableOriginalConstructor()
-            ->setMethods(['get', 'has'])
+            ->onlyMethods(['get', 'has'])
             ->getMock();
 
         $sessionMock->expects($this->any())->method('has')->willReturnCallback(

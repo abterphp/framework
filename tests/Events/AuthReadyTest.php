@@ -10,17 +10,17 @@ use PHPUnit\Framework\TestCase;
 
 class AuthReadyTest extends TestCase
 {
+    /** @var AuthReady - System Under Test */
+    protected $sut;
+
     /** @var CombinedAdapter|MockObject */
     protected $adapterMock;
-
-    /** @var AuthReady */
-    protected $sut;
 
     public function setUp(): void
     {
         $this->adapterMock = $this->getMockBuilder(CombinedAdapter::class)
             ->disableOriginalConstructor()
-            ->setMethods([])
+            ->onlyMethods([])
             ->getMock();
 
         $this->sut = new AuthReady($this->adapterMock);

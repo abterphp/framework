@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class UploaderTest extends TestCase
 {
-    /** @var Uploader */
+    /** @var Uploader - System Under Test */
     protected $sut;
 
     /** @var Filesystem|MockObject */
@@ -26,7 +26,7 @@ class UploaderTest extends TestCase
 
         $this->filesystemMock = $this->getMockBuilder(Filesystem::class)
             ->disableOriginalConstructor()
-            ->setMethods(['has', 'read', 'delete', 'readStream', 'getSize'])
+            ->onlyMethods(['has', 'read', 'delete', 'readStream', 'getSize'])
             ->getMock();
 
         $this->sut = new Uploader($this->filesystemMock, $this->fileManagerPath);
@@ -45,7 +45,7 @@ class UploaderTest extends TestCase
 
         $uploadedFileMock = $this->getMockBuilder(UploadedFile::class)
             ->disableOriginalConstructor()
-            ->setMethods(['move'])
+            ->onlyMethods(['move'])
             ->getMock();
 
         $fileData            = [];
@@ -63,7 +63,7 @@ class UploaderTest extends TestCase
 
         $uploadedFileMock = $this->getMockBuilder(UploadedFile::class)
             ->disableOriginalConstructor()
-            ->setMethods(['move'])
+            ->onlyMethods(['move'])
             ->getMock();
 
         $uploadedFileMock

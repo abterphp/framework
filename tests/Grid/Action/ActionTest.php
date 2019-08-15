@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Grid\Action;
 
 use AbterPhp\Framework\Html\Collection;
-use AbterPhp\Framework\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\Html\Helper\ArrayHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Node;
-use AbterPhp\Framework\I18n\MockTranslatorFactory;
+use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
+use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use Opulence\Orm\IEntity;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

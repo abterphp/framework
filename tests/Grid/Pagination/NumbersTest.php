@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Pagination;
 
-class NumbersTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class NumbersTest extends TestCase
 {
     /**
      * @return array

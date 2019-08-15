@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Template;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class EngineTest extends \PHPUnit\Framework\TestCase
+class EngineTest extends TestCase
 {
-    /** @var Engine */
+    /** @var Engine - System Under Test */
     protected $sut;
 
     /** @var Renderer|MockObject */
@@ -23,12 +24,12 @@ class EngineTest extends \PHPUnit\Framework\TestCase
 
         $this->rendererMock = $this->getMockBuilder(Renderer::class)
             ->disableOriginalConstructor()
-            ->setMethods(['addLoader', 'hasAllValidLoaders', 'render'])
+            ->onlyMethods(['addLoader', 'hasAllValidLoaders', 'render'])
             ->getMock();
 
         $this->cacheManagerMock = $this->getMockBuilder(CacheManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getCacheData', 'storeCacheData', 'getDocument', 'storeDocument'])
+            ->onlyMethods(['getCacheData', 'storeCacheData', 'getDocument', 'storeDocument'])
             ->getMock();
 
         $this->sut = new Engine($this->rendererMock, $this->cacheManagerMock, true);

@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Html\Component;
 
 use AbterPhp\Framework\Constant\Html5;
+use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
 use Opulence\Routing\Urls\UrlGenerator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ButtonFactoryTest extends TestCase
 {
+    /** @var ButtonFactory - System Under Test */
+    protected $sut;
+
     /** @var UrlGenerator|MockObject */
     protected $urlGeneratorMock;
-
-    /** @var ButtonFactory */
-    protected $sut;
 
     /** @var string[][] */
     protected $iconAttributes = [];
@@ -29,7 +30,7 @@ class ButtonFactoryTest extends TestCase
 
         $this->urlGeneratorMock = $this->getMockBuilder(UrlGenerator::class)
             ->disableOriginalConstructor()
-            ->setMethods(['createFromName'])
+            ->onlyMethods(['createFromName'])
             ->getMock();
 
         $this->iconAttributes = StubAttributeFactory::createAttributes(['icon' => ['asd']]);

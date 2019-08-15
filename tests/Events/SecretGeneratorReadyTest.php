@@ -10,17 +10,17 @@ use PHPUnit\Framework\TestCase;
 
 class SecretGeneratorReadyTest extends TestCase
 {
+    /** @var SecretGeneratorReady - System Under Test */
+    protected $sut;
+
     /** @var SecretGenerator|MockObject */
     protected $secretGeneratorMock;
-
-    /** @var SecretGeneratorReady */
-    protected $sut;
 
     public function setUp(): void
     {
         $this->secretGeneratorMock = $this->getMockBuilder(SecretGenerator::class)
             ->disableOriginalConstructor()
-            ->setMethods([])
+            ->onlyMethods([])
             ->getMock();
 
         $this->sut = new SecretGeneratorReady($this->secretGeneratorMock);

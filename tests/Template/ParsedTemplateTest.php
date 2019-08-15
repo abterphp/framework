@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Template;
 
-class ParsedTemplateTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class ParsedTemplateTest extends TestCase
 {
     /** @var ParsedTemplate - System Under Test */
     protected $sut;

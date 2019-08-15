@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Cell;
 
-use AbterPhp\Framework\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\Html\ComponentTest;
 use AbterPhp\Framework\Html\Helper\ArrayHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Node;
-use AbterPhp\Framework\I18n\MockTranslatorFactory;
+use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
+use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 
 class CellTest extends ComponentTest
 {
@@ -207,6 +207,7 @@ class CellTest extends ComponentTest
      * @dataProvider toStringCanReturnTranslatedContentProvider
      *
      * @param mixed  $rawContent
+     * @param array  $translations
      * @param string $expectedResult
      */
     public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
@@ -225,7 +226,7 @@ class CellTest extends ComponentTest
      *
      * @param string|null $className
      * @param string[]    $intents
-     * @param int|null    $expectedResult
+     * @param bool        $expectedResult
      */
     public function testIsMatch(?string $className, array $intents, bool $expectedResult)
     {

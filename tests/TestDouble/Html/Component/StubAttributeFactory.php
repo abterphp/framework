@@ -1,6 +1,6 @@
 <?php
 
-namespace AbterPhp\Framework\Html\Component;
+namespace AbterPhp\Framework\TestDouble\Html\Component;
 
 use AbterPhp\Framework\Html\Helper\ArrayHelper;
 
@@ -8,7 +8,6 @@ class StubAttributeFactory
 {
     const ATTRIBUTE_FOO = 'foo';
     const ATTRIBUTE_BAR = 'bar';
-    const ATTRIBUTE_BAZ = 'baz';
 
     const VALUE_FOO = 'foo';
     const VALUE_BAZ = 'baz';

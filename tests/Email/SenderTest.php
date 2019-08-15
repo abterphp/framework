@@ -11,7 +11,7 @@ use Swift_Message;
 
 class SenderTest extends TestCase
 {
-    /** @var Sender System Under Test */
+    /** @var Sender - System Under Test */
     protected $sut;
 
     /** @var Swift_Mailer|MockObject */
@@ -32,7 +32,7 @@ class SenderTest extends TestCase
 
         $this->messageMock = $this->getMockBuilder(Swift_Message::class)
             ->disableOriginalConstructor()
-            ->setMethods(['setBody', 'setFrom', 'setReplyTo', 'addTo'])
+            ->onlyMethods(['setBody', 'setFrom', 'setReplyTo', 'addTo'])
             ->getMock();
         $this->messageMock->expects($this->any())->method('setBody')->willReturnSelf();
         $this->messageMock->expects($this->any())->method('setFrom')->willReturnSelf();
@@ -40,13 +40,13 @@ class SenderTest extends TestCase
 
         $this->messageFactory = $this->getMockBuilder(MessageFactory::class)
             ->disableOriginalConstructor()
-            ->setMethods(['create'])
+            ->onlyMethods(['create'])
             ->getMock();
         $this->messageFactory->expects($this->any())->method('create')->willReturn($this->messageMock);
 
         $this->mailerMock = $this->getMockBuilder(Swift_Mailer::class)
             ->disableOriginalConstructor()
-            ->setMethods(['send'])
+            ->onlyMethods(['send'])
             ->getMock();
 
         $this->sut = new Sender($this->mailerMock, $this->messageFactory);

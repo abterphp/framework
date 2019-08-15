@@ -13,8 +13,9 @@ use AbterPhp\Framework\Grid\Component\Actions;
 use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\Node;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class RowTest extends \PHPUnit\Framework\TestCase
+class RowTest extends TestCase
 {
     public function testSetEntitySetsEntityWorksWithoutActions()
     {
@@ -43,7 +44,7 @@ class RowTest extends \PHPUnit\Framework\TestCase
         for ($i = 0; $i < $actionCount; $i++) {
             $action = $this->getMockBuilder(Action::class)
                 ->disableOriginalConstructor()
-                ->setMethods(['setEntity'])
+                ->onlyMethods(['setEntity'])
                 ->getMock();
 
             $action->expects($this->once())->method('setEntity')->with($mockEntity);
@@ -71,7 +72,7 @@ class RowTest extends \PHPUnit\Framework\TestCase
         for ($i = 0; $i < $actionCount; $i++) {
             $action = $this->getMockBuilder(Action::class)
                 ->disableOriginalConstructor()
-                ->setMethods(['setEntity', '__toString'])
+                ->onlyMethods(['setEntity', '__toString'])
                 ->getMock();
 
             $action->expects($this->once())->method('setEntity')->with($mockEntity);

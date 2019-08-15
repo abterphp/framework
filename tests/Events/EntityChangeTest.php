@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class EntityChangeTest extends TestCase
 {
-    /** @var EntityChange */
+    /** @var EntityChange - System Under Test */
     protected $sut;
 
     /** @var IStringerEntity|MockObject */

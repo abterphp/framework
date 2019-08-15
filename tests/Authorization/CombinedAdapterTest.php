@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class CombinedAdapterTest extends TestCase
 {
-    /** @var CombinedAdapter */
+    /** @var CombinedAdapter - System Under Test */
     protected $sut;
 
     /** @var CasbinAdapter|MockObject */
@@ -23,12 +23,12 @@ class CombinedAdapterTest extends TestCase
     public function setUp(): void
     {
         $this->defaultAdapterMock = $this->getMockBuilder(CasbinAdapter::class)
-            ->setMethods(['loadPolicy', 'savePolicy', 'addPolicy', 'removePolicy', 'removeFilteredPolicy'])
+            ->onlyMethods(['loadPolicy', 'savePolicy', 'addPolicy', 'removePolicy', 'removeFilteredPolicy'])
             ->getMock();
 
         $this->cacheManagerMock = $this->getMockBuilder(CacheManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getAll', 'storeAll'])
+            ->onlyMethods(['getAll', 'storeAll'])
             ->getMock();
 
         $this->sut = new CombinedAdapter($this->defaultAdapterMock, $this->cacheManagerMock);
@@ -49,13 +49,13 @@ class CombinedAdapterTest extends TestCase
     public function loadPolicyWithoutCacheManagerProvider(): array
     {
         $adapterMock0 = $this->getMockBuilder(CasbinAdapter::class)
-            ->setMethods(['loadPolicy', 'savePolicy', 'addPolicy', 'removePolicy', 'removeFilteredPolicy'])
+            ->onlyMethods(['loadPolicy', 'savePolicy', 'addPolicy', 'removePolicy', 'removeFilteredPolicy'])
             ->getMock();
         $adapterMock1 = $this->getMockBuilder(CasbinAdapter::class)
-            ->setMethods(['loadPolicy', 'savePolicy', 'addPolicy', 'removePolicy', 'removeFilteredPolicy'])
+            ->onlyMethods(['loadPolicy', 'savePolicy', 'addPolicy', 'removePolicy', 'removeFilteredPolicy'])
             ->getMock();
         $adapterMock2 = $this->getMockBuilder(CasbinAdapter::class)
-            ->setMethods(['loadPolicy', 'savePolicy', 'addPolicy', 'removePolicy', 'removeFilteredPolicy'])
+            ->onlyMethods(['loadPolicy', 'savePolicy', 'addPolicy', 'removePolicy', 'removeFilteredPolicy'])
             ->getMock();
 
         return [

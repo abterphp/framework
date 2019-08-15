@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Html\Helper;
 
-class StringHelperTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class StringHelperTest extends TestCase
 {
     /**
      * @return array

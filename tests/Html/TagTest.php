@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Html;
 
+use AbterPhp\Framework\TestCase\Html\NodeTestCase;
+
 class TagTest extends NodeTestCase
 {
     public function testDefaultToString()

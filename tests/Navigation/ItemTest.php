@@ -7,7 +7,7 @@ namespace AbterPhp\Framework\Navigation;
 use AbterPhp\Framework\Html\ComponentTest;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Node;
-use AbterPhp\Framework\I18n\MockTranslatorFactory;
+use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 
 class ItemTest extends ComponentTest
 {

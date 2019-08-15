@@ -11,7 +11,7 @@ use AbterPhp\Framework\Html\ICollection;
 use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Node;
-use AbterPhp\Framework\I18n\MockTranslatorFactory;
+use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 
 class DropdownTest extends ComponentTest
 {

@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 class AssetManagerTest extends TestCase
 {
-    /** @var AssetManager */
+    /** @var AssetManager - System Under Test */
     protected $sut;
 
     /** @var CssMinifier|MockObject */
@@ -36,15 +36,15 @@ class AssetManagerTest extends TestCase
     public function setUp(): void
     {
         $this->cssMinifierMock = $this->getMockBuilder(CssMinifier::class)
-            ->setMethods(['add', 'minify'])
+            ->onlyMethods(['add', 'minify'])
             ->getMock();
 
         $this->jsMinifierMock = $this->getMockBuilder(JsMinifier::class)
-            ->setMethods(['add', 'minify'])
+            ->onlyMethods(['add', 'minify'])
             ->getMock();
 
         $this->minifierFactoryMock = $this->getMockBuilder(MinifierFactory::class)
-            ->setMethods(['createCssMinifier', 'createJsMinifier'])
+            ->onlyMethods(['createCssMinifier', 'createJsMinifier'])
             ->getMock();
 
         $this->minifierFactoryMock
@@ -57,11 +57,11 @@ class AssetManagerTest extends TestCase
             ->willReturn($this->jsMinifierMock);
 
         $this->fileFinderMock = $this->getMockBuilder(FileFinder::class)
-            ->setMethods(['registerFilesystem', 'has', 'read'])
+            ->onlyMethods(['registerFilesystem', 'has', 'read'])
             ->getMock();
 
         $this->cacheManagerMock = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(['registerFilesystem', 'has', 'read', 'write', 'getWebPath', 'flush'])
+            ->onlyMethods(['registerFilesystem', 'has', 'read', 'write', 'getWebPath', 'flush'])
             ->getMock();
 
         $this->sut = new AssetManager($this->minifierFactoryMock, $this->fileFinderMock, $this->cacheManagerMock);

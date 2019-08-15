@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Session;
 
 use AbterPhp\Framework\I18n\ITranslator;
-use AbterPhp\Framework\I18n\MockTranslatorFactory;
+use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use Opulence\Sessions\ISession;
 use Opulence\Sessions\Session;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class FlashServiceTest extends \PHPUnit\Framework\TestCase
+class FlashServiceTest extends TestCase
 {
-    /** @var FlashService */
+    /** @var FlashService - System Under Test */
     protected $sut;
 
     /** @var ISession|MockObject */
@@ -27,7 +28,7 @@ class FlashServiceTest extends \PHPUnit\Framework\TestCase
 
         $this->sessionMock = $this->getMockBuilder(Session::class)
             ->disableOriginalConstructor()
-            ->setMethods(['get', 'flash'])
+            ->onlyMethods(['get', 'flash'])
             ->getMock();
 
         $this->translatorMock = MockTranslatorFactory::createSimpleTranslator($this, []);

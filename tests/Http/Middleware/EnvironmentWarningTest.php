@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Http\Middleware;
 
 use AbterPhp\Framework\I18n\ITranslator;
-use AbterPhp\Framework\I18n\MockTranslatorFactory;
+use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use Opulence\Environments\Environment;
 use Opulence\Http\Requests\Request;
 use Opulence\Http\Responses\Response;
@@ -31,13 +31,13 @@ class EnvironmentWarningTest extends TestCase
         /** @var Request|MockObject $requestMock */
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
-            ->setMethods(['createFromGlobals'])
+            ->onlyMethods(['createFromGlobals'])
             ->getMock();
 
         /** @var Response|MockObject $requestMock */
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
-            ->setMethods(['setContent'])
+            ->onlyMethods(['setContent'])
             ->getMock();
 
         $next = function () use ($responseMock) {
@@ -58,13 +58,13 @@ class EnvironmentWarningTest extends TestCase
         /** @var Request|MockObject $requestMock */
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
-            ->setMethods(['createFromGlobals'])
+            ->onlyMethods(['createFromGlobals'])
             ->getMock();
 
         /** @var Response|MockObject $requestMock */
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
-            ->setMethods(['setContent'])
+            ->onlyMethods(['setContent'])
             ->getMock();
 
         $next = function () use ($responseMock) {

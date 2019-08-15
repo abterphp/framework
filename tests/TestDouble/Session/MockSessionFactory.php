@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AbterPhp\Framework\Session;
+namespace AbterPhp\Framework\TestDouble\Session;
 
 use Opulence\Sessions\ISession;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -30,7 +30,7 @@ class MockSessionFactory
 
         /** @var ISession|MockObject $sessionMock */
         $sessionMock = $testCase->getMockBuilder(ISession::class)
-            ->setMethods(
+            ->onlyMethods(
                 [
                     'ageFlashData',
                     'delete',

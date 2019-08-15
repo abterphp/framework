@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Form\Container;
 
-use AbterPhp\Framework\I18n\MockTranslatorFactory;
+use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
+use PHPUnit\Framework\TestCase;
 
-class HideableTest extends \PHPUnit\Framework\TestCase
+class HideableTest extends TestCase
 {
     public function testRender()
     {

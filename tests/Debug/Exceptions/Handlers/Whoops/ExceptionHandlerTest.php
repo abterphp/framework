@@ -29,7 +29,7 @@ class ExceptionHandlerTest extends TestCase
 
         $this->exceptionRendererMock = $this->getMockBuilder(ExceptionRenderer::class)
             ->disableOriginalConstructor()
-            ->setMethods(['render', 'getRun', 'pushHandler', 'register'])
+            ->onlyMethods(['render', 'getRun'])
             ->getMock();
 
         $this->sut = new ExceptionHandler($this->loggerMock, $this->exceptionRendererMock, []);
@@ -92,7 +92,7 @@ class ExceptionHandlerTest extends TestCase
     {
         return $this->getMockBuilder(RunInterface::class)
             ->disableOriginalConstructor()
-            ->setMethods(
+            ->onlyMethods(
                 [
                     'pushHandler',
                     'popHandler',

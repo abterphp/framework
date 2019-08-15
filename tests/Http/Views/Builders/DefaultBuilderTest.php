@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class DefaultBuilderTest extends TestCase
 {
-    /** @var DefaultBuilder */
+    /** @var DefaultBuilder - System Under Test */
     protected $sut;
 
     public function setUp(): void
@@ -25,7 +25,7 @@ class DefaultBuilderTest extends TestCase
         /** @var View|MockObject $viewMock */
         $viewMock = $this->getMockBuilder(View::class)
             ->disableOriginalConstructor()
-            ->setMethods(['setVar'])
+            ->onlyMethods(['setVar'])
             ->getMock();
 
         $viewMock->expects($this->atLeastOnce())->method('setVar');

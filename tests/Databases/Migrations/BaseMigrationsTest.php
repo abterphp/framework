@@ -32,12 +32,12 @@ class BaseMigrationTest extends TestCase
     {
         $this->connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
-            ->setMethods(['prepare'])
+            ->onlyMethods(['prepare'])
             ->getMock();
 
         $this->fileFinderMock = $this->getMockBuilder(FileFinder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['registerFilesystem', 'has', 'read'])
+            ->onlyMethods(['registerFilesystem', 'has', 'read'])
             ->getMock();
 
         $this->sut = new BaseMigration($this->connectionMock, $this->fileFinderMock);
@@ -61,7 +61,7 @@ class BaseMigrationTest extends TestCase
 
         $statementMock = $this->getMockBuilder(Statement::class)
             ->disableOriginalConstructor()
-            ->setMethods(['execute'])
+            ->onlyMethods(['execute'])
             ->getMock();
         $statementMock->expects($this->once())->method('execute');
 
@@ -86,7 +86,7 @@ class BaseMigrationTest extends TestCase
 
         $statementMock = $this->getMockBuilder(Statement::class)
             ->disableOriginalConstructor()
-            ->setMethods(['execute'])
+            ->onlyMethods(['execute'])
             ->getMock();
         $statementMock->expects($this->once())->method('execute');
 

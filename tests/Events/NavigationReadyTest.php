@@ -10,17 +10,17 @@ use PHPUnit\Framework\TestCase;
 
 class NavigationReadyTest extends TestCase
 {
+    /** @var NavigationReady - System Under Test */
+    protected $sut;
+
     /** @var Navigation|MockObject */
     protected $navigationMock;
-
-    /** @var NavigationReady */
-    protected $sut;
 
     public function setUp(): void
     {
         $this->navigationMock = $this->getMockBuilder(Navigation::class)
             ->disableOriginalConstructor()
-            ->setMethods([])
+            ->onlyMethods([])
             ->getMock();
 
         $this->sut = new NavigationReady($this->navigationMock);

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AbterPhp\Framework\Orm\DataMappers;
+namespace AbterPhp\Framework\TestCase\Database;
 
 use Opulence\Databases\Adapters\Pdo\Connection;
 use Opulence\Databases\Adapters\Pdo\Statement;
@@ -13,8 +13,9 @@ use PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
 use PHPUnit\Framework\MockObject\Matcher\InvokedAtIndex;
 use PHPUnit\Framework\MockObject\Matcher\InvokedCount;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-abstract class SqlTestCase extends \PHPUnit\Framework\TestCase
+abstract class QueryTestCase extends TestCase
 {
     const EXPECTATION_ONCE  = -1;
     const EXPECTATION_ANY   = -2;
@@ -42,22 +43,22 @@ abstract class SqlTestCase extends \PHPUnit\Framework\TestCase
     /**
      * @return IConnection|MockObject
      */
-    public function getReadConnectionMock()
+    protected function getReadConnectionMock()
     {
         return $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
-            ->setMethods(['prepare', 'read'])
+            ->onlyMethods(['prepare'])
             ->getMock();
     }
 
     /**
      * @return IConnection|MockObject
      */
-    public function getWriteConnectionMock()
+    protected function getWriteConnectionMock()
     {
         return $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
-            ->setMethods(['prepare'])
+            ->onlyMethods(['prepare'])
             ->getMock();
     }
 
@@ -67,11 +68,11 @@ abstract class SqlTestCase extends \PHPUnit\Framework\TestCase
      *
      * @return ConnectionPool|MockObject
      */
-    public function getConnectionPoolMock(?IConnection $readConnection, ?IConnection $writeConnection)
+    protected function getConnectionPoolMock(?IConnection $readConnection, ?IConnection $writeConnection)
     {
         $connectionPool = $this->getMockBuilder(ConnectionPool::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getReadConnection', 'getWriteConnection', 'setReadConnection', 'setWriteConnection'])
+            ->onlyMethods(['getReadConnection', 'getWriteConnection', 'setReadConnection', 'setWriteConnection'])
             ->getMock();
 
         if ($readConnection) {
@@ -99,27 +100,6 @@ abstract class SqlTestCase extends \PHPUnit\Framework\TestCase
             ->with($sql)
             ->willReturn($returnValue);
     }
-
-    /**
-     * @param array $expectedData
-     * @param array $collection
-     */
-    protected function assertCollection(array $expectedData, $collection)
-    {
-        $this->assertNotNull($collection);
-        $this->assertIsArray($collection);
-        $this->assertCount(count($expectedData), $collection);
-
-        foreach ($collection as $key => $entity) {
-            $this->assertEntity($expectedData[$key], $entity);
-        }
-    }
-
-    /**
-     * @param array  $expectedData
-     * @param object $entity
-     */
-    abstract protected function assertEntity(array $expectedData, $entity);
 
     /**
      * @param array $valuesToBind
@@ -218,7 +198,7 @@ abstract class SqlTestCase extends \PHPUnit\Framework\TestCase
         /** @var IStatement|MockObject $mock */
         $statement = $this->getMockBuilder(Statement::class)
             ->disableOriginalConstructor()
-            ->setMethods(['bindValues', 'execute', 'rowCount', 'fetchAll', 'fetchColumn'])
+            ->onlyMethods(['bindValues', 'execute', 'rowCount', 'fetchAll', 'fetchColumn'])
             ->getMock();
 
         return $statement;

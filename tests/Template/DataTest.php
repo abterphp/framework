@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Template;
 
-class DataTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class DataTest extends TestCase
 {
     /** @var Data - System Under Test */
     protected $sut;

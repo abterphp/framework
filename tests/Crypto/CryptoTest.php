@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class CryptoTest extends TestCase
 {
-    /** @var Crypto */
+    /** @var Crypto - System Under Test */
     protected $sut;
 
     /** @var IEncrypter|MockObject */
@@ -33,11 +33,11 @@ class CryptoTest extends TestCase
     public function setUp(): void
     {
         $this->encrypterMock = $this->getMockBuilder(IEncrypter::class)
-            ->setMethods(['encrypt', 'decrypt', 'setSecret'])
+            ->onlyMethods(['encrypt', 'decrypt', 'setSecret'])
             ->getMock();
 
         $this->hasherMock = $this->getMockBuilder(IHasher::class)
-            ->setMethods(['hash', 'verify', 'needsRehash'])
+            ->onlyMethods(['hash', 'verify', 'needsRehash'])
             ->getMock();
 
         $this->sut = new Crypto(

@@ -28,7 +28,7 @@ class NavigationTest extends TestCase
 
         $this->enforcerMock = $this->getMockBuilder(Enforcer::class)
             ->disableOriginalConstructor()
-            ->setMethods(['enforce'])
+            ->onlyMethods(['enforce'])
             ->getMock();
     }
 
@@ -216,7 +216,7 @@ class NavigationTest extends TestCase
         /** @var Item|MockObject $itemMock */
         $itemMock = $this->getMockBuilder(Item::class)
             ->disableOriginalConstructor()
-            ->setMethods(['setTranslator'])
+            ->onlyMethods(['setTranslator'])
             ->getMock();
 
         $itemMock

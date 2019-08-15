@@ -10,17 +10,17 @@ use PHPUnit\Framework\TestCase;
 
 class DashboardReadyTest extends TestCase
 {
+    /** @var AuthReady - System Under Test */
+    protected $sut;
+
     /** @var Dashboard|MockObject */
     protected $dashboardMock;
-
-    /** @var AuthReady */
-    protected $sut;
 
     public function setUp(): void
     {
         $this->dashboardMock = $this->getMockBuilder(Dashboard::class)
             ->disableOriginalConstructor()
-            ->setMethods([])
+            ->onlyMethods([])
             ->getMock();
 
         $this->sut = new DashboardReady($this->dashboardMock);

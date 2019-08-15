@@ -7,10 +7,11 @@ namespace AbterPhp\Framework\Orm\Ids\Generators;
 use Opulence\Orm\Ids\Generators\IIdGenerator;
 use Opulence\Orm\Ids\Generators\UuidV4Generator;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class IdGeneratorRegistryTest extends \PHPUnit\Framework\TestCase
+class IdGeneratorRegistryTest extends TestCase
 {
-    /** @var IdGeneratorRegistry System Under Test */
+    /** @var IdGeneratorRegistry - System Under Test */
     protected $sut;
 
     public function setUp(): void
@@ -43,7 +44,7 @@ class IdGeneratorRegistryTest extends \PHPUnit\Framework\TestCase
     {
         /** @var IIdGenerator|MockObject $idGenerator */
         $idGenerator = $this->getMockBuilder(IIdGenerator::class)
-            ->setMethods(['generate', 'getEmptyValue', 'isPostInsert'])
+            ->onlyMethods(['generate', 'getEmptyValue', 'isPostInsert'])
             ->getMock();
 
         $className = 'foo';

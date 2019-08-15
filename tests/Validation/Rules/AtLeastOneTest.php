@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class AtLeastOneTest extends TestCase
 {
-    /** @var AtLeastOne System Under Test */
+    /** @var AtLeastOne - System Under Test */
     protected $sut;
 
     public function setUp(): void

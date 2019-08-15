@@ -9,7 +9,7 @@ use AbterPhp\Framework\Grid\Cell\ICell;
 use AbterPhp\Framework\Html\CollectionTest;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Node;
-use AbterPhp\Framework\I18n\MockTranslatorFactory;
+use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 
 class CellsTest extends CollectionTest
 {

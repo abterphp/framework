@@ -16,11 +16,11 @@ use PHPUnit\Framework\TestCase;
 
 class NavigationBuilderTest extends TestCase
 {
+    /** @var NavigationBuilder - System Under Test */
+    protected $sut;
+
     /** @var string */
     protected $username = 'foo';
-
-    /** @var NavigationBuilder */
-    protected $sut;
 
     /** @var ISession|MockObject */
     protected $sessionMock;
@@ -35,7 +35,7 @@ class NavigationBuilderTest extends TestCase
 
         $this->enforcerMock = $this->getMockBuilder(Enforcer::class)
             ->disableOriginalConstructor()
-            ->setMethods(['enforce'])
+            ->onlyMethods(['enforce'])
             ->getMock();
 
         $this->sut = new NavigationBuilder($this->sessionMock, $this->enforcerMock);
@@ -59,10 +59,8 @@ class NavigationBuilderTest extends TestCase
 
     public function testHandleSkipsItemsWithoutRoleAndResource()
     {
-        $role = 'foo';
-
         $itemMock = $this->getMockBuilder(Item::class)
-            ->setMethods(['getResource', 'getRole', 'disable'])
+            ->onlyMethods(['getResource', 'getRole', 'disable'])
             ->getMock();
         $itemMock->expects($this->once())->method('getResource')->willReturn(null);
         $itemMock->expects($this->once())->method('getRole')->willReturn('');
@@ -79,7 +77,7 @@ class NavigationBuilderTest extends TestCase
         $resource = 'bar';
 
         $itemMock = $this->getMockBuilder(Item::class)
-            ->setMethods(['getResource', 'getRole', 'disable'])
+            ->onlyMethods(['getResource', 'getRole', 'disable'])
             ->getMock();
         $itemMock->expects($this->any())->method('getResource')->willReturn($resource);
         $itemMock->expects($this->any())->method('getRole')->willReturn($role);
@@ -98,7 +96,7 @@ class NavigationBuilderTest extends TestCase
         $resource = 'bar';
 
         $itemMock = $this->getMockBuilder(Item::class)
-            ->setMethods(['getResource', 'getRole', 'disable'])
+            ->onlyMethods(['getResource', 'getRole', 'disable'])
             ->getMock();
         $itemMock->expects($this->any())->method('getResource')->willReturn($resource);
         $itemMock->expects($this->any())->method('getRole')->willReturn($role);
@@ -124,7 +122,7 @@ class NavigationBuilderTest extends TestCase
         /** @var MockObject|Navigation $navigationStub */
         $navigationStub = $this->getMockBuilder(Navigation::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getExtendedDescendantNodes'])
+            ->onlyMethods(['getExtendedDescendantNodes'])
             ->getMock();
 
         $navigationStub->expects($expects)->method('getExtendedDescendantNodes')->willReturn($nodes);
