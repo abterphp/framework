@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Databases\Queries;
 
 use AbterPhp\Framework\TestCase\Database\QueryTestCase;
+use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;
 
 class FoundRowsTest extends QueryTestCase
 {
@@ -22,12 +23,13 @@ class FoundRowsTest extends QueryTestCase
     {
         $expectedResult = 10;
 
-        $mockStatement = $this->createReadColumnStatement(
+        $mockStatement = MockStatementFactory::createReadColumnStatement(
+            $this,
             [],
             "$expectedResult",
-            QueryTestCase::EXPECTATION_ANY,
-            QueryTestCase::EXPECTATION_ANY,
-            QueryTestCase::EXPECTATION_ANY
+            MockStatementFactory::EXPECTATION_ANY,
+            MockStatementFactory::EXPECTATION_ANY,
+            MockStatementFactory::EXPECTATION_ANY
         );
 
         $this->readConnectionMock
@@ -45,12 +47,13 @@ class FoundRowsTest extends QueryTestCase
         $returnValue = 10;
         $expectedResult = 0;
 
-        $mockStatement = $this->createReadColumnStatement(
+        $mockStatement = MockStatementFactory::createReadColumnStatement(
+            $this,
             [],
             "$returnValue",
-            QueryTestCase::EXPECTATION_ANY,
-            QueryTestCase::EXPECTATION_ANY,
-            QueryTestCase::EXPECTATION_ANY,
+            MockStatementFactory::EXPECTATION_ANY,
+            MockStatementFactory::EXPECTATION_ANY,
+            MockStatementFactory::EXPECTATION_ANY,
             false
         );
 
