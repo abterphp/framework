@@ -9,21 +9,22 @@ update:
 	php composer.phar update
 
 build:
-	./vendor/bin/phpunit --no-coverage
+	./vendor/bin/phpunit
 	./vendor/bin/phpcs
 	./vendor/bin/phpcs -p --colors --cache --standard=PSR12 tests
 	./vendor/bin/phpmd src text .phpmd.xml
 	PHAN_DISABLE_XDEBUG_WARN=1 ./vendor/bin/phan --color
 
 precommit:
-	./vendor/bin/phpunit --no-coverage
-	./vendor/bin/phpcs
-	./vendor/bin/phpcs -p --colors --cache --standard=PSR12 tests
+	git diff --cached --name-only --diff-filter=ACM | grep \\.php | xargs -n 1 php -l
+	./vendor/bin/phpunit
+	git diff --cached --name-only --diff-filter=ACM | grep \\.php | xargs -n 1 ./vendor/bin/phpcs -q
+	git diff --cached --name-only --diff-filter=ACM | grep Test | grep \\.php | xargs -n 1 ./vendor/bin/phpcs -q -p --colors --cache --standard=PSR12
 
 unit:
-	./vendor/bin/phpunit --no-coverage
+	./vendor/bin/phpunit
 
 coverage:
-	./vendor/bin/phpunit
+	./vendor/bin/phpunit -c phpunit-cov.xml
 
 .PHONY: install update build precommit unit integration coverage

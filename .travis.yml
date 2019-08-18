@@ -9,6 +9,9 @@ services:
 install:
   - make install
 
+before_script:
+  - phpenv config-add docker/php/conf.d/zzz.ini
+
 script:
   - pecl install ast
   - make build

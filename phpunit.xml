@@ -1,23 +1,10 @@
 <phpunit
         bootstrap="vendor/autoload.php"
+        failOnWarning="true"
         colors="true">
     <testsuites>
         <testsuite name="AbterPHP/Framework/Unit">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src</directory>
-            <exclude>
-                <directory suffix=".php">./src/Bootstrappers</directory>
-                <directory suffix=".php">./src/Console/Commands</directory>
-                <directory suffix=".php">./src/Http/Controllers</directory>
-            </exclude>
-        </whitelist>
-    </filter>
-    <logging>
-        <log type="coverage-html" target="./tmp/report" lowUpperBound="35" highLowerBound="70"/>
-        <log type="coverage-clover" target="./tmp/report/clover.xml"/>
-    </logging>
 </phpunit>
