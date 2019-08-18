@@ -63,18 +63,18 @@ class MockStatementFactory
      * @param mixed    $returnValue
      * @param int      $atBindValues
      * @param int      $atExecute
-     * @param int      $atFetchAll
+     * @param int      $atFetch
      * @param bool     $executeResult
      *
      * @return IStatement|MockObject
      */
-    public static function createReadColumnStatement(
+    public static function createReadRowStatement(
         TestCase $testCase,
         array $valuesToBind,
         $returnValue,
         int $atBindValues = self::EXPECTATION_ONCE,
         int $atExecute = self::EXPECTATION_ONCE,
-        int $atFetchAll = self::EXPECTATION_ONCE,
+        int $atFetch = self::EXPECTATION_ONCE,
         bool $executeResult = true
     ) {
         $statement = static::createStatement($testCase);
@@ -87,7 +87,44 @@ class MockStatementFactory
             ->method('execute')
             ->willReturn($executeResult);
         $statement
-            ->expects(static::getExpectation($testCase, $atFetchAll))
+            ->expects(static::getExpectation($testCase, $atFetch))
+            ->method('fetch')
+            ->willReturn($returnValue);
+
+        return $statement;
+    }
+
+    /**
+     * @param TestCase $testCase
+     * @param array    $valuesToBind
+     * @param mixed    $returnValue
+     * @param int      $atBindValues
+     * @param int      $atExecute
+     * @param int      $atFetchColumn
+     * @param bool     $executeResult
+     *
+     * @return IStatement|MockObject
+     */
+    public static function createReadColumnStatement(
+        TestCase $testCase,
+        array $valuesToBind,
+        $returnValue,
+        int $atBindValues = self::EXPECTATION_ONCE,
+        int $atExecute = self::EXPECTATION_ONCE,
+        int $atFetchColumn = self::EXPECTATION_ONCE,
+        bool $executeResult = true
+    ) {
+        $statement = static::createStatement($testCase);
+        $statement
+            ->expects(static::getExpectation($testCase, $atBindValues))
+            ->method('bindValues')
+            ->with($valuesToBind);
+        $statement
+            ->expects(static::getExpectation($testCase, $atExecute))
+            ->method('execute')
+            ->willReturn($executeResult);
+        $statement
+            ->expects(static::getExpectation($testCase, $atFetchColumn))
             ->method('fetchColumn')
             ->willReturn($returnValue);
 
@@ -190,7 +227,18 @@ class MockStatementFactory
         /** @var IStatement|MockObject $mock */
         $statement = $testCase->getMockBuilder(Statement::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['bindValues', 'execute', 'rowCount', 'fetchAll', 'fetchColumn', 'errorInfo'])
+            ->onlyMethods([
+                'bindValues',
+                'execute',
+                'rowCount',
+                'fetchAll',
+                'fetch',
+                'fetchColumn',
+                'fetchObject',
+                'errorInfo',
+                'errorCode',
+                'setFetchMode'
+            ])
             ->getMock();
 
         return $statement;
