@@ -24,13 +24,9 @@ class ExceptionHandlerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->loggerMock = $this->getMockBuilder(LoggerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->loggerMock = $this->createMock(LoggerInterface::class);
 
-        $this->exceptionRendererMock = $this->getMockBuilder(ExceptionRenderer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->exceptionRendererMock = $this->createMock(ExceptionRenderer::class);
 
         $this->sut = new ExceptionHandler($this->loggerMock, $this->exceptionRendererMock, []);
 

@@ -27,13 +27,9 @@ class SessionTest extends TestCase
     {
         parent::setUp();
 
-        $this->sessionMock = $this->getMockBuilder(ISession::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->sessionMock = $this->createMock(ISession::class);
 
-        $this->sessionHandlerMock = $this->getMockBuilder(SessionHandlerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->sessionHandlerMock = $this->createMock(SessionHandlerInterface::class);
 
         $this->sut = new Session($this->sessionMock, $this->sessionHandlerMock);
     }

@@ -21,9 +21,7 @@ class EntityChangeTest extends TestCase
 
     public function setUp(): void
     {
-        $this->entityMock = $this->getMockBuilder(IStringerEntity::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->entityMock = $this->createMock(IStringerEntity::class);
 
         $this->sut = new EntityChange($this->entityMock, $this->eventType);
 
