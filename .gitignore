@@ -7,3 +7,4 @@ phpunit.phar
 NOTES.md
 .phpunit.result.cache
 tmp.phpunit.result.cache
+tmp/
