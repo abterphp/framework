@@ -27,10 +27,7 @@ class FlysystemTest extends TestCase
      */
     protected function createFilesystemMock()
     {
-        return $this->getMockBuilder(Filesystem::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['has', 'read', 'write', 'listContents', 'delete', 'getTimestamp'])
-            ->getMock();
+        return $this->createMock(Filesystem::class);
     }
 
     public function testHasThrowsExceptionWhenThereAreNoFilesystemsRegistered()

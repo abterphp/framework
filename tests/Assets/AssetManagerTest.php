@@ -7,6 +7,7 @@ namespace AbterPhp\Framework\Assets;
 use AbterPhp\Framework\Assets\CacheManager\Flysystem as CacheManager;
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
 use AbterPhp\Framework\Filesystem\FileFinder;
+use AbterPhp\Framework\TestDouble\MockFactory;
 use League\Flysystem\FileNotFoundException;
 use MatthiasMullie\Minify\CSS as CssMinifier;
 use MatthiasMullie\Minify\JS as JsMinifier;
@@ -35,34 +36,23 @@ class AssetManagerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->cssMinifierMock = $this->getMockBuilder(CssMinifier::class)
-            ->onlyMethods(['add', 'minify'])
-            ->getMock();
+        $this->cssMinifierMock = $this->createMock(CssMinifier::class);
 
-        $this->jsMinifierMock = $this->getMockBuilder(JsMinifier::class)
-            ->onlyMethods(['add', 'minify'])
-            ->getMock();
+        $this->jsMinifierMock = $this->createMock(JsMinifier::class);
 
-        $this->minifierFactoryMock = $this->getMockBuilder(MinifierFactory::class)
-            ->onlyMethods(['createCssMinifier', 'createJsMinifier'])
-            ->getMock();
+        $this->minifierFactoryMock = $this->createMock(MinifierFactory::class);
+        $this->minifierFactoryMock = MockFactory::createMock(
+            $this,
+            MinifierFactory::class,
+            [
+                'createCssMinifier' => $this->cssMinifierMock,
+                'createJsMinifier' => $this->jsMinifierMock,
+            ]
+        );
 
-        $this->minifierFactoryMock
-            ->expects($this->any())
-            ->method('createCssMinifier')
-            ->willReturn($this->cssMinifierMock);
-        $this->minifierFactoryMock
-            ->expects($this->any())
-            ->method('createJsMinifier')
-            ->willReturn($this->jsMinifierMock);
+        $this->fileFinderMock = $this->createMock(FileFinder::class);
 
-        $this->fileFinderMock = $this->getMockBuilder(FileFinder::class)
-            ->onlyMethods(['registerFilesystem', 'has', 'read'])
-            ->getMock();
-
-        $this->cacheManagerMock = $this->getMockBuilder(CacheManager::class)
-            ->onlyMethods(['registerFilesystem', 'has', 'read', 'write', 'getWebPath', 'flush'])
-            ->getMock();
+        $this->cacheManagerMock = $this->createMock(CacheManager::class);
 
         $this->sut = new AssetManager($this->minifierFactoryMock, $this->fileFinderMock, $this->cacheManagerMock);
 

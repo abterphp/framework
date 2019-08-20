@@ -24,7 +24,6 @@ class MockTranslatorFactory
         /** @var ITranslator|MockObject $mockTranslator */
         $translatorMock = (new MockBuilder($testCase, ITranslator::class))
             ->disableOriginalConstructor()
-            ->onlyMethods(['translate', 'canTranslate'])
             ->getMock();
 
         $translatorMock

@@ -18,10 +18,7 @@ class GridTest extends TestCase
     public function testToStringContainsTable()
     {
         /** @var Table|MockObject $table */
-        $table = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString'])
-            ->getMock();
+        $table = $this->createMock(Table::class);
 
         $table->expects($this->any())->method('__toString')->willReturn('!A!');
 
@@ -33,16 +30,10 @@ class GridTest extends TestCase
     public function testToStringContainsPagination()
     {
         /** @var Table|MockObject $table */
-        $table = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString'])
-            ->getMock();
+        $table = $this->createMock(Table::class);
 
         /** @var Pagination|MockObject $pagination */
-        $pagination = $this->getMockBuilder(Pagination::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString'])
-            ->getMock();
+        $pagination = $this->createMock(Pagination::class);
 
         $table->expects($this->any())->method('__toString')->willReturn('!A!');
         $pagination->expects($this->any())->method('__toString')->willReturn('!B!');
@@ -55,16 +46,10 @@ class GridTest extends TestCase
     public function testToStringContainsFilters()
     {
         /** @var Table|MockObject $table */
-        $table = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString'])
-            ->getMock();
+        $table = $this->createMock(Table::class);
 
         /** @var Filters|MockObject $filters */
-        $filters = $this->getMockBuilder(Filters::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString'])
-            ->getMock();
+        $filters = $this->createMock(Filters::class);
 
         $table->expects($this->any())->method('__toString')->willReturn('!A!');
         $filters->expects($this->any())->method('__toString')->willReturn('!C!');
@@ -77,16 +62,10 @@ class GridTest extends TestCase
     public function testToStringContainsActions()
     {
         /** @var Table|MockObject $table */
-        $table = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString'])
-            ->getMock();
+        $table = $this->createMock(Table::class);
 
         /** @var Actions|MockObject $actions */
-        $actions = $this->getMockBuilder(Actions::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString', 'appendToAttribute'])
-            ->getMock();
+        $actions = $this->createMock(Actions::class);
 
         $table->expects($this->any())->method('__toString')->willReturn('!A!');
         $actions->expects($this->any())->method('__toString')->willReturn('!D!');
@@ -99,10 +78,7 @@ class GridTest extends TestCase
     public function testToStringCanWrapContentInForm()
     {
         /** @var Table|MockObject $table */
-        $table = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString'])
-            ->getMock();
+        $table = $this->createMock(Table::class);
 
         $table->expects($this->any())->method('__toString')->willReturn('A');
 
@@ -116,10 +92,7 @@ class GridTest extends TestCase
         $template = '--||--';
 
         /** @var Table|MockObject $table */
-        $table = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString'])
-            ->getMock();
+        $table = $this->createMock(Table::class);
 
         $table->expects($this->any())->method('__toString')->willReturn('A');
 
@@ -135,9 +108,7 @@ class GridTest extends TestCase
         $this->expectException(\LogicException::class);
 
         /** @var Table|MockObject $table */
-        $table = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $table = $this->createMock(Table::class);
 
         $sut = new Grid($table);
 
@@ -149,16 +120,10 @@ class GridTest extends TestCase
         $pageSize = 438;
 
         /** @var Table|MockObject $table */
-        $table = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString'])
-            ->getMock();
+        $table = $this->createMock(Table::class);
 
         /** @var Pagination|MockObject $pagination */
-        $pagination = $this->getMockBuilder(Pagination::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getPageSize'])
-            ->getMock();
+        $pagination = $this->createMock(Pagination::class);
 
         $pagination->expects($this->once())->method('getPageSize')->willReturn($pageSize);
 
@@ -174,10 +139,7 @@ class GridTest extends TestCase
         $sortConditions = ['foo' => 'bar'];
 
         /** @var Table|MockObject $table */
-        $table = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getSortConditions'])
-            ->getMock();
+        $table = $this->createMock(Table::class);
         $table->expects($this->once())->method('getSortConditions')->willReturn($sortConditions);
 
         $sut = new Grid($table);
@@ -192,9 +154,7 @@ class GridTest extends TestCase
         $this->expectException(\LogicException::class);
 
         /** @var Table|MockObject $table */
-        $table = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $table = $this->createMock(Table::class);
 
         $sut = new Grid($table);
 
@@ -206,16 +166,10 @@ class GridTest extends TestCase
         $whereConditions = ['foo' => 'bar'];
 
         /** @var Table|MockObject $table */
-        $table = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString'])
-            ->getMock();
+        $table = $this->createMock(Table::class);
 
         /** @var Filters|MockObject $filters */
-        $filters = $this->getMockBuilder(Filters::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getWhereConditions'])
-            ->getMock();
+        $filters = $this->createMock(Filters::class);
         $filters->expects($this->once())->method('getWhereConditions')->willReturn($whereConditions);
 
         $sut = new Grid($table, null, $filters);
@@ -230,9 +184,7 @@ class GridTest extends TestCase
         $this->expectException(\LogicException::class);
 
         /** @var Table|MockObject $table */
-        $table = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $table = $this->createMock(Table::class);
 
         $sut = new Grid($table);
 
@@ -245,16 +197,10 @@ class GridTest extends TestCase
         $filterSqlParams = ['bar' => 'baz'];
 
         /** @var Table|MockObject $table */
-        $table = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getSqlParams'])
-            ->getMock();
+        $table = $this->createMock(Table::class);
 
         /** @var Filters|MockObject $filters */
-        $filters = $this->getMockBuilder(Filters::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getSqlParams'])
-            ->getMock();
+        $filters = $this->createMock(Filters::class);
 
         $table->expects($this->once())->method('getSqlParams')->willReturn($tableSqlParams);
         $filters->expects($this->once())->method('getSqlParams')->willReturn($filterSqlParams);
@@ -278,9 +224,7 @@ class GridTest extends TestCase
         $this->expectException(\LogicException::class);
 
         /** @var Table|MockObject $table */
-        $table = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $table = $this->createMock(Table::class);
 
         $sut = new Grid($table);
 
@@ -292,16 +236,10 @@ class GridTest extends TestCase
         $totalCount = 10;
 
         /** @var Table|MockObject $table */
-        $table = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString'])
-            ->getMock();
+        $table = $this->createMock(Table::class);
 
         /** @var Pagination|MockObject $pagination */
-        $pagination = $this->getMockBuilder(Pagination::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['setTotalCount'])
-            ->getMock();
+        $pagination = $this->createMock(Pagination::class);
         $pagination->expects($this->once())->method('setTotalCount')->with($totalCount);
 
         $sut = new Grid($table, $pagination);
@@ -311,15 +249,10 @@ class GridTest extends TestCase
 
     public function testSetEntitiesCallsTable()
     {
-        $entity = $this->getMockBuilder(IStringerEntity::class)
-            ->setMethods(['__toString', 'getId', 'setId', 'toJSON'])
-            ->getMock();
+        $entity = $this->createMock(IStringerEntity::class);
 
         /** @var Table|MockObject $table */
-        $table = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['setEntities'])
-            ->getMock();
+        $table = $this->createMock(Table::class);
         $table->expects($this->once())->method('setEntities')->with([$entity]);
 
         $sut = new Grid($table);
@@ -330,21 +263,13 @@ class GridTest extends TestCase
     public function getExtendNodesProvider(): array
     {
         /** @var Table|MockObject $tableStub */
-        $tableStub = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $tableStub = $this->createMock(Table::class);
 
         /** @var Filters|MockObject $filtersStub */
-        $filtersStub = $this->getMockBuilder(Filters::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $filtersStub = $this->createMock(Filters::class);
 
         /** @var IPagination|MockObject $paginationStub */
-        $paginationStub = $this->getMockBuilder(IPagination::class)
-            ->setMethods([])
-            ->getMock();
+        $paginationStub = $this->createMock(IPagination::class);
 
         return [
             'nay-filters-nay-pagination' => [$tableStub, null, null, [$tableStub]],

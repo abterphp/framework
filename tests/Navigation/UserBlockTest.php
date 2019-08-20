@@ -30,10 +30,7 @@ class UserBlockTest extends TagTest
     {
         parent::setUp();
 
-        $this->sessionMock = $this->getMockBuilder(Session::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['get', 'has'])
-            ->getMock();
+        $this->sessionMock = $this->createMock(Session::class);
 
         $sessionData = &$this->sessionData;
         $this->sessionMock->expects($this->any())->method('has')->willReturnCallback(
@@ -53,10 +50,7 @@ class UserBlockTest extends TagTest
         $this->expectException(\LogicException::class);
 
         /** @var ISession|MockObject $sessionMock */
-        $sessionMock = $this->getMockBuilder(Session::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['get', 'has'])
-            ->getMock();
+        $sessionMock = $this->createMock(Session::class);
 
         $sessionMock->expects($this->any())->method('has')->willReturn(false);
 
@@ -72,10 +66,7 @@ class UserBlockTest extends TagTest
         ];
 
         /** @var ISession|MockObject $sessionMock */
-        $sessionMock = $this->getMockBuilder(Session::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['get', 'has'])
-            ->getMock();
+        $sessionMock = $this->createMock(Session::class);
 
         $sessionMock->expects($this->any())->method('has')->willReturnCallback(
             function ($key) use ($sessionData) {

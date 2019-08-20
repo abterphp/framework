@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Grid\Row;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Grid\Action\Action;
 use AbterPhp\Framework\Grid\Cell\Cell;
 use AbterPhp\Framework\Grid\Collection\Cells;
 use AbterPhp\Framework\Grid\Component\Actions;
 use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\Node;
-use PHPUnit\Framework\MockObject\MockObject;
+use AbterPhp\Framework\TestDouble\Domain\MockEntityFactory;
 use PHPUnit\Framework\TestCase;
 
 class RowTest extends TestCase
@@ -21,61 +20,44 @@ class RowTest extends TestCase
     {
         $sut = new Row(new Cells());
 
-        /** @var MockObject|IStringerEntity $mockEntity */
-        $mockEntity = $this->getMockBuilder(IStringerEntity::class)
-            ->setMethods(['getId', 'setId', '__toString', 'toJSON'])
-            ->getMock();
+        $stubEntity = MockEntityFactory::createEntityStub($this);
 
-        $sut->setEntity($mockEntity);
+        $sut->setEntity($stubEntity);
 
-        $this->assertSame($mockEntity, $sut->getEntity());
+        $this->assertSame($stubEntity, $sut->getEntity());
     }
 
     public function testSetEntitySetsEntityOnAllActions()
     {
-        /** @var MockObject|IStringerEntity $mockEntity */
-        $mockEntity = $this->getMockBuilder(IStringerEntity::class)
-            ->setMethods(['getId', 'setId', '__toString', 'toJSON'])
-            ->getMock();
+        $stubEntity = MockEntityFactory::createEntityStub($this);
 
         $actionCount = 2;
 
         $actions = new Actions();
         for ($i = 0; $i < $actionCount; $i++) {
-            $action = $this->getMockBuilder(Action::class)
-                ->disableOriginalConstructor()
-                ->onlyMethods(['setEntity'])
-                ->getMock();
+            $action = $this->createMock(Action::class);
 
-            $action->expects($this->once())->method('setEntity')->with($mockEntity);
+            $action->expects($this->once())->method('setEntity')->with($stubEntity);
 
             $actions[] = $action;
         }
 
         $sut = new Row(new Cells(), $actions);
 
-        $sut->setEntity($mockEntity);
+        $sut->setEntity($stubEntity);
     }
 
     public function testRender()
     {
-        /** @var MockObject|IStringerEntity $mockEntity */
-        $mockEntity = $this->getMockBuilder(IStringerEntity::class)
-            ->setMethods(['getId', 'setId', '__toString', 'toJSON'])
-            ->getMock();
-        $mockEntity->expects($this->any())->method('__toString')->willReturn('foo');
-        $mockEntity->expects($this->any())->method('getId')->with(1);
+        $stubEntity = MockEntityFactory::createEntityStub($this, 'foo', null, 'id-1');
 
         $actionCount = 2;
 
         $actions = new Actions();
         for ($i = 0; $i < $actionCount; $i++) {
-            $action = $this->getMockBuilder(Action::class)
-                ->disableOriginalConstructor()
-                ->onlyMethods(['setEntity', '__toString'])
-                ->getMock();
+            $action = $this->createMock(Action::class);
 
-            $action->expects($this->once())->method('setEntity')->with($mockEntity);
+            $action->expects($this->once())->method('setEntity')->with($stubEntity);
             $action->expects($this->atLeastOnce())->method('__toString')->willReturn("action-$i");
 
             $actions[] = $action;
@@ -83,7 +65,7 @@ class RowTest extends TestCase
 
         $sut = new Row(new Cells(), $actions);
 
-        $sut->setEntity($mockEntity);
+        $sut->setEntity($stubEntity);
 
         $actualResult   = (string)$sut;
         $repeatedResult = (string)$sut;

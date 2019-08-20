@@ -25,10 +25,7 @@ class ManagerTest extends TestCase
     {
         $this->cacheMock = null;
 
-        $this->loaderMock = $this->getMockBuilder(Loader::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['loadModules'])
-            ->getMock();
+        $this->loaderMock = $this->createMock(Loader::class);
 
         $this->sut = new Manager($this->loaderMock);
 
@@ -37,10 +34,7 @@ class ManagerTest extends TestCase
 
     public function createSutWithCache()
     {
-        $this->cacheMock = $this->getMockBuilder(Loader::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['loadModules'])
-            ->getMock();
+        $this->cacheMock = $this->createMock(Loader::class);
 
         $this->sut = new Manager($this->loaderMock, $this->cacheMock);
 
@@ -851,10 +845,7 @@ class ManagerTest extends TestCase
     protected function createCacheWrapper()
     {
         /** @var ICacheBridge|MockObject $cacheBridge */
-        $cacheBridge = $this->getMockBuilder(ICacheBridge::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['has', 'get', 'set', 'decrement', 'increment', 'delete', 'flush'])
-            ->getMock();
+        $cacheBridge = $this->createMock(ICacheBridge::class);
 
         return $cacheBridge;
     }

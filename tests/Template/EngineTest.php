@@ -22,15 +22,9 @@ class EngineTest extends TestCase
     {
         parent::setUp();
 
-        $this->rendererMock = $this->getMockBuilder(Renderer::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['addLoader', 'hasAllValidLoaders', 'render'])
-            ->getMock();
+        $this->rendererMock = $this->createMock(Renderer::class);
 
-        $this->cacheManagerMock = $this->getMockBuilder(CacheManager::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getCacheData', 'storeCacheData', 'getDocument', 'storeDocument'])
-            ->getMock();
+        $this->cacheManagerMock = $this->createMock(CacheManager::class);
 
         $this->sut = new Engine($this->rendererMock, $this->cacheManagerMock, true);
     }

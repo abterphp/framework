@@ -18,10 +18,7 @@ class SecretGeneratorReadyTest extends TestCase
 
     public function setUp(): void
     {
-        $this->secretGeneratorMock = $this->getMockBuilder(SecretGenerator::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $this->secretGeneratorMock = $this->createMock(SecretGenerator::class);
 
         $this->sut = new SecretGeneratorReady($this->secretGeneratorMock);
 

@@ -29,16 +29,10 @@ class EnvironmentWarningTest extends TestCase
         $sut = new EnvironmentWarning($this->translatorMock, Environment::PRODUCTION);
 
         /** @var Request|MockObject $requestMock */
-        $requestMock = $this->getMockBuilder(Request::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['createFromGlobals'])
-            ->getMock();
+        $requestMock = $this->createMock(Request::class);
 
         /** @var Response|MockObject $requestMock */
-        $responseMock = $this->getMockBuilder(Response::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['setContent'])
-            ->getMock();
+        $responseMock = $this->createMock(Response::class);
 
         $next = function () use ($responseMock) {
             return $responseMock;
@@ -56,16 +50,10 @@ class EnvironmentWarningTest extends TestCase
         $sut = new EnvironmentWarning($this->translatorMock, Environment::TESTING);
 
         /** @var Request|MockObject $requestMock */
-        $requestMock = $this->getMockBuilder(Request::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['createFromGlobals'])
-            ->getMock();
+        $requestMock = $this->createMock(Request::class);
 
         /** @var Response|MockObject $requestMock */
-        $responseMock = $this->getMockBuilder(Response::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['setContent'])
-            ->getMock();
+        $responseMock = $this->createMock(Response::class);
 
         $next = function () use ($responseMock) {
             return $responseMock;

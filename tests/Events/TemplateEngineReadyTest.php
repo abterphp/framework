@@ -18,10 +18,7 @@ class TemplateEngineReadyTest extends TestCase
 
     public function setUp(): void
     {
-        $this->engineMock = $this->getMockBuilder(Engine::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $this->engineMock = $this->createMock(Engine::class);
 
         $this->sut = new TemplateEngineReady($this->engineMock);
 

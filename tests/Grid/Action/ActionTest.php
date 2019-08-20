@@ -75,9 +75,7 @@ class ActionTest extends TestCase
         $expectedResult = "<button foo=\"bar\">Button</button>";
 
         /** @var IEntity|MockObject $entityMock */
-        $entityMock = $this->getMockBuilder(IEntity::class)
-            ->setMethods(['getId', 'setId'])
-            ->getMock();
+        $entityMock = $this->getMockBuilder(IEntity::class)->getMock();
         $entityMock->expects($this->atLeastOnce())->method('getId')->willReturn('bar');
 
         $content            = 'Button';

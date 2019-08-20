@@ -43,9 +43,7 @@ class IdGeneratorRegistryTest extends TestCase
     public function testGetIdGeneratorReturnsRegisteredGenerator()
     {
         /** @var IIdGenerator|MockObject $idGenerator */
-        $idGenerator = $this->getMockBuilder(IIdGenerator::class)
-            ->onlyMethods(['generate', 'getEmptyValue', 'isPostInsert'])
-            ->getMock();
+        $idGenerator = $this->createMock(IIdGenerator::class);
 
         $className = 'foo';
 

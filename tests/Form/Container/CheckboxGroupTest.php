@@ -72,21 +72,13 @@ class CheckboxGroupTest extends \PHPUnit\Framework\TestCase
         ?string $tag
     ): CheckboxGroup {
         /** @var Input|MockObject $inputMock */
-        $inputMock = $this->getMockBuilder(Input::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString'])
-            ->getMock();
+        $inputMock = $this->createMock(Input::class);
 
         /** @var Label|MockObject $labelMock */
-        $labelMock = $this->getMockBuilder(Label::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString'])
-            ->getMock();
+        $labelMock = $this->createMock(Label::class);
 
         /** @var Help|MockObject $helpMock */
-        $helpMock = $this->getMockBuilder(Help::class)
-            ->onlyMethods(['__toString'])
-            ->getMock();
+        $helpMock = $this->createMock(Help::class);
 
         $inputMock->expects($this->any())->method('__toString')->willReturn($inputOutput);
         $labelMock->expects($this->any())->method('__toString')->willReturn($labelOutput);
@@ -104,16 +96,10 @@ class CheckboxGroupTest extends \PHPUnit\Framework\TestCase
     public function testGetCheckboxSpan()
     {
         /** @var Input|MockObject $input */
-        $input = $this->getMockBuilder(Input::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $input = $this->createMock(Input::class);
 
         /** @var Label|MockObject $label */
-        $label = $this->getMockBuilder(Label::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $label = $this->createMock(Label::class);
 
         $sut = new CheckboxGroup($input, $label);
 

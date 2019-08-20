@@ -32,13 +32,9 @@ class CryptoTest extends TestCase
 
     public function setUp(): void
     {
-        $this->encrypterMock = $this->getMockBuilder(IEncrypter::class)
-            ->onlyMethods(['encrypt', 'decrypt', 'setSecret'])
-            ->getMock();
+        $this->encrypterMock = $this->createMock(IEncrypter::class);
 
-        $this->hasherMock = $this->getMockBuilder(IHasher::class)
-            ->onlyMethods(['hash', 'verify', 'needsRehash'])
-            ->getMock();
+        $this->hasherMock = $this->createMock(IHasher::class);
 
         $this->sut = new Crypto(
             $this->encrypterMock,

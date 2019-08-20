@@ -26,10 +26,7 @@ class FlashServiceTest extends TestCase
     {
         parent::setUp();
 
-        $this->sessionMock = $this->getMockBuilder(Session::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['get', 'flash'])
-            ->getMock();
+        $this->sessionMock = $this->createMock(Session::class);
 
         $this->translatorMock = MockTranslatorFactory::createSimpleTranslator($this, []);
 

@@ -18,10 +18,7 @@ class NavigationReadyTest extends TestCase
 
     public function setUp(): void
     {
-        $this->navigationMock = $this->getMockBuilder(Navigation::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $this->navigationMock = $this->createMock(Navigation::class);
 
         $this->sut = new NavigationReady($this->navigationMock);
 

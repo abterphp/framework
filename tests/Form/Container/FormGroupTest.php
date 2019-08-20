@@ -74,21 +74,13 @@ class FormGroupTest extends TestCase
         ?string $tag
     ): FormGroup {
         /** @var IElement|MockObject $inputMock */
-        $inputMock = $this->getMockBuilder(Input::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString'])
-            ->getMock();
+        $inputMock = $this->createMock(Input::class);
 
         /** @var Label|MockObject $labelMock */
-        $labelMock = $this->getMockBuilder(Label::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString'])
-            ->getMock();
+        $labelMock = $this->createMock(Label::class);
 
         /** @var Help|MockObject $helpMock */
-        $helpMock = $this->getMockBuilder(Help::class)
-            ->onlyMethods(['__toString'])
-            ->getMock();
+        $helpMock = $this->createMock(Help::class);
 
         $inputMock->expects($this->any())->method('__toString')->willReturn($inputOutput);
         $labelMock->expects($this->any())->method('__toString')->willReturn($labelOutput);
@@ -167,16 +159,10 @@ class FormGroupTest extends TestCase
     public function testGetInput()
     {
         /** @var Input|MockObject $input */
-        $input = $this->getMockBuilder(Input::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $input = $this->createMock(Input::class);
 
         /** @var Label|MockObject $label */
-        $label = $this->getMockBuilder(Label::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $label = $this->createMock(Label::class);
 
         $sut = new FormGroup($input, $label);
 
@@ -188,16 +174,10 @@ class FormGroupTest extends TestCase
     public function testGetLabel()
     {
         /** @var Input|MockObject $input */
-        $input = $this->getMockBuilder(Input::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $input = $this->createMock(Input::class);
 
         /** @var Label|MockObject $label */
-        $label = $this->getMockBuilder(Label::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $label = $this->createMock(Label::class);
 
         $sut = new FormGroup($input, $label);
 
@@ -209,22 +189,13 @@ class FormGroupTest extends TestCase
     public function testGetHelp()
     {
         /** @var Input|MockObject $input */
-        $input = $this->getMockBuilder(Input::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $input = $this->createMock(Input::class);
 
         /** @var Label|MockObject $label */
-        $label = $this->getMockBuilder(Label::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $label = $this->createMock(Label::class);
 
         /** @var INode|MockObject $help */
-        $help = $this->getMockBuilder(INode::class)
-            ->disableOriginalConstructor()
-            ->setMethods([])
-            ->getMock();
+        $help = $this->createMock(INode::class);
 
         $sut = new FormGroup($input, $label, $help);
 

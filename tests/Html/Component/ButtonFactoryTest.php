@@ -28,10 +28,7 @@ class ButtonFactoryTest extends TestCase
     {
         parent::setUp();
 
-        $this->urlGeneratorMock = $this->getMockBuilder(UrlGenerator::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['createFromName'])
-            ->getMock();
+        $this->urlGeneratorMock = $this->createMock(UrlGenerator::class);
 
         $this->iconAttributes = StubAttributeFactory::createAttributes(['icon' => ['asd']]);
         $this->textAttributes = StubAttributeFactory::createAttributes(['text' => ['qwe']]);

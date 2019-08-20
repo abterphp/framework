@@ -18,10 +18,7 @@ class GridReadyTest extends TestCase
 
     public function setUp(): void
     {
-        $this->gridMock = $this->getMockBuilder(Grid::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $this->gridMock = $this->createMock(Grid::class);
 
         $this->sut = new GridReady($this->gridMock);
 

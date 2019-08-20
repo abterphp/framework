@@ -26,14 +26,10 @@ class FiltersTest extends TestCase
         $params = ['foo' => 'Foo!', 'bar' => 'Bar?'];
 
         /** @var Filter|MockObject $filter0 */
-        $filter0 = $this->getMockBuilder(Filter::class)
-            ->onlyMethods(['setParams'])
-            ->getMock();
+        $filter0 = $this->createMock(Filter::class);
 
         /** @var Filter|MockObject $filter1 */
-        $filter1 = $this->getMockBuilder(Filter::class)
-            ->onlyMethods(['setParams'])
-            ->getMock();
+        $filter1 = $this->createMock(Filter::class);
 
         $sut = new Filters();
 
@@ -75,9 +71,7 @@ class FiltersTest extends TestCase
 
         foreach ($whereConditions as $queryPart) {
             /** @var Filter|MockObject $filter */
-            $filter = $this->getMockBuilder(Filter::class)
-                ->onlyMethods(['getQueryPart'])
-                ->getMock();
+            $filter = $this->createMock(Filter::class);
 
             $filter->expects($this->once())->method('getQueryPart')->willReturn($queryPart);
 
@@ -119,9 +113,7 @@ class FiltersTest extends TestCase
 
         foreach ($whereConditions as $whereCondition) {
             /** @var Filter|MockObject $filter */
-            $filter = $this->getMockBuilder(Filter::class)
-                ->onlyMethods(['getWhereConditions'])
-                ->getMock();
+            $filter = $this->createMock(Filter::class);
 
             $filter->expects($this->once())->method('getWhereConditions')->willReturn($whereCondition);
 
@@ -163,9 +155,7 @@ class FiltersTest extends TestCase
 
         foreach ($sqlParams as $sqlParamsPiece) {
             /** @var Filter|MockObject $filter */
-            $filter = $this->getMockBuilder(Filter::class)
-                ->onlyMethods(['getQueryParams'])
-                ->getMock();
+            $filter = $this->createMock(Filter::class);
 
             $filter->expects($this->once())->method('getQueryParams')->willReturn($sqlParamsPiece);
 
@@ -200,9 +190,7 @@ class FiltersTest extends TestCase
 
         for ($i = 0; $i < $filterCount; $i++) {
             /** @var Filter|MockObject $filter */
-            $filter = $this->getMockBuilder(Filter::class)
-                ->onlyMethods(['setTranslator'])
-                ->getMock();
+            $filter = $this->createMock(Filter::class);
 
             $filter->expects($this->once())->method('setTranslator')->with($mockTranslator);
 
@@ -266,7 +254,7 @@ class FiltersTest extends TestCase
 
         for ($i = 0; $i < $filterCount; $i++) {
             /** @var Filter|MockObject $filter */
-            $filter = $this->getMockBuilder(Filter::class)->onlyMethods(['__toString'])->getMock();
+            $filter = $this->createMock(Filter::class);
             $filter->expects($this->atLeastOnce())->method('__toString')->willReturn("filter-$i");
             $sut[] = $filter;
         }

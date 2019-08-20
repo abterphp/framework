@@ -29,12 +29,10 @@ class SessionTest extends TestCase
 
         $this->sessionMock = $this->getMockBuilder(ISession::class)
             ->disableOriginalConstructor()
-            ->setMethods([])
             ->getMock();
 
         $this->sessionHandlerMock = $this->getMockBuilder(SessionHandlerInterface::class)
             ->disableOriginalConstructor()
-            ->setMethods(['gc', 'open', 'close', 'read', 'write', 'destroy'])
             ->getMock();
 
         $this->sut = new Session($this->sessionMock, $this->sessionHandlerMock);
@@ -55,10 +53,7 @@ class SessionTest extends TestCase
         $requestMock = $this->createMock(Request::class);
 
         /** @var Response|MockObject $requestMock */
-        $responseMock = $this->getMockBuilder(Response::class)
-            ->disableOriginalConstructor()
-            ->setMethods([])
-            ->getMock();
+        $responseMock = $this->createMock(Response::class);
 
         $next = function () use ($responseMock) {
             return $responseMock;
@@ -84,10 +79,7 @@ class SessionTest extends TestCase
         $requestMock = $this->createMock(Request::class);
 
         /** @var Response|MockObject $requestMock */
-        $responseMock = $this->getMockBuilder(Response::class)
-            ->disableOriginalConstructor()
-            ->setMethods([])
-            ->getMock();
+        $responseMock = $this->createMock(Response::class);
 
         $next = function () use ($responseMock) {
             return $responseMock;

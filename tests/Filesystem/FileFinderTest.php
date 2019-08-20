@@ -26,10 +26,7 @@ class FileFinderTest extends TestCase
      */
     protected function createFilesystemMock()
     {
-        return $this->getMockBuilder(Filesystem::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['has', 'read'])
-            ->getMock();
+        return $this->createMock(Filesystem::class);
     }
 
     public function testReadWithoutFilesystems()

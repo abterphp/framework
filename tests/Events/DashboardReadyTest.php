@@ -18,10 +18,7 @@ class DashboardReadyTest extends TestCase
 
     public function setUp(): void
     {
-        $this->dashboardMock = $this->getMockBuilder(Dashboard::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $this->dashboardMock = $this->createMock(Dashboard::class);
 
         $this->sut = new DashboardReady($this->dashboardMock);
 

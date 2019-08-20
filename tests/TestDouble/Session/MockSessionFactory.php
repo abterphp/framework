@@ -29,33 +29,7 @@ class MockSessionFactory
         }
 
         /** @var ISession|MockObject $sessionMock */
-        $sessionMock = $testCase->getMockBuilder(ISession::class)
-            ->onlyMethods(
-                [
-                    'ageFlashData',
-                    'delete',
-                    'flash',
-                    'flush',
-                    'get',
-                    'getAll',
-                    'getId',
-                    'getName',
-                    'has',
-                    'hasStarted',
-                    'reflash',
-                    'regenerateId',
-                    'set',
-                    'setId',
-                    'setMany',
-                    'setName',
-                    'start',
-                    'offsetExists',
-                    'offsetGet',
-                    'offsetSet',
-                    'offsetUnset',
-                ]
-            )
-            ->getMock();
+        $sessionMock = $testCase->getMockBuilder(ISession::class)->getMock();
 
         $sessionMock
             ->expects($testCase->any())

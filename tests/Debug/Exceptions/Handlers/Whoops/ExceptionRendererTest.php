@@ -39,26 +39,7 @@ class ExceptionRendererTest extends TestCase
      */
     protected function createRunMock()
     {
-        $mock = $this->getMockBuilder(RunInterface::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(
-                [
-                    'pushHandler',
-                    'popHandler',
-                    'getHandlers',
-                    'clearHandlers',
-                    'register',
-                    'unregister',
-                    'allowQuit',
-                    'silenceErrorsInPaths',
-                    'sendHttpCode',
-                    'writeToOutput',
-                    'handleException',
-                    'handleError',
-                    'handleShutdown',
-                ]
-            )
-            ->getMock();
+        $mock = $this->createMock(RunInterface::class);
 
         return $mock;
     }

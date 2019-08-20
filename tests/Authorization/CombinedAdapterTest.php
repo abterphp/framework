@@ -22,14 +22,9 @@ class CombinedAdapterTest extends TestCase
 
     public function setUp(): void
     {
-        $this->defaultAdapterMock = $this->getMockBuilder(CasbinAdapter::class)
-            ->onlyMethods(['loadPolicy', 'savePolicy', 'addPolicy', 'removePolicy', 'removeFilteredPolicy'])
-            ->getMock();
+        $this->defaultAdapterMock = $this->createMock(CasbinAdapter::class);
 
-        $this->cacheManagerMock = $this->getMockBuilder(CacheManager::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getAll', 'storeAll'])
-            ->getMock();
+        $this->cacheManagerMock = $this->createMock(CacheManager::class);
 
         $this->sut = new CombinedAdapter($this->defaultAdapterMock, $this->cacheManagerMock);
 
@@ -48,15 +43,9 @@ class CombinedAdapterTest extends TestCase
      */
     public function loadPolicyWithoutCacheManagerProvider(): array
     {
-        $adapterMock0 = $this->getMockBuilder(CasbinAdapter::class)
-            ->onlyMethods(['loadPolicy', 'savePolicy', 'addPolicy', 'removePolicy', 'removeFilteredPolicy'])
-            ->getMock();
-        $adapterMock1 = $this->getMockBuilder(CasbinAdapter::class)
-            ->onlyMethods(['loadPolicy', 'savePolicy', 'addPolicy', 'removePolicy', 'removeFilteredPolicy'])
-            ->getMock();
-        $adapterMock2 = $this->getMockBuilder(CasbinAdapter::class)
-            ->onlyMethods(['loadPolicy', 'savePolicy', 'addPolicy', 'removePolicy', 'removeFilteredPolicy'])
-            ->getMock();
+        $adapterMock0 = $this->createMock(CasbinAdapter::class);
+        $adapterMock1 = $this->createMock(CasbinAdapter::class);
+        $adapterMock2 = $this->createMock(CasbinAdapter::class);
 
         return [
             'no-adapters'  => [[]],

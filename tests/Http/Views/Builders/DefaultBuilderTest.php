@@ -23,10 +23,7 @@ class DefaultBuilderTest extends TestCase
     public function testBuild()
     {
         /** @var View|MockObject $viewMock */
-        $viewMock = $this->getMockBuilder(View::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['setVar'])
-            ->getMock();
+        $viewMock = $this->createMock(View::class);
 
         $viewMock->expects($this->atLeastOnce())->method('setVar');
 

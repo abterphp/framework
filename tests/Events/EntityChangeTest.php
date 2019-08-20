@@ -23,7 +23,6 @@ class EntityChangeTest extends TestCase
     {
         $this->entityMock = $this->getMockBuilder(IStringerEntity::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getId', 'setId', 'toJSON', '__toString'])
             ->getMock();
 
         $this->sut = new EntityChange($this->entityMock, $this->eventType);

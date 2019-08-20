@@ -134,10 +134,7 @@ class DecoratorTest extends TestCase
 
     public function testDecorateMatchingNonTagNodeWorks()
     {
-        $node = $this->getMockBuilder(Node::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['isMatch'])
-            ->getMock();
+        $node = $this->createMock(Node::class);
         $node->expects($this->once())->method('isMatch')->willReturn(true);
 
         $this->sut->addRule(new Rule([], null, []));

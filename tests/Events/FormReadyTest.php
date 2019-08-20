@@ -18,10 +18,7 @@ class FormReadyTest extends TestCase
 
     public function setUp(): void
     {
-        $this->formMock = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $this->formMock = $this->createMock(Form::class);
 
         $this->sut = new FormReady($this->formMock);
 

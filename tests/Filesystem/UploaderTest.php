@@ -24,10 +24,7 @@ class UploaderTest extends TestCase
     {
         parent::setUp();
 
-        $this->filesystemMock = $this->getMockBuilder(Filesystem::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['has', 'read', 'delete', 'readStream', 'getSize'])
-            ->getMock();
+        $this->filesystemMock = $this->createMock(Filesystem::class);
 
         $this->sut = new Uploader($this->filesystemMock, $this->fileManagerPath);
     }
@@ -43,10 +40,7 @@ class UploaderTest extends TestCase
     {
         $fileType = 'foo';
 
-        $uploadedFileMock = $this->getMockBuilder(UploadedFile::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['move'])
-            ->getMock();
+        $uploadedFileMock = $this->createMock(UploadedFile::class);
 
         $fileData            = [];
         $fileData[$fileType] = $uploadedFileMock;
@@ -61,10 +55,7 @@ class UploaderTest extends TestCase
         $fileType = 'foo';
         $msg      = 'bar';
 
-        $uploadedFileMock = $this->getMockBuilder(UploadedFile::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['move'])
-            ->getMock();
+        $uploadedFileMock = $this->createMock(UploadedFile::class);
 
         $uploadedFileMock
             ->expects($this->atLeastOnce())

@@ -26,10 +26,7 @@ class NavigationTest extends TestCase
     {
         parent::setUp();
 
-        $this->enforcerMock = $this->getMockBuilder(Enforcer::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['enforce'])
-            ->getMock();
+        $this->enforcerMock = $this->createMock(Enforcer::class);
     }
 
     public function testDefaultGetExtended()
@@ -214,10 +211,7 @@ class NavigationTest extends TestCase
         $translatorMock = $this->createMock(ITranslator::class);
 
         /** @var Item|MockObject $itemMock */
-        $itemMock = $this->getMockBuilder(Item::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['setTranslator'])
-            ->getMock();
+        $itemMock = $this->createMock(Item::class);
 
         $itemMock
             ->expects($this->atLeastOnce())

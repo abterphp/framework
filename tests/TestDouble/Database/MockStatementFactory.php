@@ -227,18 +227,6 @@ class MockStatementFactory
         /** @var IStatement|MockObject $mock */
         $statement = $testCase->getMockBuilder(Statement::class)
             ->disableOriginalConstructor()
-            ->onlyMethods([
-                'bindValues',
-                'execute',
-                'rowCount',
-                'fetchAll',
-                'fetch',
-                'fetchColumn',
-                'fetchObject',
-                'errorInfo',
-                'errorCode',
-                'setFetchMode'
-            ])
             ->getMock();
 
         return $statement;

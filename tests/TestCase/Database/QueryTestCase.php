@@ -41,10 +41,7 @@ abstract class QueryTestCase extends TestCase
      */
     protected function getReadConnectionMock()
     {
-        return $this->getMockBuilder(Connection::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['prepare'])
-            ->getMock();
+        return $this->createMock(Connection::class);
     }
 
     /**
@@ -52,10 +49,7 @@ abstract class QueryTestCase extends TestCase
      */
     protected function getWriteConnectionMock()
     {
-        return $this->getMockBuilder(Connection::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['prepare'])
-            ->getMock();
+        return $this->createMock(Connection::class);
     }
 
     /**
@@ -66,10 +60,7 @@ abstract class QueryTestCase extends TestCase
      */
     protected function getConnectionPoolMock(?IConnection $readConnection, ?IConnection $writeConnection)
     {
-        $connectionPool = $this->getMockBuilder(ConnectionPool::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getReadConnection', 'getWriteConnection', 'setReadConnection', 'setWriteConnection'])
-            ->getMock();
+        $connectionPool = $this->createMock(ConnectionPool::class);
 
         if ($readConnection) {
             $connectionPool->expects($this->any())->method('getReadConnection')->willReturn($readConnection);

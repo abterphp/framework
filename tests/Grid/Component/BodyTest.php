@@ -6,6 +6,7 @@ namespace AbterPhp\Framework\Grid\Component;
 
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Grid\Row\Row;
+use AbterPhp\Framework\TestDouble\Domain\Entity\FooBarStub;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -111,15 +112,12 @@ class BodyTest extends TestCase
      * @param string $foo
      * @param string $bar
      *
-     * @return IStringerEntity
+     * @return FooBarStub|MockObject
      */
     private function createEntity(string $string, int $entityId, string $foo = '', string $bar = ''): IStringerEntity
     {
-        /** @var IStringerEntity|MockObject $entity */
-        $entity = $this->getMockBuilder(IStringerEntity::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['__toString', 'getId', 'setId', 'toJSON', 'getFoo', 'getBar'])
-            ->getMock();
+        /** @var FooBarStub|MockObject $entity */
+        $entity = $this->createMock(FooBarStub::class);
 
         $entity->expects($this->any())->method('__toString')->willReturn($string);
         $entity->expects($this->any())->method('getId')->willReturn($entityId);

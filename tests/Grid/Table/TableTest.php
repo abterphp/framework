@@ -7,6 +7,7 @@ namespace AbterPhp\Framework\Grid\Table;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Grid\Component\Body;
 use AbterPhp\Framework\Grid\Component\Header;
+use AbterPhp\Framework\TestDouble\Domain\MockEntityFactory;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -25,15 +26,9 @@ class TableTest extends TestCase
     {
         parent::setUp();
 
-        $this->body = $this->getMockBuilder(Body::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString', 'setEntities'])
-            ->getMock();
+        $this->body = $this->createMock(Body::class);
 
-        $this->header = $this->getMockBuilder(Header::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString', 'getSortedUrl', 'getSortConditions', 'getQueryParams'])
-            ->getMock();
+        $this->header = $this->createMock(Header::class);
 
         $this->sut = new Table($this->body, $this->header);
     }
@@ -106,11 +101,9 @@ class TableTest extends TestCase
 
     public function testSetEntitiesCallsBody()
     {
-        $entity = $this->getMockBuilder(IStringerEntity::class)
-            ->setMethods(['__toString', 'getId', 'setId', 'toJSON'])
-            ->getMock();
+        $stubEntity = MockEntityFactory::createEntityStub($this);
 
-        $stubEntities = [$entity];
+        $stubEntities = [$stubEntity];
 
         $this->body->expects($this->once())->method('setEntities')->with($stubEntities);
 

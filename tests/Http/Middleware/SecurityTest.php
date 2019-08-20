@@ -21,10 +21,7 @@ class SecurityTest extends TestCase
     {
         parent::setUp();
 
-        $this->cacheBridgeMock = $this->getMockBuilder(ArrayBridge::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['get', 'set'])
-            ->getMock();
+        $this->cacheBridgeMock = $this->createMock(ArrayBridge::class);
     }
 
     public function testHandleSkipsAllIfEnvironmentIsNotProduction()
@@ -35,10 +32,7 @@ class SecurityTest extends TestCase
         $requestMock = $this->createMock(Request::class);
 
         /** @var Response|MockObject $requestMock */
-        $responseMock = $this->getMockBuilder(Response::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['setContent'])
-            ->getMock();
+        $responseMock = $this->createMock(Response::class);
 
         $next = function () use ($responseMock) {
             return $responseMock;
@@ -59,10 +53,7 @@ class SecurityTest extends TestCase
         $requestMock = $this->createMock(Request::class);
 
         /** @var Response|MockObject $requestMock */
-        $responseMock = $this->getMockBuilder(Response::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['setContent'])
-            ->getMock();
+        $responseMock = $this->createMock(Response::class);
 
         $next = function () use ($responseMock) {
             return $responseMock;
@@ -83,10 +74,7 @@ class SecurityTest extends TestCase
         $requestMock = $this->createMock(Request::class);
 
         /** @var Response|MockObject $requestMock */
-        $responseMock = $this->getMockBuilder(Response::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['setContent'])
-            ->getMock();
+        $responseMock = $this->createMock(Response::class);
 
         $next = function () use ($responseMock) {
             return $responseMock;
@@ -119,10 +107,7 @@ class SecurityTest extends TestCase
         $requestMock = $this->createMock(Request::class);
 
         /** @var Response|MockObject $requestMock */
-        $responseMock = $this->getMockBuilder(Response::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['setContent'])
-            ->getMock();
+        $responseMock = $this->createMock(Response::class);
 
         $next = function () use ($responseMock) {
             return $responseMock;
@@ -304,10 +289,7 @@ class SecurityTest extends TestCase
         $requestMock = $this->createMock(Request::class);
 
         /** @var Response|MockObject $requestMock */
-        $responseMock = $this->getMockBuilder(Response::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['setContent'])
-            ->getMock();
+        $responseMock = $this->createMock(Response::class);
 
         $next = function () use ($responseMock) {
             return $responseMock;

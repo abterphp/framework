@@ -30,24 +30,15 @@ class SenderTest extends TestCase
     {
         parent::setUp();
 
-        $this->messageMock = $this->getMockBuilder(Swift_Message::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['setBody', 'setFrom', 'setReplyTo', 'addTo'])
-            ->getMock();
+        $this->messageMock = $this->createMock(Swift_Message::class);
         $this->messageMock->expects($this->any())->method('setBody')->willReturnSelf();
         $this->messageMock->expects($this->any())->method('setFrom')->willReturnSelf();
         $this->messageMock->expects($this->any())->method('setReplyTo')->willReturnSelf();
 
-        $this->messageFactory = $this->getMockBuilder(MessageFactory::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['create'])
-            ->getMock();
+        $this->messageFactory = $this->createMock(MessageFactory::class);
         $this->messageFactory->expects($this->any())->method('create')->willReturn($this->messageMock);
 
-        $this->mailerMock = $this->getMockBuilder(Swift_Mailer::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['send'])
-            ->getMock();
+        $this->mailerMock = $this->createMock(Swift_Mailer::class);
 
         $this->sut = new Sender($this->mailerMock, $this->messageFactory);
     }

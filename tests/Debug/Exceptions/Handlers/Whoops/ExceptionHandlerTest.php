@@ -7,6 +7,8 @@ namespace AbterPhp\Framework\Debug\Exceptions\Handlers\Whoops;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Whoops\Handler\PlainTextHandler;
+use Whoops\Handler\PrettyPageHandler;
 use Whoops\RunInterface;
 
 class ExceptionHandlerTest extends TestCase
@@ -24,12 +26,10 @@ class ExceptionHandlerTest extends TestCase
     {
         $this->loggerMock = $this->getMockBuilder(LoggerInterface::class)
             ->disableOriginalConstructor()
-            ->setMethods([])
             ->getMock();
 
         $this->exceptionRendererMock = $this->getMockBuilder(ExceptionRenderer::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['render', 'getRun'])
             ->getMock();
 
         $this->sut = new ExceptionHandler($this->loggerMock, $this->exceptionRendererMock, []);
@@ -73,12 +73,12 @@ class ExceptionHandlerTest extends TestCase
         $whoopsRunMock
             ->expects($this->at(0))
             ->method('pushHandler')
-            ->with(new \Whoops\Handler\PlainTextHandler($this->loggerMock));
+            ->with(new PlainTextHandler($this->loggerMock));
 
         $whoopsRunMock
             ->expects($this->at(1))
             ->method('pushHandler')
-            ->with(new\Whoops\Handler\PrettyPageHandler());
+            ->with(new PrettyPageHandler());
 
         $whoopsRunMock->expects($this->at(2))->method('register');
 
@@ -90,25 +90,6 @@ class ExceptionHandlerTest extends TestCase
      */
     protected function createWhoopsRunMock()
     {
-        return $this->getMockBuilder(RunInterface::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(
-                [
-                    'pushHandler',
-                    'popHandler',
-                    'getHandlers',
-                    'clearHandlers',
-                    'register',
-                    'unregister',
-                    'allowQuit',
-                    'silenceErrorsInPaths',
-                    'sendHttpCode',
-                    'writeToOutput',
-                    'handleException',
-                    'handleError',
-                    'handleShutdown',
-                ]
-            )
-            ->getMock();
+        return $this->createMock(RunInterface::class);
     }
 }
