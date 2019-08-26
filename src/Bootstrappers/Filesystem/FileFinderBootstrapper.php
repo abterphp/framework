@@ -8,6 +8,7 @@ use AbterPhp\Framework\Filesystem\IFileFinder;
 use AbterPhp\Framework\Module\Manager; // @phan-suppress-current-line PhanUnreferencedUseNormal
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
+use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -57,7 +58,7 @@ class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
             }
         }
 
-        $dirPublic = rtrim(getenv(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
+        $dirPublic = rtrim(Environment::getVar(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
 
         $fileFinder->registerFilesystem(new Filesystem(new Local($dirPublic)));
     }

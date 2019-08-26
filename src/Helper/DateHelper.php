@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Helper;
 
 use AbterPhp\Framework\Constant\Env;
+use Opulence\Environments\Environment;
 
 class DateHelper
 {
@@ -19,7 +20,7 @@ class DateHelper
             return '';
         }
 
-        return $dateTime->format(getenv(Env::ADMIN_DATE_FORMAT));
+        return $dateTime->format(Environment::getVar(Env::ADMIN_DATE_FORMAT));
     }
 
     /**
@@ -33,6 +34,6 @@ class DateHelper
             return '';
         }
 
-        return $dateTime->format(getenv(Env::ADMIN_DATETIME_FORMAT));
+        return $dateTime->format(Environment::getVar(Env::ADMIN_DATETIME_FORMAT));
     }
 }

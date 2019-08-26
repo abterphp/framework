@@ -11,6 +11,7 @@ use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Filesystem\FileFinder;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
+use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -62,7 +63,7 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     private function registerCachePaths(ICacheManager $cacheManager)
     {
-        $dirPublic = rtrim(getenv(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
+        $dirPublic = rtrim(Environment::getVar(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
 
         $cacheManager->registerFilesystem(new Filesystem(new Local($dirPublic)));
     }

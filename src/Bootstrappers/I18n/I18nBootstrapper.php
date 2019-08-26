@@ -8,6 +8,7 @@ use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Constant\Session;
 use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\I18n\Translator;
+use Opulence\Environments\Environment;
 use Opulence\Framework\Configuration\Config;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\IContainer;
@@ -57,7 +58,7 @@ class I18nBootstrapper extends Bootstrapper
             return (string)$session->get(Session::LANGUAGE_IDENTIFIER);
         }
 
-        return (string)getenv(Env::DEFAULT_LANGUAGE);
+        return (string)Environment::getVar(Env::DEFAULT_LANGUAGE);
     }
 
     /**
