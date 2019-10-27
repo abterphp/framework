@@ -10,8 +10,9 @@ use AbterPhp\Framework\Navigation\Item;
 use AbterPhp\Framework\Navigation\Navigation;
 use Casbin\Enforcer;
 use Opulence\Sessions\ISession;
-use PHPUnit\Framework\MockObject\Rule\InvokedCount;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Rule\InvokedCount;
+use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
 use PHPUnit\Framework\TestCase;
 
 class NavigationBuilderTest extends TestCase
@@ -101,12 +102,12 @@ class NavigationBuilderTest extends TestCase
     }
 
     /**
-     * @param array             $nodes
-     * @param InvokedCount|null $expects
+     * @param array                    $nodes
+     * @param InvokedCountMatcher|null $expects
      *
      * @return NavigationReady
      */
-    protected function createNavigationEvent(array $nodes, InvokedCount $expects = null): NavigationReady
+    protected function createNavigationEvent(array $nodes, InvokedCountMatcher $expects = null): NavigationReady
     {
         $expects = $expects === null ? $this->any() : $expects;
 
