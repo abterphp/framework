@@ -9,7 +9,6 @@ use AbterPhp\Framework\Console\Commands\Authorization\FlushCache as Authorizatio
 use AbterPhp\Framework\Console\Commands\Template\FlushCache as TemplateFlushCacheCommand;
 use Opulence\Console\Commands\Command;
 use Opulence\Console\Responses\IResponse;
-use Opulence\Framework\Console\Commands\FlushFrameworkCacheCommand;
 
 class FlushCache extends Command
 {
@@ -27,7 +26,7 @@ class FlushCache extends Command
         TemplateFlushCacheCommand::NAME,
         /** @see AuthorizationFlushCacheCommand::doExecute() */
         AuthorizationFlushCacheCommand::NAME,
-        /** @see FlushFrameworkCacheCommand::doExecute() */
+        /** @see \Opulence\Framework\Console\Commands\FlushFrameworkCacheCommand::doExecute() */
         self::OPULENCE_FRAMEWORK_FLUSHCACHE,
     ];
 
