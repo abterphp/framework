@@ -9,15 +9,15 @@ use AbterPhp\Framework\Console\Commands\Authorization\FlushCache as Authorizatio
 use AbterPhp\Framework\Console\Commands\Template\FlushCache as TemplateFlushCacheCommand;
 use Opulence\Console\Commands\Command;
 use Opulence\Console\Responses\IResponse;
-use Opulence\Framework\Console\Commands\FlushFrameworkCacheCommand;  // @phan-suppress-current-line PhanUnreferencedUseNormal
+use Opulence\Framework\Console\Commands\FlushFrameworkCacheCommand;
 
 class FlushCache extends Command
 {
-    const NAME = 'abterphp:flushcache';
+    protected const NAME = 'abterphp:flushcache';
 
-    const DESCRIPTION = 'Flushes all registered cache types';
+    protected const DESCRIPTION = 'Flushes all registered cache types';
 
-    const OPULENCE_FRAMEWORK_FLUSHCACHE = 'framework:flushcache';
+    protected const OPULENCE_FRAMEWORK_FLUSHCACHE = 'framework:flushcache';
 
     /** @var array */
     protected $subCommands = [

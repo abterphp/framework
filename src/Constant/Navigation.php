@@ -6,8 +6,8 @@ namespace AbterPhp\Framework\Constant;
 
 class Navigation
 {
-    const NAVBAR    = 'NAVBAR';
-    const PRIMARY   = 'NAVIGATION_PRIMARY';
-    const SECONDARY = 'NAVIGATION_SECONDARY';
-    const FOOTER    = 'NAVIGATION_FOOTER';
+    public const NAVBAR    = 'NAVBAR';
+    public const PRIMARY   = 'NAVIGATION_PRIMARY';
+    public const SECONDARY = 'NAVIGATION_SECONDARY';
+    public const FOOTER    = 'NAVIGATION_FOOTER';
 }

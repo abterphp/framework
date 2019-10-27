@@ -22,7 +22,7 @@ class TableTest extends TestCase
     /** @var Header|MockObject */
     protected $header;
 
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
 

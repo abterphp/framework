@@ -26,7 +26,7 @@ abstract class QueryTestCase extends TestCase
     /** @var ConnectionPool|MockObject */
     protected $connectionPoolMock;
 
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
 

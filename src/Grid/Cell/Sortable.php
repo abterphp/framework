@@ -14,23 +14,23 @@ use AbterPhp\Framework\Html\ITemplater;
 
 class Sortable extends Cell implements ICell, ITemplater
 {
-    const DEFAULT_TAG = Html5::TAG_TH;
+    protected const DEFAULT_TAG = Html5::TAG_TH;
 
     /**
      * %1$s - nodes
      * %2$s - sort button
      */
-    const DEFAULT_TEMPLATE = '%1$s %2$s';
+    protected const DEFAULT_TEMPLATE = '%1$s %2$s';
 
-    const NAME_PREFIX = 'sort-';
+    protected const NAME_PREFIX = 'sort-';
 
-    const DIR_ASC  = 'ASC';
-    const DIR_DESC = 'DESC';
+    public const DIR_ASC  = 'ASC';
+    public const DIR_DESC = 'DESC';
 
-    const BTN_INTENT_SHOARTING    = 'grid-sortable-shoarting';
-    const BTN_INTENT_CARET_DOWN   = 'caret-down';
-    const BTN_INTENT_CARET_UP     = 'caret-up';
-    const BTN_INTENT_CARET_ACTIVE = 'caret-active';
+    public const BTN_INTENT_SHOARTING    = 'grid-sortable-shoarting';
+    public const BTN_INTENT_CARET_DOWN   = 'caret-down';
+    public const BTN_INTENT_CARET_UP     = 'caret-up';
+    public const BTN_INTENT_CARET_ACTIVE = 'caret-active';
 
     /** @var string */
     protected $template = self::DEFAULT_TEMPLATE;

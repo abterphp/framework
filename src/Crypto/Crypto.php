@@ -10,9 +10,9 @@ use Opulence\Cryptography\Hashing\IHasher;
 
 class Crypto
 {
-    const ERROR_INVALID_SECRET = 'packed password must be a valid SHA3-512 hash';
+    protected const ERROR_INVALID_SECRET = 'packed password must be a valid SHA3-512 hash';
 
-    const SECRET_HASH_LENGTH = 128;
+    protected const SECRET_HASH_LENGTH = 128;
 
     /** @var IHasher */
     protected $hasher;

@@ -6,7 +6,7 @@ namespace AbterPhp\Framework\Html\Helper;
 
 class ArrayHelper
 {
-    const ERROR_INVALID_ATTRIBUTES = 'invalid attributes (array of string[] and null items)';
+    protected const ERROR_INVALID_ATTRIBUTES = 'invalid attributes (array of string[] and null items)';
 
     /**
      * @param array $styles

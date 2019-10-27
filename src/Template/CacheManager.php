@@ -8,8 +8,8 @@ use Opulence\Cache\ICacheBridge;
 
 class CacheManager
 {
-    const CACHE_KEY_TEMPLATES = 'templates_%s';
-    const CACHE_KEY_DOCUMENT  = 'document_%s';
+    public const CACHE_KEY_TEMPLATES = 'templates_%s';
+    public const CACHE_KEY_DOCUMENT  = 'document_%s';
 
     /** @var ICacheBridge */
     protected $cacheBridge;

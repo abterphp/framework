@@ -12,7 +12,7 @@ class MaxLength extends MaxRule
     /**
      * @inheritdoc
      */
-    public function getSlug() : string
+    public function getSlug(): string
     {
         return 'maxLength';
     }

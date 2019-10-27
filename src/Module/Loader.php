@@ -8,9 +8,9 @@ use AbterPhp\Framework\Constant\Module;
 
 class Loader
 {
-    const MODULE_FILE_NAME = 'abter.php';
+    protected const MODULE_FILE_NAME = 'abter.php';
 
-    const ERROR_MSG_UNRESOLVABLE_DEPENDENCIES = 'Not able to determine module order. Likely circular dependency found.';
+    protected const ERROR_MSG_UNRESOLVABLE_DEPENDENCIES = 'Not able to determine module order. Likely circular dependency found.'; // phpcs:ignore
 
     /** @var string[] */
     protected $sourceRoots;

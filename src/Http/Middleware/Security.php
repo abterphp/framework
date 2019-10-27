@@ -15,16 +15,16 @@ use Opulence\Routing\Middleware\IMiddleware;
 
 class Security implements IMiddleware
 {
-    const KEY = 'abterphp:security';
+    protected const KEY = 'abterphp:security';
 
-    const TEST_DB_PASSWORD                 = '28T3pqyvKG3tEgsjE8Rj';
-    const TEST_ENCRYPTION_KEY              = 'b8fbb40c129ad0e426e19b7d28f42e517ce639282e55ba7a98bd2b698fda7daa';
-    const TEST_CRYPTO_FRONTEND_SALT        = 'R6n9gNH9ND6USc6D';
-    const TEST_CRYPTO_ENCRYPTION_PEPPER    = 'h9fyyWr36vBnky9G';
-    const TEST_OAUTH2_PRIVATE_KEY_PATH     = '/website/tests/resources/private.key';
-    const TEST_OAUTH2_PRIVATE_KEY_PASSWORD = '8a!J2SZ9%WBII#9Z';
-    const TEST_OAUTH2_PUBLIC_KEY_PATH      = '/website/tests/resources/public.key';
-    const TEST_OAUTH2_ENCRYPTION_KEY       = 'def00000cea4c75b84279f43b56dd90851609717c5d29c215fd2c67f9b1acb0c3b1c5ff8528dbeecf0c1f368baa33284aa36d00b24994872970933e8881802287553ff7d'; // nolint
+    public const TEST_DB_PASSWORD                 = '28T3pqyvKG3tEgsjE8Rj';
+    public const TEST_ENCRYPTION_KEY              = 'b8fbb40c129ad0e426e19b7d28f42e517ce639282e55ba7a98bd2b698fda7daa';
+    public const TEST_CRYPTO_FRONTEND_SALT        = 'R6n9gNH9ND6USc6D';
+    public const TEST_CRYPTO_ENCRYPTION_PEPPER    = 'h9fyyWr36vBnky9G';
+    public const TEST_OAUTH2_PRIVATE_KEY_PATH     = '/website/tests/resources/private.key';
+    public const TEST_OAUTH2_PRIVATE_KEY_PASSWORD = '8a!J2SZ9%WBII#9Z';
+    public const TEST_OAUTH2_PUBLIC_KEY_PATH      = '/website/tests/resources/public.key';
+    public const TEST_OAUTH2_ENCRYPTION_KEY       = 'def00000cea4c75b84279f43b56dd90851609717c5d29c215fd2c67f9b1acb0c3b1c5ff8528dbeecf0c1f368baa33284aa36d00b24994872970933e8881802287553ff7d'; // phpcs:ignore
 
     /** @var ICacheBridge */
     protected $cacheBridge;

@@ -6,7 +6,7 @@ namespace AbterPhp\Framework\Template;
 
 class Engine
 {
-    const ERROR_MSG_CACHING_FAILURE = 'Caching failure';
+    protected const ERROR_MSG_CACHING_FAILURE = 'Caching failure';
 
     /** @var ILoader[] */
     protected $loaders = [];

@@ -10,7 +10,7 @@ use AbterPhp\Framework\Html\INode;
 
 class Option extends Component
 {
-    const DEFAULT_TAG = Html5::TAG_OPTION;
+    protected const DEFAULT_TAG = Html5::TAG_OPTION;
 
     /**
      * Option constructor.

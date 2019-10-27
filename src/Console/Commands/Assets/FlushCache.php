@@ -10,7 +10,7 @@ use Opulence\Console\Responses\IResponse;
 
 class FlushCache extends Command
 {
-    const NAME = 'assets:flushcache';
+    public const NAME = 'assets:flushcache';
 
     /** @var ICacheManager */
     protected $cacheManager;

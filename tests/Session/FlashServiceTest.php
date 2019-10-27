@@ -64,7 +64,7 @@ class FlashServiceTest extends TestCase
         $this->sessionMock
             ->expects($this->atLeastOnce())
             ->method('flash')
-            ->with(FlashService::SUCCESS, $expectedResult);
+            ->with('success', $expectedResult);
 
         $this->sut->mergeSuccessMessages($newMessages);
     }
@@ -100,7 +100,7 @@ class FlashServiceTest extends TestCase
         $this->sessionMock
             ->expects($this->atLeastOnce())
             ->method('flash')
-            ->with(FlashService::ERROR, $expectedResult);
+            ->with('error', $expectedResult);
 
         $this->sut->mergeErrorMessages($newMessages);
     }
@@ -112,7 +112,7 @@ class FlashServiceTest extends TestCase
         $this->sessionMock
             ->expects($this->once())
             ->method('get')
-            ->with(FlashService::SUCCESS)
+            ->with('success')
             ->willReturn($expectedResult);
 
         $actualResult = $this->sut->retrieveSuccessMessages();
@@ -127,7 +127,7 @@ class FlashServiceTest extends TestCase
         $this->sessionMock
             ->expects($this->once())
             ->method('get')
-            ->with(FlashService::ERROR)
+            ->with('error')
             ->willReturn($expectedResult);
 
         $actualResult = $this->sut->retrieveErrorMessages();

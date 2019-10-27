@@ -15,7 +15,7 @@ use AbterPhp\Framework\Html\INode;
 
 class Body extends Component
 {
-    const DEFAULT_TAG = Html5::TAG_TBODY;
+    protected const DEFAULT_TAG = Html5::TAG_TBODY;
 
     /** @var array */
     protected $getters;

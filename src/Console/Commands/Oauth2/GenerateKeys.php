@@ -9,7 +9,7 @@ use Opulence\Console\Responses\IResponse;
 
 class GenerateKeys extends Command
 {
-    const NAME = 'oauth2:generatekeys';
+    public const NAME = 'oauth2:generatekeys';
 
     /** @var string */
     protected $privateKeyPassword;

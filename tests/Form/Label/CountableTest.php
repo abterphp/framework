@@ -29,7 +29,7 @@ class CountableTest extends TestCase
                 ['foo' => ['bar'], 'class' => ['baz']],
                 null,
                 null,
-                "<label for=\"a\" foo=\"bar\" class=\"baz\">ABC <span data-count=\"30\" class=\"count\"></span></label>", // nolint
+                "<label for=\"a\" foo=\"bar\" class=\"baz\">ABC <span data-count=\"30\" class=\"count\"></span></label>", // phpcs:ignore
             ],
             'with translations' => [
                 'a',

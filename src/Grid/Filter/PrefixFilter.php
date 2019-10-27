@@ -6,9 +6,9 @@ namespace AbterPhp\Framework\Grid\Filter;
 
 class PrefixFilter extends Filter
 {
-    const HELP_CONTENT = 'framework:helpPrefix';
+    public const HELP_CONTENT = 'framework:helpPrefix';
 
-    const QUERY_TEMPLATE = '%s LIKE ?';
+    protected const QUERY_TEMPLATE = '%s LIKE ?';
 
     /**
      * @param array $params

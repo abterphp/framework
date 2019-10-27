@@ -13,7 +13,7 @@ use Opulence\Http\Responses\ResponseHeaders;
 
 class Assets extends ControllerAbstract
 {
-    const HEADER_CONTENT_TYPE = 'Content-Type';
+    protected const HEADER_CONTENT_TYPE = 'Content-Type';
 
     /** @var AssetManager */
     protected $assetManager;

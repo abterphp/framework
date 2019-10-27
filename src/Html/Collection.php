@@ -13,10 +13,12 @@ use InvalidArgumentException;
  */
 class Collection implements ICollection
 {
-    const ERROR_INVALID_OFFSET       = 'Offset must be a positive integer and not larger than number of items';
-    const ERROR_INVALID_TYPE_ARG     = 'Provided value must be an object instance of "%s", type "%s" is found';
-    const ERROR_INVALID_INSTANCE_ARG = 'Provided value must be an instance of "%s", not an instance of "%s"';
-    const ERROR_INVALID_TYPE_RETURN  = 'Retrieved value is not an instance of "%s"';
+    use NodeContainerTrait;
+
+    protected const ERROR_INVALID_OFFSET       = 'Offset must be a positive integer and not larger than number of items'; // phpcs:ignore
+    protected const ERROR_INVALID_TYPE_ARG     = 'Provided value must be an object instance of "%s", type "%s" is found'; // phpcs:ignore
+    protected const ERROR_INVALID_INSTANCE_ARG = 'Provided value must be an instance of "%s", not an instance of "%s"';
+    protected const ERROR_INVALID_TYPE_RETURN  = 'Retrieved value is not an instance of "%s"';
 
     /** @var INode[] */
     protected $nodes = [];
@@ -39,8 +41,6 @@ class Collection implements ICollection
      * @var string[]
      */
     protected $intents = [];
-
-    use NodeContainerTrait;
 
     /**
      * Collection constructor.
@@ -267,7 +267,7 @@ class Collection implements ICollection
      *
      * @return bool
      */
-    public function insertBefore(INode $nodeToFind, INode... $nodes): bool
+    public function insertBefore(INode $nodeToFind, INode ...$nodes): bool
     {
         $key = $this->findNodeKey($nodeToFind);
         if (0 === $key) {
@@ -302,7 +302,7 @@ class Collection implements ICollection
      *
      * @return bool
      */
-    public function insertAfter(INode $nodeToFind, INode... $nodes): bool
+    public function insertAfter(INode $nodeToFind, INode ...$nodes): bool
     {
         $key = $this->findNodeKey($nodeToFind);
         if (count($this->nodes) - 1 === $key) {
@@ -337,7 +337,7 @@ class Collection implements ICollection
      *
      * @return bool
      */
-    public function replace(INode $nodeToFind, INode... $nodes): bool
+    public function replace(INode $nodeToFind, INode ...$nodes): bool
     {
         $key = $this->findNodeKey($nodeToFind);
         if ($key !== null) {

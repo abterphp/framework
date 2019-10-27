@@ -6,14 +6,14 @@ namespace AbterPhp\Framework\Template;
 
 class CacheData
 {
-    const PAYLOAD_KEY_DATE         = 'date';
-    const PAYLOAD_KEY_SUBTEMPLATES = 'subTemplates';
+    public const PAYLOAD_KEY_DATE         = 'date';
+    public const PAYLOAD_KEY_SUBTEMPLATES = 'subTemplates';
 
     /** @var string */
-    private $date = '';
+    protected $date = '';
 
     /** @var string[][] */
-    private $subTemplates = [];
+    protected $subTemplates = [];
 
     public function __construct()
     {

@@ -6,6 +6,6 @@ namespace AbterPhp\Framework\Authorization\Constant;
 
 class Role
 {
-    const READ  = 'read';
-    const WRITE = 'write';
+    public const READ  = 'read';
+    public const WRITE = 'write';
 }

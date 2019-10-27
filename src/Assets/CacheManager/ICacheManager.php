@@ -8,7 +8,7 @@ use League\Flysystem\FilesystemInterface;
 
 interface ICacheManager
 {
-    const DEFAULT_KEY = 'root';
+    public const DEFAULT_KEY = 'root';
 
     /**
      * @param FilesystemInterface $filesystem

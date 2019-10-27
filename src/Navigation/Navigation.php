@@ -16,16 +16,16 @@ use AbterPhp\Framework\I18n\ITranslator;
 
 class Navigation extends Tag implements INodeContainer
 {
-    const DEFAULT_TAG = Html5::TAG_UL;
+    protected const DEFAULT_TAG = Html5::TAG_UL;
 
-    const ERROR_INVALID_TAG_FOR_ITEM_CREATION = 'item creation is not allowed for navigation type: %s';
+    protected const ERROR_INVALID_TAG_FOR_ITEM_CREATION = 'item creation is not allowed for navigation type: %s';
 
-    const ROLE_NAVIGATION = 'navigation';
+    public const ROLE_NAVIGATION = 'navigation';
 
-    const INTENT_NAVBAR    = 'navbar';
-    const INTENT_FOOTER    = 'footer';
-    const INTENT_PRIMARY   = 'primary';
-    const INTENT_SECONDARY = 'secondary';
+    public const INTENT_NAVBAR    = 'navbar';
+    public const INTENT_FOOTER    = 'footer';
+    public const INTENT_PRIMARY   = 'primary';
+    public const INTENT_SECONDARY = 'secondary';
 
     /** @var ICollection */
     protected $prefix;

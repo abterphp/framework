@@ -12,9 +12,9 @@ use PHPUnit\Framework\TestCase;
 
 class MockStatementFactory
 {
-    const EXPECTATION_ONCE  = -1;
-    const EXPECTATION_ANY   = -2;
-    const EXPECTATION_NEVER = -4;
+    public const EXPECTATION_ONCE  = -1;
+    public const EXPECTATION_ANY   = -2;
+    public const EXPECTATION_NEVER = -4;
 
     /**
      * @param TestCase $testCase

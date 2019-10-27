@@ -10,9 +10,9 @@ use Opulence\Console\Responses\IResponse;
 
 class Setup extends Command
 {
-    const NAME = 'abterphp:setup';
+    protected const NAME = 'abterphp:setup';
 
-    const DESCRIPTION = 'Setup Abterphp';
+    protected const DESCRIPTION = 'Setup Abterphp';
 
     /** @var array */
     protected $subCommands = [

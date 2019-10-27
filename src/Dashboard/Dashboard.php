@@ -9,9 +9,9 @@ use AbterPhp\Framework\Html\Component;
 
 class Dashboard extends Component
 {
-    const DEFAULT_TAG = Html5::TAG_DIV;
+    protected const DEFAULT_TAG = Html5::TAG_DIV;
 
-    const CLASS_DASHBOARD = 'dashboard-container';
+    protected const CLASS_DASHBOARD = 'dashboard-container';
 
     /** @var string[] */
     protected $attributes = [

@@ -33,7 +33,7 @@ class CacheManagerTest extends TestCase
         $this->cacheBridgeMock
             ->expects($this->once())
             ->method('set')
-            ->with(CacheManager::CACHE_KEY, $payload, PHP_INT_MAX);
+            ->with('casbin_auth_collection', $payload, PHP_INT_MAX);
 
         $this->sut->storeAll($data);
     }

@@ -14,7 +14,7 @@ use AbterPhp\Framework\Html\INode;
 
 class CheckboxGroup extends FormGroup
 {
-    const SPAN_INTENT = 'checkbox-span';
+    protected const SPAN_INTENT = 'checkbox-span';
 
     /** @var IComponent */
     protected $checkboxSpan;

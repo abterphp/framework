@@ -23,15 +23,15 @@ class Grid extends Component implements IGrid, ITemplater
      * %3$s - table
      * %4$s - pagination
      */
-    const DEFAULT_TEMPLATE = '%1$s%4$s%2$s%3$s%4$s';
+    protected const DEFAULT_TEMPLATE = '%1$s%4$s%2$s%3$s%4$s';
 
-    const TAG_GRID    = 'div';
-    const TAG_FILTER  = 'div';
-    const TAG_ACTIONS = 'div';
+    protected const TAG_GRID    = 'div';
+    protected const TAG_FILTER  = 'div';
+    protected const TAG_ACTIONS = 'div';
 
-    const ATTRIBUTE_GRID_CLASS    = 'grid';
-    const ATTRIBUTE_FILTER_CLASS  = 'grid-filters';
-    const ATTRIBUTE_ACTIONS_CLASS = 'grid-actions';
+    protected const ATTRIBUTE_GRID_CLASS    = 'grid';
+    protected const ATTRIBUTE_FILTER_CLASS  = 'grid-filters';
+    protected const ATTRIBUTE_ACTIONS_CLASS = 'grid-actions';
 
     /** @var string */
     protected $containerClass = '';

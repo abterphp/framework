@@ -14,9 +14,9 @@ use AbterPhp\Framework\Html\INode;
 
 class Dropdown extends Component
 {
-    const DEFAULT_TAG = Html5::TAG_UL;
+    protected const DEFAULT_TAG = Html5::TAG_UL;
 
-    const WRAPPER_INTENT = 'dropdown-wrapper-intent';
+    public const WRAPPER_INTENT = 'dropdown-wrapper-intent';
 
     /** @var IComponent|null */
     protected $wrapper;

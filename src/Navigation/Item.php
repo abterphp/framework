@@ -10,9 +10,9 @@ use AbterPhp\Framework\Html\Component;
 
 class Item extends Component implements IResourcable
 {
-    const DEFAULT_TAG = Html5::TAG_LI;
+    protected const DEFAULT_TAG = Html5::TAG_LI;
 
-    const INTENT_DROPDOWN = 'dropdown';
+    public const INTENT_DROPDOWN = 'dropdown';
 
     /** @var string|null */
     protected $resource = null;

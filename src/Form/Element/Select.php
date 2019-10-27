@@ -10,7 +10,7 @@ use AbterPhp\Framework\Html\Component;
 
 class Select extends Component implements IElement
 {
-    const DEFAULT_TAG = Html5::TAG_SELECT;
+    protected const DEFAULT_TAG = Html5::TAG_SELECT;
 
     /** @var Option[] */
     protected $nodes = [];

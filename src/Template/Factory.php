@@ -11,7 +11,7 @@ class Factory
      *
      * @return Template
      */
-    public function create(string $rawContent = '') : Template
+    public function create(string $rawContent = ''): Template
     {
         return new Template($rawContent);
     }

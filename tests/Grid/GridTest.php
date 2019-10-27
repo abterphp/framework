@@ -84,7 +84,7 @@ class GridTest extends TestCase
 
         $sut = new Grid($table);
 
-        $this->assertStringContainsString(Grid::TAG_GRID, (string)$sut);
+        $this->assertStringContainsString('div', (string)$sut);
     }
 
     public function testSetTemplateChangesToString()

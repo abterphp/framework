@@ -18,11 +18,11 @@ class Table extends Component implements ITable, ITemplater
      *   %1$s - thead
      *   %2$s - tbody
      */
-    const DEFAULT_TEMPLATE = '%1$s%2$s';
+    protected const DEFAULT_TEMPLATE = '%1$s%2$s';
 
-    const DEFAULT_TAG = self::TAG_TABLE;
+    protected const DEFAULT_TAG = self::TAG_TABLE;
 
-    const TAG_TABLE = 'table';
+    public const TAG_TABLE = 'table';
 
     /** @var Header */
     protected $header;

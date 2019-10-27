@@ -6,16 +6,16 @@ namespace AbterPhp\Framework\Constant;
 
 class View
 {
-    const PRE_HEADER  = 'preHeader';
-    const HEADER      = 'header';
-    const POST_HEADER = 'postHeader';
+    public const PRE_HEADER  = 'preHeader';
+    public const HEADER      = 'header';
+    public const POST_HEADER = 'postHeader';
 
-    const PRE_FOOTER  = 'preFooter';
-    const FOOTER      = 'footer';
-    const POST_FOOTER = 'postFooter';
+    public const PRE_FOOTER  = 'preFooter';
+    public const FOOTER      = 'footer';
+    public const POST_FOOTER = 'postFooter';
 
-    const ASSET_DEFAULT = 'admin-layout';
-    const ASSET_HEADER  = 'admin-layout-header';
-    const ASSET_FOOTER  = 'admin-layout-footer';
-    const ASSET_LOGIN   = 'admin-login';
+    public const ASSET_DEFAULT = 'admin-layout';
+    public const ASSET_HEADER  = 'admin-layout-header';
+    public const ASSET_FOOTER  = 'admin-layout-footer';
+    public const ASSET_LOGIN   = 'admin-login';
 }

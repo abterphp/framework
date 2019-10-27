@@ -13,10 +13,10 @@ use Opulence\Databases\Migrations\Migration;
 
 class BaseMigration extends Migration
 {
-    const FILENAME = 'foo-bar';
+    protected const FILENAME = 'foo-bar';
 
-    const UP   = 'up';
-    const DOWN = 'down';
+    protected const UP   = 'up';
+    protected const DOWN = 'down';
 
     /** @var IFileFinder */
     protected $fileFinder;

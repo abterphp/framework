@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class LoaderTest extends TestCase
 {
-    const MODULE_FILE_NAME = 'module.php';
+    protected const MODULE_FILE_NAME = 'module.php';
 
     public function testNoRootsWorks()
     {

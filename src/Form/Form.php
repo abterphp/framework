@@ -10,9 +10,9 @@ use Opulence\Http\Requests\RequestMethods;
 
 class Form extends Component implements IForm
 {
-    const DEFAULT_TAG = Html5::TAG_FORM;
+    protected const DEFAULT_TAG = Html5::TAG_FORM;
 
-    const ENCTYPE_MULTIPART = 'multipart/form-data';
+    public const ENCTYPE_MULTIPART = 'multipart/form-data';
 
     /**
      * Form constructor.

@@ -8,7 +8,7 @@ use Opulence\Cache\ICacheBridge;
 
 class CacheManager
 {
-    const CACHE_KEY = 'casbin_auth_collection';
+    protected const CACHE_KEY = 'casbin_auth_collection';
 
     /** @var ICacheBridge */
     protected $cacheBridge;

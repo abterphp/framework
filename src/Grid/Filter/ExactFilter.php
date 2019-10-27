@@ -6,7 +6,7 @@ namespace AbterPhp\Framework\Grid\Filter;
 
 class ExactFilter extends Filter
 {
-    const HELP_CONTENT = 'framework:helpExact';
+    public const HELP_CONTENT = 'framework:helpExact';
 
     /**
      * @param array $params

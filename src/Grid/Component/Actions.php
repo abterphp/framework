@@ -10,7 +10,7 @@ use AbterPhp\Framework\Html\Component;
 
 class Actions extends Component
 {
-    const DEFAULT_TAG = Html5::TAG_DIV;
+    protected const DEFAULT_TAG = Html5::TAG_DIV;
 
     /** @var IAction[] */
     protected $nodes = [];

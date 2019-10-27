@@ -6,12 +6,12 @@ use AbterPhp\Framework\Html\Helper\ArrayHelper;
 
 class StubAttributeFactory
 {
-    const ATTRIBUTE_FOO = 'foo';
-    const ATTRIBUTE_BAR = 'bar';
+    public const ATTRIBUTE_FOO = 'foo';
+    public const ATTRIBUTE_BAR = 'bar';
 
-    const VALUE_FOO = 'foo';
-    const VALUE_BAZ = 'baz';
-    const VALUE_BAR_BAZ = 'bar baz';
+    public const VALUE_FOO = 'foo';
+    public const VALUE_BAZ = 'baz';
+    public const VALUE_BAR_BAZ = 'bar baz';
 
     /**
      * @param array $extraAttributes

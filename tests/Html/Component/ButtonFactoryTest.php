@@ -79,7 +79,7 @@ class ButtonFactoryTest extends TestCase
             Html5::TAG_STRONG
         );
 
-        $expectedResult = '<strong attr1="val1 val2" attr2="val3" href="/best/url/ever"><i foo="foo baz" bar="bar baz" icon="asd" attr3="val4 val5" attr4="val6">hello</i> <span foo="foo baz" bar="bar baz" text="qwe" attr5="val7 val8" attr6="val9">button text</span></strong>'; // nolint
+        $expectedResult = '<strong attr1="val1 val2" attr2="val3" href="/best/url/ever"><i foo="foo baz" bar="bar baz" icon="asd" attr3="val4 val5" attr4="val6">hello</i> <span foo="foo baz" bar="bar baz" text="qwe" attr5="val7 val8" attr6="val9">button text</span></strong>'; // phpcs:ignore
 
         $this->assertSame($expectedResult, (string)$actualResult);
     }
@@ -143,7 +143,7 @@ class ButtonFactoryTest extends TestCase
             Html5::TAG_STRONG
         );
 
-        $expectedResult = '<strong attr1="val1 val2" attr2="val3" href="/best/url/ever"><i foo="foo baz" bar="bar baz" icon="asd" attr3="val4 val5" attr4="val6">hello</i> <span foo="foo baz" bar="bar baz" text="qwe" attr5="val7 val8" attr6="val9">button text</span></strong>'; // nolint
+        $expectedResult = '<strong attr1="val1 val2" attr2="val3" href="/best/url/ever"><i foo="foo baz" bar="bar baz" icon="asd" attr3="val4 val5" attr4="val6">hello</i> <span foo="foo baz" bar="bar baz" text="qwe" attr5="val7 val8" attr6="val9">button text</span></strong>'; // phpcs:ignore
 
         $this->assertSame($expectedResult, (string)$actualResult);
     }

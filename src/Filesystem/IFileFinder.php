@@ -8,7 +8,7 @@ use League\Flysystem\FilesystemInterface;
 
 interface IFileFinder
 {
-    const DEFAULT_KEY = 'root';
+    public const DEFAULT_KEY = 'root';
 
     /**
      * @param FilesystemInterface $filesystem

@@ -10,36 +10,36 @@ use AbterPhp\Framework\Html\Tag;
 
 class Input extends Tag implements IElement
 {
-    const DEFAULT_TAG = Html5::TAG_INPUT;
+    protected const DEFAULT_TAG = Html5::TAG_INPUT;
 
-    const DEFAULT_TYPE = self::TYPE_TEXT;
+    protected const DEFAULT_TYPE = self::TYPE_TEXT;
 
-    const TYPE_BUTTON         = 'button';
-    const TYPE_CHECKBOX       = 'checkbox';
-    const TYPE_COLOR          = 'color';
-    const TYPE_DATE           = 'date';
-    const TYPE_DATETIME       = 'datetime';
-    const TYPE_DATETIME_LOCAL = 'datetime-local';
-    const TYPE_EMAIL          = 'email';
-    const TYPE_FILE           = 'file';
-    const TYPE_HIDDEN         = 'hidden';
-    const TYPE_IMAGE          = 'image';
-    const TYPE_MONTH          = 'month';
-    const TYPE_NUMBER         = 'number';
-    const TYPE_PASSWORD       = 'password';
-    const TYPE_RADIO          = 'radio';
-    const TYPE_RANGE          = 'range';
-    const TYPE_RESET          = 'reset';
-    const TYPE_SEARCH         = 'search';
-    const TYPE_SUBMIT         = 'submit';
-    const TYPE_TEL            = 'tel';
-    const TYPE_TEXT           = 'text';
-    const TYPE_URL            = 'url';
-    const TYPE_WEEK           = 'week';
+    public const TYPE_BUTTON         = 'button';
+    public const TYPE_CHECKBOX       = 'checkbox';
+    public const TYPE_COLOR          = 'color';
+    public const TYPE_DATE           = 'date';
+    public const TYPE_DATETIME       = 'datetime';
+    public const TYPE_DATETIME_LOCAL = 'datetime-local';
+    public const TYPE_EMAIL          = 'email';
+    public const TYPE_FILE           = 'file';
+    public const TYPE_HIDDEN         = 'hidden';
+    public const TYPE_IMAGE          = 'image';
+    public const TYPE_MONTH          = 'month';
+    public const TYPE_NUMBER         = 'number';
+    public const TYPE_PASSWORD       = 'password';
+    public const TYPE_RADIO          = 'radio';
+    public const TYPE_RANGE          = 'range';
+    public const TYPE_RESET          = 'reset';
+    public const TYPE_SEARCH         = 'search';
+    public const TYPE_SUBMIT         = 'submit';
+    public const TYPE_TEL            = 'tel';
+    public const TYPE_TEXT           = 'text';
+    public const TYPE_URL            = 'url';
+    public const TYPE_WEEK           = 'week';
 
-    const NAME_HTTP_METHOD = '_method';
+    public const NAME_HTTP_METHOD = '_method';
 
-    const AUTOCOMPLETE_OFF = 'off';
+    public const AUTOCOMPLETE_OFF = 'off';
 
     /**
      * Input constructor.

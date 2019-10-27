@@ -11,7 +11,7 @@ use AbterPhp\Framework\Html\Component;
 
 class Header extends Component
 {
-    const DEFAULT_TAG = Html5::TAG_THEAD;
+    protected const DEFAULT_TAG = Html5::TAG_THEAD;
 
     /** @var IRow[] */
     protected $nodes = [];

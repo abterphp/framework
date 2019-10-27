@@ -19,7 +19,7 @@ class Row extends Tag implements IRow
 {
     use NodeContainerTrait;
 
-    const DEFAULT_TAG = Html5::TAG_TR;
+    protected const DEFAULT_TAG = Html5::TAG_TR;
 
     /** @var Cells */
     protected $cells;

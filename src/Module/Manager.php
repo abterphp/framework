@@ -14,16 +14,16 @@ use Opulence\Ioc\Bootstrappers\Bootstrapper;
  */
 class Manager
 {
-    const CACHE_KEY_HTTP_BOOTSTRAPPERS = 'AbterPhp:HttpBootstrappers';
-    const CACHE_KEY_CLI_BOOTSTRAPPERS  = 'AbterPhp:CliBootstrappers';
-    const CACHE_KEY_COMMANDS           = 'AbterPhp:Commands';
-    const CACHE_KEY_ROUTE_PATHS        = 'AbterPhp:RoutePaths';
-    const CACHE_KEY_EVENTS             = 'AbterPhp:Events';
-    const CACHE_KEY_MIDDLEWARE         = 'AbterPhp:Middleware';
-    const CACHE_KEY_MIGRATION_PATHS    = 'AbterPhp:MigrationPaths';
-    const CACHE_KEY_RESOURCE_PATH      = 'AbterPhp:ResourcePaths';
-    const CACHE_KEY_ASSETS_PATHS       = 'AbterPhp:AssetsPaths';
-    const CACHE_KEY_VIEWS              = 'AbterPhp:Views';
+    public const CACHE_KEY_HTTP_BOOTSTRAPPERS = 'AbterPhp:HttpBootstrappers';
+    public const CACHE_KEY_CLI_BOOTSTRAPPERS  = 'AbterPhp:CliBootstrappers';
+    public const CACHE_KEY_COMMANDS           = 'AbterPhp:Commands';
+    public const CACHE_KEY_ROUTE_PATHS        = 'AbterPhp:RoutePaths';
+    public const CACHE_KEY_EVENTS             = 'AbterPhp:Events';
+    public const CACHE_KEY_MIDDLEWARE         = 'AbterPhp:Middleware';
+    public const CACHE_KEY_MIGRATION_PATHS    = 'AbterPhp:MigrationPaths';
+    public const CACHE_KEY_RESOURCE_PATH      = 'AbterPhp:ResourcePaths';
+    public const CACHE_KEY_ASSETS_PATHS       = 'AbterPhp:AssetsPaths';
+    public const CACHE_KEY_VIEWS              = 'AbterPhp:Views';
 
     /** @var Loader */
     protected $loader;

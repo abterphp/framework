@@ -12,7 +12,7 @@ class MinLength extends MinRule
     /**
      * @inheritdoc
      */
-    public function getSlug() : string
+    public function getSlug(): string
     {
         return 'minLength';
     }

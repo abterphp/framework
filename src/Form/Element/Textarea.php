@@ -10,11 +10,11 @@ use AbterPhp\Framework\Html\Tag;
 
 class Textarea extends Tag implements IElement
 {
-    const DEFAULT_TAG = Html5::TAG_TEXTAREA;
+    protected const DEFAULT_TAG = Html5::TAG_TEXTAREA;
 
-    const DEFAULT_ROW = '3';
+    protected const DEFAULT_ROW = '3';
 
-    const CLASS_WYSIWYG = 'wysiwyg';
+    public const CLASS_WYSIWYG = 'wysiwyg';
 
     /** @var array */
     protected $attributes = [];

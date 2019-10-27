@@ -12,16 +12,16 @@ use AbterPhp\Framework\Html\Helper\StringHelper;
  */
 class Component extends Collection implements IComponent
 {
-    const ERROR_INVALID_INTENT    = 'intent must be a string';
-    const ERROR_INVALID_ATTRIBUTE = 'invalid attribute';
-
-    const DEFAULT_TAG = Html5::TAG_SPAN;
-
-    const INTENT_HIDDEN = 'hidden';
-
-    const CLASS_HIDDEN = 'hidden';
-
     use TagTrait;
+
+    protected const ERROR_INVALID_INTENT    = 'intent must be a string';
+    protected const ERROR_INVALID_ATTRIBUTE = 'invalid attribute';
+
+    protected const DEFAULT_TAG = Html5::TAG_SPAN;
+
+    protected const INTENT_HIDDEN = 'hidden';
+
+    protected const CLASS_HIDDEN = 'hidden';
 
     /**
      * Component constructor.

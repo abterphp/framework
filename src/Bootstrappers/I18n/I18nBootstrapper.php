@@ -17,7 +17,7 @@ use Opulence\Views\Compilers\Fortune\ITranspiler;
 
 class I18nBootstrapper extends Bootstrapper
 {
-    const LANG_PATH = 'lang/';
+    protected const LANG_PATH = 'lang/';
 
     /**
      * @inheritdoc

@@ -15,10 +15,10 @@ class ButtonWithIcon extends Button implements ITemplater
      *   %1$s - text
      *   %2$s - icon
      */
-    const DEFAULT_TEMPLATE = '%2$s %1$s';
+    protected const DEFAULT_TEMPLATE = '%2$s %1$s';
 
-    const INTENT_BUTTON_ICON = 'button-icon';
-    const INTENT_BUTTON_TEXT = 'button-text';
+    protected const INTENT_BUTTON_ICON = 'button-icon';
+    protected const INTENT_BUTTON_TEXT = 'button-text';
 
     /** @var string */
     protected $template = self::DEFAULT_TEMPLATE;

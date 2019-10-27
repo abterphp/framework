@@ -13,22 +13,22 @@ use AbterPhp\Framework\Html\ITemplater;
 
 abstract class Filter extends Component implements IFilter, ITemplater
 {
-    const DEFAULT_TAG = Html5::TAG_INPUT;
+    protected const DEFAULT_TAG = Html5::TAG_INPUT;
 
     /**
      * %1$s - input
      * %2$s - label
      * %3$s - help
      */
-    const DEFAULT_TEMPLATE = '%1$s %2$s %3$s';
+    protected const DEFAULT_TEMPLATE = '%1$s %2$s %3$s';
 
-    const NAME_PREFIX = 'filter-';
+    protected const NAME_PREFIX = 'filter-';
 
-    const HELP_CONTENT = 'framework:helpPrefix';
+    protected const HELP_CONTENT = 'framework:helpPrefix';
 
-    const QUERY_TEMPLATE = '%s = ?';
+    protected const QUERY_TEMPLATE = '%s = ?';
 
-    const INTENT_HELP_BLOCK = 'help-block';
+    protected const INTENT_HELP_BLOCK = 'help-block';
 
     /** @var string */
     protected $fieldName = '';

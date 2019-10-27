@@ -15,23 +15,25 @@ use AbterPhp\Framework\Html\Tag;
 
 class Pagination extends Tag implements IPagination, ITemplater
 {
-    const DEFAULT_TAG = Html5::TAG_DIV;
+    use NodeContainerTrait;
+
+    protected const DEFAULT_TAG = Html5::TAG_DIV;
 
     /**
      * %1$s - numbers
      * %2$s - options
      */
-    const DEFAULT_TEMPLATE = '<div class="gp-numbers">%1$s</div><div class="gp-options">%2$s%3$s</div>';
+    protected const DEFAULT_TEMPLATE = '<div class="gp-numbers">%1$s</div><div class="gp-options">%2$s%3$s</div>';
 
-    const PARAM_KEY_PAGE = 'page';
-    const PARAM_KEY_SIZE = 'page-size';
+    public const PARAM_KEY_PAGE = 'page';
+    public const PARAM_KEY_SIZE = 'page-size';
 
-    const ERROR_MSG_INVALID_NUMBER_COUNT            = 'Number count must be a positive odd number.';
-    const ERROR_MSG_INVALID_PAGE_SIZE               = 'Page size given is not allowed.';
-    const ERROR_MSG_TOTAL_COUNT_NON_POSITIVE        = 'Total count must be a positive number.';
-    const ERROR_MSG_TOTAL_COUNT_SMALLER_THAN_OFFSET = 'Offset must be smaller than total count.';
+    protected const ERROR_MSG_INVALID_NUMBER_COUNT            = 'Number count must be a positive odd number.';
+    protected const ERROR_MSG_INVALID_PAGE_SIZE               = 'Page size given is not allowed.';
+    protected const ERROR_MSG_TOTAL_COUNT_NON_POSITIVE        = 'Total count must be a positive number.';
+    protected const ERROR_MSG_TOTAL_COUNT_SMALLER_THAN_OFFSET = 'Offset must be smaller than total count.';
 
-    const LABEL_CONTENT = 'framework:pageSize';
+    public const LABEL_CONTENT = 'framework:pageSize';
 
     /** @var array */
     protected $params = [];
@@ -62,8 +64,6 @@ class Pagination extends Tag implements IPagination, ITemplater
 
     /** @var string */
     protected $template = self::DEFAULT_TEMPLATE;
-
-    use NodeContainerTrait;
 
     /**
      * Pagination constructor.

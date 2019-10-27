@@ -15,16 +15,18 @@ use AbterPhp\Framework\Html\Tag;
 
 class FormGroup extends Tag implements ITemplater
 {
-    const DEFAULT_TAG = Html5::TAG_DIV;
+    use NodeContainerTrait;
+
+    protected const DEFAULT_TAG = Html5::TAG_DIV;
 
     /**
      * %1$s - label
      * %2$s - input
      * %3$s - help
      */
-    const DEFAULT_TEMPLATE = '%1$s%2$s%3$s';
+    protected const DEFAULT_TEMPLATE = '%1$s%2$s%3$s';
 
-    const CLASS_COUNTABLE = 'countable';
+    protected const CLASS_COUNTABLE = 'countable';
 
     /** @var string[][] */
     protected $attributes = [];
@@ -40,8 +42,6 @@ class FormGroup extends Tag implements ITemplater
 
     /** @var string */
     protected $template = self::DEFAULT_TEMPLATE;
-
-    use NodeContainerTrait;
 
     /**
      * FormGroup constructor.

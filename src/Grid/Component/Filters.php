@@ -15,21 +15,21 @@ use AbterPhp\Framework\Html\ITemplater;
 
 class Filters extends Component implements ITemplater
 {
-    const DEFAULT_TAG = Html5::TAG_FORM;
+    protected const DEFAULT_TAG = Html5::TAG_FORM;
 
-    const BTN_CONTENT_FILTERS = 'framework:filters';
-    const BTN_CONTENT_FILTER  = 'framework:filter';
-    const BTN_CONTENT_RESET   = 'framework:reset';
+    public const BTN_CONTENT_FILTERS = 'framework:filters';
+    public const BTN_CONTENT_FILTER  = 'framework:filter';
+    public const BTN_CONTENT_RESET   = 'framework:reset';
 
-    const ATTRIBUTES_FORM = [
+    protected const ATTRIBUTES_FORM = [
         Html5::ATTR_CLASS => 'filter-form',
     ];
 
-    const ATTRIBUTES_SEARCH = [
+    protected const ATTRIBUTES_SEARCH = [
         Html5::ATTR_TYPE => Action::TYPE_SUBMIT,
     ];
 
-    const ATTRIBUTES_RESET = [
+    protected const ATTRIBUTES_RESET = [
         Html5::ATTR_TYPE => Action::TYPE_SUBMIT,
     ];
 
@@ -37,7 +37,7 @@ class Filters extends Component implements ITemplater
      * %1$s - hider button
      * %2$s - nodes (filters)
      */
-    const DEFAULT_TEMPLATE = <<<'EOT'
+    protected const DEFAULT_TEMPLATE = <<<'EOT'
 <div class="hidable">
     <p class="hider">%1$s</p>
     <div class="hidee">%2$s</div>

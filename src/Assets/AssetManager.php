@@ -16,8 +16,8 @@ use MatthiasMullie\Minify\JS as JsMinifier;
  */
 class AssetManager
 {
-    const EXT_CSS = '.css';
-    const EXT_JS  = '.js';
+    protected const EXT_CSS = '.css';
+    protected const EXT_JS  = '.js';
 
     /** @var MinifierFactory */
     protected $minifierFactory;

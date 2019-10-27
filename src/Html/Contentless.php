@@ -8,7 +8,7 @@ use AbterPhp\Framework\Html\Helper\StringHelper;
 
 final class Contentless extends Component
 {
-    const ERROR_NO_CONTENT = 'Contentless can not contain nodes';
+    private const ERROR_NO_CONTENT = 'Contentless can not contain nodes';
 
     /**
      * Contentless constructor.

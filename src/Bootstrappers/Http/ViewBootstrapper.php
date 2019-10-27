@@ -21,7 +21,7 @@ use Opulence\Views\Factories\ViewFactory;
  */
 class ViewBootstrapper extends BaseBootstrapper
 {
-    const VIEWS_PATH = 'views/';
+    protected const VIEWS_PATH = 'views/';
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
@@ -56,7 +56,7 @@ class ViewBootstrapper extends BaseBootstrapper
      * @param IContainer $container The dependency injection container
      * @return IViewFactory The view factory
      */
-    protected function getViewFactory(IContainer $container) : IViewFactory
+    protected function getViewFactory(IContainer $container): IViewFactory
     {
         $resolver = new FileViewNameResolver();
         $resolver->registerExtension('fortune');

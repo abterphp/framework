@@ -10,7 +10,7 @@ use League\Flysystem\FilesystemInterface;
 
 class Flysystem implements ICacheManager
 {
-    const ERROR_FILESYSTEM_NOT_FOUND = 'filesystem not found';
+    protected const ERROR_FILESYSTEM_NOT_FOUND = 'filesystem not found';
 
     /** @var FilesystemInterface[] */
     protected $filesystems = [];

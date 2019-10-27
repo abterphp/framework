@@ -13,17 +13,17 @@ use AbterPhp\Framework\Html\ITemplater;
 
 class Countable extends Label implements ITemplater
 {
-    const DEFAULT_SIZE = 160;
+    protected const DEFAULT_SIZE = 160;
 
     /**
      * %1$s - nodes
      * %2$s - counter
      */
-    const DEFAULT_TEMPLATE = '%1$s %2$s';
+    protected const DEFAULT_TEMPLATE = '%1$s %2$s';
 
-    const ATTR_DATA_COUNT = Html5::ATTR_DATA_DASH . 'count';
+    protected const ATTR_DATA_COUNT = Html5::ATTR_DATA_DASH . 'count';
 
-    const CLASS_COUNT = 'count';
+    protected const CLASS_COUNT = 'count';
 
     /** @var string */
     protected $template = self::DEFAULT_TEMPLATE;

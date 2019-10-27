@@ -14,16 +14,16 @@ use AbterPhp\Framework\Html\ITemplater;
 
 class Hideable extends Component implements ITemplater
 {
-    const DEFAULT_TAG = Html5::TAG_DIV;
+    protected const DEFAULT_TAG = Html5::TAG_DIV;
 
-    const CLASS_HIDABLE = 'hidable';
-    const CLASS_HIDER   = 'hider';
+    protected const CLASS_HIDABLE = 'hidable';
+    protected const CLASS_HIDER   = 'hider';
 
     /**
      * %1$s - hider button
      * %2$s - nodes
      */
-    const DEFAULT_TEMPLATE = '
+    protected const DEFAULT_TEMPLATE = '
         <p class="hider">
             %1$s
         </p>

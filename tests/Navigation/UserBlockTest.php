@@ -98,7 +98,7 @@ class UserBlockTest extends TagTest
         $rendered = (string)$sut;
 
         $this->assertStringContainsString(
-            '<a><div><div class="user-img" style="background: url(https://www.gravatar.com/avatar/2ea036c591050aa0bd31e5034c18012f) no-repeat;"><img src="https://www.gravatar.com/avatar/2ea036c591050aa0bd31e5034c18012f" alt="Mr. Wolf"></div></div>', // nolint
+            '<a><div><div class="user-img" style="background: url(https://www.gravatar.com/avatar/2ea036c591050aa0bd31e5034c18012f) no-repeat;"><img src="https://www.gravatar.com/avatar/2ea036c591050aa0bd31e5034c18012f" alt="Mr. Wolf"></div></div>', // phpcs:ignore
             $rendered
         );
         $this->assertStringContainsString('<div>Mr. Wolf</div>', $rendered);

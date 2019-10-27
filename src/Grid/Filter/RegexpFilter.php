@@ -6,9 +6,9 @@ namespace AbterPhp\Framework\Grid\Filter;
 
 class RegexpFilter extends Filter
 {
-    const HELP_CONTENT = 'framework:helpRegexp';
+    public const HELP_CONTENT = 'framework:helpRegexp';
 
-    const QUERY_TEMPLATE = '%s REGEXP ?';
+    protected const QUERY_TEMPLATE = '%s REGEXP ?';
 
     /**
      * @param array $params

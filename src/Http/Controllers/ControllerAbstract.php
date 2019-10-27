@@ -10,9 +10,9 @@ use Opulence\Routing\Controller;
 
 abstract class ControllerAbstract extends Controller
 {
-    const VAR_TITLE       = 'title';
-    const VAR_MSG_ERROR   = 'errorMessages';
-    const VAR_MSG_SUCCESS = 'successMessages';
+    protected const VAR_TITLE       = 'title';
+    protected const VAR_MSG_ERROR   = 'errorMessages';
+    protected const VAR_MSG_SUCCESS = 'successMessages';
 
     /** @var array */
     protected $viewVarsExtra = [];

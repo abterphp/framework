@@ -9,9 +9,9 @@ use AbterPhp\Framework\Html\Helper\StringHelper;
 
 class Tag extends Node implements ITag
 {
-    const DEFAULT_TAG = Html5::TAG_DIV;
-
     use TagTrait;
+
+    protected const DEFAULT_TAG = Html5::TAG_DIV;
 
     /**
      * Row constructor.

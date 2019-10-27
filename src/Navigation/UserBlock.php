@@ -17,9 +17,11 @@ use Opulence\Sessions\ISession;
 
 class UserBlock extends Tag implements INodeContainer
 {
-    const DEFAULT_TAG = Html5::TAG_A;
+    use NodeContainerTrait;
 
-    const AVATAR_BASE_URL = 'https://www.gravatar.com/avatar/%1$s';
+    protected const DEFAULT_TAG = Html5::TAG_A;
+
+    public const AVATAR_BASE_URL = 'https://www.gravatar.com/avatar/%1$s';
 
     /** @var ISession */
     protected $session;
@@ -32,8 +34,6 @@ class UserBlock extends Tag implements INodeContainer
 
     /** @var INode */
     protected $mediaRight;
-
-    use NodeContainerTrait;
 
     /**
      * UserBlock constructor.

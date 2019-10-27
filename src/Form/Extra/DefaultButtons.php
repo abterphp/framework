@@ -10,20 +10,20 @@ use AbterPhp\Framework\Html\Component\Button;
 
 class DefaultButtons extends Component
 {
-    const DEFAULT_TAG = 'div';
+    protected const DEFAULT_TAG = 'div';
 
-    const BTN_CONTENT_SAVE            = 'framework:save';
-    const BTN_CONTENT_SAVE_AND_BACK   = 'framework:saveAndBack';
-    const BTN_CONTENT_SAVE_AND_EDIT   = 'framework:saveAndEdit';
-    const BTN_CONTENT_SAVE_AND_CREATE = 'framework:saveAndCreate';
-    const BTN_CONTENT_BACK_TO_GRID    = 'framework:backToGrid';
+    public const BTN_CONTENT_SAVE            = 'framework:save';
+    public const BTN_CONTENT_SAVE_AND_BACK   = 'framework:saveAndBack';
+    public const BTN_CONTENT_SAVE_AND_EDIT   = 'framework:saveAndEdit';
+    public const BTN_CONTENT_SAVE_AND_CREATE = 'framework:saveAndCreate';
+    public const BTN_CONTENT_BACK_TO_GRID    = 'framework:backToGrid';
 
-    const BTN_NAME_NEXT = 'next';
+    public const BTN_NAME_NEXT = 'next';
 
-    const BTN_VALUE_NEXT_NONE   = '';
-    const BTN_VALUE_NEXT_EDIT   = 'edit';
-    const BTN_VALUE_NEXT_CREATE = 'create';
-    const BTN_VALUE_NEXT_BACK   = 'back';
+    public const BTN_VALUE_NEXT_NONE   = '';
+    public const BTN_VALUE_NEXT_EDIT   = 'edit';
+    public const BTN_VALUE_NEXT_CREATE = 'create';
+    public const BTN_VALUE_NEXT_BACK   = 'back';
 
     /** @var Button[] */
     protected $components;

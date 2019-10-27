@@ -9,9 +9,9 @@ use Opulence\Http\Requests\UploadException;
 
 class Uploader
 {
-    const DEFAULT_ROOT = '/';
+    protected const DEFAULT_ROOT = '/';
 
-    const DEFAULT_KEY = 'file';
+    protected const DEFAULT_KEY = 'file';
 
     /** @var Filesystem */
     protected $filesystem;

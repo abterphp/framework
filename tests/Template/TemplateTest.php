@@ -38,7 +38,7 @@ class TemplateTest extends TestCase
                     'block' =>
                         [
                             'content-one-1' => [
-                                new ParsedTemplate('block', 'content-one-1', [], ['{{block/content-one-1}}']),
+                                new ParsedTemplate('block', 'content-one-1', [], ['{{block/content-one-1}}']), // phpcs:ignore
                             ],
                         ]
                 ],
@@ -48,7 +48,7 @@ class TemplateTest extends TestCase
                 [
                     'block' => [
                         'content-2-two' => [
-                            new ParsedTemplate('block', 'content-2-two', [], ['{{  block/content-2-two   }}']),
+                            new ParsedTemplate('block', 'content-2-two', [], ['{{  block/content-2-two   }}']), // phpcs:ignore
                         ],
                         'content-one-1' => [
                             new ParsedTemplate('block', 'content-one-1', [], ['{{block/content-one-1}}']),
@@ -61,7 +61,7 @@ class TemplateTest extends TestCase
                 [
                     'block' => [
                         'layout-2-two' => [
-                            new ParsedTemplate('block', 'layout-2-two', [], ['{{  block/layout-2-two   }}']),
+                            new ParsedTemplate('block', 'layout-2-two', [], ['{{  block/layout-2-two   }}']), // phpcs:ignore
                         ],
                         'layout-one-1' => [
                             new ParsedTemplate(
@@ -165,25 +165,25 @@ class TemplateTest extends TestCase
                 '0  abc abc 1bcd2',
             ],
             'complex-1'                             => [
-                '0  {{block/one-1}} {{ block/one-1 }}  {{var/3-threeThree}} 1{{block/two-2-two}}2{{gallery/event-1}} {{ block/two-2-two }}', // nolint
+                '0  {{block/one-1}} {{ block/one-1 }}  {{var/3-threeThree}} 1{{block/two-2-two}}2{{gallery/event-1}} {{ block/two-2-two }}', // phpcs:ignore
                 ['3-threeThree' => 'cde'],
                 ['block' => ['one-1' => 'abc', 'two-2-two' => 'bcd'], 'gallery' => ['event-1' => 'fgh']],
                 '0  abc abc  cde 1bcd2fgh bcd',
             ],
             'complex-without-subtemplate-value'     => [
-                '0  {{block/one-1}} {{ block/one-1 }}  {{var/3-threeThree}} 1{{block/two-2-two}}2{{gallery/event-1}} {{ block/two-2-two }}', // nolint
+                '0  {{block/one-1}} {{ block/one-1 }}  {{var/3-threeThree}} 1{{block/two-2-two}}2{{gallery/event-1}} {{ block/two-2-two }}', // phpcs:ignore
                 ['3-threeThree' => 'cde'],
                 ['block' => ['one-1' => 'abc'], 'gallery' => ['event-1' => 'fgh']],
                 '0  abc abc  cde 12fgh ',
             ],
             'complex-without-subtemplate-type'      => [
-                '0  {{block/one-1}} {{ block/one-1 }}  {{var/3-threeThree}} 1{{block/two-2-two}}2{{gallery/event-1}} {{ block/two-2-two }}', // nolint
+                '0  {{block/one-1}} {{ block/one-1 }}  {{var/3-threeThree}} 1{{block/two-2-two}}2{{gallery/event-1}} {{ block/two-2-two }}', // phpcs:ignore
                 ['3-threeThree' => 'cde'],
                 ['block' => ['one-1' => 'abc', 'two-2-two' => 'bcd']],
                 '0  abc abc  cde 1bcd2 bcd',
             ],
             'brutal'                                => [
-                "0 {{nope/nay}}  {{block/one-1}} {{  block/one-1 }}  {{var/3-threeThree}} 1{{block/two-2-two foo=\"This foo!\" bar=\"That bar!\"}}2{{gallery/event-1}}\n{{ block/two-2-two }}", // nolint
+                "0 {{nope/nay}}  {{block/one-1}} {{  block/one-1 }}  {{var/3-threeThree}} 1{{block/two-2-two foo=\"This foo!\" bar=\"That bar!\"}}2{{gallery/event-1}}\n{{ block/two-2-two }}", // phpcs:ignore
                 ['3-threeThree' => 'cde'],
                 ['block' => ['one-1' => 'abc', 'two-2-two' => 'bcd']],
                 "0 {{nope/nay}}  abc abc  cde 1bcd2\nbcd",

@@ -60,7 +60,7 @@ class SelectTest extends TestCase
                 $attribs,
                 [],
                 null,
-                "<select$str id=\"abc\" name=\"bcd\"><option value=\"bde\">BDE</option>\n<option value=\"cef\">CEF</option></select>", // nolint
+                "<select$str id=\"abc\" name=\"bcd\"><option value=\"bde\">BDE</option>\n<option value=\"cef\">CEF</option></select>", // phpcs:ignore
             ],
             'option selected'      => [
                 'abc',
@@ -70,7 +70,7 @@ class SelectTest extends TestCase
                 $attribs,
                 [],
                 null,
-                "<select$str id=\"abc\" name=\"bcd\"><option value=\"bde\">BDE</option>\n<option value=\"cef\" selected>CEF</option></select>", // nolint
+                "<select$str id=\"abc\" name=\"bcd\"><option value=\"bde\">BDE</option>\n<option value=\"cef\" selected>CEF</option></select>", // phpcs:ignore
             ],
         ];
     }

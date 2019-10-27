@@ -10,9 +10,9 @@ use AbterPhp\Framework\Html\INode;
 
 class Label extends Component
 {
-    const DEFAULT_TAG = Html5::TAG_LABEL;
+    protected const DEFAULT_TAG = Html5::TAG_LABEL;
 
-    const INTENT_TOGGLE = 'toggle';
+    public const INTENT_TOGGLE = 'toggle';
 
     /** @var string */
     protected $template;

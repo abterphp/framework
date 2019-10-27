@@ -15,9 +15,9 @@ use PHPUnit\Framework\TestCase;
 
 class NavigationTest extends TestCase
 {
-    const INTENTS    = ['bar', 'baz'];
-    const ATTRIBUTES = ['data-quix' => 'quix'];
-    const RESOURCE   = 'quint';
+    protected const INTENTS    = ['bar', 'baz'];
+    protected const ATTRIBUTES = ['data-quix' => 'quix'];
+    protected const RESOURCE   = 'quint';
 
     /** @var Enforcer|MockObject */
     protected $enforcerMock;

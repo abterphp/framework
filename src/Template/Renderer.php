@@ -6,7 +6,7 @@ namespace AbterPhp\Framework\Template;
 
 class Renderer
 {
-    const ERROR_INVALID_TEMPLATE_TYPE = 'Unexpected template type: %s';
+    protected const ERROR_INVALID_TEMPLATE_TYPE = 'Unexpected template type: %s';
 
     /** @var Factory */
     protected $templateFactory;

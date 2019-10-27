@@ -8,8 +8,8 @@ use Throwable;
 
 class Config extends \LogicException
 {
-    const ERROR_MSG        = 'Insufficient configs found while resolving dependency: %s';
-    const REQUIRED_CONFIGS = ' (Related environment variables: %s)';
+    protected const ERROR_MSG        = 'Insufficient configs found while resolving dependency: %s';
+    protected const REQUIRED_CONFIGS = ' (Related environment variables: %s)';
 
     /**
      * Config constructor.

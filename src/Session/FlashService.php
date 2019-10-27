@@ -10,8 +10,8 @@ use Opulence\Sessions\ISession;
 
 class FlashService
 {
-    const ERROR   = 'error';
-    const SUCCESS = 'success';
+    protected const ERROR   = 'error';
+    protected const SUCCESS = 'success';
 
     /** @var ISession */
     protected $session;

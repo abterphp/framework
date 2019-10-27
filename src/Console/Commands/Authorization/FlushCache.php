@@ -10,7 +10,7 @@ use Opulence\Console\Responses\IResponse;
 
 class FlushCache extends Command
 {
-    const NAME = 'auth:flushcache';
+    public const NAME = 'auth:flushcache';
 
     /** @var CacheManager */
     protected $cacheManager;

@@ -16,7 +16,7 @@ interface ICollection extends ArrayAccess, Countable, Iterator, INode, INodeCont
      *
      * @return bool
      */
-    public function insertBefore(INode $nodeToFind, INode... $nodes): bool;
+    public function insertBefore(INode $nodeToFind, INode ...$nodes): bool;
 
     /**
      * @param INode $nodeToFind
@@ -24,7 +24,7 @@ interface ICollection extends ArrayAccess, Countable, Iterator, INode, INodeCont
      *
      * @return bool
      */
-    public function insertAfter(INode $nodeToFind, INode... $nodes): bool;
+    public function insertAfter(INode $nodeToFind, INode ...$nodes): bool;
 
     /**
      * @param INode $nodeToFind
@@ -32,7 +32,7 @@ interface ICollection extends ArrayAccess, Countable, Iterator, INode, INodeCont
      *
      * @return bool
      */
-    public function replace(INode $nodeToFind, INode... $nodes): bool;
+    public function replace(INode $nodeToFind, INode ...$nodes): bool;
 
     /**
      * @param INode $node

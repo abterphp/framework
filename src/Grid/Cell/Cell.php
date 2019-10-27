@@ -10,11 +10,11 @@ use AbterPhp\Framework\Html\INode;
 
 class Cell extends Component implements ICell
 {
-    const DEFAULT_TAG = Html5::TAG_TD;
+    protected const DEFAULT_TAG = Html5::TAG_TD;
 
-    const INTENT_ACTIONS = 'actions';
+    public const INTENT_ACTIONS = 'actions';
 
-    const GROUP_ACTIONS = 'actions';
+    public const GROUP_ACTIONS = 'actions';
 
     /** @var string */
     protected $group = '';

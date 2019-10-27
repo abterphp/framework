@@ -6,9 +6,9 @@ namespace AbterPhp\Framework\Grid\Filter;
 
 class LikeFilter extends Filter
 {
-    const HELP_CONTENT = 'framework:helpLike';
+    protected const HELP_CONTENT = 'framework:helpLike';
 
-    const QUERY_TEMPLATE = '%s LIKE ?';
+    protected const QUERY_TEMPLATE = '%s LIKE ?';
 
     /**
      * @param array $params
