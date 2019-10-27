@@ -23,8 +23,6 @@ class CacheManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
     public function getBindings(): array
     {
         return [
-            DummyCacheManager::class,
-            FlysystemCacheManager::class,
             ICacheManager::class,
         ];
     }

@@ -54,7 +54,6 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
         $assetManager = new AssetManager($minifierFactory, $fileFinder, $cacheManager);
 
-        $container->bindInstance(ICacheManager::class, $cacheManager);
         $container->bindInstance(AssetManager::class, $assetManager);
     }
 
