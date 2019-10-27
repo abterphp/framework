@@ -28,7 +28,7 @@ abstract class Filter extends Component implements IFilter, ITemplater
 
     protected const QUERY_TEMPLATE = '%s = ?';
 
-    protected const INTENT_HELP_BLOCK = 'help-block';
+    public const INTENT_HELP_BLOCK = 'help-block';
 
     /** @var string */
     protected $fieldName = '';
