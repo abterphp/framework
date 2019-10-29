@@ -11,7 +11,9 @@
     <arg value="np"/>
 
     <!-- Include the whole PSR12 standard -->
-    <rule ref="PSR12"></rule>
+    <rule ref="PSR12">
+        <exclude name="PSR12.Files.FileHeader"/>
+    </rule>
 
     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
     <rule ref="Generic.Classes.DuplicateClassName"/>
