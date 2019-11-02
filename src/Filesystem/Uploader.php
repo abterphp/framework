@@ -11,7 +11,7 @@ class Uploader
 {
     protected const DEFAULT_ROOT = '/';
 
-    protected const DEFAULT_KEY = 'file';
+    public const DEFAULT_KEY = 'file';
 
     /** @var Filesystem */
     protected $filesystem;
