@@ -82,10 +82,14 @@ class SecurityTest extends TestCase
 
         $sut->setVar(
             [
-                Env::DB_PASSWORD              => 'abc',
-                Env::ENCRYPTION_KEY           => 'bcd',
-                Env::CRYPTO_FRONTEND_SALT     => 'cde',
-                Env::CRYPTO_ENCRYPTION_PEPPER => 'def',
+                Env::DB_PASSWORD                 => 'abc',
+                Env::ENCRYPTION_KEY              => 'bcd',
+                Env::CRYPTO_FRONTEND_SALT        => 'cde',
+                Env::CRYPTO_ENCRYPTION_PEPPER    => 'def',
+                Env::OAUTH2_PRIVATE_KEY_PATH     => 'efg',
+                Env::OAUTH2_PRIVATE_KEY_PASSWORD => 'fgh',
+                Env::OAUTH2_PUBLIC_KEY_PATH      => 'ghi',
+                Env::OAUTH2_ENCRYPTION_KEY       => 'hij',
             ]
         );
 
@@ -115,10 +119,14 @@ class SecurityTest extends TestCase
 
         $sut->setVar(
             [
-                Env::DB_PASSWORD              => 'abc',
-                Env::ENCRYPTION_KEY           => 'bcd',
-                Env::CRYPTO_FRONTEND_SALT     => 'cde',
-                Env::CRYPTO_ENCRYPTION_PEPPER => 'def',
+                Env::DB_PASSWORD                 => 'abc',
+                Env::ENCRYPTION_KEY              => 'bcd',
+                Env::CRYPTO_FRONTEND_SALT        => 'cde',
+                Env::CRYPTO_ENCRYPTION_PEPPER    => 'def',
+                Env::OAUTH2_PRIVATE_KEY_PATH     => 'efg',
+                Env::OAUTH2_PRIVATE_KEY_PASSWORD => 'fgh',
+                Env::OAUTH2_PUBLIC_KEY_PATH      => 'ghi',
+                Env::OAUTH2_ENCRYPTION_KEY       => 'hij',
             ]
         );
 
