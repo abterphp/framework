@@ -88,7 +88,7 @@ class Row extends Tag implements IRow
 
         /** @var IAction $action */
         foreach ($this->actions as $action) {
-            $action->setEntity($entity);
+            $action->setEntity($entity); // @phan-suppress-current-line PhanUndeclaredMethod
         }
     }
 
