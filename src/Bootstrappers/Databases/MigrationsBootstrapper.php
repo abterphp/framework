@@ -14,9 +14,9 @@ use Opulence\Ioc\IContainer;
 class MigrationsBootstrapper extends OpulenceMigrationsBootstrapper
 {
     /**
-     * @inheritdoc
+     * @param IContainer $container
      */
-    public function registerBindings(IContainer $container)
+    protected function registerMigrator(IContainer $container)
     {
         global $abterModuleManager;
 
