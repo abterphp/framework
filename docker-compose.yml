@@ -13,5 +13,5 @@ services:
       - .:/website:ro
       - ./docker/php/conf.d/zzz.ini:/usr/local/etc/php/conf.d/zzz.ini:ro
       - ./docker/php/conf.d/ast-on.ini:/usr/local/etc/php/conf.d/ast-on.ini:ro
-      - ./docker/php/conf.d/xdebug-off.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro
+      - ./docker/php/conf.d/xdebug-off.ini:/usr/local/etc/php/conf.d/xdebug-off.ini:ro
     working_dir: /website
