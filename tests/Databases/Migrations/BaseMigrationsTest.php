@@ -54,7 +54,7 @@ class BaseMigrationTest extends TestCase
         $content = 'SELECT 1;';
 
         $statementMock = $this->createMock(Statement::class);
-        $statementMock->expects($this->once())->method('execute');
+        $statementMock->expects($this->once())->method('execute')->willReturn(true);
 
         $this->fileFinderMock
             ->expects($this->any())
@@ -76,7 +76,61 @@ class BaseMigrationTest extends TestCase
         $content = 'SELECT 1;';
 
         $statementMock = $this->createMock(Statement::class);
-        $statementMock->expects($this->once())->method('execute');
+        $statementMock->expects($this->once())->method('execute')->willReturn(true);
+
+        $this->fileFinderMock
+            ->expects($this->any())
+            ->method('read')
+            ->with('up/foo-bar')
+            ->willReturn($content);
+
+        $this->connectionMock
+            ->expects($this->any())
+            ->method('prepare')
+            ->with($content)
+            ->willReturn($statementMock);
+
+        $this->sut->up();
+    }
+
+    public function testDownThrowsExceptionIfExecutionFails()
+    {
+        $this->expectException(Exception::class);
+
+        $exceptionData = ['foo', 'bar', 'baz'];
+
+        $content = 'SELECT 1;';
+
+        $statementMock = $this->createMock(Statement::class);
+        $statementMock->expects($this->once())->method('execute')->willReturn(false);
+        $statementMock->expects($this->atLeastOnce())->method('errorInfo')->willReturn($exceptionData);
+
+        $this->fileFinderMock
+            ->expects($this->any())
+            ->method('read')
+            ->with('down/foo-bar')
+            ->willReturn($content);
+
+        $this->connectionMock
+            ->expects($this->any())
+            ->method('prepare')
+            ->with($content)
+            ->willReturn($statementMock);
+
+        $this->sut->down();
+    }
+
+    public function testUpThrowsExceptionIfExecutionFails()
+    {
+        $this->expectException(Exception::class);
+
+        $exceptionData = ['foo', 'bar', 'baz'];
+
+        $content = 'SELECT 1;';
+
+        $statementMock = $this->createMock(Statement::class);
+        $statementMock->expects($this->once())->method('execute')->willReturn(false);
+        $statementMock->expects($this->atLeastOnce())->method('errorInfo')->willReturn($exceptionData);
 
         $this->fileFinderMock
             ->expects($this->any())

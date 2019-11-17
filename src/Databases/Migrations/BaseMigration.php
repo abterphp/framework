@@ -6,7 +6,6 @@ namespace AbterPhp\Framework\Databases\Migrations;
 
 use AbterPhp\Framework\Filesystem\IFileFinder;
 use DateTime;
-use Exception;
 use League\Flysystem\FileNotFoundException;
 use Opulence\Databases\IConnection;
 use Opulence\Databases\Migrations\Migration;
@@ -47,24 +46,30 @@ class BaseMigration extends Migration
      * Executes the query that rolls back the migration
      *
      * @throws FileNotFoundException
+     * @throws Exception
      */
     public function down(): void
     {
         $sql       = $this->load(static::FILENAME, static::DOWN);
         $statement = $this->connection->prepare($sql);
-        $statement->execute();
+        if (!$statement->execute()) {
+            throw new Exception($statement->errorInfo());
+        }
     }
 
     /**
      * Executes the query that commits the migration
      *
      * @throws FileNotFoundException
+     * @throws Exception
      */
     public function up(): void
     {
         $sql       = $this->load(static::FILENAME, static::UP);
         $statement = $this->connection->prepare($sql);
-        $statement->execute();
+        if (!$statement->execute()) {
+            throw new Exception($statement->errorInfo());
+        }
     }
 
     /**
