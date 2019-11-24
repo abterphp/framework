@@ -21,8 +21,8 @@ $router->group(
             Routes::PATH_ASSET,
             'Website\Assets@asset',
             [
-                OPTION_NAME => Routes::ROUTE_ASSET,
-                OPTION_VARS => [Routes::VAR_PATH => '(.+)\.([\w\d]+)'],
+                Routes::OPTION_NAME => Routes::ROUTE_ASSET,
+                Routes::OPTION_VARS => [Routes::VAR_PATH => '(.+)\.([\w\d]+)'],
             ]
         );
     }

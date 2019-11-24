@@ -6,6 +6,10 @@ namespace AbterPhp\Framework\Constant;
 
 class Routes
 {
+    const OPTION_NAME       = 'name';
+    const OPTION_VARS       = 'vars';
+    const OPTION_MIDDLEWARE = 'middleware';
+
     public const ROUTE_ASSET = 'asset';
     public const ROUTE_404   = '404';
 

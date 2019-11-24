@@ -21,8 +21,8 @@ $router->group(
             Routes::PATH_404,
             'Website\Index@notFound',
             [
-                OPTION_NAME => Routes::ROUTE_404,
-                OPTION_VARS => [Routes::VAR_ANYTHING => '.+'],
+                Routes::OPTION_NAME => Routes::ROUTE_404,
+                Routes::OPTION_VARS => [Routes::VAR_ANYTHING => '.+'],
             ]
         );
     }
