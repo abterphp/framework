@@ -59,7 +59,7 @@ class NavigationBuilderTest extends TestCase
     {
         $itemMock = $this->createMock(Item::class);
         $itemMock->expects($this->once())->method('getResource')->willReturn(null);
-        $itemMock->expects($this->once())->method('getRole')->willReturn('');
+        $itemMock->expects($this->any())->method('getRole')->willReturn('');
         $itemMock->expects($this->never())->method('disable');
 
         $navigationReady = $this->createNavigationEvent([$itemMock], $this->once());
