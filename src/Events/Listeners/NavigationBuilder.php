@@ -46,7 +46,7 @@ class NavigationBuilder
                 continue;
             }
 
-            if (!$node->getResource() && !$node->getRole()) {
+            if (!$node->getResource()) {
                 continue;
             }
 
