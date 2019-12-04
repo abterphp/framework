@@ -76,6 +76,9 @@ class BaseMigration extends Migration
     protected function execute(string $filename)
     {
         $content = $this->fileFinder->read($filename);
+        if (empty($content)) {
+            throw new \RuntimeException(sprintf('Empty file or error during reading it: %s', $filename));
+        }
 
         $this->connection->beginTransaction();
 
