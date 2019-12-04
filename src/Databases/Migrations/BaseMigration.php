@@ -50,11 +50,9 @@ class BaseMigration extends Migration
      */
     public function down(): void
     {
-        $sql       = $this->load(static::FILENAME, static::DOWN);
-        $statement = $this->connection->prepare($sql);
-        if (!$statement->execute()) {
-            throw new Exception($statement->errorInfo());
-        }
+        $filename = sprintf('%s/%s', static::DOWN, static::FILENAME);
+
+        $this->execute($filename);
     }
 
     /**
@@ -65,22 +63,35 @@ class BaseMigration extends Migration
      */
     public function up(): void
     {
-        $sql       = $this->load(static::FILENAME, static::UP);
-        $statement = $this->connection->prepare($sql);
-        if (!$statement->execute()) {
-            throw new Exception($statement->errorInfo());
-        }
+        $filename = sprintf('%s/%s', static::UP, static::FILENAME);
+
+        $this->execute($filename);
     }
 
     /**
      * @param string $filename
-     * @param string $direction
      *
-     * @return string
      * @throws FileNotFoundException
      */
-    protected function load(string $filename, string $direction): string
+    protected function execute(string $filename)
     {
-        return $this->fileFinder->read(sprintf('%s/%s', $direction, $filename));
+        $content = $this->fileFinder->read($filename);
+
+        $this->connection->beginTransaction();
+
+        $statement = $this->connection->prepare($content);
+        try {
+            if (!$statement->execute()) {
+                $this->connection->rollBack();
+
+                throw new Exception($statement->errorInfo(), $content, get_class($this), $filename);
+            }
+        } catch (\PDOException $e) {
+            $this->connection->rollBack();
+
+            throw new Exception($statement->errorInfo(), $content, get_class($this), $filename, '', 0, $e);
+        }
+
+        $this->connection->commit();
     }
 }
