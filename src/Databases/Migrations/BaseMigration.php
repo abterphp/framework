@@ -80,21 +80,13 @@ class BaseMigration extends Migration
             throw new \RuntimeException(sprintf('Empty file or error during reading it: %s', $filename));
         }
 
-        $this->connection->beginTransaction();
-
         $statement = $this->connection->prepare($content);
         try {
             if (!$statement->execute()) {
-                $this->connection->rollBack();
-
                 throw new Exception($statement->errorInfo(), $content, get_class($this), $filename);
             }
         } catch (\PDOException $e) {
-            $this->connection->rollBack();
-
             throw new Exception($statement->errorInfo(), $content, get_class($this), $filename, '', 0, $e);
         }
-
-        $this->connection->commit();
     }
 }
