@@ -168,8 +168,11 @@ class Security implements IMiddleware
 
     private function checkPhpSettings()
     {
-        if ($this->getSetting('display_errors')) {
-            throw new SecurityException('Unacceptable `display_errors` value for production.');
+        $displayErrors = $this->getSetting('display_errors');
+        if ($displayErrors && mb_strtolower($displayErrors) !== 'off') {
+            throw new SecurityException(
+                sprintf('Unacceptable `display_errors` value for production: "%s"', $displayErrors)
+            );
         }
     }
 }
