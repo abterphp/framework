@@ -20,7 +20,7 @@ class LikeFilter extends Filter
         parent::setParams($params);
 
         if ($this->value) {
-            $this->queryParams = [$this->value];
+            $this->queryParams = ['%' . $this->value . '%'];
         }
 
         return $this;

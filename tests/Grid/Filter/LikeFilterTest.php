@@ -43,7 +43,7 @@ class LikeFilterTest extends FilterTest
         return [
             'no-params'         => [[], []],
             'no-matching-param' => [['abc' => 'ABC'], []],
-            'matching-param'    => [['filter-foo' => 'ABC'], ['ABC']],
+            'matching-param'    => [['filter-foo' => 'ABC'], ['%ABC%']],
         ];
     }
 
