@@ -71,9 +71,9 @@ class CheckboxGroup extends FormGroup
     public function __toString(): string
     {
         $help = $this->help ?: '';
-        $this->checkboxSpan->setContent($help);
+        $this->checkboxSpan->setContent((string)$this->label);
 
-        $this->label->setContent([$this->input, $this->checkboxSpan]);
+        $this->label->setContent([$this->input, $this->checkboxSpan, $help]);
 
         $content = StringHelper::wrapInTag((string)$this->label, $this->tag, $this->attributes);
 
