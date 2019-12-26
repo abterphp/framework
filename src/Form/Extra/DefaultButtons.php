@@ -53,17 +53,21 @@ class DefaultButtons extends Component
     }
 
     /**
+     * @param string ...$intents
+     *
      * @return $this
      */
-    public function addSaveAndBack(): DefaultButtons
+    public function addSaveAndBack(string ...$intents): DefaultButtons
     {
+        $intents = $intents ?: [Button::INTENT_PRIMARY, Button::INTENT_FORM];
+
         $attributes = $this->btnAttributes;
 
         $attributes[Html5::ATTR_VALUE] = [static::BTN_VALUE_NEXT_BACK];
 
         $this->nodes[] = new Button(
             static::BTN_CONTENT_SAVE_AND_BACK,
-            [Button::INTENT_PRIMARY, Button::INTENT_FORM],
+            $intents,
             $attributes
         );
 
@@ -71,17 +75,21 @@ class DefaultButtons extends Component
     }
 
     /**
+     * @param string ...$intents
+     *
      * @return $this
      */
-    public function addSaveAndEdit(): DefaultButtons
+    public function addSaveAndEdit(string ...$intents): DefaultButtons
     {
+        $intents = $intents ?: [Button::INTENT_DEFAULT, Button::INTENT_FORM];
+
         $attributes = $this->btnAttributes;
 
         $attributes[Html5::ATTR_VALUE] = [static::BTN_VALUE_NEXT_EDIT];
 
         $this->nodes[] = new Button(
             static::BTN_CONTENT_SAVE_AND_EDIT,
-            [Button::INTENT_DEFAULT, Button::INTENT_FORM],
+            $intents,
             $attributes
         );
 
@@ -89,17 +97,21 @@ class DefaultButtons extends Component
     }
 
     /**
-     * @return $this
+     * @param string ...$intents
+     *
+     * @return DefaultButtons
      */
-    public function addSaveAndCreate(): DefaultButtons
+    public function addSaveAndCreate(string ...$intents): DefaultButtons
     {
+        $intents = $intents ?: [Button::INTENT_DEFAULT, Button::INTENT_FORM];
+
         $attributes = $this->btnAttributes;
 
         $attributes[Html5::ATTR_VALUE] = [static::BTN_VALUE_NEXT_CREATE];
 
         $this->nodes[] = new Button(
             static::BTN_CONTENT_SAVE_AND_CREATE,
-            [Button::INTENT_DEFAULT, Button::INTENT_FORM],
+            $intents,
             $attributes
         );
 
@@ -108,18 +120,21 @@ class DefaultButtons extends Component
 
     /**
      * @param string $showUrl
+     * @param string ...$intents
      *
      * @return $this
      */
-    public function addBackToGrid(string $showUrl): DefaultButtons
+    public function addBackToGrid(string $showUrl, string ...$intents): DefaultButtons
     {
+        $intents = $intents ?: [Button::INTENT_DANGER, Button::INTENT_FORM];
+
         $attributes = [
             Html5::ATTR_HREF => [$showUrl],
         ];
 
         $this->nodes[] = new Button(
             static::BTN_CONTENT_BACK_TO_GRID,
-            [Button::INTENT_DANGER, Button::INTENT_FORM],
+            $intents,
             $attributes,
             Html5::TAG_A
         );
