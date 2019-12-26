@@ -20,6 +20,9 @@ class Component extends Collection implements IComponent
     protected const DEFAULT_TAG = Html5::TAG_SPAN;
 
     public const INTENT_HIDDEN = 'hidden';
+    public const INTENT_SMALL  = 'small';
+    public const INTENT_LARGE  = 'large';
+    public const INTENT_ICON   = 'icon';
 
     public const CLASS_HIDDEN = 'hidden';
 

@@ -26,5 +26,11 @@ class Button extends Component
     public const INTENT_SMALL = 'small';
     public const INTENT_LARGE = 'large';
 
+    public const INTENT_FAB     = 'fab';
+    public const INTENT_FLAT    = 'flat';
+    public const INTENT_RAISED  = 'raised';
+    public const INTENT_OUTLINE = 'outline';
+    public const INTENT_RIPPLE  = 'ripple';
+
     public const INTENT_FORM = 'form';
 }
