@@ -236,6 +236,10 @@ trait TagTrait
      */
     public function appendToClass(string ...$values): INode
     {
+        if (empty($values)) {
+            return $this;
+        }
+
         return $this->appendToAttribute(Html5::ATTR_CLASS, ...$values);
     }
 }
