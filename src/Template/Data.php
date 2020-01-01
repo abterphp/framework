@@ -29,7 +29,7 @@ class Data implements IData
     protected $templates = [];
 
     /**
-     * TemplateData constructor.
+     * Data constructor.
      *
      * @param string   $identifier
      * @param string[] $vars
