@@ -7,7 +7,7 @@ namespace AbterPhp\Framework\Template;
 interface ILoader
 {
     /**
-     * @param ParsedTemplate[][] $parsedTemplates
+     * @param array<string,ParsedTemplate[]> $parsedTemplates
      *
      * @return IData[]
      */

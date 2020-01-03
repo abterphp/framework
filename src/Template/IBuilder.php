@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Template;
 
-use AbterPhp\Framework\Domain\Entities\IStringerEntity;
-
 interface IBuilder
 {
     /**
-     * @param IStringerEntity[] $entities
+     * @param mixed $data
      *
      * @return IData
      */
-    public function build(array $entities): IData;
+    public function build($data): IData;
 
     /**
      * @return string
