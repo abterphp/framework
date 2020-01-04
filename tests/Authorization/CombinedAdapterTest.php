@@ -20,6 +20,14 @@ class CombinedAdapterTest extends TestCase
     /** @var CacheManager|MockObject */
     protected $cacheManagerMock;
 
+    protected $exampleConfig = <<<'EOF'
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+EOF;
+
     public function setUp(): void
     {
         $this->defaultAdapterMock = $this->createMock(CasbinAdapter::class);
@@ -96,10 +104,11 @@ class CombinedAdapterTest extends TestCase
             'p' => [
                 ['user', 'admin_resource_users', 'read', '', ','],
                 ['admin', 'admin_resource_users', 'write', '', ','],
-            ]
+            ],
         ];
 
         $model = new CasbinModel();
+        $model->loadModelFromText($this->exampleConfig);
 
         $this->cacheManagerMock->expects($this->once())->method('getAll')->willReturn($cachedData);
 
@@ -118,10 +127,11 @@ class CombinedAdapterTest extends TestCase
             'p' => [
                 ['user', 'admin_resource_users', 'read', '', ','],
                 ['admin', 'admin_resource_users', 'write', '', ','],
-            ]
+            ],
         ];
 
         $model = new CasbinModel();
+        $model->loadModelFromText($this->exampleConfig);
 
         foreach ($cachedData['g'] as $policy) {
             $model->model['g']['g']->policy[] = $policy;
