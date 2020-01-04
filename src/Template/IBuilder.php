@@ -7,11 +7,12 @@ namespace AbterPhp\Framework\Template;
 interface IBuilder
 {
     /**
-     * @param mixed $data
+     * @param                     $data
+     * @param ParsedTemplate|null $template
      *
      * @return IData
      */
-    public function build($data): IData;
+    public function build($data, ?ParsedTemplate $template = null): IData;
 
     /**
      * @return string
