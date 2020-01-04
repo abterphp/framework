@@ -14,6 +14,11 @@ interface IStringerEntity extends IEntity
     public function __toString(): string;
 
     /**
+     * @return array|null
+     */
+    public function toData(): ?array;
+
+    /**
      * @return string
      */
     public function toJSON(): string;
