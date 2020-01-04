@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Html\Helper;
 
-use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Html\IComponent;
 
 class StringHelper
