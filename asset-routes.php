@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use AbterPhp\Framework\Constant\Routes;
+use AbterPhp\Framework\Constant\Route;
 use Opulence\Routing\Router;
 
 /**
@@ -18,11 +18,11 @@ $router->group(
 
         /** @see \AbterPhp\Framework\Http\Controllers\Website\Assets::asset() */
         $router->get(
-            Routes::PATH_ASSET,
+            '/:path',
             'Website\Assets@asset',
             [
-                Routes::OPTION_NAME => Routes::ROUTE_ASSET,
-                Routes::OPTION_VARS => [Routes::VAR_PATH => '(.+)\.([\w\d]+)'],
+                Route::OPTION_NAME => Route::ASSET,
+                Route::OPTION_VARS => [Route::VAR_PATH => '(.+)\.([\w\d]+)'],
             ]
         );
     }

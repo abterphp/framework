@@ -31,6 +31,7 @@ return [
     'createNew'  => 'Create New',
     'deleteItem' => 'Delete',
     'editItem'   => 'Edit',
+    'viewItem'   => 'View',
     'titleList'  => '%s',
     'yes'        => 'Yes',
     'no'         => 'No',

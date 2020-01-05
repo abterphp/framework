@@ -31,6 +31,7 @@ return [
     'createNew'  => 'Új létrehozása',
     'deleteItem' => 'Törlés',
     'editItem'   => 'Szerkesztés',
+    'viewItem'   => 'Megtekintés',
     'titleList'  => '%s',
     'yes'        => 'Igen',
     'no'         => 'Nem',

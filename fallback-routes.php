@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use AbterPhp\Framework\Constant\Routes;
+use AbterPhp\Framework\Constant\Route;
 use Opulence\Routing\Router;
 
 /**
@@ -18,11 +18,11 @@ $router->group(
 
         /** @see \AbterPhp\Framework\Http\Controllers\Website\Index::notFound() */
         $router->any(
-            Routes::PATH_404,
+            '/:anything',
             'Website\Index@notFound',
             [
-                Routes::OPTION_NAME => Routes::ROUTE_404,
-                Routes::OPTION_VARS => [Routes::VAR_ANYTHING => '.+'],
+                Route::OPTION_NAME => Route::NOT_FOUND,
+                Route::OPTION_VARS => [Route::VAR_ANYTHING => '.+'],
             ]
         );
     }
