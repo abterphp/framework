@@ -9,12 +9,17 @@ use Opulence\Http\Requests\UploadedFile;
 
 interface IRepoService
 {
+    public const MIXED  = 0;
+    public const CREATE = 1;
+    public const UPDATE = 2;
+
     /**
      * @param array $postData
+     * @param int   $additionalData
      *
      * @return array
      */
-    public function validateForm(array $postData): array;
+    public function validateForm(array $postData, int $additionalData = self::MIXED): array;
 
     /**
      * @param string $entityId

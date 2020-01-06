@@ -28,6 +28,8 @@ class FormGroup extends Tag implements ITemplater
 
     public const CLASS_COUNTABLE = 'countable';
 
+    public const CLASS_REQUIRED = 'required';
+
     /** @var string[][] */
     protected $attributes = [];
 
