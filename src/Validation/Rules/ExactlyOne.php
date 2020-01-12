@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use Opulence\Validation\Rules\IRuleWithArgs;
 use Opulence\Validation\Rules\IRuleWithErrorPlaceholders;
 
-class AtLeastOne implements IRuleWithArgs, IRuleWithErrorPlaceholders
+class ExactlyOne implements IRuleWithArgs, IRuleWithErrorPlaceholders
 {
     /** @var array The name of the fields to compare to */
     protected $fieldNames = [];
@@ -32,7 +32,7 @@ class AtLeastOne implements IRuleWithArgs, IRuleWithErrorPlaceholders
      */
     public function getSlug(): string
     {
-        return 'atLeastOne';
+        return 'exactlyOne';
     }
 
     /**
@@ -40,17 +40,19 @@ class AtLeastOne implements IRuleWithArgs, IRuleWithErrorPlaceholders
      */
     public function passes($value, array $allValues = []): bool
     {
+        $count = 0;
+
         if (is_string($value) && $value) {
-            return true;
+            $count++;
         }
 
         foreach ($this->fieldNames as $fieldName) {
             if (isset($allValues[$fieldName]) && is_string($allValues[$fieldName]) && $allValues[$fieldName]) {
-                return true;
+                $count++;
             }
         }
 
-        return false;
+        return $count === 1;
     }
 
     /**
