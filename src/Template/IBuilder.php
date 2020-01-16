@@ -6,6 +6,10 @@ namespace AbterPhp\Framework\Template;
 
 interface IBuilder
 {
+    const NAME  = 'name';
+    const BODY  = 'body';
+    const IMAGE = 'image';
+
     /**
      * @param                     $data
      * @param ParsedTemplate|null $template
