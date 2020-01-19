@@ -74,6 +74,21 @@ class TemplateTest extends TestCase
                     ],
                 ],
             ],
+            'layout-with-attribute'  => [
+                '{{block/layout-one-1 a="value is a" a-2="value is a-2"}}',
+                [
+                    'block' => [
+                        'layout-one-1' => [
+                            new ParsedTemplate(
+                                'block',
+                                'layout-one-1',
+                                ['a' => 'value is a', 'a-2' => 'value is a-2'],
+                                ['{{block/layout-one-1 a="value is a" a-2="value is a-2"}}']
+                            ),
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 

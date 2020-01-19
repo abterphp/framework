@@ -136,7 +136,7 @@ class Template
         }
 
         $matches = [];
-        $pattern = '/\s*(\w*)\s*\=\s*\"([^"]*)\"\s*/Ums';
+        $pattern = '/\s*([\w_\-]*)\s*\=\s*\"([^"]*)\"\s*/Ums';
         preg_match_all($pattern, $rawAttributes, $matches);
 
         $attributes = [];

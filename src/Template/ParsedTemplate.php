@@ -57,17 +57,18 @@ class ParsedTemplate
     }
 
     /**
-     * @param string $attribute
+     * @param string      $attribute
+     * @param string|null $default
      *
      * @return string|null
      */
-    public function getAttribute(string $attribute): ?string
+    public function getAttribute(string $attribute, ?string $default = null): ?string
     {
         if (array_key_exists($attribute, $this->attributes)) {
             return $this->attributes[$attribute];
         }
 
-        return null;
+        return $default;
     }
 
     /**

@@ -17,7 +17,7 @@ class StringHelper
      */
     public static function wrapInTag($content, string $tag = null, array $attributes = [])
     {
-        if (null === $tag) {
+        if (empty($tag)) {
             return (string)$content;
         }
 
