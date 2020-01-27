@@ -34,18 +34,27 @@ class AssetManager
     /** @var CssMinifier[] */
     protected $cssMinifiers = [];
 
+    /** @var string */
+    protected $cacheUrlBase;
+
     /**
      * AssetManager constructor.
      *
      * @param MinifierFactory $minifierFactory
      * @param IFileFinder     $fileFinder
      * @param ICacheManager   $cacheManager
+     * @param string          $cacheUrlBase
      */
-    public function __construct(MinifierFactory $minifierFactory, IFileFinder $fileFinder, ICacheManager $cacheManager)
-    {
+    public function __construct(
+        MinifierFactory $minifierFactory,
+        IFileFinder $fileFinder,
+        ICacheManager $cacheManager,
+        string $cacheUrlBase
+    ) {
         $this->minifierFactory = $minifierFactory;
         $this->fileFinder      = $fileFinder;
         $this->cacheManager    = $cacheManager;
+        $this->cacheUrlBase    = $cacheUrlBase;
     }
 
     /**
@@ -184,7 +193,7 @@ class AssetManager
             $this->renderCss($groupName);
         }
 
-        return $this->cacheManager->getWebPath($cachePath);
+        return $this->getWebPath($cachePath);
     }
 
     /**
@@ -202,7 +211,7 @@ class AssetManager
             $this->renderJs($groupName);
         }
 
-        return $this->cacheManager->getWebPath($cachePath);
+        return $this->getWebPath($cachePath);
     }
 
     /**
@@ -220,7 +229,27 @@ class AssetManager
             }
         }
 
-        return $this->cacheManager->getWebPath($cachePath);
+        return $this->getWebPath($cachePath);
+    }
+
+    /**
+     * @param string $cachePath
+     *
+     * @return string
+     */
+    protected function getWebPath(string $cachePath): string
+    {
+        $path = $this->cacheManager->getWebPath($cachePath);
+        if (!$path) {
+            return $path;
+        }
+
+        return sprintf(
+            '%s%s%s',
+            rtrim($this->cacheUrlBase, DIRECTORY_SEPARATOR),
+            DIRECTORY_SEPARATOR,
+            ltrim($path, DIRECTORY_SEPARATOR)
+        );
     }
 
     /**

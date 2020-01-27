@@ -33,13 +33,8 @@ class Env
     public const DIR_MIGRATIONS  = 'DIR_MIGRATIONS';
     public const DIR_LOGS        = 'DIR_LOGS';
 
-    public const DIR_ROOT_JS   = 'DIR_ROOT_JS';
-    public const DIR_ROOT_CSS  = 'DIR_ROOT_CSS';
-    public const DIR_CACHE_JS  = 'DIR_CACHE_JS';
-    public const DIR_CACHE_CSS = 'DIR_CACHE_CSS';
-
-    public const PATH_CACHE_JS  = 'PATH_CACHE_JS';
-    public const PATH_CACHE_CSS = 'PATH_CACHE_CSS';
+    public const MEDIA_BASE_URL  = 'MEDIA_BASE_URL';
+    public const CACHE_BASE_PATH = 'CACHE_BASE_PATH';
 
     public const CRYPTO_FRONTEND_SALT     = 'CRYPTO_FRONTEND_SALT';
     public const CRYPTO_ENCRYPTION_PEPPER = 'CRYPTO_ENCRYPTION_PEPPER';

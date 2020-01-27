@@ -48,8 +48,13 @@ class CacheManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     private function registerCachePaths(ICacheManager $cacheManager)
     {
-        $dirPublic = rtrim(Environment::getVar(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
+        $cacheDir = sprintf(
+            '%s%s%s',
+            rtrim(Environment::getVar(Env::DIR_MEDIA), DIRECTORY_SEPARATOR),
+            DIRECTORY_SEPARATOR,
+            rtrim(Environment::getVar(Env::CACHE_BASE_PATH), DIRECTORY_SEPARATOR)
+        );
 
-        $cacheManager->registerFilesystem(new Filesystem(new Local($dirPublic)));
+        $cacheManager->registerFilesystem(new Filesystem(new Local($cacheDir)));
     }
 }
