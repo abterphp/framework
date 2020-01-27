@@ -28,13 +28,15 @@ class Env
 
     public const DIR_PRIVATE     = 'DIR_PRIVATE';
     public const DIR_PUBLIC      = 'DIR_PUBLIC';
+    public const DIR_MEDIA       = 'DIR_MEDIA';
     public const DIR_AUTH_CONFIG = 'DIR_AUTH_CONFIG';
     public const DIR_MIGRATIONS  = 'DIR_MIGRATIONS';
     public const DIR_LOGS        = 'DIR_LOGS';
-    public const DIR_ROOT_JS     = 'DIR_ROOT_JS';
-    public const DIR_ROOT_CSS    = 'DIR_ROOT_CSS';
-    public const DIR_CACHE_JS    = 'DIR_CACHE_JS';
-    public const DIR_CACHE_CSS   = 'DIR_CACHE_CSS';
+
+    public const DIR_ROOT_JS   = 'DIR_ROOT_JS';
+    public const DIR_ROOT_CSS  = 'DIR_ROOT_CSS';
+    public const DIR_CACHE_JS  = 'DIR_CACHE_JS';
+    public const DIR_CACHE_CSS = 'DIR_CACHE_CSS';
 
     public const PATH_CACHE_JS  = 'PATH_CACHE_JS';
     public const PATH_CACHE_CSS = 'PATH_CACHE_CSS';
@@ -54,9 +56,6 @@ class Env
     public const EMAIL_SMTP_USERNAME    = 'EMAIL_SMTP_USERNAME';
     public const EMAIL_SMTP_PASSWORD    = 'EMAIL_SMTP_PASSWORD';
     public const EMAIL_SENDMAIL_COMMAND = 'EMAIL_SENDMAIL_COMMAND';
-
-    public const ADMIN_DATE_FORMAT     = 'ADMIN_DATE_FORMAT';
-    public const ADMIN_DATETIME_FORMAT = 'ADMIN_DATETIME_FORMAT';
 
     public const MODULE_CACHE_KEY = 'MODULE_CACHE_KEY';
 
