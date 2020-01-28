@@ -34,9 +34,6 @@ class AssetManagerTest extends TestCase
     /** @var CacheManager|MockObject */
     protected $cacheManagerMock;
 
-    /** @var string */
-    protected $cacheUrlBase = 'http://localhost/editor';
-
     public function setUp(): void
     {
         $this->cssMinifierMock = $this->createMock(CssMinifier::class);
@@ -60,8 +57,7 @@ class AssetManagerTest extends TestCase
         $this->sut = new AssetManager(
             $this->minifierFactoryMock,
             $this->fileFinderMock,
-            $this->cacheManagerMock,
-            $this->cacheUrlBase
+            $this->cacheManagerMock
         );
 
         parent::setUp();
@@ -217,7 +213,7 @@ class AssetManagerTest extends TestCase
 
         $actualResult = $this->sut->ensureCssWebPath($groupName);
 
-        $this->assertSame($this->cacheUrlBase . $webPath, $actualResult);
+        $this->assertSame($webPath, $actualResult);
     }
 
     public function testEnsureJsWebPathUsesCacheByDefault()
@@ -233,7 +229,7 @@ class AssetManagerTest extends TestCase
 
         $actualResult = $this->sut->ensureJsWebPath($groupName);
 
-        $this->assertSame($this->cacheUrlBase . $webPath, $actualResult);
+        $this->assertSame($webPath, $actualResult);
     }
 
     public function testEnsureImgWebPathThrowsExceptionIfRenderingFails()
@@ -259,7 +255,7 @@ class AssetManagerTest extends TestCase
 
         $actualResult = $this->sut->ensureImgWebPath($cachePath);
 
-        $this->assertSame($this->cacheUrlBase . $webPath, $actualResult);
+        $this->assertSame($webPath, $actualResult);
     }
 
     public function testEnsureCssWebPathRendersIfCacheDoesNotExist()
@@ -277,7 +273,7 @@ class AssetManagerTest extends TestCase
 
         $actualResult = $this->sut->ensureCssWebPath($groupName);
 
-        $this->assertSame($this->cacheUrlBase . $webPath, $actualResult);
+        $this->assertSame($webPath, $actualResult);
     }
 
     public function testEnsureJsWebPathRendersIfCacheDoesNotExist()
@@ -295,7 +291,7 @@ class AssetManagerTest extends TestCase
 
         $actualResult = $this->sut->ensureJsWebPath($groupName);
 
-        $this->assertSame($this->cacheUrlBase . $webPath, $actualResult);
+        $this->assertSame($webPath, $actualResult);
     }
 
     public function testEnsureImgWebPathRendersIfCacheDoesNotExist()
@@ -310,6 +306,6 @@ class AssetManagerTest extends TestCase
 
         $actualResult = $this->sut->ensureImgWebPath($cachePath);
 
-        $this->assertSame($this->cacheUrlBase . $webPath, $actualResult);
+        $this->assertSame($webPath, $actualResult);
     }
 }

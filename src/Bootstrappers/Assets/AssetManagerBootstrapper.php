@@ -52,14 +52,7 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
         $this->registerCachePaths($cacheManager);
 
-        $cacheUrlBase = sprintf(
-            '%s%s%s',
-            Environment::getVar(Env::MEDIA_BASE_URL),
-            DIRECTORY_SEPARATOR,
-            Environment::getVar(Env::CACHE_BASE_PATH)
-        );
-
-        $assetManager = new AssetManager($minifierFactory, $fileFinder, $cacheManager, $cacheUrlBase);
+        $assetManager = new AssetManager($minifierFactory, $fileFinder, $cacheManager);
 
         $container->bindInstance(AssetManager::class, $assetManager);
     }

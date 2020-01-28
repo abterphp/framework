@@ -6,6 +6,7 @@ namespace AbterPhp\Framework\Assets;
 
 use AbterPhp\Framework\Assets\CacheManager\ICacheManager;
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
+use AbterPhp\Framework\Config\Routes;
 use AbterPhp\Framework\Filesystem\IFileFinder;
 use League\Flysystem\FileNotFoundException;
 use MatthiasMullie\Minify\CSS as CssMinifier;
@@ -34,27 +35,21 @@ class AssetManager
     /** @var CssMinifier[] */
     protected $cssMinifiers = [];
 
-    /** @var string */
-    protected $cacheUrlBase;
-
     /**
      * AssetManager constructor.
      *
      * @param MinifierFactory $minifierFactory
      * @param IFileFinder     $fileFinder
      * @param ICacheManager   $cacheManager
-     * @param string          $cacheUrlBase
      */
     public function __construct(
         MinifierFactory $minifierFactory,
         IFileFinder $fileFinder,
-        ICacheManager $cacheManager,
-        string $cacheUrlBase
+        ICacheManager $cacheManager
     ) {
         $this->minifierFactory = $minifierFactory;
         $this->fileFinder      = $fileFinder;
         $this->cacheManager    = $cacheManager;
-        $this->cacheUrlBase    = $cacheUrlBase;
     }
 
     /**
@@ -244,9 +239,14 @@ class AssetManager
             return $path;
         }
 
+        $cachePath = Routes::getCacheUrl();
+        if (!$cachePath) {
+            return $path;
+        }
+
         return sprintf(
             '%s%s%s',
-            rtrim($this->cacheUrlBase, DIRECTORY_SEPARATOR),
+            $cachePath,
             DIRECTORY_SEPARATOR,
             ltrim($path, DIRECTORY_SEPARATOR)
         );

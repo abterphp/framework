@@ -157,7 +157,7 @@ class Flysystem implements ICacheManager
 
         $timestamp = (string)$fs->getTimestamp($path);
 
-        $path = '/' . ltrim($path, '/');
+        $path = DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR);
         $rand = substr(md5($timestamp), 0, 5);
 
         return sprintf('%s?%s', $path, $rand);
