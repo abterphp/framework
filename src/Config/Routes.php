@@ -9,11 +9,16 @@ use Opulence\Environments\Environment;
 
 class Routes
 {
+    public const ASSETS_PATH = '/:path';
+
     /** @var string|null */
     protected static $mediaUrl;
 
     /** @var string|null */
     protected static $cacheUrl;
+
+    /** @var string|null */
+    protected static $assetsPath;
 
     /**
      * @param string $mediaUrl
@@ -69,5 +74,26 @@ class Routes
         static::$cacheUrl = (string)$cacheUrl;
 
         return static::$cacheUrl;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getAssetsPath(): string
+    {
+        if (null !== static::$assetsPath) {
+            return static::$assetsPath;
+        }
+
+        $basePath = Environment::getVar(Env::CACHE_BASE_PATH, '');
+        if (!$basePath) {
+            return '';
+        }
+
+        $assetsPath = sprintf('%s%s', $basePath, static::ASSETS_PATH);
+
+        static::$assetsPath = (string)$assetsPath;
+
+        return static::$assetsPath;
     }
 }

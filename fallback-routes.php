@@ -15,7 +15,6 @@ use Opulence\Routing\Router;
 $router->group(
     ['controllerNamespace' => 'AbterPhp\Framework\Http\Controllers'],
     function (Router $router) {
-
         /** @see \AbterPhp\Framework\Http\Controllers\Website\Index::notFound() */
         $router->any(
             '/:anything',

@@ -14,7 +14,8 @@ class Route
 
     public const FALLBACK = 'fallback';
 
-    public const ASSET = 'asset';
+    public const ASSET       = 'asset';
+    public const ASSET_CACHE = 'asset-cache';
 
     public const NOT_ALLOWED = 'not-allowed'; // 403
 
