@@ -35,21 +35,27 @@ class AssetManager
     /** @var CssMinifier[] */
     protected $cssMinifiers = [];
 
+    /** @var UrlFixer */
+    protected $urlFixer;
+
     /**
      * AssetManager constructor.
      *
      * @param MinifierFactory $minifierFactory
      * @param IFileFinder     $fileFinder
      * @param ICacheManager   $cacheManager
+     * @param UrlFixer        $urlFixer
      */
     public function __construct(
         MinifierFactory $minifierFactory,
         IFileFinder $fileFinder,
-        ICacheManager $cacheManager
+        ICacheManager $cacheManager,
+        UrlFixer $urlFixer
     ) {
         $this->minifierFactory = $minifierFactory;
         $this->fileFinder      = $fileFinder;
         $this->cacheManager    = $cacheManager;
+        $this->urlFixer        = $urlFixer;
     }
 
     /**
@@ -67,7 +73,9 @@ class AssetManager
 
         $content = $this->fileFinder->read($fixedPath, $groupName);
 
-        $this->getCssMinifier($groupName)->add($content);
+        $fixedContent = $this->urlFixer->fixCss($content, $fixedPath);
+
+        $this->getCssMinifier($groupName)->add($fixedContent);
     }
 
     /**

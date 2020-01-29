@@ -7,6 +7,8 @@ namespace AbterPhp\Framework\Bootstrappers\Assets;
 use AbterPhp\Framework\Assets\AssetManager;
 use AbterPhp\Framework\Assets\CacheManager\ICacheManager;
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
+use AbterPhp\Framework\Assets\UrlFixer;
+use AbterPhp\Framework\Config\Routes;
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Filesystem\FileFinder;
 use League\Flysystem\Adapter\Local;
@@ -47,12 +49,13 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
         $fileFinder = $container->resolve(FileFinder::class);
 
         /** @var ICacheManager $cacheManager */
-        $cacheManager = $container->resolve(ICacheManager::class);
+        $cacheManager    = $container->resolve(ICacheManager::class);
         $minifierFactory = new MinifierFactory();
+        $urlFixer        = new UrlFixer(Routes::getCacheUrl());
 
         $this->registerCachePaths($cacheManager);
 
-        $assetManager = new AssetManager($minifierFactory, $fileFinder, $cacheManager);
+        $assetManager = new AssetManager($minifierFactory, $fileFinder, $cacheManager, $urlFixer);
 
         $container->bindInstance(AssetManager::class, $assetManager);
     }

@@ -34,6 +34,9 @@ class AssetManagerTest extends TestCase
     /** @var CacheManager|MockObject */
     protected $cacheManagerMock;
 
+    /** @var UrlFixer|MockObject */
+    protected $urlFixerMock;
+
     public function setUp(): void
     {
         $this->cssMinifierMock = $this->createMock(CssMinifier::class);
@@ -54,10 +57,14 @@ class AssetManagerTest extends TestCase
 
         $this->cacheManagerMock = $this->createMock(CacheManager::class);
 
+        $this->urlFixerMock = $this->createMock(UrlFixer::class);
+        $this->urlFixerMock->expects($this->any())->method('fixCss')->willReturnArgument(0);
+
         $this->sut = new AssetManager(
             $this->minifierFactoryMock,
             $this->fileFinderMock,
-            $this->cacheManagerMock
+            $this->cacheManagerMock,
+            $this->urlFixerMock
         );
 
         parent::setUp();
