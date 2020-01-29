@@ -104,13 +104,20 @@ class UrlFixer
             $url = mb_substr($url, 3);
         }
 
-        $parts = explode(DIRECTORY_SEPARATOR, $url);
-        if (count($parts) < $out) {
-            return $this->cacheUrl . DIRECTORY_SEPARATOR . $parts[count($parts) - 1];
+        $pathDir = dirname($path);
+
+        $urlParts  = explode(DIRECTORY_SEPARATOR, $url);
+        $pathParts = $pathDir === '.' ? [] : explode(DIRECTORY_SEPARATOR, $pathDir);
+        if (count($pathParts) < $out) {
+            return $this->cacheUrl . DIRECTORY_SEPARATOR . $urlParts[count($urlParts) - 1];
         }
 
-        $url = implode(DIRECTORY_SEPARATOR, array_slice($parts, $out));
+        $urlParts  = array_slice($urlParts, $out);
+        $pathParts = array_slice($pathParts, $out - 1);
 
-        return $this->cacheUrl . DIRECTORY_SEPARATOR . $url;
+        $path = implode(DIRECTORY_SEPARATOR, $pathParts);
+        $url  = implode(DIRECTORY_SEPARATOR, $urlParts);
+
+        return $this->cacheUrl . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . $url;
     }
 }

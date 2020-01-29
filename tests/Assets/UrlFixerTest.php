@@ -11,7 +11,7 @@ class UrlFixerTest extends TestCase
     /** @var UrlFixer */
     protected $sut;
 
-    protected $cacheUrl = 'xxx';
+    protected $cacheUrl = 'xxx/www';
 
     public function setUp(): void
     {
@@ -27,7 +27,7 @@ class UrlFixerTest extends TestCase
             'empty'                                   => ['', 'yyy/zzz.css', ''],
             'empty-url'                               => ['url()', 'yyy/zzz.css', 'url()'],
             '1ch-url'                                 => ['url(a)', 'yyy/zzz.css', 'url(a)'],
-            '2ch-url'                                 => ['url(ab)', 'yyy/zzz.css', 'url(xxx/ab)'],
+            '2ch-url'                                 => ['url(ab)', 'yyy/zzz.css', 'url(xxx/www/yyy/ab)'],
             'data'                                    => [
                 'url(data:/fonts/roboto/Roboto-Regular-webfont.eot?xasd)',
                 'yyy/zzz.css',
@@ -42,83 +42,83 @@ class UrlFixerTest extends TestCase
             'relative-implicit-current-simple-quotes' => [
                 "url('fonts/roboto/Roboto-Regular-webfont.eot?xasd')",
                 'yyy/zzz.css',
-                "url('xxx/fonts/roboto/Roboto-Regular-webfont.eot?xasd')",
+                "url('xxx/www/yyy/fonts/roboto/Roboto-Regular-webfont.eot?xasd')",
             ],
             'relative-implicit-current-double-quotes' => [
                 'url("fonts/roboto/Roboto-Regular-webfont.eot?xasd")',
                 'yyy/zzz.css',
-                'url("xxx/fonts/roboto/Roboto-Regular-webfont.eot?xasd")',
+                'url("xxx/www/yyy/fonts/roboto/Roboto-Regular-webfont.eot?xasd")',
             ],
             'relative-implicit-current-no-quotes'     => [
                 "url(fonts/roboto/Roboto-Regular-webfont.eot?xasd)",
                 'yyy/zzz.css',
-                "url(xxx/fonts/roboto/Roboto-Regular-webfont.eot?xasd)",
+                "url(xxx/www/yyy/fonts/roboto/Roboto-Regular-webfont.eot?xasd)",
             ],
             //
             'relative-explicit-current-simple-quotes' => [
                 "url('./fonts/roboto/Roboto-Regular-webfont.eot?xasd')",
                 'yyy/zzz.css',
-                "url('xxx/fonts/roboto/Roboto-Regular-webfont.eot?xasd')",
+                "url('xxx/www/yyy/fonts/roboto/Roboto-Regular-webfont.eot?xasd')",
             ],
             'relative-explicit-current-double-quotes' => [
                 'url("./fonts/roboto/Roboto-Regular-webfont.eot?xasd")',
                 'yyy/zzz.css',
-                'url("xxx/fonts/roboto/Roboto-Regular-webfont.eot?xasd")',
+                'url("xxx/www/yyy/fonts/roboto/Roboto-Regular-webfont.eot?xasd")',
             ],
             'relative-explicit-current-no-quotes'     => [
                 "url(./fonts/roboto/Roboto-Regular-webfont.eot?xasd)",
                 'yyy/zzz.css',
-                "url(xxx/fonts/roboto/Roboto-Regular-webfont.eot?xasd)",
+                "url(xxx/www/yyy/fonts/roboto/Roboto-Regular-webfont.eot?xasd)",
             ],
             //
             'relative-parent-simple-quotes'           => [
                 "url('../fonts/roboto/Roboto-Regular-webfont.eot?xasd')",
                 'yyy/zzz.css',
-                "url('xxx/roboto/Roboto-Regular-webfont.eot?xasd')",
+                "url('xxx/www/yyy/roboto/Roboto-Regular-webfont.eot?xasd')",
             ],
             'relative-parent-double-quotes'           => [
                 "url('../fonts/roboto/Roboto-Regular-webfont.eot?xasd')",
                 'yyy/zzz.css',
-                "url('xxx/roboto/Roboto-Regular-webfont.eot?xasd')",
+                "url('xxx/www/yyy/roboto/Roboto-Regular-webfont.eot?xasd')",
             ],
             'relative-parent-no-quotes'               => [
                 "url('../fonts/roboto/Roboto-Regular-webfont.eot?xasd')",
                 'yyy/zzz.css',
-                "url('xxx/roboto/Roboto-Regular-webfont.eot?xasd')",
+                "url('xxx/www/yyy/roboto/Roboto-Regular-webfont.eot?xasd')",
             ],
             //
             'absolute-simple-quotes'                  => [
                 "url('/fonts/roboto/Roboto-Regular-webfont.eot?xasd')",
                 'yyy/zzz.css',
-                "url('xxx/fonts/roboto/Roboto-Regular-webfont.eot?xasd')",
+                "url('xxx/www/fonts/roboto/Roboto-Regular-webfont.eot?xasd')",
             ],
             'absolute-double-quotes'                  => [
                 'url("/fonts/roboto/Roboto-Regular-webfont.eot?xasd")',
                 'yyy/zzz.css',
-                'url("xxx/fonts/roboto/Roboto-Regular-webfont.eot?xasd")',
+                'url("xxx/www/fonts/roboto/Roboto-Regular-webfont.eot?xasd")',
             ],
             'absolute-no-quotes'                      => [
                 'url(/fonts/roboto/Roboto-Regular-webfont.eot?xasd)',
                 'yyy/zzz.css',
-                'url(xxx/fonts/roboto/Roboto-Regular-webfont.eot?xasd)',
+                'url(xxx/www/fonts/roboto/Roboto-Regular-webfont.eot?xasd)',
             ],
             //
             'absolute-more'                           => [
                 "url(/fonts/Roboto-Regular-webfont.eot?xasd), url('/fonts/Roboto-Bold-webfont.eot?dsa')",
                 'yyy/zzz.css',
-                "url(xxx/fonts/Roboto-Regular-webfont.eot?xasd), url('xxx/fonts/Roboto-Bold-webfont.eot?dsa')",
+                "url(xxx/www/fonts/Roboto-Regular-webfont.eot?xasd), url('xxx/www/fonts/Roboto-Bold-webfont.eot?dsa')",
             ],
             //
             'absolute-mixed-case'                     => [
                 "uRl(/fonts/Roboto-Regular-webfont.eot?xasd), urL('/fonts/Roboto-Bold-webfont.eot?dsa')",
                 'yyy/zzz.css',
-                "url(xxx/fonts/Roboto-Regular-webfont.eot?xasd), url('xxx/fonts/Roboto-Bold-webfont.eot?dsa')",
+                "url(xxx/www/fonts/Roboto-Regular-webfont.eot?xasd), url('xxx/www/fonts/Roboto-Bold-webfont.eot?dsa')",
             ],
             //
             'relative-overdone'                       => [
                 "url(../../../../../../fonts/Roboto-Regular-webfont.eot?xasd)",
                 'yyy/zzz.css',
-                "url(xxx/Roboto-Regular-webfont.eot?xasd)",
+                "url(xxx/www/Roboto-Regular-webfont.eot?xasd)",
             ],
         ];
     }
