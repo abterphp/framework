@@ -146,6 +146,18 @@ class AssetManagerTest extends TestCase
         $this->sut->addJsContent($groupName, $content);
     }
 
+    public function testAddJsVar()
+    {
+        $groupName       = 'foo';
+        $name            = 'fooer';
+        $value           = ['baz' => ['bar', 'quix']];
+        $expectedContent = 'var fooer = {"baz":["bar","quix"]};' . PHP_EOL;
+
+        $this->jsMinifierMock->expects($this->once())->method('add')->with($expectedContent);
+
+        $this->sut->addJsVar($groupName, $name, $value);
+    }
+
     public function testRenderRawReturnsNullIfReadingFails()
     {
         $cachePath = 'foo.css';

@@ -132,6 +132,16 @@ class AssetManager
 
     /**
      * @param string $groupName
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function addJsVar(string $groupName, string $name, $value)
+    {
+        $this->getJsMinifier($groupName)->add(sprintf("var %s = %s;\n", $name, json_encode($value)));
+    }
+
+    /**
+     * @param string $groupName
      *
      * @return string
      * @throws \League\Flysystem\FileExistsException
