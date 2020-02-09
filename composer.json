@@ -22,9 +22,10 @@
   "prefer-stable": true,
   "require": {
     "php": "^7.2",
+    "ext-http": "*",
     "ext-iconv": "*",
-    "ext-pdo": "*",
     "ext-json": "*",
+    "ext-pdo": "*",
     "monolog/monolog": "1.22.0",
     "opulence/opulence": "*",
     "filp/whoops": "^2.1",
