@@ -22,7 +22,6 @@
   "prefer-stable": true,
   "require": {
     "php": "^7.2",
-    "ext-http": "*",
     "ext-iconv": "*",
     "ext-json": "*",
     "ext-pdo": "*",
@@ -52,6 +51,7 @@
     "phan/phan": "^2.2"
   },
   "suggest": {
+    "ext-http": "Allows better response codes tied to error message",
     "ext-redis": "Allows better caching"
   },
   "config": {
