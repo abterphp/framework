@@ -69,7 +69,7 @@ final class Contentless extends Component
         if (null === $content) {
             return $this;
         }
-        
+
         throw new \LogicException(static::ERROR_NO_CONTENT);
     }
 

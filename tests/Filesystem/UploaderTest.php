@@ -271,7 +271,7 @@ class UploaderTest extends TestCase
         $fooPathFactory = function ($filename) {
             return "/foo-base-dir/$filename";
         };
-        
+
         $key  = 'foo';
         $path = 'example.foo';
 

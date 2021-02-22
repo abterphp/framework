@@ -1,5 +1,6 @@
 install:
 	./bin/composer-install.sh
+	php composer.phar install
 
 update:
 	php composer.phar update
