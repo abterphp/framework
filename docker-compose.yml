@@ -1,14 +1,14 @@
 version: '3'
 services:
   php:
-    image: abtercms/php:latest
+    image: abtercms/php:74
     volumes:
       - .:/website
       - ./docker/php/conf.d/zzz.ini:/usr/local/etc/php/conf.d/zzz.ini:ro
     working_dir: /website
 
   php-ast:
-    image: abtercms/php:latest
+    image: abtercms/php:74
     volumes:
       - .:/website:ro
       - ./docker/php/conf.d/zzz.ini:/usr/local/etc/php/conf.d/zzz.ini:ro
