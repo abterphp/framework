@@ -163,7 +163,7 @@ class Collection implements ICollection
     /**
      * @param string ...$intent
      *
-     * @return $this
+     * @return INode
      */
     public function setIntent(string ...$intent): INode
     {
@@ -175,7 +175,7 @@ class Collection implements ICollection
     /**
      * @param string ...$intent
      *
-     * @return $this
+     * @return INode
      */
     public function addIntent(string ...$intent): INode
     {
@@ -195,7 +195,7 @@ class Collection implements ICollection
     /**
      * @param INode[]|INode|string|null $content
      *
-     * @return $this
+     * @return INode
      */
     public function setContent($content = null): INode
     {

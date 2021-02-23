@@ -18,7 +18,7 @@ class Rule
     /** @var string[][] */
     protected $intentClassMap = [];
 
-    /** @var callable|null */
+    /** @var callable */
     protected $callback;
 
     /**
@@ -41,7 +41,10 @@ class Rule
         $this->requiredClassName = $requiredClassName;
         $this->defaultClasses    = $defaultClasses;
         $this->intentClassMap    = $intentClassMap;
-        $this->callback          = $callback;
+        if (!$callback) {
+            $callback = fn($x) => $x;
+        }
+        $this->callback = $callback;
     }
 
     /**
@@ -77,9 +80,9 @@ class Rule
     }
 
     /**
-     * @return callable|null
+     * @return callable
      */
-    public function getCallback(): ?callable
+    public function getCallback(): callable
     {
         return $this->callback;
     }

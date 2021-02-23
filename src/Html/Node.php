@@ -51,7 +51,7 @@ class Node implements INode
     /**
      * @param string|INode|null $content
      *
-     * @return $this
+     * @return INode
      */
     public function setContent($content): INode
     {
@@ -148,7 +148,7 @@ class Node implements INode
     /**
      * @param ITranslator|null $translator
      *
-     * @return $this
+     * @return INode
      */
     public function setTranslator(?ITranslator $translator): INode
     {

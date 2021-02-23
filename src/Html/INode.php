@@ -11,7 +11,7 @@ interface INode
     /**
      * @param string|INode|null $content
      *
-     * @return $this
+     * @return INode
      */
     public function setContent($content): INode;
 
@@ -36,7 +36,7 @@ interface INode
      *
      * @param string ...$intent
      *
-     * @return $this
+     * @return INode
      */
     public function setIntent(string ...$intent): INode;
 
@@ -47,14 +47,14 @@ interface INode
      *
      * @param string ...$intent
      *
-     * @return $this
+     * @return INode
      */
     public function addIntent(string ...$intent): INode;
 
     /**
      * @param ITranslator|null $translator
      *
-     * @return $this
+     * @return INode
      */
     public function setTranslator(?ITranslator $translator): INode;
 

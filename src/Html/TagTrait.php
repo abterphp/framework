@@ -15,17 +15,25 @@ trait TagTrait
     protected $tag = '';
 
     /**
-     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn, PhanUndeclaredConstant
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn, PhanUndeclaredConstant, PhanUndeclaredConstantOfClass
      *
      * @param string|null $tag
      *
-     * @return $this
+     * @return INode
      */
     public function setTag(?string $tag = null): INode
     {
-        $this->tag = $tag ?: static::DEFAULT_TAG;
+        $this->tag = $tag;
 
-        return $this;
+        if (!$tag && defined(__CLASS__ . '::DEFAULT_TAG')) {
+            $this->tag = static::DEFAULT_TAG;
+        }
+
+        if ($this instanceof INode) {
+            return $this;
+        }
+
+        return new Node();
     }
 
     /**
@@ -92,7 +100,7 @@ trait TagTrait
      *
      * @param string $key
      *
-     * @return $this
+     * @return INode
      */
     public function unsetAttribute(string $key): INode
     {
@@ -113,7 +121,7 @@ trait TagTrait
      * @param string $key
      * @param string $value
      *
-     * @return $this
+     * @return INode
      */
     public function unsetAttributeValue(string $key, string $value): INode
     {
@@ -142,7 +150,7 @@ trait TagTrait
      *
      * @param array $attributes
      *
-     * @return $this
+     * @return INode
      */
     public function setAttributes(array $attributes): INode
     {
@@ -162,7 +170,7 @@ trait TagTrait
      *
      * @param array $attributes
      *
-     * @return $this
+     * @return INode
      */
     public function addAttributes(array $attributes): INode
     {
@@ -179,7 +187,7 @@ trait TagTrait
      * @param string      $key
      * @param string|null ...$values
      *
-     * @return $this
+     * @return INode
      */
     public function setAttribute(string $key, ?string ...$values): INode
     {
@@ -193,7 +201,7 @@ trait TagTrait
      *
      * @param array $attributes
      *
-     * @return $this
+     * @return INode
      */
     public function appendToAttributes(array $attributes): INode
     {
@@ -220,7 +228,7 @@ trait TagTrait
      * @param string $key
      * @param string ...$values
      *
-     * @return $this
+     * @return INode
      */
     public function appendToAttribute(string $key, string ...$values): INode
     {
@@ -232,7 +240,7 @@ trait TagTrait
      *
      * @param string ...$values
      *
-     * @return $this
+     * @return INode
      */
     public function appendToClass(string ...$values): INode
     {

@@ -94,7 +94,7 @@ abstract class Filter extends Component implements IFilter, ITemplater
     /**
      * @param array $params
      *
-     * @return $this
+     * @return IFilter
      */
     public function setParams(array $params): IFilter
     {

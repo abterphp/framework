@@ -89,7 +89,9 @@ class ArrayHelper
             $existingValue = isset($existing[$key]) ? $existing[$key] : [];
             $newValue      = static::formatAttribute($value);
 
-            $existing[$key] = array_merge($existingValue, $newValue);
+            if ($newValue !== null) {
+                $existing[$key] = array_merge($existingValue, $newValue);
+            }
         }
 
         return $existing;

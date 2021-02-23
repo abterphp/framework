@@ -64,7 +64,7 @@ trait NodeContainerTrait
      *
      * @param ITranslator|null $translator
      *
-     * @return $this
+     * @return INode
      */
     public function setTranslator(?ITranslator $translator): INode
     {

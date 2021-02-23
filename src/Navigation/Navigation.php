@@ -206,7 +206,7 @@ class Navigation extends Tag implements INodeContainer
     /**
      * @param ITranslator|null $translator
      *
-     * @return $this
+     * @return INode
      */
     public function setTranslator(?ITranslator $translator): INode
     {
@@ -224,7 +224,7 @@ class Navigation extends Tag implements INodeContainer
     /**
      * @param string|INode $content
      *
-     * @return $this
+     * @return INode
      * @deprecated setContent is not supported on Navigation
      */
     public function setContent($content): INode

@@ -10,7 +10,7 @@ services:
   php-ast:
     image: abtercms/php:74
     volumes:
-      - .:/website:ro
+      - .:/website
       - ./docker/php/conf.d/zzz.ini:/usr/local/etc/php/conf.d/zzz.ini:ro
       - ./docker/php/conf.d/ast-on.ini:/usr/local/etc/php/conf.d/ast-on.ini:ro
       - ./docker/php/conf.d/xdebug-off.ini:/usr/local/etc/php/conf.d/xdebug-off.ini:ro
