@@ -1,6 +1,6 @@
 install:
 	./bin/composer-install.sh
-	php composer.phar install
+	php composer.phar install --no-progress --prefer-dist --optimize-autoloader
 
 update:
 	php composer.phar update
