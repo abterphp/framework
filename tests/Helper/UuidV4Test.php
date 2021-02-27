@@ -17,6 +17,6 @@ class UuidV4Test extends TestCase
     {
         $actualResult = UuidV4::generate();
 
-        $this->assertRegExp(static::REGEX_UUID, $actualResult);
+        $this->assertMatchesRegularExpression(static::REGEX_UUID, $actualResult);
     }
 }

@@ -303,9 +303,9 @@ class FlysystemTest extends TestCase
         $path    = 'foo.ext';
         $content = 'bar';
 
-        $fs->expects($this->at(0))->method('write')->willThrowException(new FileExistsException($path));
+        $fs->expects($this->once())->method('has')->with($path)->willReturn(true);
         $fs->expects($this->once())->method('delete');
-        $fs->expects($this->at(2))->method('write')->willReturn($expectedResult);
+        $fs->expects($this->once())->method('write')->with($path, $content)->willReturn(true);
 
         $actualResult = $this->sut->write($path, $content, true);
 

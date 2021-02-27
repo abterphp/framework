@@ -125,7 +125,7 @@ class PaginationTest extends TestCase
 
         $sut->setTemplate('<foo>%1$s</foo><bar>%2$s%3$s</bar>');
 
-        $this->assertRegExp('/\<foo\>.*\<\/foo\>\<bar\>.*\<\/bar\>/', (string)$sut);
+        $this->assertMatchesRegularExpression('/\<foo\>.*\<\/foo\>\<bar\>.*\<\/bar\>/', (string)$sut);
     }
 
     public function testSetSortedUrlCanSetsUrlOnNumbersBeforeTotalCountIsSet()
