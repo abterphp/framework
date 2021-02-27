@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Assets\CacheManager;
 
-use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 
@@ -125,24 +124,30 @@ class Flysystem implements ICacheManager
      * @param bool   $force
      *
      * @return bool
-     * @throws FileExistsException
-     * @throws FileNotFoundException
      */
     public function write(string $path, string $content, bool $force = true): bool
     {
         $fs = $this->getFilesystem($path);
 
-        try {
-            return (bool)$fs->write($path, $content);
-        } catch (FileExistsException $e) {
-            if ($force) {
-                $fs->delete($path);
+        if ($fs->has($path)) {
+            if (!$force) {
+                return false;
+            }
 
-                return (bool)$fs->write($path, $content);
+            try {
+                $fs->delete($path);
+            } catch (FileNotFoundException $e) {
+                // This is a noop(), production builds will (should) remove it completely
+                // Note that this can happen if the file was removed between the `$fs->has()` and `$fs->delete()` calls
+                assert(true);
             }
         }
 
-        return false;
+        try {
+            return (bool)$fs->write($path, $content);
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**

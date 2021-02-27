@@ -49,16 +49,16 @@ class ExceptionHandlerTest extends TestCase
         $this->exceptionRendererMock->expects($this->any())->method('getRun')->willReturn($whoopsRunMock);
 
         $whoopsRunMock
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('pushHandler')
             ->with(new \Whoops\Handler\PlainTextHandler($this->loggerMock));
 
-        $whoopsRunMock->expects($this->at(1))->method('register');
+        $whoopsRunMock->expects($this->once())->method('register');
 
         $this->sut->register();
     }
 
-    public function testRegisterPushesPrettyHandlerIfSapiIsHttp()
+    public function testRegisterPushesPlainTextAndPrettyHandlerIfSapiIsHttp()
     {
         $whoopsRunMock = $this->createWhoopsRunMock();
 
@@ -67,16 +67,11 @@ class ExceptionHandlerTest extends TestCase
         $this->sut->setSapi('http');
 
         $whoopsRunMock
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('pushHandler')
-            ->with(new PlainTextHandler($this->loggerMock));
+            ->withConsecutive([new \Whoops\Handler\PlainTextHandler($this->loggerMock)], [new PrettyPageHandler()]);
 
-        $whoopsRunMock
-            ->expects($this->at(1))
-            ->method('pushHandler')
-            ->with(new PrettyPageHandler());
-
-        $whoopsRunMock->expects($this->at(2))->method('register');
+        $whoopsRunMock->expects($this->once())->method('register');
 
         $this->sut->register();
     }

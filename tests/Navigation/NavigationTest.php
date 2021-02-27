@@ -177,7 +177,7 @@ class NavigationTest extends TestCase
 
         $rendered = (string)$sut;
 
-        $this->assertRegexp('/^\s*\<ul.*CCC.*DDD.*AAA.*BBB.*\<\/ul\>\s*$/Ums', $rendered);
+        $this->assertMatchesRegularExpression('/^\s*\<ul.*CCC.*DDD.*AAA.*BBB.*\<\/ul\>\s*$/Ums', $rendered);
     }
 
     public function testGetWrapperReturnsNullByDefault()

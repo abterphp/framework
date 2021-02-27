@@ -28,13 +28,12 @@ class RendererTest extends TestCase
     }
 
     /**
-     * @param int      $at
-     * @param string[] $subTemplateIds
-     * @param string   $rendered
+     * @param array  $subTemplateIds
+     * @param string $rendered
      *
      * @return Template|MockObject
      */
-    protected function addTemplate(int $at, array $subTemplateIds, string $rendered)
+    protected function createTemplate(array $subTemplateIds, string $rendered)
     {
         /** @var Template|MockObject $templateMock */
         $templateMock = $this->createMock(Template::class);
@@ -42,8 +41,6 @@ class RendererTest extends TestCase
         $templateMock->expects($this->any())->method('setTypes')->willReturnSelf();
         $templateMock->expects($this->any())->method('parse')->willReturn($subTemplateIds);
         $templateMock->expects($this->any())->method('render')->willReturn($rendered);
-
-        $this->templateFactoryMock->expects($this->at($at))->method('create')->willReturn($templateMock);
 
         return $templateMock;
     }
@@ -146,10 +143,19 @@ class RendererTest extends TestCase
         $rawContent = '';
         $vars       = [];
 
-        $i = 0;
-        foreach ($templateData as $rendered => $subTemplateIds) {
-            $this->addTemplate($i++, $subTemplateIds, $rendered);
-        }
+        $templateMock = $this->createMock(Template::class);
+        $templateMock->expects($this->any())->method('setVars')->willReturnSelf();
+        $templateMock->expects($this->any())->method('setTypes')->willReturnSelf();
+        $templateMock->expects($this->any())->method('parse')->willReturn(...array_values($templateData));
+        $templateMock->expects($this->any())->method('render')->willReturn(...array_keys($templateData));
+
+        $templateMocks = array_fill(0, count($templateData), $templateMock);
+        $templateMocks[count($templateData)] = $this->createMock(Template::class);
+
+        $this->templateFactoryMock
+            ->expects($this->any())
+            ->method('create')
+            ->willReturnOnConsecutiveCalls(...$templateMocks);
 
         foreach ($loaderData as $templateType => $entities) {
             /** @var ILoader|MockObject $loaderMock */
@@ -168,7 +174,12 @@ class RendererTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $this->addTemplate(0, ['foo' => ['foo0']], 'rendered');
+        $templateMock = $this->createTemplate(['foo' => ['foo0']], 'rendered');
+
+        $this->templateFactoryMock
+            ->expects($this->once())
+            ->method('create')
+            ->willReturn($templateMock);
 
         $this->sut->render('', []);
     }

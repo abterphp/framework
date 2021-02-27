@@ -52,7 +52,7 @@ class CryptoTest extends TestCase
         $actualResult = $this->sut->prepareSecret('sha-512');
 
         $this->assertEquals(128, strlen($actualResult));
-        $this->assertRegExp('/^[0-9a-f]{128}$/', $actualResult);
+        $this->assertMatchesRegularExpression('/^[0-9a-f]{128}$/', $actualResult);
     }
 
     public function testHashCryptHashesAndEncryptsSecret()

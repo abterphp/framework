@@ -11,7 +11,7 @@ use Opulence\Databases\Adapters\Pdo\Statement;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class BaseMigrationTest extends TestCase
+class BaseMigrationsTest extends TestCase
 {
     /** @var BaseMigration - System Under Test */
     protected $sut;

@@ -57,10 +57,10 @@ class EngineTest extends TestCase
         $this->cacheManagerMock->expects($this->any())->method('storeCacheData')->willReturn(true);
         $this->cacheManagerMock->expects($this->any())->method('storeDocument')->willReturn(true);
 
-        $i = 0;
-        foreach ($renderStubs as $renderStub) {
-            $this->rendererMock->expects($this->at($i++))->method('render')->willReturn($renderStub);
-        }
+        $this->rendererMock
+            ->expects($this->exactly(count($renderStubs)))
+            ->method('render')
+            ->willReturnOnConsecutiveCalls(...$renderStubs);
 
         $actualResult = $this->sut->run($type, $documentId, $templates, $vars);
 
