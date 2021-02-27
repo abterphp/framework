@@ -10,7 +10,7 @@ build:
 	XDEBUG_MODE=off ./vendor/bin/phpcs src
 	XDEBUG_MODE=off ./vendor/bin/phpcs -p --colors --cache --standard=PSR12 tests
 	XDEBUG_MODE=off ./vendor/bin/phpmd src text .phpmd.xml
-	XDEBUG_MODE=off  PHAN_DISABLE_XDEBUG_WARN=1 ./vendor/bin/phan --color
+	XDEBUG_MODE=off  ./vendor/bin/phan --color
 
 precommit:
 	git diff --cached --name-only --diff-filter=ACM | grep \\.php | xargs -n 1 php -l

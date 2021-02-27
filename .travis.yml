@@ -11,8 +11,8 @@ before_script:
 script:
   - pecl install ast
   - make build
-  - make coverage
 
 after_success:
+  - make coverage
   - curl -L --output php-coveralls.phar https://github.com/php-coveralls/php-coveralls/releases/download/v2.4.3/php-coveralls.phar
   - travis_retry php php-coveralls.phar -vvv --coverage_clover=./tmp/report/clover.xml --json_path=./tmp/report/coveralls-upload.json
