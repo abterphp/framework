@@ -3,6 +3,11 @@ ifeq (,$(wildcard /usr/local/bin/composer))
 	./bin/composer-install.sh
 	mv composer.phar /usr/local/bin/composer
 endif
+ifeq (,$(wildcard /usr/local/bin/php-coveralls))
+	curl -L --output php-coveralls.phar https://github.com/php-coveralls/php-coveralls/releases/download/v2.4.3/php-coveralls.phar
+	mv php-coveralls.phar /usr/local/bin/php-coveralls
+	chmod +x /usr/local/bin/php-coveralls
+endif
 	XDEBUG_MODE=off composer install --no-progress --prefer-dist --optimize-autoloader
 
 update:
@@ -26,6 +31,7 @@ unit:
 
 coverage:
 	XDEBUG_MODE=coverage ./vendor/bin/phpunit -c phpunit-cov.xml
+	XDEBUG_MODE=off php-coveralls -vvv --coverage_clover=./tmp/report/clover.xml --json_path=./tmp/report/coveralls-upload.json
 
 pull:
 	git pull

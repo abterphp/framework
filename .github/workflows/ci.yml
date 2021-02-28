@@ -49,3 +49,9 @@ jobs:
 
       - name: Build the project
         run: make build
+
+      - name: Coverage report
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          make coverage
