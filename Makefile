@@ -27,4 +27,8 @@ unit:
 coverage:
 	XDEBUG_MODE=coverage ./vendor/bin/phpunit -c phpunit-cov.xml
 
-.PHONY: install update build precommit unit integration coverage
+pull:
+	git pull
+	git submodule update --recursive --remote
+
+.PHONY: install update build precommit unit integration coverage pull
