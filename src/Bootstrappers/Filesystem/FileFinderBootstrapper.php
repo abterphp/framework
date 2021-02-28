@@ -6,8 +6,8 @@ use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Filesystem\FileFinder;
 use AbterPhp\Framework\Filesystem\IFileFinder;
 use AbterPhp\Framework\Module\Manager; // @phan-suppress-current-line PhanUnreferencedUseNormal
-use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
@@ -54,12 +54,12 @@ class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
                 if (!$path) {
                     continue;
                 }
-                $fileFinder->registerFilesystem(new Filesystem(new Local($path)), $key);
+                $fileFinder->registerFilesystem(new Filesystem(new LocalFilesystemAdapter($path)), $key);
             }
         }
 
         $dirPublic = rtrim(Environment::getVar(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
 
-        $fileFinder->registerFilesystem(new Filesystem(new Local($dirPublic)));
+        $fileFinder->registerFilesystem(new Filesystem(new LocalFilesystemAdapter($dirPublic)));
     }
 }

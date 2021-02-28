@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Assets\CacheManager;
 
-use League\Flysystem\FileNotFoundException;
-use League\Flysystem\FilesystemInterface;
+use ArrayAccess;
+use InvalidArgumentException;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\FilesystemOperator;
+use League\Flysystem\UnableToDeleteFile;
+use League\Flysystem\UnableToReadFile;
+use League\Flysystem\UnableToRetrieveMetadata;
+use League\Flysystem\UnableToWriteFile;
 
 class Flysystem implements ICacheManager
 {
     protected const ERROR_FILESYSTEM_NOT_FOUND = 'filesystem not found';
 
-    /** @var FilesystemInterface[] */
+    /** @var FilesystemOperator[] */
     protected $filesystems = [];
 
     /** @var callable[] callables that can check if a filesystem is suited to be used for a given path */
@@ -22,7 +28,11 @@ class Flysystem implements ICacheManager
 
     public function __construct()
     {
-        $this->isFlushable = function (array $obj) {
+        $this->isFlushable = function ($obj) {
+            if (!is_array($obj) && !($obj instanceof ArrayAccess)) {
+                throw new InvalidArgumentException("isFlushable requires an array or \ArrayAccess, received object is not: %s", get_class($obj));
+            }
+
             if ($obj['basename'] === '.gitignore') {
                 return false;
             }
@@ -51,9 +61,9 @@ class Flysystem implements ICacheManager
     /**
      * @param string $path
      *
-     * @return FilesystemInterface
+     * @return FilesystemOperator
      */
-    protected function getFilesystem(string $path): FilesystemInterface
+    protected function getFilesystem(string $path): FilesystemOperator
     {
         foreach ($this->filesystems as $priority => $filesystem) {
             if (empty($this->pathCheckers[$priority])) {
@@ -69,11 +79,11 @@ class Flysystem implements ICacheManager
     }
 
     /**
-     * @param FilesystemInterface $filesystem
-     * @param callable|null       $checker
-     * @param int|null            $priority
+     * @param FilesystemOperator $filesystem
+     * @param callable|null      $checker
+     * @param int|null           $priority
      */
-    public function registerFilesystem(FilesystemInterface $filesystem, callable $checker = null, ?int $priority = null)
+    public function registerFilesystem(FilesystemOperator $filesystem, callable $checker = null, ?int $priority = null)
     {
         $priority = $priority === null ? count($this->filesystems) * -1 : $priority;
 
@@ -88,34 +98,35 @@ class Flysystem implements ICacheManager
      * @param string $path
      *
      * @return bool
+     * @throws FilesystemException
      */
-    public function has(string $path): bool
+    public function fileExists(string $path): bool
     {
         $fs = $this->getFilesystem($path);
 
-        return $fs->has($path);
+        return $fs->fileExists($path);
     }
 
     /**
      * @param string $path
      *
      * @return string|null
-     * @throws FileNotFoundException
+     * @throws FilesystemException
+     * @throws UnableToReadFile
      */
     public function read(string $path): ?string
     {
         $fs = $this->getFilesystem($path);
 
-        if (!$fs->has($path)) {
+        if (!$fs->fileExists($path)) {
             return null;
         }
 
-        $content = $fs->read($path);
-        if ($content === false) {
+        try {
+            return $fs->read($path);
+        } catch (UnableToReadFile $e) {
             return null;
         }
-
-        return (string)$content;
     }
 
     /**
@@ -124,43 +135,48 @@ class Flysystem implements ICacheManager
      * @param bool   $force
      *
      * @return bool
+     * @throws FilesystemException
+     * @throws UnableToWriteFile
      */
     public function write(string $path, string $content, bool $force = true): bool
     {
         $fs = $this->getFilesystem($path);
 
-        if ($fs->has($path)) {
+        if ($fs->fileExists($path)) {
             if (!$force) {
                 return false;
             }
 
             try {
                 $fs->delete($path);
-            } catch (FileNotFoundException $e) {
+            } catch (UnableToDeleteFile $e) {
                 // This is a noop(), production builds will (should) remove it completely
-                // Note that this can happen if the file was removed between the `$fs->has()` and `$fs->delete()` calls
+                // Note that this can happen if the file was removed between the `$fs->fileExists()` and `$fs->delete()` calls
                 assert(true);
             }
         }
 
         try {
-            return (bool)$fs->write($path, $content);
-        } catch (\Exception $e) {
+            $fs->write($path, $content);
+        } catch (UnableToWriteFile $e) {
             return false;
         }
+
+        return true;
     }
 
     /**
      * @param string $path
      *
      * @return string
-     * @throws FileNotFoundException
+     * @throws UnableToRetrieveMetadata
+     * @throws FilesystemException
      */
     public function getWebPath(string $path): string
     {
         $fs = $this->getFilesystem($path);
 
-        $timestamp = (string)$fs->getTimestamp($path);
+        $timestamp = (string)$fs->lastModified($path);
 
         $path = DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR);
         $rand = substr(md5($timestamp), 0, 5);
@@ -169,14 +185,14 @@ class Flysystem implements ICacheManager
     }
 
     /**
-     * @throws FileNotFoundException
+     * @throws FilesystemException
      */
     public function flush()
     {
         foreach ($this->filesystems as $filesystem) {
             $objects = $filesystem->listContents('/', false);
 
-            foreach ($objects as $object) {
+            foreach ($objects->getIterator() as $object) {
                 if (!call_user_func($this->isFlushable, $object)) {
                     continue;
                 }

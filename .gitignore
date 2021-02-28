@@ -3,8 +3,7 @@
 composer.phar
 nbproject/
 phpunit.phar
-/vendor/
 NOTES.md
 .phpunit.result.cache
-tmp.phpunit.result.cache
-tmp/
+tmp/report/*
+vendor/

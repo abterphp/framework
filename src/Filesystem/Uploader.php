@@ -2,8 +2,12 @@
 
 namespace AbterPhp\Framework\Filesystem;
 
-use League\Flysystem\FileNotFoundException;
+use League\Flysystem\UnableToReadFile;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\UnableToDeleteDirectory;
+use League\Flysystem\UnableToDeleteFile;
+use League\Flysystem\UnableToRetrieveMetadata;
 use Opulence\Http\Requests\UploadedFile;
 use Opulence\Http\Requests\UploadException;
 
@@ -117,25 +121,28 @@ class Uploader
      */
     public function delete(string $path): bool
     {
-        if (!$this->filesystem->has($path)) {
+        if (!$this->filesystem->fileExists($path)) {
             return false;
         }
 
         try {
-            return $this->filesystem->delete($path);
-        } catch (FileNotFoundException $e) {
+            $this->filesystem->delete($path);
+        } catch (UnableToDeleteFile | UnableToDeleteDirectory $e) {
             return false;
         }
+
+        return true;
     }
 
     /**
      * @param string $path
      *
      * @return string|null
+     * @throws FilesystemException
      */
     public function getContent(string $path): ?string
     {
-        if (!$this->filesystem->has($path)) {
+        if (!$this->filesystem->fileExists($path)) {
             return null;
         }
 
@@ -144,7 +151,7 @@ class Uploader
             if (false === $content) {
                 return null;
             }
-        } catch (FileNotFoundException $e) {
+        } catch (UnableToReadFile $e) {
             return null;
         }
 
@@ -155,16 +162,17 @@ class Uploader
      * @param string $path
      *
      * @return bool|resource
+     * @throws FilesystemException
      */
     public function getStream(string $path)
     {
-        if (!$this->filesystem->has($path)) {
+        if (!$this->filesystem->fileExists($path)) {
             return false;
         }
 
         try {
             return $this->filesystem->readStream($path);
-        } catch (FileNotFoundException $e) {
+        } catch (UnableToReadFile $e) {
             return false;
         }
     }
@@ -173,22 +181,18 @@ class Uploader
      * @param string $path
      *
      * @return int|null
+     * @throws FilesystemException
      */
     public function getSize(string $path): ?int
     {
-        if (!$this->filesystem->has($path)) {
+        if (!$this->filesystem->fileExists($path)) {
             return null;
         }
 
         try {
-            $size = $this->filesystem->getSize($path);
-            if (is_numeric($size)) {
-                return (int)$size;
-            }
-        } catch (FileNotFoundException $e) {
+            return $this->filesystem->fileSize($path);
+        } catch (FilesystemException | UnableToRetrieveMetadata $e) {
             return null;
         }
-
-        return null;
     }
 }

@@ -4,23 +4,25 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Filesystem;
 
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\FilesystemOperator;
+use League\Flysystem\UnableToReadFile;
 
 class FileFinder implements IFileFinder
 {
-    /** @var FilesystemInterface[][][] */
+    /** @var FilesystemOperator[][][] */
     protected $filesystems = [];
 
     /** @var string[] */
     protected $filesystemKeys = [];
 
     /**
-     * @param FilesystemInterface $filesystem
-     * @param string              $key
-     * @param int                 $priority
+     * @param FilesystemOperator $filesystem
+     * @param string             $key
+     * @param int                $priority
      */
     public function registerFilesystem(
-        FilesystemInterface $filesystem,
+        FilesystemOperator $filesystem,
         string $key = IFileFinder::DEFAULT_KEY,
         int $priority = -1
     ) {
@@ -41,7 +43,7 @@ class FileFinder implements IFileFinder
      *
      * @return bool
      */
-    public function has(string $path, string $groupName = IFileFinder::DEFAULT_KEY): bool
+    public function fileExists(string $path, string $groupName = IFileFinder::DEFAULT_KEY): bool
     {
         return $this->findFilesystem($path, $groupName) !== null;
     }
@@ -51,7 +53,8 @@ class FileFinder implements IFileFinder
      * @param string $key
      *
      * @return string|null
-     * @throws \League\Flysystem\FileNotFoundException
+     * @throws UnableToReadFile
+     * @throws FilesystemException
      */
     public function read(string $path, string $key = IFileFinder::DEFAULT_KEY): ?string
     {
@@ -73,16 +76,16 @@ class FileFinder implements IFileFinder
      * @param string $path
      * @param string $key
      *
-     * @return FilesystemInterface|null
+     * @return FilesystemOperator|null
      */
-    protected function findFilesystem(string $path, string $key): ?FilesystemInterface
+    protected function findFilesystem(string $path, string $key): ?FilesystemOperator
     {
         $possibleKeys = $this->getPossibleKeys($path, $key);
         foreach ($possibleKeys as $rootKey) {
             foreach ($this->filesystems[$rootKey] as $filesystems) {
                 foreach ($filesystems as $filesystem) {
                     $realPath = $this->getFilesystemPath($filesystem, $path);
-                    if ($filesystem->has($realPath)) {
+                    if ($filesystem->fileExists($realPath)) {
                         return $filesystem;
                     }
                 }
@@ -93,12 +96,12 @@ class FileFinder implements IFileFinder
     }
 
     /**
-     * @param FilesystemInterface $filesystem
-     * @param string              $path
+     * @param FilesystemOperator $filesystem
+     * @param string             $path
      *
      * @return string
      */
-    protected function getFilesystemPath(FilesystemInterface $filesystem, string $path): string
+    protected function getFilesystemPath(FilesystemOperator $filesystem, string $path): string
     {
         $rootKey = $this->filesystemKeys[spl_object_id($filesystem)];
         if ($rootKey === static::DEFAULT_KEY) {

@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Assets\CacheManager;
 
+use League\Flysystem\DirectoryListing;
 use League\Flysystem\Filesystem;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
+use League\Flysystem\UnableToReadFile;
+use League\Flysystem\UnableToWriteFile;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -22,25 +25,25 @@ class DummyTest extends TestCase
     }
 
     /**
-     * @return FilesystemInterface|MockObject
+     * @return FilesystemOperator|MockObject
      */
     protected function createFilesystemMock()
     {
         return $this->createMock(Filesystem::class);
     }
 
-    public function testHasReturnsFalseWhenThereAreNoFilesystemsRegistered()
+    public function testFileExistsReturnsFalseWhenThereAreNoFilesystemsRegistered()
     {
         $expectedResult = false;
 
         $path = 'foo.ext';
 
-        $actualResult = $this->sut->has($path);
+        $actualResult = $this->sut->fileExists($path);
 
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testHasReturnsFalseWhenNoMatchingFilesystemIsFound()
+    public function testFileExistsReturnsFalseWhenNoMatchingFilesystemIsFound()
     {
         $expectedResult = false;
 
@@ -55,7 +58,7 @@ class DummyTest extends TestCase
 
         $path = 'foo.ext';
 
-        $actualResult = $this->sut->has($path);
+        $actualResult = $this->sut->fileExists($path);
 
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -90,7 +93,7 @@ class DummyTest extends TestCase
     public function testReadReturnsNullIfPathDoesNotExist()
     {
         $fs = $this->createFilesystemMock();
-        $fs->expects($this->once())->method('has')->willReturn(false);
+        $fs->expects($this->once())->method('fileExists')->willReturn(false);
         $this->sut->registerFilesystem($fs);
 
         $path = 'foo.ext';
@@ -102,12 +105,12 @@ class DummyTest extends TestCase
 
     public function testReadReturnsNullIfFileCanNotBeRead()
     {
-        $fs = $this->createFilesystemMock();
-        $fs->expects($this->any())->method('has')->willReturn(true);
-        $fs->expects($this->once())->method('read')->willReturn(false);
-        $this->sut->registerFilesystem($fs);
-
         $path = 'foo.ext';
+
+        $fs = $this->createFilesystemMock();
+        $fs->expects($this->any())->method('fileExists')->willReturn(true);
+        $fs->expects($this->once())->method('read')->willThrowException(new UnableToReadFile($path));
+        $this->sut->registerFilesystem($fs);
 
         $actualResult = $this->sut->read($path);
 
@@ -119,7 +122,7 @@ class DummyTest extends TestCase
         $expectedResult = 'bar';
 
         $fs = $this->createFilesystemMock();
-        $fs->expects($this->any())->method('has')->willReturn(true);
+        $fs->expects($this->any())->method('fileExists')->willReturn(true);
         $fs->expects($this->once())->method('read')->willReturn($expectedResult);
         $this->sut->registerFilesystem($fs);
 
@@ -152,8 +155,8 @@ class DummyTest extends TestCase
 
         $path = 'foo.ext';
 
-        $fs1->expects($this->never())->method('read')->willReturn(false);
-        $fs2->expects($this->once())->method('has')->willReturn(true);
+        $fs1->expects($this->never())->method('read');
+        $fs2->expects($this->once())->method('fileExists')->willReturn(true);
         $fs2->expects($this->once())->method('read')->willReturn($expectedResult);
 
         $actualResult = $this->sut->read($path);
@@ -199,7 +202,7 @@ class DummyTest extends TestCase
 
         $this->sut->registerFilesystem($fs);
 
-        $fs->expects($this->once())->method('write')->willReturn(false);
+        $fs->expects($this->once())->method('write')->willThrowException(new UnableToWriteFile($path));
 
         $this->sut->write($path, $content);
     }
@@ -213,7 +216,7 @@ class DummyTest extends TestCase
 
         $this->sut->registerFilesystem($fs);
 
-        $fs->expects($this->once())->method('write')->willReturn(true);
+        $fs->expects($this->once())->method('write');
 
         $actualResult = $this->sut->write($path, $content);
 
@@ -241,8 +244,8 @@ class DummyTest extends TestCase
         $path    = 'foo.ext';
         $content = 'bar';
 
-        $fs1->expects($this->never())->method('write')->willReturn(false);
-        $fs2->expects($this->once())->method('write')->willReturn(true);
+        $fs1->expects($this->never())->method('write')->willThrowException(new UnableToWriteFile($path));
+        $fs2->expects($this->once())->method('write');
 
         $actualResult = $this->sut->write($path, $content);
 
@@ -252,13 +255,13 @@ class DummyTest extends TestCase
     public function testGetWebPath()
     {
         $path      = 'foo.ext';
-        $timestamp = 'bar';
+        $timestamp = time();
 
         $fs = $this->createFilesystemMock();
 
         $this->sut->registerFilesystem($fs);
 
-        $fs->expects($this->once())->method('getTimestamp')->with($path)->willReturn($timestamp);
+        $fs->expects($this->once())->method('lastModified')->with($path)->willReturn($timestamp);
 
         $actualResult = $this->sut->getWebPath($path);
 
@@ -279,8 +282,8 @@ class DummyTest extends TestCase
         $obj3 = ['path' => 'baz', 'basename' => ''];
         $obj4 = ['path' => 'quix', 'basename' => ''];
 
-        $fs1->expects($this->once())->method('listContents')->willReturn([$obj1, $obj2]);
-        $fs2->expects($this->once())->method('listContents')->willReturn([$obj3, $obj4]);
+        $fs1->expects($this->once())->method('listContents')->willReturn(new DirectoryListing([$obj1, $obj2]));
+        $fs2->expects($this->once())->method('listContents')->willReturn(new DirectoryListing([$obj3, $obj4]));
 
         $fs1->expects($this->exactly(2))->method('delete');
         $fs2->expects($this->exactly(2))->method('delete');
@@ -296,7 +299,7 @@ class DummyTest extends TestCase
 
         $obj1 = ['path' => 'foo', 'basename' => '.gitignore'];
 
-        $fs->expects($this->once())->method('listContents')->willReturn([$obj1]);
+        $fs->expects($this->once())->method('listContents')->willReturn(new DirectoryListing([$obj1]));
 
         $fs->expects($this->never())->method('delete');
 
@@ -311,7 +314,7 @@ class DummyTest extends TestCase
 
         $obj1 = ['path' => 'foo', 'basename' => 'index', 'extension' => 'php'];
 
-        $fs->expects($this->once())->method('listContents')->willReturn([$obj1]);
+        $fs->expects($this->once())->method('listContents')->willReturn(new DirectoryListing([$obj1]));
 
         $fs->expects($this->never())->method('delete');
 
@@ -341,8 +344,8 @@ class DummyTest extends TestCase
         $obj3 = ['path' => 'protected', 'basename' => 'abc'];
         $obj4 = ['path' => 'protected', 'basename' => 'cba'];
 
-        $fs1->expects($this->once())->method('listContents')->willReturn([$obj1, $obj2]);
-        $fs2->expects($this->once())->method('listContents')->willReturn([$obj3, $obj4]);
+        $fs1->expects($this->once())->method('listContents')->willReturn(new DirectoryListing([$obj1, $obj2]));
+        $fs2->expects($this->once())->method('listContents')->willReturn(new DirectoryListing([$obj3, $obj4]));
 
         $fs1->expects($this->exactly(2))->method('delete');
         $fs2->expects($this->never())->method('delete');

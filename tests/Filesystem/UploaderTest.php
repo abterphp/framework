@@ -2,8 +2,10 @@
 
 namespace AbterPhp\Framework\Filesystem;
 
-use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
+use League\Flysystem\UnableToDeleteFile;
+use League\Flysystem\UnableToReadFile;
+use League\Flysystem\UnableToRetrieveMetadata;
 use Opulence\Http\Requests\UploadedFile;
 use Opulence\Http\Requests\UploadException;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -75,7 +77,7 @@ class UploaderTest extends TestCase
     {
         $path = 'example.foo';
 
-        $this->filesystemMock->expects($this->once())->method('has')->willReturn(false);
+        $this->filesystemMock->expects($this->once())->method('fileExists')->willReturn(false);
         $this->filesystemMock->expects($this->never())->method('delete');
 
         $actualResult = $this->sut->delete($path);
@@ -87,9 +89,9 @@ class UploaderTest extends TestCase
     {
         $path = 'example.foo';
 
-        $exception = new FileNotFoundException($path);
+        $exception = new UnableToDeleteFile($path);
 
-        $this->filesystemMock->expects($this->any())->method('has')->willReturn(true);
+        $this->filesystemMock->expects($this->any())->method('fileExists')->willReturn(true);
         $this->filesystemMock->expects($this->once())->method('delete')->willThrowException($exception);
 
         $actualResult = $this->sut->delete($path);
@@ -101,8 +103,8 @@ class UploaderTest extends TestCase
     {
         $path = 'example.foo';
 
-        $this->filesystemMock->expects($this->any())->method('has')->willReturn(true);
-        $this->filesystemMock->expects($this->once())->method('delete')->willReturn(true);
+        $this->filesystemMock->expects($this->any())->method('fileExists')->willReturn(true);
+        $this->filesystemMock->expects($this->once())->method('delete');
 
         $actualResult = $this->sut->delete($path);
 
@@ -113,7 +115,7 @@ class UploaderTest extends TestCase
     {
         $path = 'example.foo';
 
-        $this->filesystemMock->expects($this->once())->method('has')->willReturn(false);
+        $this->filesystemMock->expects($this->once())->method('fileExists')->willReturn(false);
         $this->filesystemMock->expects($this->never())->method('read');
 
         $actualResult = $this->sut->getContent($path);
@@ -125,9 +127,9 @@ class UploaderTest extends TestCase
     {
         $path = 'example.foo';
 
-        $exception = new FileNotFoundException($path);
+        $exception = new UnableToReadFile($path);
 
-        $this->filesystemMock->expects($this->any())->method('has')->willReturn(true);
+        $this->filesystemMock->expects($this->any())->method('fileExists')->willReturn(true);
         $this->filesystemMock->expects($this->once())->method('read')->willThrowException($exception);
 
         $actualResult = $this->sut->getContent($path);
@@ -140,7 +142,7 @@ class UploaderTest extends TestCase
         $path    = 'example.foo';
         $content = 'This is the content';
 
-        $this->filesystemMock->expects($this->any())->method('has')->willReturn(true);
+        $this->filesystemMock->expects($this->any())->method('fileExists')->willReturn(true);
         $this->filesystemMock->expects($this->once())->method('read')->willReturn($content);
 
         $actualResult = $this->sut->getContent($path);
@@ -150,10 +152,11 @@ class UploaderTest extends TestCase
 
     public function testGetContentReturnsNullIfReadingFails()
     {
-        $path    = 'example.foo';
+        $path      = 'example.foo';
+        $exception = UnableToReadFile::fromLocation($path);
 
-        $this->filesystemMock->expects($this->any())->method('has')->willReturn(true);
-        $this->filesystemMock->expects($this->once())->method('read')->willReturn(false);
+        $this->filesystemMock->expects($this->any())->method('fileExists')->willReturn(true);
+        $this->filesystemMock->expects($this->once())->method('read')->willThrowException($exception);
 
         $actualResult = $this->sut->getContent($path);
 
@@ -164,7 +167,7 @@ class UploaderTest extends TestCase
     {
         $path = 'example.foo';
 
-        $this->filesystemMock->expects($this->once())->method('has')->willReturn(false);
+        $this->filesystemMock->expects($this->once())->method('fileExists')->willReturn(false);
         $this->filesystemMock->expects($this->never())->method('readStream');
 
         $actualResult = $this->sut->getStream($path);
@@ -176,9 +179,9 @@ class UploaderTest extends TestCase
     {
         $path = 'example.foo';
 
-        $exception = new FileNotFoundException($path);
+        $exception = new UnableToReadFile($path);
 
-        $this->filesystemMock->expects($this->any())->method('has')->willReturn(true);
+        $this->filesystemMock->expects($this->any())->method('fileExists')->willReturn(true);
         $this->filesystemMock->expects($this->once())->method('readStream')->willThrowException($exception);
 
         $actualResult = $this->sut->getStream($path);
@@ -189,10 +192,10 @@ class UploaderTest extends TestCase
     public function testGetStream()
     {
         $path    = 'example.foo';
-        $content = true; // should be some resource stub, but whatever...
+        $content = "foo";
 
-        $this->filesystemMock->expects($this->any())->method('has')->willReturn(true);
-        $this->filesystemMock->expects($this->once())->method('readStream')->willReturn(true);
+        $this->filesystemMock->expects($this->any())->method('fileExists')->willReturn(true);
+        $this->filesystemMock->expects($this->once())->method('readStream')->willReturn($content);
 
         $actualResult = $this->sut->getStream($path);
 
@@ -203,8 +206,8 @@ class UploaderTest extends TestCase
     {
         $path = 'example.foo';
 
-        $this->filesystemMock->expects($this->once())->method('has')->willReturn(false);
-        $this->filesystemMock->expects($this->never())->method('getSize');
+        $this->filesystemMock->expects($this->once())->method('fileExists')->willReturn(false);
+        $this->filesystemMock->expects($this->never())->method('fileSize');
 
         $actualResult = $this->sut->getSize($path);
 
@@ -215,10 +218,10 @@ class UploaderTest extends TestCase
     {
         $path = 'example.foo';
 
-        $exception = new FileNotFoundException($path);
+        $exception = new UnableToRetrieveMetadata($path);
 
-        $this->filesystemMock->expects($this->any())->method('has')->willReturn(true);
-        $this->filesystemMock->expects($this->once())->method('getSize')->willThrowException($exception);
+        $this->filesystemMock->expects($this->any())->method('fileExists')->willReturn(true);
+        $this->filesystemMock->expects($this->once())->method('fileSize')->willThrowException($exception);
 
         $actualResult = $this->sut->getSize($path);
 
@@ -228,9 +231,10 @@ class UploaderTest extends TestCase
     public function testGetSizeReturnsNullIfSizeIsNotAvailable()
     {
         $path = 'example.foo';
+        $exception = UnableToRetrieveMetadata::create($path, 'size');
 
-        $this->filesystemMock->expects($this->any())->method('has')->willReturn(true);
-        $this->filesystemMock->expects($this->once())->method('getSize')->willReturn(false);
+        $this->filesystemMock->expects($this->any())->method('fileExists')->willReturn(true);
+        $this->filesystemMock->expects($this->once())->method('fileSize')->willThrowException($exception);
 
         $actualResult = $this->sut->getSize($path);
 
@@ -242,8 +246,8 @@ class UploaderTest extends TestCase
         $path = 'example.foo';
         $size = 3;
 
-        $this->filesystemMock->expects($this->any())->method('has')->willReturn(true);
-        $this->filesystemMock->expects($this->once())->method('getSize')->willReturn($size);
+        $this->filesystemMock->expects($this->any())->method('fileExists')->willReturn(true);
+        $this->filesystemMock->expects($this->once())->method('fileSize')->willReturn($size);
 
         $actualResult = $this->sut->getSize($path);
 

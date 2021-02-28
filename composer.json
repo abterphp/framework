@@ -30,7 +30,7 @@
     "monolog/monolog": "^2.2",
     "opulence/opulence": "*",
     "filp/whoops": "^2.9",
-    "league/flysystem": "^1.1",
+    "league/flysystem": "^2.0",
     "cocur/slugify": "^4.0",
     "casbin/casbin": "0.1.6",
     "casbin/database-adapter": "0.2.0",

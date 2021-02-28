@@ -6,7 +6,7 @@ namespace AbterPhp\Framework\Databases\Migrations;
 
 use AbterPhp\Framework\Filesystem\IFileFinder;
 use DateTime;
-use League\Flysystem\FileNotFoundException;
+use League\Flysystem\FilesystemException;
 use Opulence\Databases\IConnection;
 use Opulence\Databases\Migrations\Migration;
 
@@ -45,8 +45,7 @@ class BaseMigration extends Migration
     /**
      * Executes the query that rolls back the migration
      *
-     * @throws FileNotFoundException
-     * @throws Exception
+     * @throws FilesystemException
      */
     public function down(): void
     {
@@ -58,8 +57,7 @@ class BaseMigration extends Migration
     /**
      * Executes the query that commits the migration
      *
-     * @throws FileNotFoundException
-     * @throws Exception
+     * @throws FilesystemException
      */
     public function up(): void
     {
@@ -71,7 +69,7 @@ class BaseMigration extends Migration
     /**
      * @param string $filename
      *
-     * @throws FileNotFoundException
+     * @throws FilesystemException
      */
     protected function execute(string $filename)
     {

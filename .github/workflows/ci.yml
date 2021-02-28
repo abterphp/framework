@@ -1,4 +1,4 @@
-name: Super-Linter
+name: AbterPHP Framework Build
 
 # Run this workflow every time a new commit pushed to your repository
 on: push
@@ -27,6 +27,9 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           extensions: ast, iconv, json, mbstring, pdo, tokenizer
           coverage: xdebug #optional
+          ini-values: zend.assertions=1,assert.exception=1
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get composer cache directory
         id: composer-cache

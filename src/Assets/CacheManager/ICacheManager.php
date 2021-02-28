@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Assets\CacheManager;
 
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 
 interface ICacheManager
 {
     public const DEFAULT_KEY = 'root';
 
     /**
-     * @param FilesystemInterface $filesystem
-     * @param callable|null       $checker
-     * @param int                 $priority
+     * @param FilesystemOperator $filesystem
+     * @param callable|null      $checker
+     * @param int                $priority
      */
-    public function registerFilesystem(FilesystemInterface $filesystem, callable $checker = null, int $priority = -1);
+    public function registerFilesystem(FilesystemOperator $filesystem, callable $checker = null, int $priority = -1);
 
     /**
      * @param string $path
      *
      * @return bool
      */
-    public function has(string $path): bool;
+    public function fileExists(string $path): bool;
 
     /**
      * @param string $path

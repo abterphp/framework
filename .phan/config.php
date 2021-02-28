@@ -17,6 +17,6 @@ return [
     'scalar_implicit_partial' => [],
     'ignore_undeclared_variables_in_global_scope' => true, // TODO: No globals!
     'suppress_issue_types' => [
-        // 'PhanUndeclaredMethod',
+        'PhanTypeInvalidThrowsIsInterface',
     ],
 ];

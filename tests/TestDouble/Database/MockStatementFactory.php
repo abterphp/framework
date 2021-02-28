@@ -2,12 +2,11 @@
 
 namespace AbterPhp\Framework\TestDouble\Database;
 
+use InvalidArgumentException;
 use Opulence\Databases\Adapters\Pdo\Statement;
 use Opulence\Databases\IStatement;
-use PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
-use PHPUnit\Framework\MockObject\Matcher\InvokedAtIndex;
-use PHPUnit\Framework\MockObject\Matcher\InvokedCount;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use PHPUnit\Framework\TestCase;
 
 class MockStatementFactory
@@ -26,6 +25,7 @@ class MockStatementFactory
      * @param int      $atFetchAll
      *
      * @return IStatement|MockObject
+     * @throws InvalidArgumentException
      */
     public static function createReadStatement(
         TestCase $testCase,
@@ -67,6 +67,7 @@ class MockStatementFactory
      * @param bool     $executeResult
      *
      * @return IStatement|MockObject
+     * @throws InvalidArgumentException
      */
     public static function createReadRowStatement(
         TestCase $testCase,
@@ -104,6 +105,7 @@ class MockStatementFactory
      * @param bool     $executeResult
      *
      * @return IStatement|MockObject
+     * @throws InvalidArgumentException
      */
     public static function createReadColumnStatement(
         TestCase $testCase,
@@ -138,6 +140,7 @@ class MockStatementFactory
      * @param int      $atExecute
      *
      * @return IStatement|MockObject
+     * @throws InvalidArgumentException
      */
     public static function createWriteStatement(
         TestCase $testCase,
@@ -167,6 +170,7 @@ class MockStatementFactory
      * @param int      $atErrorInfo
      *
      * @return IStatement|MockObject
+     * @throws InvalidArgumentException
      */
     public static function createErrorStatement(
         TestCase $testCase,
@@ -199,6 +203,7 @@ class MockStatementFactory
      * @param int      $atExecute
      *
      * @return IStatement|MockObject
+     * @throws InvalidArgumentException
      */
     public static function createWriteStatementWithAny(
         TestCase $testCase,
@@ -233,33 +238,12 @@ class MockStatementFactory
     }
 
     /**
-     * @param TestCase   $testCase
-     * @param MockObject $connectionMock
-     * @param string     $sql
-     * @param mixed      $returnValue
-     * @param int        $at
-     */
-    public static function prepare(
-        TestCase $testCase,
-        MockObject $connectionMock,
-        string $sql,
-        $returnValue,
-        int $at = self::EXPECTATION_ONCE
-    ) {
-        $connectionMock
-            ->expects(static::getExpectation($testCase, $at))
-            ->method('prepare')
-            ->with($sql)
-            ->willReturn($returnValue);
-    }
-
-    /**
      * @param TestCase $testCase
      * @param int      $at
      *
-     * @return AnyInvokedCount|InvokedAtIndex|InvokedCount
+     * @return InvocationOrder
      */
-    public static function getExpectation(TestCase $testCase, int $at)
+    public static function getExpectation(TestCase $testCase, int $at): InvocationOrder
     {
         switch ($at) {
             case static::EXPECTATION_NEVER:
@@ -270,6 +254,6 @@ class MockStatementFactory
                 return $testCase->any();
         }
 
-        return $testCase->at($at);
+        throw new InvalidArgumentException(sprintf("getExpectation does not support %d", $at));
     }
 }

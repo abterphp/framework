@@ -8,8 +8,8 @@ use AbterPhp\Framework\Assets\CacheManager\Dummy as DummyCacheManager;
 use AbterPhp\Framework\Assets\CacheManager\Flysystem as FlysystemCacheManager;
 use AbterPhp\Framework\Assets\CacheManager\ICacheManager;
 use AbterPhp\Framework\Constant\Env;
-use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
@@ -55,6 +55,6 @@ class CacheManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
             rtrim(Environment::getVar(Env::CACHE_BASE_PATH), DIRECTORY_SEPARATOR)
         );
 
-        $cacheManager->registerFilesystem(new Filesystem(new Local($cacheDir)));
+        $cacheManager->registerFilesystem(new Filesystem(new LocalFilesystemAdapter($cacheDir)));
     }
 }

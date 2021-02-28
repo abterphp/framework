@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Filesystem;
 
 use League\Flysystem\Filesystem;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -22,7 +22,7 @@ class FileFinderTest extends TestCase
     }
 
     /**
-     * @return FilesystemInterface|MockObject
+     * @return FilesystemOperator|MockObject
      */
     protected function createFilesystemMock()
     {
@@ -47,7 +47,7 @@ class FileFinderTest extends TestCase
 
         $this->sut->registerFilesystem($fs);
 
-        $fs->expects($this->any())->method('has')->willReturn(true);
+        $fs->expects($this->any())->method('fileExists')->willReturn(true);
         $fs->expects($this->once())->method('read')->with($path)->willReturn($expectedResult);
 
         $actualResult = $this->sut->read($path);
@@ -65,7 +65,7 @@ class FileFinderTest extends TestCase
 
         $this->sut->registerFilesystem($fs, 'vendor-one', 1);
 
-        $fs->expects($this->any())->method('has')->willReturn(true);
+        $fs->expects($this->any())->method('fileExists')->willReturn(true);
         $fs->expects($this->once())->method('read')->with($realPath)->willReturn($expectedResult);
 
         $actualResult = $this->sut->read($path);
@@ -82,7 +82,7 @@ class FileFinderTest extends TestCase
 
         $this->sut->registerFilesystem($fs, 'vendor-one', 1);
 
-        $fs->expects($this->any())->method('has')->willReturn(true);
+        $fs->expects($this->any())->method('fileExists')->willReturn(true);
         $fs->expects($this->once())->method('read')->with($path)->willReturn($expectedResult);
 
         $actualResult = $this->sut->read($path, 'vendor-one');
@@ -101,8 +101,8 @@ class FileFinderTest extends TestCase
         $this->sut->registerFilesystem($fs1);
         $this->sut->registerFilesystem($fs2, 'vendor-one', 1);
 
-        $fs1->expects($this->any())->method('has')->willReturn(true);
-        $fs2->expects($this->any())->method('has')->willReturn(true);
+        $fs1->expects($this->any())->method('fileExists')->willReturn(true);
+        $fs2->expects($this->any())->method('fileExists')->willReturn(true);
         $fs1->expects($this->never())->method('read');
         $fs2->expects($this->once())->method('read')->with($path)->willReturn($expectedResult);
 
@@ -119,7 +119,7 @@ class FileFinderTest extends TestCase
 
         $this->sut->registerFilesystem($fs1, 'vendor-one', 1);
 
-        $fs1->expects($this->any())->method('has')->willReturn(true);
+        $fs1->expects($this->any())->method('fileExists')->willReturn(true);
         $fs1->expects($this->once())->method('read')->willThrowException(new \Exception('baz'));
 
         $actualResult = $this->sut->read($path, 'vendor-one');
@@ -127,16 +127,16 @@ class FileFinderTest extends TestCase
         $this->assertNull($actualResult);
     }
 
-    public function testHasWithoutFilesystems()
+    public function testFileExistsWithoutFilesystems()
     {
         $path = 'foo';
 
-        $actualResult = $this->sut->has($path);
+        $actualResult = $this->sut->fileExists($path);
 
         $this->assertFalse($actualResult);
     }
 
-    public function testHasWithOnlyDefaultFilesystem()
+    public function testFileExistsWithOnlyDefaultFilesystem()
     {
         $fs = $this->createFilesystemMock();
 
@@ -144,14 +144,14 @@ class FileFinderTest extends TestCase
 
         $this->sut->registerFilesystem($fs);
 
-        $fs->expects($this->once())->method('has')->willReturn(true);
+        $fs->expects($this->once())->method('fileExists')->willReturn(true);
 
-        $actualResult = $this->sut->has($path);
+        $actualResult = $this->sut->fileExists($path);
 
         $this->assertTrue($actualResult);
     }
 
-    public function testHasWithOnlyVendorFilesystemImplicit()
+    public function testFileExistsWithOnlyVendorFilesystemImplicit()
     {
         $fs = $this->createFilesystemMock();
 
@@ -159,14 +159,14 @@ class FileFinderTest extends TestCase
 
         $this->sut->registerFilesystem($fs, 'vendor-one', 1);
 
-        $fs->expects($this->once())->method('has')->willReturn(true);
+        $fs->expects($this->once())->method('fileExists')->willReturn(true);
 
-        $actualResult = $this->sut->has($path);
+        $actualResult = $this->sut->fileExists($path);
 
         $this->assertTrue($actualResult);
     }
 
-    public function testHasWithOnlyVendorFilesystemExplicit()
+    public function testFileExistsWithOnlyVendorFilesystemExplicit()
     {
         $fs = $this->createFilesystemMock();
 
@@ -174,9 +174,9 @@ class FileFinderTest extends TestCase
 
         $this->sut->registerFilesystem($fs, 'vendor-one', 1);
 
-        $fs->expects($this->once())->method('has')->willReturn(true);
+        $fs->expects($this->once())->method('fileExists')->willReturn(true);
 
-        $actualResult = $this->sut->has($path, 'vendor-one');
+        $actualResult = $this->sut->fileExists($path, 'vendor-one');
 
         $this->assertTrue($actualResult);
     }

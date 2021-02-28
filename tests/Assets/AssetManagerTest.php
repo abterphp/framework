@@ -9,6 +9,7 @@ use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
 use AbterPhp\Framework\Filesystem\FileFinder;
 use AbterPhp\Framework\TestDouble\MockFactory;
 use League\Flysystem\FileNotFoundException;
+use League\Flysystem\FilesystemException;
 use MatthiasMullie\Minify\CSS as CssMinifier;
 use MatthiasMullie\Minify\JS as JsMinifier;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -227,7 +228,7 @@ class AssetManagerTest extends TestCase
 
         $this->cssMinifierMock->expects($this->never())->method('minify');
 
-        $this->cacheManagerMock->expects($this->any())->method('has')->willReturn(true);
+        $this->cacheManagerMock->expects($this->any())->method('fileExists')->willReturn(true);
         $this->cacheManagerMock->expects($this->any())->method('getWebPath')->with($cachePath)->willReturn($webPath);
 
         $actualResult = $this->sut->ensureCssWebPath($groupName);
@@ -243,7 +244,7 @@ class AssetManagerTest extends TestCase
 
         $this->jsMinifierMock->expects($this->never())->method('minify');
 
-        $this->cacheManagerMock->expects($this->any())->method('has')->willReturn(true);
+        $this->cacheManagerMock->expects($this->any())->method('fileExists')->willReturn(true);
         $this->cacheManagerMock->expects($this->any())->method('getWebPath')->with($cachePath)->willReturn($webPath);
 
         $actualResult = $this->sut->ensureJsWebPath($groupName);
@@ -253,11 +254,11 @@ class AssetManagerTest extends TestCase
 
     public function testEnsureImgWebPathThrowsExceptionIfRenderingFails()
     {
-        $this->expectException(FileNotFoundException::class);
+        $this->expectException(FilesystemException::class);
 
         $cachePath = 'foo.js';
 
-        $this->cacheManagerMock->expects($this->any())->method('has')->willReturn(false);
+        $this->cacheManagerMock->expects($this->any())->method('fileExists')->willReturn(false);
         $this->fileFinderMock->expects($this->once())->method('read')->willReturn(null);
 
         $this->sut->ensureImgWebPath($cachePath);
@@ -268,7 +269,7 @@ class AssetManagerTest extends TestCase
         $cachePath = 'foo.js';
         $webPath   = '/baz';
 
-        $this->cacheManagerMock->expects($this->any())->method('has')->willReturn(true);
+        $this->cacheManagerMock->expects($this->any())->method('fileExists')->willReturn(true);
         $this->fileFinderMock->expects($this->never())->method('read');
         $this->cacheManagerMock->expects($this->any())->method('getWebPath')->with($cachePath)->willReturn($webPath);
 
@@ -286,7 +287,7 @@ class AssetManagerTest extends TestCase
 
         $this->cssMinifierMock->expects($this->atLeastOnce())->method('minify')->willReturn($content);
 
-        $this->cacheManagerMock->expects($this->any())->method('has')->willReturn(false);
+        $this->cacheManagerMock->expects($this->any())->method('fileExists')->willReturn(false);
         $this->cacheManagerMock->expects($this->atLeastOnce())->method('write')->with($cachePath, $content);
         $this->cacheManagerMock->expects($this->any())->method('getWebPath')->with($cachePath)->willReturn($webPath);
 
@@ -304,7 +305,7 @@ class AssetManagerTest extends TestCase
 
         $this->jsMinifierMock->expects($this->atLeastOnce())->method('minify')->willReturn($content);
 
-        $this->cacheManagerMock->expects($this->any())->method('has')->willReturn(false);
+        $this->cacheManagerMock->expects($this->any())->method('fileExists')->willReturn(false);
         $this->cacheManagerMock->expects($this->atLeastOnce())->method('write')->with($cachePath, $content);
         $this->cacheManagerMock->expects($this->any())->method('getWebPath')->with($cachePath)->willReturn($webPath);
 
@@ -319,7 +320,7 @@ class AssetManagerTest extends TestCase
         $webPath   = '/baz';
         $content   = 'bar';
 
-        $this->cacheManagerMock->expects($this->any())->method('has')->willReturn(false);
+        $this->cacheManagerMock->expects($this->any())->method('fileExists')->willReturn(false);
         $this->fileFinderMock->expects($this->atLeastOnce())->method('read')->willReturn($content);
         $this->cacheManagerMock->expects($this->any())->method('getWebPath')->with($cachePath)->willReturn($webPath);
 

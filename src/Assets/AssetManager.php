@@ -8,7 +8,9 @@ use AbterPhp\Framework\Assets\CacheManager\ICacheManager;
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
 use AbterPhp\Framework\Config\Routes;
 use AbterPhp\Framework\Filesystem\IFileFinder;
-use League\Flysystem\FileNotFoundException;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\UnableToReadFile;
+use League\Flysystem\UnableToWriteFile;
 use MatthiasMullie\Minify\CSS as CssMinifier;
 use MatthiasMullie\Minify\JS as JsMinifier;
 
@@ -62,7 +64,7 @@ class AssetManager
      * @param string $groupName
      * @param string $rawPath
      *
-     * @throws \League\Flysystem\FileNotFoundException
+     * @throws FilesystemException
      */
     public function addCss(string $groupName, string $rawPath)
     {
@@ -82,7 +84,7 @@ class AssetManager
      * @param string $groupName
      * @param string $rawPath
      *
-     * @throws \League\Flysystem\FileNotFoundException
+     * @throws FilesystemException
      */
     public function addJs(string $groupName, string $rawPath)
     {
@@ -144,7 +146,7 @@ class AssetManager
      * @param string $groupName
      *
      * @return string
-     * @throws \League\Flysystem\FileExistsException
+     * @throws UnableToWriteFile
      */
     public function renderCss(string $groupName): string
     {
@@ -160,7 +162,7 @@ class AssetManager
      * @param string $groupName
      *
      * @return string
-     * @throws \League\Flysystem\FileExistsException
+     * @throws UnableToWriteFile
      */
     public function renderJs(string $groupName): string
     {
@@ -176,8 +178,7 @@ class AssetManager
      * @param string $cachePath
      *
      * @return string|null
-     * @throws \League\Flysystem\FileExistsException
-     * @throws \League\Flysystem\FileNotFoundException
+     * @throws FilesystemException
      */
     public function renderRaw(string $cachePath): ?string
     {
@@ -195,14 +196,14 @@ class AssetManager
      * @param string $groupName
      *
      * @return string
-     * @throws \League\Flysystem\FileExistsException
-     * @throws \League\Flysystem\FileNotFoundException
+     * @throws UnableToReadFile
+     * @throws UnableToWriteFile
      */
     public function ensureCssWebPath(string $groupName): string
     {
         $cachePath = $groupName . static::EXT_CSS;
 
-        if (!$this->cacheManager->has($cachePath)) {
+        if (!$this->cacheManager->fileExists($cachePath)) {
             $this->renderCss($groupName);
         }
 
@@ -213,14 +214,14 @@ class AssetManager
      * @param string $groupName
      *
      * @return string
-     * @throws \League\Flysystem\FileExistsException
-     * @throws \League\Flysystem\FileNotFoundException
+     * @throws UnableToReadFile
+     * @throws UnableToWriteFile
      */
     public function ensureJsWebPath(string $groupName): string
     {
         $cachePath = $groupName . static::EXT_JS;
 
-        if (!$this->cacheManager->has($cachePath)) {
+        if (!$this->cacheManager->fileExists($cachePath)) {
             $this->renderJs($groupName);
         }
 
@@ -231,14 +232,13 @@ class AssetManager
      * @param string $cachePath
      *
      * @return string
-     * @throws \League\Flysystem\FileExistsException
-     * @throws \League\Flysystem\FileNotFoundException
+     * @throws FilesystemException
      */
     public function ensureImgWebPath(string $cachePath): string
     {
-        if (!$this->cacheManager->has($cachePath)) {
+        if (!$this->cacheManager->fileExists($cachePath)) {
             if ($this->renderRaw($cachePath) === null) {
-                throw new FileNotFoundException($cachePath);
+                throw UnableToReadFile::fromLocation($cachePath);
             }
         }
 

@@ -11,7 +11,7 @@ class Dummy extends Flysystem
      *
      * @return bool
      */
-    public function has(string $path): bool
+    public function fileExists(string $path): bool
     {
         return false;
     }

@@ -11,7 +11,7 @@ use AbterPhp\Framework\Assets\UrlFixer;
 use AbterPhp\Framework\Config\Routes;
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Filesystem\FileFinder;
-use League\Flysystem\Adapter\Local;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\Filesystem;
 use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
@@ -72,7 +72,7 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
             rtrim(Environment::getVar(Env::CACHE_BASE_PATH), DIRECTORY_SEPARATOR)
         );
 
-        $cacheManager->registerFilesystem(new Filesystem(new Local($cacheDir)));
+        $cacheManager->registerFilesystem(new Filesystem(new LocalFilesystemAdapter($cacheDir)));
     }
 
     /**
