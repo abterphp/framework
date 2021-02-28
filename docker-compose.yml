@@ -4,7 +4,7 @@ services:
     image: abtercms/php:74
     volumes:
       - .:/website
-      - ./docker/php/conf.d/zzz.ini:/usr/local/etc/php/conf.d/zzz.ini:ro
       - ./docker/php/conf.d/ast-on.ini:/usr/local/etc/php/conf.d/ast-on.ini:ro
-      - ./docker/php/conf.d/xdebug-off.ini:/usr/local/etc/php/conf.d/xdebug-off.ini:ro
+      - ./docker/php/conf.d/zzz_020_general.ini:/usr/local/etc/php/conf.d/zzz_020_general.ini:ro
+      - ./docker/php/conf.d/zzz_500_local.ini:/usr/local/etc/php/conf.d/zzz_500_local.ini:ro
     working_dir: /website
