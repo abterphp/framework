@@ -7,6 +7,7 @@ namespace AbterPhp\Framework\Http\Controllers;
 use AbterPhp\Framework\Session\FlashService;
 use Opulence\Http\Responses\Response;
 use Opulence\Routing\Controller;
+use Psr\Log\LoggerInterface;
 
 abstract class ControllerAbstract extends Controller
 {
@@ -20,12 +21,17 @@ abstract class ControllerAbstract extends Controller
     /** @var FlashService */
     protected $flashService;
 
+    /** @var LoggerInterface */
+    protected $logger;
+
     /**
-     * @param FlashService $flashService
+     * @param FlashService    $flashService
+     * @param LoggerInterface $logger
      */
-    public function __construct(FlashService $flashService)
+    public function __construct(FlashService $flashService, LoggerInterface $logger)
     {
         $this->flashService = $flashService;
+        $this->logger       = $logger;
     }
 
     /**
