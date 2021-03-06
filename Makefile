@@ -5,6 +5,12 @@ build:
 	XDEBUG_MODE=off ./vendor/bin/phpmd src text .phpmd.xml
 	XDEBUG_MODE=off ./vendor/bin/phan --color
 
+precommit:
+	XDEBUG_MODE=off ./vendor/bin/phpunit
+	XDEBUG_MODE=off ./vendor/bin/phpcs -p --colors --cache src
+	XDEBUG_MODE=off ./vendor/bin/phpcs -p --colors --cache --standard=PSR12 tests
+	XDEBUG_MODE=off ./vendor/bin/phpmd src text .phpmd.xml
+
 install:
 ifeq (,$(wildcard /usr/local/bin/composer))
 	./bin/composer-install.sh
