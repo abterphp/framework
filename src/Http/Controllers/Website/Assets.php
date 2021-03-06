@@ -10,6 +10,7 @@ use AbterPhp\Framework\Session\FlashService;
 use Dflydev\ApacheMimeTypes\FlatRepository;
 use Opulence\Http\Responses\Response;
 use Opulence\Http\Responses\ResponseHeaders;
+use Psr\Log\LoggerInterface;
 
 class Assets extends ControllerAbstract
 {
@@ -24,13 +25,18 @@ class Assets extends ControllerAbstract
     /**
      * Assets constructor.
      *
-     * @param FlashService   $flashService
-     * @param AssetManager   $assetManager
-     * @param FlatRepository $memeRepository
+     * @param FlashService    $flashService
+     * @param LoggerInterface $logger
+     * @param AssetManager    $assetManager
+     * @param FlatRepository  $memeRepository
      */
-    public function __construct(FlashService $flashService, AssetManager $assetManager, FlatRepository $memeRepository)
-    {
-        parent::__construct($flashService);
+    public function __construct(
+        FlashService $flashService,
+        LoggerInterface $logger,
+        AssetManager $assetManager,
+        FlatRepository $memeRepository
+    ) {
+        parent::__construct($flashService, $logger);
 
         $this->assetManager   = $assetManager;
         $this->memeRepository = $memeRepository;
