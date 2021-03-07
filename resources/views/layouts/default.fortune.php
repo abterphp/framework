@@ -7,27 +7,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    {{! metaName('description', $metaDescription) !}}
+    {{! meta('description', $metaDescription) !}}
     {{! metaKeywords($metaKeywords) !}}
     {{! favicon('/favicon.png') !}}
-    {{! author($metaAuthor) !}}
+    {{! authorName($authorName) !}}
 
-    {{! metaName('copyright', $metaCopyright) !}}
-    {{! metaName('robots', $metaRobots) !}}
-    {{! metaName('canonical', $pageUrl) !}}
+    {{! meta('copyright', $metaCopyright) !}}
+    {{! meta('robots', $metaRobots) !}}
+    {{! meta('canonical', $pageUrl) !}}
 
-    {{! metaProp('og:url', $pageUrl) !}}
-    {{! metaProp('og:image', $metaOGImage) !}}
-    {{! metaProp('og:description', $metaOGDescription, $metaDescription) !}}
-    {{! metaProp('og:title', $metaOGTitle, $title) !}}
-    {{! metaProp('og:site_name', $siteTitle) !}}
-    {{! metaProp('og:see_also', $homepageUrl) !}}
+    {{! meta('og:url', $pageUrl) !}}
+    {{! meta('og:image', $metaOGImage) !}}
+    {{! meta('og:description', $metaOGDescription, $metaDescription) !}}
+    {{! meta('og:title', $metaOGTitle, $title) !}}
+    {{! meta('og:site_name', $siteTitle) !}}
+    {{! meta('og:see_also', $homepageUrl) !}}
 
-    {{! metaName('twitter:card', 'summary') !}}
-    {{! metaName('twitter:url', $pageUrl) !}}
-    {{! metaName('twitter:title', $metaOGTitle, $title) !}}
-    {{! metaName('twitter:description', $metaOGDescription, $metaDescription) !}}
-    {{! metaName('twitter:image', $metaOGImage) !}}
+    {{! meta('twitter:card', 'summary') !}}
+    {{! meta('twitter:url', $pageUrl) !}}
+    {{! meta('twitter:title', $metaOGTitle, $title) !}}
+    {{! meta('twitter:description', $metaOGDescription, $metaDescription) !}}
+    {{! meta('twitter:image', $metaOGImage) !}}
 
     {{! $preHeader !}}
     {{! $header !}}

@@ -38,7 +38,7 @@ class ViewFunctionsBootstrapperTest extends TestCase
         $this->sut->registerBindings($container);
     }
 
-    public function testCreateMetaNameViewFunction()
+    public function testCreateMetaViewFunction()
     {
         $nameStub = 'foo';
         $contentStubs = ['', 'bar', 'baz'];
