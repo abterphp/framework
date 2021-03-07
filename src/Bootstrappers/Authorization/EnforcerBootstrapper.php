@@ -80,7 +80,7 @@ class EnforcerBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     public function createCanViewViewFunction(?string $username, Enforcer $enforcer): callable
     {
-        return function (string $key) use ($username, $enforcer) {
+        return function(string $key) use ($username, $enforcer) {
             return $enforcer->enforce($username, 'admin_resource_' . $key, Role::READ);
         };
     }

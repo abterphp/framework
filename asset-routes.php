@@ -15,7 +15,7 @@ use Opulence\Routing\Router;
  */
 $router->group(
     ['controllerNamespace' => 'AbterPhp\Framework\Http\Controllers'],
-    function (Router $router) {
+    function(Router $router) {
 
         /** @see \AbterPhp\Framework\Http\Controllers\Website\Assets::asset() */
         $router->get(

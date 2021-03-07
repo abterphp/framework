@@ -49,7 +49,7 @@ class UserBlock extends Tag implements INodeContainer
         array $attributes = [],
         ?string $tag = null
     ) {
-        $this->session      = $session;
+        $this->session = $session;
 
         if (!$this->session->has(Session::USERNAME)) {
             throw new \LogicException('session must be set');

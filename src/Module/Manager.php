@@ -84,7 +84,7 @@ class Manager
      */
     public function getHttpBootstrappers(): array
     {
-        $callback = function (array $modules) {
+        $callback = function(array $modules) {
             $bootstrappers = [];
             foreach ($modules as $module) {
                 if (isset($module[Module::BOOTSTRAPPERS])) {
@@ -106,7 +106,7 @@ class Manager
      */
     public function getCliBootstrappers(): array
     {
-        $callback = function (array $modules) {
+        $callback = function(array $modules) {
             $bootstrappers = [];
             foreach ($modules as $module) {
                 if (isset($module[Module::BOOTSTRAPPERS])) {
@@ -128,7 +128,7 @@ class Manager
      */
     public function getCommands(): array
     {
-        $callback = function (array $modules) {
+        $callback = function(array $modules) {
             $commands = [];
             foreach ($modules as $module) {
                 if (isset($module[Module::COMMANDS])) {
@@ -219,7 +219,7 @@ class Manager
      */
     protected function simpleOptionCallback(string $option): callable
     {
-        return function ($modules) use ($option) {
+        return function($modules) use ($option) {
             $merged = [];
             foreach ($modules as $module) {
                 if (!isset($module[$option])) {
@@ -246,7 +246,7 @@ class Manager
      */
     protected function simpleNamedOptions(string $option): callable
     {
-        return function ($modules) use ($option) {
+        return function($modules) use ($option) {
             $merged = [];
             foreach ($modules as $module) {
                 if (!isset($module[$option])) {
@@ -277,7 +277,7 @@ class Manager
      */
     protected function namedPrioritizedOptionsCallback(string $option): callable
     {
-        return function ($modules) use ($option) {
+        return function($modules) use ($option) {
             $prioritized = [];
             foreach ($modules as $module) {
                 if (!isset($module[$option])) {
@@ -326,7 +326,7 @@ class Manager
      */
     protected function prioritizedOptionsCallback(string $option, bool $reversed = false): callable
     {
-        return function ($modules) use ($option, $reversed) {
+        return function($modules) use ($option, $reversed) {
             $merged = [];
             foreach ($modules as $module) {
                 if (!isset($module[$option])) {

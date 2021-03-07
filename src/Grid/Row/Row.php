@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Grid\Row;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Grid\Action\IAction;  // @phan-suppress-current-line PhanUnreferencedUseNormal
+use AbterPhp\Framework\Grid\Action\IAction; // @phan-suppress-current-line PhanUnreferencedUseNormal
 use AbterPhp\Framework\Grid\Cell\Cell;
 use AbterPhp\Framework\Grid\Collection\Cells;
 use AbterPhp\Framework\Grid\Component\Actions;

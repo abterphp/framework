@@ -44,7 +44,7 @@ class Textarea extends Tag implements IElement
             $attributes[Html5::ATTR_ROWS] = static::DEFAULT_ROW;
         }
 
-        $attributes[Html5::ATTR_NAME]  = $name;
+        $attributes[Html5::ATTR_NAME] = $name;
 
         parent::__construct(null, $intents, $attributes, $tag);
 

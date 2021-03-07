@@ -61,7 +61,7 @@ class EnvironmentWarning implements IMiddleware
      */
     protected function getWarningHtml(string $environmentName): string
     {
-        $styles  = [
+        $styles = [
             'color'       => 'white',
             'line-height' => '1em',
             'font-weight' => 'bold',
@@ -72,7 +72,7 @@ class EnvironmentWarning implements IMiddleware
             $this->translator->translate('admin:environment', $environmentName)
         );
 
-        $styles  = [
+        $styles = [
             'position'   => 'fixed',
             'bottom'     => '10px',
             'right'      => '10px',

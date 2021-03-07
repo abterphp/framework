@@ -23,7 +23,7 @@ class BuildersBootstrapper extends Bootstrapper
 
         $viewFactory->registerBuilder(
             'layouts/default',
-            function (IView $view) {
+            function(IView $view) {
                 /** @see DefaultBuilder::build() */
                 return (new DefaultBuilder())->build($view);
             }

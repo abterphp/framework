@@ -174,7 +174,7 @@ class I18nBootstrapper extends Bootstrapper
         $transpiler = $container->resolve(ITranspiler::class);
         $transpiler->registerViewFunction(
             'tr',
-            function (string $key, ...$args) use ($translator) {
+            function(string $key, ...$args) use ($translator) {
                 return $translator->translate($key, ...$args);
             }
         );
