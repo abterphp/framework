@@ -33,7 +33,7 @@ class CacheManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @param IContainer $container
      *
-     * @throws \Casbin\Exceptions\CasbinException
+     * @throws IocException
      */
     public function registerBindings(IContainer $container)
     {
@@ -69,7 +69,8 @@ class CacheManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
                     Config::get('authorization', 'cache.clientName'),
                     Config::get('authorization', 'cache.keyPrefix')
                 );
-            default: // FileBridge
+            default:
+                // FileBridge
                 return new FileBridge(Config::get('authorization', 'file.path'));
         }
     }

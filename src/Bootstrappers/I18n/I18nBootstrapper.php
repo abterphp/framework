@@ -12,12 +12,43 @@ use Opulence\Environments\Environment;
 use Opulence\Framework\Configuration\Config;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\IContainer;
+use Opulence\Ioc\IocException;
 use Opulence\Sessions\ISession;
 use Opulence\Views\Compilers\Fortune\ITranspiler;
 
 class I18nBootstrapper extends Bootstrapper
 {
-    protected const LANG_PATH = 'lang/';
+    protected const LANG_PATH = 'lang';
+
+    protected ?array $resourcePaths = null;
+
+    /**
+     * @return array
+     */
+    public function getResourcePaths(): array
+    {
+        global $abterModuleManager;
+
+        if ($this->resourcePaths !== null) {
+            return $this->resourcePaths;
+        }
+
+        $this->resourcePaths = $abterModuleManager->getResourcePaths() ?: [];
+
+        return $this->resourcePaths;
+    }
+
+    /**
+     * @param array $resourcePaths
+     *
+     * @return $this
+     */
+    public function setResourcePaths(array $resourcePaths): self
+    {
+        $this->resourcePaths = $resourcePaths;
+
+        return $this;
+    }
 
     /**
      * @inheritdoc
@@ -30,6 +61,8 @@ class I18nBootstrapper extends Bootstrapper
 
     /**
      * @param IContainer $container
+     *
+     * @throws IocException
      */
     private function registerTranslator(IContainer $container)
     {
@@ -47,7 +80,7 @@ class I18nBootstrapper extends Bootstrapper
      * @param IContainer $container
      *
      * @return string
-     * @throws \Opulence\Ioc\IocException
+     * @throws IocException
      */
     protected function getLang(IContainer $container): string
     {
@@ -62,10 +95,9 @@ class I18nBootstrapper extends Bootstrapper
     }
 
     /**
-     * @param string     $lang
+     * @param string $lang
      *
      * @return array
-     * @throws \Opulence\Ioc\IocException
      */
     protected function getTranslations(string $lang): array
     {
@@ -95,7 +127,7 @@ class I18nBootstrapper extends Bootstrapper
             }
 
             $key   = substr($file, 0, -4);
-            $value = require $dir . $file;
+            $value = require rtrim($dir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file;
 
             $translations[$key] = $value;
         }
@@ -107,12 +139,9 @@ class I18nBootstrapper extends Bootstrapper
      * @param string $lang
      *
      * @return string[]
-     * @throws \Opulence\Ioc\IocException
      */
     protected function getLangDirs(string $lang): array
     {
-        global $abterModuleManager;
-
         $paths = [];
 
         $globalPath = Config::get('paths', 'resources.lang');
@@ -120,8 +149,12 @@ class I18nBootstrapper extends Bootstrapper
             $paths[] = sprintf('%s/%s/', $globalPath, $lang);
         }
 
-        foreach ($abterModuleManager->getResourcePaths() as $path) {
-            $paths[] = sprintf('%s/%s/%s/', $path, static::LANG_PATH, $lang);
+        foreach ($this->getResourcePaths() as $path) {
+            $a = rtrim($path, DIRECTORY_SEPARATOR);
+            $b = static::LANG_PATH;
+            $c = rtrim($lang, DIRECTORY_SEPARATOR);
+
+            $paths[] = $a . DIRECTORY_SEPARATOR . $b . DIRECTORY_SEPARATOR . $c;
         }
 
         return $paths;
@@ -129,6 +162,8 @@ class I18nBootstrapper extends Bootstrapper
 
     /**
      * @param IContainer $container
+     *
+     * @throws IocException
      */
     private function registerViewFunction(IContainer $container)
     {

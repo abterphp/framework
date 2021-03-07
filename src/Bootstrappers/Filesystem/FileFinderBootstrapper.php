@@ -5,7 +5,6 @@ namespace AbterPhp\Framework\Bootstrappers\Filesystem;
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Filesystem\FileFinder;
 use AbterPhp\Framework\Filesystem\IFileFinder;
-use AbterPhp\Framework\Module\Manager; // @phan-suppress-current-line PhanUnreferencedUseNormal
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use Opulence\Environments\Environment;
@@ -15,6 +14,36 @@ use Opulence\Ioc\IContainer;
 
 class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
+    protected ?array $assetPaths = null;
+
+    /**
+     * @return array
+     */
+    public function getAssetPaths(): array
+    {
+        global $abterModuleManager;
+
+        if ($this->assetPaths !== null) {
+            return $this->assetPaths;
+        }
+
+        $this->assetPaths = $abterModuleManager->getAssetsPaths() ?: [];
+
+        return $this->assetPaths;
+    }
+
+    /**
+     * @param array $assetPaths
+     *
+     * @return $this
+     */
+    public function setAssetPaths(array $assetPaths): self
+    {
+        $this->assetPaths = $assetPaths;
+
+        return $this;
+    }
+
     /**
      * @return array
      */
@@ -44,12 +73,7 @@ class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     private function registerResourcePaths(FileFinder $fileFinder)
     {
-        /** @var Manager $abterModuleManager */
-        global $abterModuleManager;
-
-        $assetsPaths = $abterModuleManager->getAssetsPaths();
-
-        foreach ($assetsPaths as $key => $paths) {
+        foreach ($this->getAssetPaths() as $key => $paths) {
             foreach ($paths as $path) {
                 if (!$path) {
                     continue;

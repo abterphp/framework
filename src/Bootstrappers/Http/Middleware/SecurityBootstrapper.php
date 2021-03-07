@@ -11,6 +11,7 @@ use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
+use Opulence\Ioc\IocException;
 
 class SecurityBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
@@ -27,7 +28,7 @@ class SecurityBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @param IContainer $container
      *
-     * @throws \Opulence\Ioc\IocException
+     * @throws IocException
      */
     public function registerBindings(IContainer $container)
     {

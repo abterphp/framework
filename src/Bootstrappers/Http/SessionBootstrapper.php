@@ -18,7 +18,6 @@ use Opulence\Redis\Redis;
 use Opulence\Sessions\Handlers\ArraySessionHandler;
 use Opulence\Sessions\Handlers\CacheSessionHandler;
 use Opulence\Sessions\Handlers\FileSessionHandler;
-use Opulence\Sessions\Handlers\IEncryptableSessionHandler;
 use Opulence\Sessions\ISession;
 use Opulence\Sessions\Session;
 use SessionHandlerInterface;
@@ -63,17 +62,16 @@ class SessionBootstrapper extends BaseBootstrapper
                     $this->getCacheBridge($container),
                     Config::get('sessions', 'lifetime')
                 );
+                if (Config::get('sessions', 'isEncrypted')) {
+                    $handler->useEncryption(true);
+                    $handler->setEncrypter($this->getSessionEncrypter($container));
+                }
                 break;
             case ArraySessionHandler::class:
                 $handler = new ArraySessionHandler();
                 break;
             default: // FileSessionHandler
                 $handler = new FileSessionHandler(Config::get('sessions', 'file.path'));
-        }
-
-        if ($handler instanceof IEncryptableSessionHandler && Config::get('sessions', 'isEncrypted')) {
-            $handler->useEncryption(true);
-            $handler->setEncrypter($this->getSessionEncrypter($container));
         }
 
         return $handler;

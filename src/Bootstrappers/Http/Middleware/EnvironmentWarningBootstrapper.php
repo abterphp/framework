@@ -11,6 +11,7 @@ use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
+use Opulence\Ioc\IocException;
 
 class EnvironmentWarningBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
@@ -27,13 +28,14 @@ class EnvironmentWarningBootstrapper extends Bootstrapper implements ILazyBootst
     /**
      * @param IContainer $container
      *
-     * @throws \Opulence\Ioc\IocException
+     * @throws IocException
      */
     public function registerBindings(IContainer $container)
     {
-        /** @var ITranslator $translator */
-        $translator  = $container->resolve(ITranslator::class);
         $environment = Environment::getVar(Env::ENV_NAME);
+
+        /** @var ITranslator $translator */
+        $translator = $container->resolve(ITranslator::class);
 
         $environmentWarning = new EnvironmentWarning($translator, $environment);
 

@@ -69,19 +69,16 @@ class CryptoBootstrapper extends Bootstrapper implements ILazyBootstrapper
     private function getHashOptions(IHasher $hasher): array
     {
         $options = [];
-        switch (get_class($hasher)) {
-            case BcryptHasher::class:
-                $salt = Environment::getVar(Env::CRYPTO_BCRYPT_SALT);
-                if ($salt) {
-                    $options['salt'] = $salt;
-                }
+        if ($hasher instanceof BcryptHasher) {
+            $salt = Environment::getVar(Env::CRYPTO_BCRYPT_SALT);
+            if ($salt) {
+                $options['salt'] = $salt;
+            }
 
-                $cost = Environment::getVar(Env::CRYPTO_BCRYPT_COST);
-                if ($cost) {
-                    $options['cost'] = $cost;
-                }
-
-                break;
+            $cost = Environment::getVar(Env::CRYPTO_BCRYPT_COST);
+            if ($cost) {
+                $options['cost'] = $cost;
+            }
         }
 
         return $options;

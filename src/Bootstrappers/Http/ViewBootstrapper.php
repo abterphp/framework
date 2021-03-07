@@ -23,6 +23,36 @@ class ViewBootstrapper extends BaseBootstrapper
 {
     protected const VIEWS_PATH = 'views/';
 
+    protected ?array $resourcePaths = null;
+
+    /**
+     * @return array
+     */
+    public function getResourcePaths(): array
+    {
+        global $abterModuleManager;
+
+        if ($this->resourcePaths !== null) {
+            return $this->resourcePaths;
+        }
+
+        $this->resourcePaths = $abterModuleManager->getResourcePaths() ?: [];
+
+        return $this->resourcePaths;
+    }
+
+    /**
+     * @param array $resourcePaths
+     *
+     * @return $this
+     */
+    public function setResourcePaths(array $resourcePaths): self
+    {
+        $this->resourcePaths = $resourcePaths;
+
+        return $this;
+    }
+
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
@@ -76,18 +106,16 @@ class ViewBootstrapper extends BaseBootstrapper
      */
     protected function registerPaths(FileViewNameResolver $resolver)
     {
-        global $abterModuleManager;
-
         $globalPath = Config::get('paths', 'views.raw');
         if ($globalPath) {
             $resolver->registerPath($globalPath);
         }
 
-        $resourcePaths = $abterModuleManager->getResourcePaths();
+        $resourcePaths = $this->getResourcePaths();
 
         $priority = count($resourcePaths);
         foreach ($resourcePaths as $path) {
-            $modulePath = sprintf('%s/%s', $path, static::VIEWS_PATH);
+            $modulePath = sprintf('%s%s%s', $path, DIRECTORY_SEPARATOR, static::VIEWS_PATH);
 
             if (!is_dir($modulePath)) {
                 continue;

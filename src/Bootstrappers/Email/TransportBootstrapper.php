@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Bootstrappers\Email;
 
 use AbterPhp\Framework\Constant\Env;
+use AbterPhp\Framework\Exception;
 use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
@@ -35,10 +36,8 @@ class TransportBootstrapper extends Bootstrapper implements ILazyBootstrapper
             $transport = $this->createSmtpTransport();
         } elseif (Environment::getVar(Env::EMAIL_SENDMAIL_COMMAND)) {
             $transport = $this->createSendmailTransport();
-        }
-
-        if (!$transport) {
-            throw new \AbterPhp\Framework\Exception\Config(Swift_Transport::class);
+        } else {
+            throw new Exception\Config(Swift_Transport::class);
         }
 
         $container->bindInstance(Swift_Transport::class, $transport);

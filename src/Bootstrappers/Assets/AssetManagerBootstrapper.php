@@ -8,11 +8,10 @@ use AbterPhp\Framework\Assets\AssetManager;
 use AbterPhp\Framework\Assets\CacheManager\ICacheManager;
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
 use AbterPhp\Framework\Assets\UrlFixer;
-use AbterPhp\Framework\Config\Routes;
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Filesystem\FileFinder;
-use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\Filesystem;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
@@ -50,8 +49,8 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
         /** @var ICacheManager $cacheManager */
         $cacheManager    = $container->resolve(ICacheManager::class);
-        $minifierFactory = new MinifierFactory();
-        $urlFixer        = new UrlFixer(Routes::getCacheUrl());
+        $minifierFactory = $container->resolve(MinifierFactory::class);
+        $urlFixer        = $container->resolve(UrlFixer::class);
 
         $this->registerCachePaths($cacheManager);
 
@@ -80,55 +79,76 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     private function registerViewFunction(IContainer $container)
     {
-        /** @var AssetManager $assets */
-        $assets = $container->resolve(AssetManager::class);
+        /** @var AssetManager $assetManager */
+        $assetManager = $container->resolve(AssetManager::class);
 
         /** @var ITranspiler $transpiler */
         $transpiler = $container->resolve(ITranspiler::class);
-        $transpiler->registerViewFunction(
-            'assetJs',
-            function ($keys, $type = '') use ($assets) {
-                $callback = function ($key) use ($assets, $type) {
-                    $path = $assets->ensureJsWebPath($key);
-                    if (empty($path)) {
-                        return '';
-                    }
+        $transpiler->registerViewFunction('assetJs', $this->createAssetJsViewFunction($assetManager));
+        $transpiler->registerViewFunction('assetCss', $this->createAssetCssViewFunction($assetManager));
+        $transpiler->registerViewFunction('assetImg', $this->createAssetImgViewFunction($assetManager));
+    }
 
-                    if ($type) {
-                        return sprintf('<script type="%s" src="%s"></script>', $type, $path) . PHP_EOL;
-                    }
-
-                    return sprintf('<script src="%s"></script>', $path) . PHP_EOL;
-                };
-
-                return implode(PHP_EOL, array_map($callback, (array)$keys));
-            }
-        );
-        $transpiler->registerViewFunction(
-            'assetCss',
-            function ($keys) use ($assets) {
-                $callback = function ($key) use ($assets) {
-                    $path = $assets->ensureCssWebPath($key);
-                    if (empty($path)) {
-                        return '';
-                    }
-
-                    return sprintf('<link href="%s" rel="stylesheet">', $path) . PHP_EOL;
-                };
-
-                return implode("\n", array_map($callback, (array)$keys));
-            }
-        );
-        $transpiler->registerViewFunction(
-            'assetImg',
-            function ($key, $alt = '') use ($assets) {
-                $path = $assets->ensureImgWebPath($key);
+    /**
+     * @param AssetManager $assetManager
+     *
+     * @return callable
+     */
+    public function createAssetJsViewFunction(AssetManager $assetManager): callable
+    {
+        return function ($keys, $type = '') use ($assetManager) {
+            $callback = function ($key) use ($assetManager, $type) {
+                $path = $assetManager->ensureJsWebPath($key);
                 if (empty($path)) {
                     return '';
                 }
 
-                return sprintf('<img src="%s" alt="%s">', $path, $alt) . PHP_EOL;
+                if ($type) {
+                    return sprintf('<script type="%s" src="%s"></script>', $type, $path) . PHP_EOL;
+                }
+
+                return sprintf('<script src="%s"></script>', $path) . PHP_EOL;
+            };
+
+            return implode(PHP_EOL, array_filter(array_map($callback, (array)$keys)));
+        };
+    }
+
+    /**
+     * @param AssetManager $assetManager
+     *
+     * @return callable
+     */
+    public function createAssetCssViewFunction(AssetManager $assetManager): callable
+    {
+        return function ($keys) use ($assetManager) {
+            $callback = function ($key) use ($assetManager) {
+                $path = $assetManager->ensureCssWebPath($key);
+                if (empty($path)) {
+                    return '';
+                }
+
+                return sprintf('<link href="%s" rel="stylesheet">', $path) . PHP_EOL;
+            };
+
+            return implode("\n", array_filter(array_map($callback, (array)$keys)));
+        };
+    }
+
+    /**
+     * @param AssetManager $assetManager
+     *
+     * @return callable
+     */
+    public function createAssetImgViewFunction(AssetManager $assetManager): callable
+    {
+        return function ($key, $alt = '') use ($assetManager) {
+            $path = $assetManager->ensureImgWebPath($key);
+            if (empty($path)) {
+                return '';
             }
-        );
+
+            return sprintf('<img src="%s" alt="%s">', $path, $alt) . PHP_EOL;
+        };
     }
 }

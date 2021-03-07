@@ -31,6 +31,10 @@ return [
         Bootstrappers\Session\FlashServiceBootstrapper::class,
         Bootstrappers\Template\CacheManagerBootstrapper::class,
         Bootstrappers\Template\EngineBootstrapper::class,
+        Bootstrappers\Vendor\CasbinDatabaseAdapterBootstrapper::class,
+        Bootstrappers\Vendor\CasbinCombinedAdapterBootstrapper::class,
+        Bootstrappers\Vendor\MinifierFactoryBootstrapper::class,
+        Bootstrappers\Vendor\UrlFixerBootstrapper::class,
     ],
     Module::CLI_BOOTSTRAPPERS  => [
         Bootstrappers\Console\Commands\Oauth2\GenerateKeysBootstrapper::class,

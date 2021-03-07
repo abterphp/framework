@@ -8,21 +8,47 @@ use Opulence\Ioc\IContainer;
 
 class MigrationsBootstrapper extends OpulenceMigrationsBootstrapper
 {
+    protected ?array $migrationPaths = null;
+
+    /**
+     * @return array
+     */
+    public function getMigrationPaths(): array
+    {
+        global $abterModuleManager;
+
+        if ($this->migrationPaths !== null) {
+            return $this->migrationPaths;
+        }
+
+        $this->migrationPaths = $abterModuleManager->getMigrationPaths() ?: [];
+
+        return $this->migrationPaths;
+    }
+
+    /**
+     * @param array $migrationPaths
+     *
+     * @return $this
+     */
+    public function setMigrationPaths(array $migrationPaths): self
+    {
+        $this->migrationPaths = $migrationPaths;
+
+        return $this;
+    }
 
     /**
      * @inheritdoc
      */
     public function registerBindings(IContainer $container)
     {
-        global $abterModuleManager;
+        /** @phan-suppress-next-line PhanTypeMismatchArgumentProbablyReal */
+        $globalPaths = (array)Config::get('paths', 'database.migrations', []);
 
-        $paths = Config::get('paths', 'database.migrations');
+        $modulePaths = $this->getMigrationPaths();
 
-        $globalPaths = $paths ?: [];
-
-        $abterPaths = $abterModuleManager->getMigrationPaths();
-
-        $paths = array_merge($globalPaths, $abterPaths);
+        $paths = array_merge($globalPaths, $modulePaths);
 
         Config::set('paths', 'database.migrations', $paths);
 
