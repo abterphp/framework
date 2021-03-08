@@ -17,6 +17,26 @@ class ExceptionRenderer extends Http\ExceptionRenderer implements Http\IExceptio
     protected $run;
 
     /**
+     * @return bool
+     */
+    public function isInDevelopmentEnvironment(): bool
+    {
+        return $this->inDevelopmentEnvironment;
+    }
+
+    /**
+     * @param bool $inDevelopmentEnvironment
+     *
+     * @return $this
+     */
+    public function setInDevelopmentEnvironment(bool $inDevelopmentEnvironment): self
+    {
+        $this->inDevelopmentEnvironment = $inDevelopmentEnvironment;
+
+        return $this;
+    }
+
+    /**
      * WhoopsRenderer constructor.
      *
      * @param RunInterface $run
@@ -48,20 +68,18 @@ class ExceptionRenderer extends Http\ExceptionRenderer implements Http\IExceptio
 
             $this->run->unregister();
 
-            return $this->subRender($ex);
+            $this->devRender($ex);
+
+            return;
         }
 
         $this->run->handleException($ex);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function subRender($ex)
+    public function devRender($ex)
     {
         // Add support for HTTP library without having to necessarily depend on it
-        if (get_class($ex) === HttpException::class) {
-            /** @var HttpException $ex */
+        if ($ex instanceof HttpException) {
             $statusCode = $ex->getStatusCode();
             $headers    = $ex->getHeaders();
         } else {
