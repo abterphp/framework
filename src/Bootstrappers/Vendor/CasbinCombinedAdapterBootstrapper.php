@@ -10,6 +10,7 @@ use CasbinAdapter\Database\Adapter;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
+use Opulence\Ioc\IocException;
 
 class CasbinCombinedAdapterBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
@@ -25,6 +26,8 @@ class CasbinCombinedAdapterBootstrapper extends Bootstrapper implements ILazyBoo
 
     /**
      * @param IContainer $container
+     *
+     * @throws IocException
      */
     public function registerBindings(IContainer $container)
     {

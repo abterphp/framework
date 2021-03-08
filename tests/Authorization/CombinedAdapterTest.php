@@ -64,6 +64,8 @@ EOF;
 
     /**
      * @dataProvider loadPolicyWithoutCacheManagerProvider
+     *
+     * @param array $adaptersMocks
      */
     public function testLoadPolicyCallsAdaptersByDefault(array $adaptersMocks)
     {
@@ -133,13 +135,8 @@ EOF;
         $model = new CasbinModel();
         $model->loadModelFromText($this->exampleConfig);
 
-        foreach ($cachedData['g'] as $policy) {
-            $model->model['g']['g']->policy[] = $policy;
-        }
-
-        foreach ($cachedData['p'] as $policy) {
-            $model->model['p']['p']->policy[] = $policy;
-        }
+        $model->addPolicies('g', 'g', $cachedData['g']);
+        $model->addPolicies('p', 'p', $cachedData['p']);
 
         $this->cacheManagerMock->expects($this->once())->method('getAll')->willReturn([]);
 
@@ -152,91 +149,71 @@ EOF;
 
     public function testSavePolicyCallsDefaultAdapter()
     {
-        $model          = new \Casbin\Model\Model();
-        $expectedResult = 'foo';
+        $model = new CasbinModel();
 
         $this->defaultAdapterMock
             ->expects($this->once())
             ->method('savePolicy')
-            ->with($model)
-            ->willReturn($expectedResult);
+            ->with($model);
 
-        $actualResult = $this->sut->savePolicy($model);
-
-        $this->assertEquals($expectedResult, $actualResult);
+        $this->sut->savePolicy($model);
     }
 
     public function testAddPolicyCallsDefaultAdapter()
     {
-        $sec            = 'foo';
-        $ptype          = 'bar';
-        $rule           = 'baz';
-        $expectedResult = 'foo';
+        $sec   = 'foo';
+        $ptype = 'bar';
+        $rule  = 'baz';
 
         $this->defaultAdapterMock
             ->expects($this->once())
             ->method('addPolicy')
-            ->with($sec, $ptype, $rule)
-            ->willReturn($expectedResult);
+            ->with($sec, $ptype, [$rule]);
 
-        $actualResult = $this->sut->addPolicy($sec, $ptype, $rule);
-
-        $this->assertEquals($expectedResult, $actualResult);
+        $this->sut->addPolicy($sec, $ptype, [$rule]);
     }
 
     public function testRemovePolicyCallsDefaultAdapter()
     {
-        $sec            = 'foo';
-        $ptype          = 'bar';
-        $rule           = 'baz';
-        $expectedResult = 'foo';
+        $sec   = 'foo';
+        $ptype = 'bar';
+        $rule  = 'baz';
 
         $this->defaultAdapterMock
             ->expects($this->once())
             ->method('removePolicy')
-            ->with($sec, $ptype, $rule)
-            ->willReturn($expectedResult);
+            ->with($sec, $ptype, [$rule]);
 
-        $actualResult = $this->sut->removePolicy($sec, $ptype, $rule);
-
-        $this->assertEquals($expectedResult, $actualResult);
+        $this->sut->removePolicy($sec, $ptype, [$rule]);
     }
 
     public function testRemoveFilteredPolicyWithoutFieldValuesCallsDefaultAdapter()
     {
-        $sec            = 'foo';
-        $ptype          = 'bar';
-        $rule           = 'baz';
-        $expectedResult = 'foo';
+        $sec        = 'foo';
+        $ptype      = 'bar';
+        $fieldIndex = 0;
 
         $this->defaultAdapterMock
             ->expects($this->once())
             ->method('removeFilteredPolicy')
-            ->with($sec, $ptype, $rule)
-            ->willReturn($expectedResult);
+            ->with($sec, $ptype, $fieldIndex);
 
-        $actualResult = $this->sut->removeFilteredPolicy($sec, $ptype, $rule);
-
-        $this->assertEquals($expectedResult, $actualResult);
+        $this->sut->removeFilteredPolicy($sec, $ptype, $fieldIndex);
     }
 
     public function testRemoveFilteredPolicyWithFieldValuesCallsDefaultAdapter()
     {
-        $sec            = 'foo';
-        $ptype          = 'bar';
-        $rule           = 'baz';
-        $fieldValue0    = 'quix';
-        $fieldValue1    = 'tata';
-        $expectedResult = 'foo';
+        $sec         = 'foo';
+        $ptype       = 'bar';
+        $fieldIndex  = 0;
+        $fieldValue0 = 'quix';
+        $fieldValue1 = 'tata';
 
         $this->defaultAdapterMock
             ->expects($this->once())
             ->method('removeFilteredPolicy')
-            ->with($sec, $ptype, $rule, $fieldValue0, $fieldValue1)
-            ->willReturn($expectedResult);
+            ->with($sec, $ptype, $fieldIndex, $fieldValue0, $fieldValue1);
 
-        $actualResult = $this->sut->removeFilteredPolicy($sec, $ptype, $rule, $fieldValue0, $fieldValue1);
-
-        $this->assertEquals($expectedResult, $actualResult);
+        $this->sut->removeFilteredPolicy($sec, $ptype, $fieldIndex, $fieldValue0, $fieldValue1);
     }
 }

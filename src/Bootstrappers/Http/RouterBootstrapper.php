@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Bootstrappers\Http;
 
-use AbterPhp\Framework\Constant\Env;
-use Opulence\Environments\Environment;
 use Opulence\Framework\Configuration\Config;
 use Opulence\Framework\Routing\Bootstrappers\RouterBootstrapper as BaseBootstrapper;
 use Opulence\Routing\Router;
-use Opulence\Routing\Routes\Caching\ICache;
 
 /**
  * @SuppressWarnings(PHPMD.StaticAccess)
@@ -18,30 +15,52 @@ use Opulence\Routing\Routes\Caching\ICache;
  */
 class RouterBootstrapper extends BaseBootstrapper
 {
+    protected ?array $routePaths = null;
+
+    /**
+     * @return array
+     */
+    public function getRoutePaths(): array
+    {
+        global $abterModuleManager;
+
+        if ($this->routePaths !== null) {
+            return $this->routePaths;
+        }
+
+        $this->routePaths = $abterModuleManager->getRoutePaths() ?: [];
+
+        return $this->routePaths;
+    }
+
+    /**
+     * @param array $routePaths
+     *
+     * @return $this
+     */
+    public function setRoutePaths(array $routePaths): self
+    {
+        $this->routePaths = $routePaths;
+
+        return $this;
+    }
+
+
     /**
      * Configures the router, which is useful for things like caching
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
      * @param Router $router The router to configure
      */
     protected function configureRouter(Router $router)
     {
-        global $abterModuleManager;
-
         $httpConfigPath   = Config::get('paths', 'config.http');
-        $routingConfig    = require "$httpConfigPath/routing.php";
         $routesConfigPath = "$httpConfigPath/routes.php";
-
-        if (empty($routingConfig['cache']) && Environment::getVar(Env::ENV_NAME) === Environment::PRODUCTION) {
-            $cachedRoutesPath = Config::get('paths', 'routes.cache') . '/' . ICache::DEFAULT_CACHED_ROUTES_FILE_NAME;
-            $routes           = $this->cache->get($cachedRoutesPath, $router, $routesConfigPath);
-            $router->setRouteCollection($routes);
-
-            return;
-        }
 
         require $routesConfigPath;
 
-        foreach ($abterModuleManager->getRoutePaths() as $path) {
+        foreach ($this->getRoutePaths() as $path) {
             require $path;
         }
     }

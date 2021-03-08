@@ -1,4 +1,4 @@
-#!/bin/sh
+#! /usr/bin/env sh
 
 EXPECTED_CHECKSUM="$(php -r 'copy("https://composer.github.io/installer.sig", "php://stdout");')"
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"

@@ -4,14 +4,12 @@ build:
 	XDEBUG_MODE=off ./vendor/bin/phpcs -p --colors --cache --standard=PSR12 tests
 	XDEBUG_MODE=off ./vendor/bin/phpmd src text .phpmd.xml
 	XDEBUG_MODE=off ./vendor/bin/phan --color
-	XDEBUG_MODE=off composer install --no-progress --prefer-dist --optimize-autoloader
 
 precommit:
 	XDEBUG_MODE=off ./vendor/bin/phpunit
 	XDEBUG_MODE=off ./vendor/bin/phpcs -p --colors --cache src
 	XDEBUG_MODE=off ./vendor/bin/phpcs -p --colors --cache --standard=PSR12 tests
 	XDEBUG_MODE=off ./vendor/bin/phpmd src text .phpmd.xml
-	XDEBUG_MODE=off composer install --no-progress --prefer-dist --optimize-autoloader
 
 install:
 ifeq (,$(wildcard /usr/local/bin/composer))

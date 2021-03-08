@@ -11,6 +11,8 @@ class ViewFunctionsBootstrapper extends OpulenceViewFunctionsBootstrapper
 {
     /**
      * @param IContainer $container
+     *
+     * @throws IocException
      */
     public function registerBindings(IContainer $container)
     {

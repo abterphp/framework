@@ -10,8 +10,7 @@ class CacheManager
 {
     protected const CACHE_KEY = 'casbin_auth_collection';
 
-    /** @var ICacheBridge */
-    protected $cacheBridge;
+    protected ICacheBridge $cacheBridge;
 
     /**
      * Cache constructor.

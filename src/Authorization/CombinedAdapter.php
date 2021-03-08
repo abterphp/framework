@@ -9,14 +9,12 @@ use Casbin\Persist\Adapter as CasbinAdapter;
 
 class CombinedAdapter implements CasbinAdapter
 {
-    /** @var CasbinAdapter */
-    protected $defaultAdapter;
+    protected CasbinAdapter $defaultAdapter;
 
-    /** @var CacheManager|null */
-    protected $cacheManager;
+    protected ?CacheManager $cacheManager;
 
     /** @var CasbinAdapter[] */
-    protected $registeredAdapters = [];
+    protected array $registeredAdapters = [];
 
     /**
      * PolicyAdapter constructor.
@@ -35,7 +33,7 @@ class CombinedAdapter implements CasbinAdapter
      *
      * @return $this
      */
-    public function registerAdapter(CasbinAdapter $adapter)
+    public function registerAdapter(CasbinAdapter $adapter): CombinedAdapter
     {
         $this->registeredAdapters[] = $adapter;
 
@@ -45,7 +43,7 @@ class CombinedAdapter implements CasbinAdapter
     /**
      * @param Model $model
      */
-    public function loadPolicy($model)
+    public function loadPolicy(Model $model): void
     {
         if ($this->loadCachedPolicy($model)) {
             return;
@@ -61,7 +59,7 @@ class CombinedAdapter implements CasbinAdapter
      *
      * @return bool
      */
-    protected function loadCachedPolicy($model): bool
+    protected function loadCachedPolicy(Model $model): bool
     {
         if (!$this->cacheManager) {
             return false;
@@ -73,13 +71,8 @@ class CombinedAdapter implements CasbinAdapter
             return false;
         }
 
-        foreach ($cachedData['g'] as $policy) {
-            $model->model['g']['g']->policy[] = $policy;
-        }
-
-        foreach ($cachedData['p'] as $policy) {
-            $model->model['p']['p']->policy[] = $policy;
-        }
+        $model->addPolicies('g', 'g', $cachedData['g']);
+        $model->addPolicies('p', 'p', $cachedData['p']);
 
         return true;
     }
@@ -89,15 +82,15 @@ class CombinedAdapter implements CasbinAdapter
      *
      * @return bool
      */
-    protected function storeLoadedPolicies($model): bool
+    protected function storeLoadedPolicies(Model $model): bool
     {
         if (!$this->cacheManager) {
             return false;
         }
 
         $data = [
-            'g' => $model->model['g']['g']->policy,
-            'p' => $model->model['p']['p']->policy,
+            'g' => $model->getPolicy('g', 'g'),
+            'p' => $model->getPolicy('p', 'p'),
         ];
 
         return $this->cacheManager->storeAll($data);
@@ -121,50 +114,40 @@ class CombinedAdapter implements CasbinAdapter
 
     /**
      * @param Model $model
-     *
-     * @return mixed
      */
-    public function savePolicy($model)
+    public function savePolicy(Model $model): void
     {
-        return $this->defaultAdapter->savePolicy($model);
+        $this->defaultAdapter->savePolicy($model);
     }
 
     /**
      * @param string $sec
      * @param string $ptype
-     * @param string $rule
-     *
-     * @return mixed
+     * @param array  $rule
      */
-    public function addPolicy($sec, $ptype, $rule)
+    public function addPolicy(string $sec, string $ptype, array $rule): void
     {
-        return $this->defaultAdapter->addPolicy($sec, $ptype, $rule);
+        $this->defaultAdapter->addPolicy($sec, $ptype, $rule);
     }
 
     /**
      * @param string $sec
      * @param string $ptype
-     * @param string $rule
-     *
-     * @return mixed
+     * @param array $rule
      */
-    public function removePolicy($sec, $ptype, $rule)
+    public function removePolicy(string $sec, string $ptype, array $rule): void
     {
-        return $this->defaultAdapter->removePolicy($sec, $ptype, $rule);
+        $this->defaultAdapter->removePolicy($sec, $ptype, $rule);
     }
 
     /**
      * @param string $sec
      * @param string $ptype
-     * @param string $fieldIndex
+     * @param int    $fieldIndex
      * @param string ...$fieldValues
-     *
-     * @return mixed
      */
-    public function removeFilteredPolicy($sec, $ptype, $fieldIndex, ...$fieldValues)
+    public function removeFilteredPolicy(string $sec, string $ptype, int $fieldIndex, string ...$fieldValues): void
     {
-        $args = array_merge([$sec, $ptype, $fieldIndex], $fieldValues);
-
-        return call_user_func_array([$this->defaultAdapter, 'removeFilteredPolicy'], $args);
+        $this->defaultAdapter->removeFilteredPolicy($sec, $ptype, $fieldIndex, ...$fieldValues);
     }
 }
