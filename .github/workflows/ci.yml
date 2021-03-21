@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         operating-system: [ ubuntu-latest, macos-latest ]
-        php-versions: [ '7.4' ]
+        php-versions: [ '7.4', '8.0' ]
     # Name the Job
     name: Lint code base
     # Set the type of machine to run on
@@ -51,7 +51,7 @@ jobs:
         run: make build
 
       - name: Coverage report
-        if: ${{ matrix.operating-system == 'ubuntu-latest' && matrix.php-versions == '7.4' }}
+        if: ${{ matrix.operating-system == 'ubuntu-latest' && matrix.php-versions == '8.0' }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
