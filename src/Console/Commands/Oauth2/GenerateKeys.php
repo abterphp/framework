@@ -11,14 +11,13 @@ class GenerateKeys extends Command
 {
     public const NAME = 'oauth2:generatekeys';
 
-    /** @var string */
-    protected $privateKeyPassword;
+    protected string $privateKeyPassword;
 
-    /** @var string */
-    protected $privateKeyPath;
+    protected string $privateKeyPath;
 
-    /** @var string */
-    protected $publicKeyPath;
+    protected string $publicKeyPath;
+
+    protected bool $isOpenSslAvailable = true;
 
     /**
      * GenerateKeys constructor.
@@ -33,7 +32,23 @@ class GenerateKeys extends Command
         $this->privateKeyPath     = $privateKeyPath;
         $this->publicKeyPath      = $publicKeyPath;
 
+        if (!defined('OPENSSL_VERSION_NUMBER')) {
+            $this->isOpenSslAvailable = false;
+        }
+
         parent::__construct();
+    }
+
+    /**
+     * @param bool $isOpenSslAvailable
+     *
+     * @return $this
+     */
+    public function setIsOpenSslAvailable(bool $isOpenSslAvailable): self
+    {
+        $this->isOpenSslAvailable = $isOpenSslAvailable;
+
+        return $this;
     }
 
     /**
@@ -50,8 +65,14 @@ class GenerateKeys extends Command
      */
     protected function doExecute(IResponse $response)
     {
+        if (!$this->isOpenSslAvailable) {
+            $response->writeln('<fatal>OpenSSL is not installed.</fatal>');
+
+            return;
+        }
+
         $genPrivateKeyCmd = sprintf(
-            'openssl genrsa -passout pass:%s -out %s 2048',
+            'openssl genrsa -passout pass:%s -out %s 2048 2> /dev/null',
             $this->privateKeyPassword,
             $this->privateKeyPath
         );
@@ -59,7 +80,7 @@ class GenerateKeys extends Command
         exec($genPrivateKeyCmd);
 
         $genPublicKeyCmd = sprintf(
-            'openssl rsa -in %s -passin pass:%s -pubout -out %s',
+            'openssl rsa -in %s -passin pass:%s -pubout -out %s 2> /dev/null',
             $this->privateKeyPath,
             $this->privateKeyPassword,
             $this->publicKeyPath

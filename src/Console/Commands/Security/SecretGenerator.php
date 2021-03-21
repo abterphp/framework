@@ -12,6 +12,7 @@ namespace AbterPhp\Framework\Console\Commands\Security;
 
 use AbterPhp\Framework\Constant\Env;
 use Defuse\Crypto\Key;
+use Exception;
 use Opulence\Console\Commands\Command;
 use Opulence\Console\Requests\Option;
 use Opulence\Console\Requests\OptionTypes;
@@ -24,7 +25,7 @@ use Opulence\Framework\Configuration\Config;
 class SecretGenerator extends Command
 {
     /** @var array */
-    protected $keys = [
+    protected array $keys = [
         Env::DB_PASSWORD                 => 12,
         Env::ENCRYPTION_KEY              => 32,
         Env::CRYPTO_FRONTEND_SALT        => 8,
@@ -33,7 +34,7 @@ class SecretGenerator extends Command
     ];
 
     /** @var null|string */
-    protected $envFile;
+    protected ?string $envFile = null;
 
     /**
      * @inheritdoc
@@ -44,10 +45,10 @@ class SecretGenerator extends Command
             ->setDescription('Creates secrets for AbterAdmin')
             ->addOption(
                 new Option(
-                    'show',
-                    's',
+                    'dry-run',
+                    'd',
                     OptionTypes::NO_VALUE,
-                    'Whether to just show the new secrets or replace them in the environment config'
+                    'Whether to just show the new secrets or also replace them in the environment config'
                 )
             );
     }
@@ -63,6 +64,7 @@ class SecretGenerator extends Command
 
     /**
      * @inheritdoc
+     * @throws Exception
      */
     protected function doExecute(IResponse $response)
     {
@@ -83,7 +85,7 @@ class SecretGenerator extends Command
     /**
      * @return string|null
      */
-    protected function getEnvFile()
+    protected function getEnvFile(): ?string
     {
         if (null !== $this->envFile) {
             return $this->envFile;
@@ -91,12 +93,25 @@ class SecretGenerator extends Command
 
         $fileName = Config::get('paths', 'config') . '/environment/.env.app.php';
 
-        $this->envFile = '';
-        if (file_exists($fileName)) {
-            $this->envFile = $fileName;
+        if (!file_exists($fileName)) {
+            throw new \RuntimeException('app config not found: ' . $fileName);
         }
 
+        $this->envFile = $fileName;
+
         return $this->envFile;
+    }
+
+    /**
+     * @param string|null $envFile
+     *
+     * @return $this
+     */
+    public function setEnvFile(?string $envFile = null): self
+    {
+        $this->envFile = $envFile;
+
+        return $this;
     }
 
     /**
@@ -105,11 +120,11 @@ class SecretGenerator extends Command
      * @param string    $key
      * @param int       $maxNameLength
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function handleKey(IResponse $response, string $name, string $key, int $maxNameLength)
     {
-        if (!$this->optionIsSet('show') && $this->getEnvFile()) {
+        if (!$this->optionIsSet('dry-run') && $this->getEnvFile()) {
             $contents    = file_get_contents($this->getEnvFile());
             $newContents = preg_replace(
                 sprintf("/\"%s\",\s*\"[^\"]*\"/U", $name),
