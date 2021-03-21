@@ -47,9 +47,6 @@ jobs:
       - name: Install dependencies
         run: make install
 
-      - name: Install coveralls
-        run: composer global install php-coveralls/php-coveralls
-
       - name: Build the project
         run: make build
 

@@ -22,7 +22,7 @@ unit:
 
 coverage:
 	XDEBUG_MODE=coverage ./vendor/bin/phpunit -c phpunit-cov.xml
-	XDEBUG_MODE=off php-coveralls -vvv --coverage_clover=./tmp/report/clover.xml --json_path=./tmp/report/coveralls-upload.json
+	XDEBUG_MODE=off ./vendor/bin/php-coveralls -vvv --coverage_clover=./tmp/report/clover.xml --json_path=./tmp/report/coveralls-upload.json
 
 pull:
 	git pull
