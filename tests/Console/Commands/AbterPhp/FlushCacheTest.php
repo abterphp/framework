@@ -17,7 +17,7 @@ class FlushCacheTest extends TestCase
         $this->sut = new FlushCache();
     }
 
-    public function testDoExecuteCallsAllSubCommands()
+    public function testDoExecuteCallsAllDefaultSubCommands()
     {
         $responseMock          = $this
             ->getMockBuilder(IResponse::class)
@@ -28,6 +28,24 @@ class FlushCacheTest extends TestCase
             ->getMock();
 
         $commandCollectionMock->expects($this->exactly(4))->method('call');
+
+        $this->sut->setCommandCollection($commandCollectionMock);
+        $this->sut->execute($responseMock);
+    }
+
+    public function testDoExecuteCallsExtraSubCommands()
+    {
+        $responseMock          = $this
+            ->getMockBuilder(IResponse::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $commandCollectionMock = $this->getMockBuilder(CommandCollection::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $commandCollectionMock->expects($this->exactly(5))->method('call');
+
+        $this->sut->addSubCommand('foo');
 
         $this->sut->setCommandCollection($commandCollectionMock);
         $this->sut->execute($responseMock);
