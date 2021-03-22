@@ -56,6 +56,6 @@ class DateHelperTest extends TestCase
 
         $actualTime = strtotime($actualResult);
 
-        $this->assertEqualsWithDelta($expectedResult, $actualTime, 3.0);
+        $this->assertEqualsWithDelta($expectedResult, $actualTime, 30.0);
     }
 }
