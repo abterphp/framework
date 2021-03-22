@@ -14,8 +14,10 @@ use SessionHandlerInterface;
 
 class SessionTest extends TestCase
 {
-    /** @var Security - System Under Test */
+    /** @var Session - System Under Test */
     protected $sut;
+
+    protected string $sessionId = 'foo-session-id';
 
     /** @var ISession|MockObject */
     protected $sessionMock;
@@ -28,8 +30,11 @@ class SessionTest extends TestCase
         parent::setUp();
 
         $this->sessionMock = $this->createMock(ISession::class);
+        $this->sessionMock->expects($this->any())->method('getId')->willReturn($this->sessionId);
 
-        $this->sessionHandlerMock = $this->createMock(SessionHandlerInterface::class);
+        $this->sessionHandlerMock = $this->getMockBuilder(SessionHandlerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->sut = new Session($this->sessionMock, $this->sessionHandlerMock);
     }

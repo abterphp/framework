@@ -30,7 +30,9 @@ class Flysystem implements ICacheManager
     {
         $this->isFlushable = function ($obj) {
             if (!is_array($obj) && !($obj instanceof ArrayAccess)) {
-                throw new InvalidArgumentException("isFlushable requires an array or \ArrayAccess, received object is not: %s", get_class($obj));
+                throw new InvalidArgumentException(
+                    sprintf("isFlushable requires an array or \ArrayAccess, received object is not: %s", get_class($obj))
+                );
             }
 
             if ($obj['basename'] === '.gitignore') {

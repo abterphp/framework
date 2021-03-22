@@ -30,9 +30,7 @@ class FlushCacheTest extends TestCase
         $commandCollectionMock->expects($this->exactly(4))->method('call');
 
         $this->sut->setCommandCollection($commandCollectionMock);
-        $result = $this->sut->execute($responseMock);
-
-        $this->assertNull($result);
+        $this->sut->execute($responseMock);
     }
 
     public function testDoExecuteWritesErrorMessageOnException()
@@ -52,8 +50,6 @@ class FlushCacheTest extends TestCase
         $commandCollectionMock->expects($this->exactly(4))->method('call')->willThrowException($ex);
 
         $this->sut->setCommandCollection($commandCollectionMock);
-        $result = $this->sut->execute($responseMock);
-
-        $this->assertNull($result);
+        $this->sut->execute($responseMock);
     }
 }
