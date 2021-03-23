@@ -43,7 +43,7 @@ class FiltersTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function getUrlProvider(): array
     {
@@ -84,7 +84,7 @@ class FiltersTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function getWhereConditionsProvider(): array
     {
@@ -126,7 +126,7 @@ class FiltersTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function getSqlParamsProvider(): array
     {

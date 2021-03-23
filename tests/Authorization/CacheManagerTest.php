@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class CacheManagerTest extends TestCase
 {
     /** @var CacheManager - System Under Test */
-    protected $sut;
+    protected CacheManager $sut;
 
     /** @var ICacheBridge|MockObject */
     protected $cacheBridgeMock;

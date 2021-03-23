@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class MinifierTest extends TestCase
 {
     /** @var Minifier - System Under Test */
-    protected $sut;
+    protected Minifier $sut;
 
     public function setUp(): void
     {

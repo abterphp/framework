@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class MigrationsBootstrapperTest extends TestCase
 {
+    /** @var MigrationsBootstrapper - System Under Test */
     protected MigrationsBootstrapper $sut;
 
     public function setUp(): void

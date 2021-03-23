@@ -8,6 +8,7 @@ use AbterPhp\Framework\Session\FlashService;
 use Opulence\Http\Responses\Response;
 use Opulence\Routing\Controller;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 abstract class ControllerAbstract extends Controller
 {
@@ -15,14 +16,12 @@ abstract class ControllerAbstract extends Controller
     protected const VAR_MSG_ERROR   = 'errorMessages';
     protected const VAR_MSG_SUCCESS = 'successMessages';
 
-    /** @var array */
-    protected $viewVarsExtra = [];
+    /** @var array<string,mixed> */
+    protected array $viewVarsExtra = [];
 
-    /** @var FlashService */
-    protected $flashService;
+    protected FlashService $flashService;
 
-    /** @var LoggerInterface */
-    protected $logger;
+    protected LoggerInterface $logger;
 
     /**
      * @param FlashService    $flashService
@@ -48,7 +47,7 @@ abstract class ControllerAbstract extends Controller
      * @param string $title
      *
      * @return Response
-     * @throws \Throwable
+     * @throws Throwable
      */
     protected function createResponse(string $title = ''): Response
     {

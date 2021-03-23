@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class Base64Test extends TestCase
 {
     /** @var Base64 - System Under Test */
-    protected $sut;
+    protected Base64 $sut;
 
     public function setUp(): void
     {
@@ -19,7 +19,7 @@ class Base64Test extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function passesProvider(): array
     {

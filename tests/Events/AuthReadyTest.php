@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class AuthReadyTest extends TestCase
 {
     /** @var AuthReady - System Under Test */
-    protected $sut;
+    protected AuthReady $sut;
 
     /** @var CombinedAdapter|MockObject */
     protected $adapterMock;

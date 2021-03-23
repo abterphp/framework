@@ -13,11 +13,12 @@ use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
+use Opulence\Ioc\IocException;
 
 class CryptoBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getBindings(): array
     {
@@ -29,7 +30,7 @@ class CryptoBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @param IContainer $container
      *
-     * @throws \Opulence\Ioc\IocException
+     * @throws IocException
      */
     public function registerBindings(IContainer $container)
     {
@@ -64,7 +65,7 @@ class CryptoBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @param IHasher $hasher
      *
-     * @return array
+     * @return array<string,string>
      */
     private function getHashOptions(IHasher $hasher): array
     {

@@ -8,8 +8,7 @@ use AbterPhp\Framework\Navigation\Navigation;
 
 class NavigationReady
 {
-    /** @var Navigation */
-    private $navigation;
+    private Navigation $navigation;
 
     /**
      * Navigation constructor.

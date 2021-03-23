@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 class IdGeneratorRegistryTest extends TestCase
 {
     /** @var IdGeneratorRegistry - System Under Test */
-    protected $sut;
+    protected IdGeneratorRegistry $sut;
 
     public function setUp(): void
     {

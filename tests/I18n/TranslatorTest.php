@@ -9,12 +9,12 @@ use PHPUnit\Framework\TestCase;
 class TranslatorTest extends TestCase
 {
     /** @var Translator - System Under Test */
-    protected $sut;
+    protected Translator $sut;
 
     /**
-     * @var array
+     * @var array[]
      */
-    protected $translationData = [
+    protected array $translationData = [
         'foo' => [
             'bar'        => 'baz',
             'replacable' => 'baz %2$s %1$s',
@@ -29,7 +29,7 @@ class TranslatorTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function translateProvider(): array
     {
@@ -56,7 +56,7 @@ class TranslatorTest extends TestCase
 
 
     /**
-     * @return array
+     * @return array[]
      */
     public function canTranslateProvider(): array
     {

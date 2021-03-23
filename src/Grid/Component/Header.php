@@ -14,10 +14,10 @@ class Header extends Component
     protected const DEFAULT_TAG = Html5::TAG_THEAD;
 
     /** @var IRow[] */
-    protected $nodes = [];
+    protected array $nodes = [];
 
     /** @var string */
-    protected $nodeClass = IRow::class;
+    protected string $nodeClass = IRow::class;
 
     /**
      * Header constructor.

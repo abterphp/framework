@@ -8,44 +8,39 @@ use PHPUnit\Framework\TestCase;
 
 class OptionsTest extends TestCase
 {
+    protected const DEFAULT_PAGE_SIZE = 5;
+    protected const PAGE_SIZE_OPTIONS = [5, 10, 25];
+    protected const NUMBER_COUNT = 33;
+
     /** @var Options - System Under Test */
-    protected $sut;
-
-    /** @var int */
-    protected $defaultPageSize = 5;
-
-    /** @var array */
-    protected $pageSizeOptions = [5, 10, 25];
-
-    /** @var int */
-    protected $numberCount = 33;
+    protected Options $sut;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->sut = new Options($this->defaultPageSize, $this->pageSizeOptions, $this->numberCount);
+        $this->sut = new Options(static::DEFAULT_PAGE_SIZE, static::PAGE_SIZE_OPTIONS, static::NUMBER_COUNT);
     }
 
     public function testGetDefaultPageSize()
     {
         $actualResult = $this->sut->getDefaultPageSize();
 
-        $this->assertSame($this->defaultPageSize, $actualResult);
+        $this->assertSame(static::DEFAULT_PAGE_SIZE, $actualResult);
     }
 
     public function testGetPageSizeOptions()
     {
         $actualResult = $this->sut->getPageSizeOptions();
 
-        $this->assertSame($this->pageSizeOptions, $actualResult);
+        $this->assertSame(static::PAGE_SIZE_OPTIONS, $actualResult);
     }
 
     public function testGetNumberCount()
     {
         $actualResult = $this->sut->getNumberCount();
 
-        $this->assertSame($this->numberCount, $actualResult);
+        $this->assertSame(static::NUMBER_COUNT, $actualResult);
     }
 
     public function testGetAttributesEmptyByDefault()

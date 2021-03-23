@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class TemplateEngineReadyTest extends TestCase
 {
     /** @var TemplateEngineReady - System Under Test */
-    protected $sut;
+    protected TemplateEngineReady $sut;
 
     /** @var Engine|MockObject */
     protected $engineMock;

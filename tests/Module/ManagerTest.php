@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 class ManagerTest extends TestCase
 {
     /** @var Manager - System Under Test */
-    protected $sut;
+    protected Manager $sut;
 
     /** @var Loader|MockObject */
     protected $loaderMock;

@@ -8,8 +8,7 @@ use AbterPhp\Framework\Template\Engine;
 
 class TemplateEngineReady
 {
-    /** @var Engine */
-    private $engine;
+    private Engine $engine;
 
     /**
      * TemplateEngineReady constructor.

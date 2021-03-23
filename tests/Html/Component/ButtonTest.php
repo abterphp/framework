@@ -11,10 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class ButtonTest extends TestCase
 {
-    /**
-     * @return array
-     */
-    public function renderProvider()
+    public function renderProvider(): array
     {
         $attributes = StubAttributeFactory::createAttributes();
         $str        = ArrayHelper::toAttributes($attributes);

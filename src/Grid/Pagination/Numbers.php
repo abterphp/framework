@@ -11,21 +11,21 @@ use AbterPhp\Framework\Grid\Component\Actions;
 class Numbers extends Actions
 {
     /** @var string */
-    protected $baseUrl;
+    protected string $baseUrl = '';
 
-    /** @var array */
-    protected $fakeBtnAttr = [
+    /** @var array<string,mixed> */
+    protected array $fakeBtnAttr = [
         Html5::ATTR_DISABLED => null,
     ];
 
-    /** @var array */
-    protected $fakeBtnIntents = [Action::INTENT_PRIMARY];
+    /** @var string[] */
+    protected array $fakeBtnIntents = [Action::INTENT_PRIMARY];
 
-    /** @var array */
-    protected $realBtnAttr = [];
+    /** @var array<string,null|string|string[]> */
+    protected array $realBtnAttr = [];
 
-    /** @var array */
-    protected $realBtnIntents = [Action::INTENT_PRIMARY];
+    /** @var string[] */
+    protected array $realBtnIntents = [Action::INTENT_PRIMARY];
 
     /**
      * Numbers constructor.

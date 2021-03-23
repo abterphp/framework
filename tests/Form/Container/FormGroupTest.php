@@ -17,9 +17,9 @@ use PHPUnit\Framework\TestCase;
 class FormGroupTest extends TestCase
 {
     /**
-     * @return array
+     * @return array[]
      */
-    public function renderProvider()
+    public function renderProvider(): array
     {
         return [
             'simple' => ['<foo>', '<bar>', '<baz>', [], null, null, '<div><bar><foo><baz></div>'],
@@ -56,12 +56,13 @@ class FormGroupTest extends TestCase
     }
 
     /**
-     * @param string     $inputOutput
-     * @param string     $labelOutput
-     * @param string     $helpOutput
-     * @param string     $tag
-     * @param array      $attributes
-     * @param array|null $translations
+     * @param string      $inputOutput
+     * @param string      $labelOutput
+     * @param string      $helpOutput
+     * @param array       $attributes
+     * @param array|null  $translations
+     *
+     * @param string|null $tag
      *
      * @return FormGroup
      */

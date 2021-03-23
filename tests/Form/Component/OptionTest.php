@@ -14,9 +14,9 @@ use PHPUnit\Framework\TestCase;
 class OptionTest extends TestCase
 {
     /**
-     * @return array
+     * @return array[]
      */
-    public function renderProvider()
+    public function renderProvider(): array
     {
         $attribs = StubAttributeFactory::createAttributes();
         $str     = ArrayHelper::toAttributes($attribs);
@@ -35,6 +35,7 @@ class OptionTest extends TestCase
      *
      * @param string                    $value
      * @param INode[]|INode|string|null $content
+     * @param bool                      $isSelected
      * @param string[][]                $attributes
      * @param string[]|null             $translations
      * @param string|null               $tag

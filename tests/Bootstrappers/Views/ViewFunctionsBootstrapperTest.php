@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class ViewFunctionsBootstrapperTest extends TestCase
 {
-    /** @var ViewFunctionsBootstrapper */
+    /** @var ViewFunctionsBootstrapper - System Under Test */
     protected ViewFunctionsBootstrapper $sut;
 
     public function setUp(): void

@@ -18,10 +18,10 @@ class Flysystem implements ICacheManager
     protected const ERROR_FILESYSTEM_NOT_FOUND = 'filesystem not found';
 
     /** @var FilesystemOperator[] */
-    protected $filesystems = [];
+    protected array $filesystems = [];
 
     /** @var callable[] callables that can check if a filesystem is suited to be used for a given path */
-    protected $pathCheckers = [];
+    protected array $pathCheckers = [];
 
     /** @var callable used to decide if a file can be deleted or not */
     protected $isFlushable;
@@ -77,7 +77,7 @@ class Flysystem implements ICacheManager
             }
         }
 
-        throw new \InvalidArgumentException(static::ERROR_FILESYSTEM_NOT_FOUND);
+        throw new InvalidArgumentException(static::ERROR_FILESYSTEM_NOT_FOUND);
     }
 
     /**

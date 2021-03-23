@@ -18,7 +18,7 @@ class I18nBootstrapperTest extends TestCase
 {
     private const BASE_PATH = 'exampleDir';
 
-    /** @var I18nBootstrapper */
+    /** @var I18nBootstrapper - System Under Test */
     protected I18nBootstrapper $sut;
 
     protected vfsStreamDirectory $root;

@@ -12,7 +12,7 @@ use Opulence\Ioc\IContainer;
 class MinifierFactoryBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getBindings(): array
     {

@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class UuidTest extends TestCase
 {
     /** @var Uuid - System Under Test */
-    protected $sut;
+    protected Uuid $sut;
 
     public function setUp(): void
     {

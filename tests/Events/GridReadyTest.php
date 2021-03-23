@@ -10,8 +10,8 @@ use PHPUnit\Framework\TestCase;
 
 class GridReadyTest extends TestCase
 {
-    /** @var NavigationReady - System Under Test */
-    protected $sut;
+    /** @var GridReady - System Under Test */
+    protected GridReady $sut;
 
     /** @var Grid|MockObject */
     protected $gridMock;

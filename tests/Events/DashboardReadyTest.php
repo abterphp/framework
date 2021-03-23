@@ -10,8 +10,8 @@ use PHPUnit\Framework\TestCase;
 
 class DashboardReadyTest extends TestCase
 {
-    /** @var AuthReady - System Under Test */
-    protected $sut;
+    /** @var DashboardReady - System Under Test */
+    protected DashboardReady $sut;
 
     /** @var Dashboard|MockObject */
     protected $dashboardMock;

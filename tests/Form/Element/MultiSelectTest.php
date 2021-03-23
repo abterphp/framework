@@ -9,14 +9,15 @@ use AbterPhp\Framework\Form\Component\Option;
 use AbterPhp\Framework\Html\Helper\ArrayHelper;
 use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class MultiSelectTest extends TestCase
 {
     /**
-     * @return array
+     * @return array[]
      */
-    public function renderProvider()
+    public function renderProvider(): array
     {
         $attribs = StubAttributeFactory::createAttributes();
         $str     = ArrayHelper::toAttributes($attribs);
@@ -180,7 +181,7 @@ class MultiSelectTest extends TestCase
      */
     public function testSetValueThrowsExceptionOnInvalid($value)
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $sut = new MultiSelect('id', 'name');
 

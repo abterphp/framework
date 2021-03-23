@@ -5,6 +5,7 @@ namespace AbterPhp\Framework\Bootstrappers\Assets;
 use AbterPhp\Framework\Assets\AssetManager;
 use AbterPhp\Framework\Assets\CacheManager\ICacheManager;
 use AbterPhp\Framework\Assets\UrlFixer;
+use AbterPhp\Framework\Config\Routes;
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Environments\Environment;
 use AbterPhp\Framework\Filesystem\FileFinder;
@@ -15,9 +16,10 @@ use PHPUnit\Framework\TestCase;
 
 class AssetManagerBootstrapperTest extends TestCase
 {
+    /** @var AssetManagerBootstrapper - System Under Test */
     protected AssetManagerBootstrapper $sut;
 
-    /** @var ITranspiler|MockObject|MockObject */
+    /** @var ITranspiler|MockObject */
     protected $transpilerMock;
 
     public function setUp(): void
@@ -40,15 +42,17 @@ class AssetManagerBootstrapperTest extends TestCase
 
     public function testRegisterBindingsBindsAnAssetManager()
     {
-        $fileFinderMock   = $this->getMockBuilder(FileFinder::class)->getMock();
-        $cacheManagerMock = $this->getMockBuilder(ICacheManager::class)->getMock();
+        $fileFinderMock   = $this->createMock(FileFinder::class);
+        $cacheManagerMock = $this->createMock(ICacheManager::class);
         $urlFixerMock     = $this->getMockBuilder(UrlFixer::class)->disableOriginalConstructor()->getMock();
+        $routesMock       = $this->createMock(Routes::class);
 
         $container = new Container();
         $container->bindInstance(FileFinder::class, $fileFinderMock);
         $container->bindInstance(ICacheManager::class, $cacheManagerMock);
         $container->bindInstance(UrlFixer::class, $urlFixerMock);
         $container->bindInstance(ITranspiler::class, $this->transpilerMock);
+        $container->bindInstance(Routes::class, $routesMock);
 
         $this->transpilerMock->expects($this->exactly(3))->method('registerViewFunction');
 

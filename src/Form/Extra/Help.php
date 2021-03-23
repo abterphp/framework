@@ -9,12 +9,12 @@ use AbterPhp\Framework\Html\Component;
 
 class Help extends Component
 {
-    protected const DEFAULT_TAG = Html5::TAG_DIV;
-
     public const CLASS_HELP_BLOCK = 'help-block';
 
-    /** @var array */
-    protected $attributes = [
+    protected const DEFAULT_TAG = Html5::TAG_DIV;
+
+    /** @var array<string,null|string[]> */
+    protected array $attributes = [
         Html5::ATTR_CLASS => [self::CLASS_HELP_BLOCK],
     ];
 }

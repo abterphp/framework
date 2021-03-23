@@ -8,11 +8,9 @@ class Renderer
 {
     protected const ERROR_INVALID_TEMPLATE_TYPE = 'Unexpected template type: %s';
 
-    /** @var Factory */
-    protected $templateFactory;
+    protected Factory $templateFactory;
 
-    /** @var ILoader[] */
-    protected $loaders = [];
+    protected array $loaders = [];
 
     /**
      * Renderer constructor.

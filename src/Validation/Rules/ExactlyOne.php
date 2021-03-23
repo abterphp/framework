@@ -10,8 +10,8 @@ use Opulence\Validation\Rules\IRuleWithErrorPlaceholders;
 
 class ExactlyOne implements IRuleWithArgs, IRuleWithErrorPlaceholders
 {
-    /** @var array The name of the fields to compare to */
-    protected $fieldNames = [];
+    /** @var string[] The name of the fields to compare to */
+    protected array $fieldNames = [];
 
     /**
      * @inheritdoc

@@ -14,14 +14,11 @@ class Item extends Component implements IResourcable
 
     public const INTENT_DROPDOWN = 'dropdown';
 
-    /** @var string|null */
-    protected $resource = null;
+    protected ?string $resource = null;
 
-    /** @var string */
-    protected $role = Role::READ;
+    protected string $role = Role::READ;
 
-    /** @var bool */
-    protected $enabled = true;
+    protected bool $enabled = true;
 
     /**
      * @param string|null $resource

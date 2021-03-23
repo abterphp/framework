@@ -11,10 +11,10 @@ use League\Flysystem\UnableToReadFile;
 class FileFinder implements IFileFinder
 {
     /** @var FilesystemOperator[][][] */
-    protected $filesystems = [];
+    protected array $filesystems = [];
 
     /** @var string[] */
-    protected $filesystemKeys = [];
+    protected array $filesystemKeys = [];
 
     /**
      * @param FilesystemOperator $filesystem

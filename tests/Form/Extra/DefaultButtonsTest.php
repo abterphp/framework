@@ -10,9 +10,9 @@ use PHPUnit\Framework\TestCase;
 class DefaultButtonsTest extends TestCase
 {
     /**
-     * @return array
+     * @return array[]
      */
-    public function renderProvider()
+    public function renderProvider(): array
     {
         $simpleExpected = [
             "<div><button name=\"next\" type=\"submit\" value>framework:save</button>",

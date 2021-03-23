@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class FlashServiceBootstrapperTest extends TestCase
 {
-    /** @var FlashServiceBootstrapper */
+    /** @var FlashServiceBootstrapper - System Under Test */
     protected FlashServiceBootstrapper $sut;
 
     public function setUp(): void

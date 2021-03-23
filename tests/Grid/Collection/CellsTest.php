@@ -10,11 +10,12 @@ use AbterPhp\Framework\Html\CollectionTest;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Node;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
+use LogicException;
 
 class CellsTest extends CollectionTest
 {
     /**
-     * @return array
+     * @return array[]
      */
     public function toStringReturnsRawContentByDefaultProvider(): array
     {
@@ -54,6 +55,7 @@ class CellsTest extends CollectionTest
      * @dataProvider toStringCanReturnTranslatedContentProvider
      *
      * @param string $rawContent
+     * @param array  $translations
      * @param string $expectedResult
      */
     public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
@@ -191,6 +193,8 @@ class CellsTest extends CollectionTest
 
     /**
      * @dataProvider contentFailureProvider
+     *
+     * @param $item
      */
     public function testConstructFailure($item)
     {
@@ -201,6 +205,8 @@ class CellsTest extends CollectionTest
 
     /**
      * @dataProvider contentFailureProvider
+     *
+     * @param $item
      */
     public function testSetContentFailure($item)
     {
@@ -228,6 +234,8 @@ class CellsTest extends CollectionTest
 
     /**
      * @dataProvider offsetSetFailureProvider
+     *
+     * @param $item
      */
     public function testArrayAccessFailureWithoutOffset($item)
     {
@@ -588,7 +596,7 @@ class CellsTest extends CollectionTest
 
     public function testCreateNodeThrowsLogicException()
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
 
         $sut = $this->createNode();
 

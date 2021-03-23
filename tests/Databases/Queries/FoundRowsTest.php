@@ -10,7 +10,7 @@ use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;
 class FoundRowsTest extends QueryTestCase
 {
     /** @var FoundRows - System Under Test */
-    protected $sut;
+    protected FoundRows $sut;
 
     public function setUp(): void
     {

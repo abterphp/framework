@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class UrlTest extends TestCase
 {
     /** @var Url - System Under Test */
-    protected $sut;
+    protected Url $sut;
 
     public function setUp(): void
     {
@@ -19,7 +19,7 @@ class UrlTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function passesProvider(): array
     {

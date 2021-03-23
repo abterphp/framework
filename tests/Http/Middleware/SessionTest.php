@@ -15,7 +15,7 @@ use SessionHandlerInterface;
 class SessionTest extends TestCase
 {
     /** @var Session - System Under Test */
-    protected $sut;
+    protected Session $sut;
 
     protected string $sessionId = 'foo-session-id';
 

@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class FilesystemBootstrapperTest extends TestCase
 {
-    /** @var FilesystemBootstrapper */
+    /** @var FilesystemBootstrapper - System Under Test */
     protected FilesystemBootstrapper $sut;
 
     public function setUp(): void

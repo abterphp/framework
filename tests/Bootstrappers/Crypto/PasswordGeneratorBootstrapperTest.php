@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class PasswordGeneratorBootstrapperTest extends TestCase
 {
-    /** @var PasswordGeneratorBootstrapper */
+    /** @var PasswordGeneratorBootstrapper - System Under Test */
     protected PasswordGeneratorBootstrapper $sut;
 
     public function setUp(): void

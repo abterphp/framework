@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class MaxLengthTest extends TestCase
 {
     /**
-     * @return array
+     * @return array[]
      */
     public function passesProvider(): array
     {

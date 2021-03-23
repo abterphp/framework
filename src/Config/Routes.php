@@ -12,51 +12,51 @@ class Routes
     public const ASSETS_PATH = '/:path';
 
     /** @var string|null */
-    protected static $mediaUrl;
+    protected ?string $mediaUrl = null;
 
     /** @var string|null */
-    protected static $cacheUrl;
+    protected ?string $cacheUrl = null;
 
     /** @var string|null */
-    protected static $assetsPath;
+    protected ?string $assetsPath = null;
 
     /**
      * @param string $mediaUrl
      */
-    public static function setMediaUrl(string $mediaUrl): void
+    public function setMediaUrl(string $mediaUrl): void
     {
-        static::$mediaUrl = $mediaUrl;
+        $this->mediaUrl = $mediaUrl;
     }
 
     /**
      * @return string
      */
-    public static function getMediaUrl(): string
+    public function getMediaUrl(): string
     {
-        if (null !== static::$mediaUrl) {
-            return static::$mediaUrl;
+        if (null !== $this->mediaUrl) {
+            return $this->mediaUrl;
         }
 
-        static::$mediaUrl = (string)Environment::getVar(Env::MEDIA_BASE_URL);
+        $this->mediaUrl = (string)Environment::getVar(Env::MEDIA_BASE_URL);
 
-        return static::$mediaUrl;
+        return $this->mediaUrl;
     }
 
     /**
      * @param string $cacheUrl
      */
-    public static function setCacheUrl(string $cacheUrl): void
+    public function setCacheUrl(string $cacheUrl): void
     {
-        static::$cacheUrl = $cacheUrl;
+        $this->cacheUrl = $cacheUrl;
     }
 
     /**
      * @return string
      */
-    public static function getCacheUrl(): string
+    public function getCacheUrl(): string
     {
-        if (null !== static::$cacheUrl) {
-            return static::$cacheUrl;
+        if (null !== $this->cacheUrl) {
+            return $this->cacheUrl;
         }
 
         $cachePath = Environment::getVar(Env::CACHE_BASE_PATH, '');
@@ -64,25 +64,31 @@ class Routes
             return '';
         }
 
-        $cacheUrl = sprintf(
+        $this->cacheUrl = sprintf(
             '%s%s%s',
             rtrim(static::getMediaUrl(), DIRECTORY_SEPARATOR),
             DIRECTORY_SEPARATOR,
             ltrim($cachePath, DIRECTORY_SEPARATOR)
         );
 
-        static::$cacheUrl = (string)$cacheUrl;
+        return $this->cacheUrl;
+    }
 
-        return static::$cacheUrl;
+    /**
+     * @param string $assetsPath
+     */
+    public function setAssetsPath(string $assetsPath): void
+    {
+        $this->assetsPath = $assetsPath;
     }
 
     /**
      * @return string
      */
-    public static function getAssetsPath(): string
+    public function getAssetsPath(): string
     {
-        if (null !== static::$assetsPath) {
-            return static::$assetsPath;
+        if (null !== $this->assetsPath) {
+            return $this->assetsPath;
         }
 
         $basePath = Environment::getVar(Env::CACHE_BASE_PATH, '');
@@ -90,10 +96,8 @@ class Routes
             return '';
         }
 
-        $assetsPath = sprintf('%s%s', $basePath, static::ASSETS_PATH);
+        $this->assetsPath = sprintf('%s%s', $basePath, static::ASSETS_PATH);
 
-        static::$assetsPath = (string)$assetsPath;
-
-        return static::$assetsPath;
+        return $this->assetsPath;
     }
 }

@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class DashboardBootstrapperTest extends TestCase
 {
-    /** @var DashboardBootstrapper */
+    /** @var DashboardBootstrapper - System Under Test */
     protected DashboardBootstrapper $sut;
 
     public function setUp(): void

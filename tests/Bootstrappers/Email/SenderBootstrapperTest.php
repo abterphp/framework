@@ -10,7 +10,7 @@ use Swift_Transport;
 
 class SenderBootstrapperTest extends TestCase
 {
-    /** @var SenderBootstrapper */
+    /** @var SenderBootstrapper - System Under Test */
     protected SenderBootstrapper $sut;
 
     public function setUp(): void

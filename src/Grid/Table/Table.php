@@ -25,13 +25,13 @@ class Table extends Component implements ITable, ITemplater
     public const TAG_TABLE = 'table';
 
     /** @var Header */
-    protected $header;
+    protected Header $header;
 
     /** @var Body */
-    protected $body;
+    protected Body $body;
 
     /** @var string */
-    protected $template = self::DEFAULT_TEMPLATE;
+    protected string $template = self::DEFAULT_TEMPLATE;
 
     /**
      * Table constructor.

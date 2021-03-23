@@ -14,7 +14,7 @@ use Opulence\Ioc\IContainer;
 class PasswordGeneratorBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getBindings(): array
     {
@@ -26,7 +26,6 @@ class PasswordGeneratorBootstrapper extends Bootstrapper implements ILazyBootstr
     /**
      * @param IContainer $container
      *
-     * @throws \Opulence\Ioc\IocException
      */
     public function registerBindings(IContainer $container)
     {

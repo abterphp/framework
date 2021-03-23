@@ -14,7 +14,7 @@ class MockSessionFactory
      * @param TestCase   $testCase
      * @param array|null $sessionData
      * @param string     $name
-     * @param string|int $id
+     * @param string     $sessionId
      *
      * @return ISession|MockObject|null
      */

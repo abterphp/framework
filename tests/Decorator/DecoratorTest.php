@@ -9,11 +9,12 @@ use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\Node;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class DecoratorTest extends TestCase
 {
     /** @var Decorator - System Under Test */
-    protected $sut;
+    protected Decorator $sut;
 
     public function setUp(): void
     {
@@ -48,7 +49,7 @@ class DecoratorTest extends TestCase
 
     public function testDecorateNonMatchingComponents()
     {
-        $this->sut->addRule(new Rule([], \stdClass::class, ['dont-set-this']));
+        $this->sut->addRule(new Rule([], stdClass::class, ['dont-set-this']));
 
         $this->sut->decorate([new Component()]);
 

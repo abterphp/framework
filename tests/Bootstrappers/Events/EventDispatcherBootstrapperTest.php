@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class EventDispatcherBootstrapperTest extends TestCase
 {
+    /** @var EventDispatcherBootstrapper - System Under Test */
     protected EventDispatcherBootstrapper $sut;
 
     public function setUp(): void

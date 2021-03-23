@@ -24,7 +24,7 @@ use Opulence\Framework\Configuration\Config;
  */
 class SecretGenerator extends Command
 {
-    /** @var array */
+    /** @var array<string,int> */
     protected array $keys = [
         Env::DB_PASSWORD                 => 12,
         Env::ENCRYPTION_KEY              => 32,

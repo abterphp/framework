@@ -12,8 +12,7 @@ class FlushCache extends Command
 {
     public const NAME = 'auth:flushcache';
 
-    /** @var CacheManager */
-    protected $cacheManager;
+    protected CacheManager $cacheManager;
 
     /**
      * FlushCacheCommand constructor.

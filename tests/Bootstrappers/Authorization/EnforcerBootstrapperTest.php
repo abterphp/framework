@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class EnforcerBootstrapperTest extends TestCase
 {
-    /** @var EnforcerBootstrapper */
+    /** @var EnforcerBootstrapper - System Under Test */
     protected EnforcerBootstrapper $sut;
 
     public function setUp(): void

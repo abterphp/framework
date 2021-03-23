@@ -17,17 +17,15 @@ class Uploader
 
     public const DEFAULT_KEY = 'file';
 
-    /** @var Filesystem */
-    protected $filesystem;
+    protected Filesystem $filesystem;
 
-    /** @var string */
-    protected $fileManagerPath;
+    protected string $fileManagerPath;
 
     /** @var callable[] */
-    protected $pathFactories = [];
+    protected array $pathFactories = [];
 
     /** @var string[] */
-    protected $errors = [];
+    protected array $errors = [];
 
     /**
      * Uploader constructor.

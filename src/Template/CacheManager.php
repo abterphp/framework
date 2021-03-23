@@ -11,8 +11,7 @@ class CacheManager
     public const CACHE_KEY_TEMPLATES = 'templates_%s';
     public const CACHE_KEY_DOCUMENT  = 'document_%s';
 
-    /** @var ICacheBridge */
-    protected $cacheBridge;
+    protected ICacheBridge $cacheBridge;
 
     /**
      * Cache constructor.

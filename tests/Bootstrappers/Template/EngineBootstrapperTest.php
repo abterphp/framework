@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class EngineBootstrapperTest extends TestCase
 {
-    /** @var EngineBootstrapper */
+    /** @var EngineBootstrapper - System Under Test */
     protected EngineBootstrapper $sut;
 
     public function setUp(): void

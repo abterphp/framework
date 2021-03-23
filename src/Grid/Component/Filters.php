@@ -44,22 +44,18 @@ class Filters extends Component implements ITemplater
 </div>
 EOT;
 
-    protected $template = self::DEFAULT_TEMPLATE;
+    protected string $template = self::DEFAULT_TEMPLATE;
 
     /** @var IFilter[] */
-    protected $nodes = [];
+    protected array $nodes = [];
 
-    /** @var string */
-    protected $nodeClass = IFilter::class;
+    protected string $nodeClass = IFilter::class;
 
-    /** @var Action */
-    protected $hiderBtn;
+    protected Action $hiderBtn;
 
-    /** @var Action */
-    protected $filterBtn;
+    protected Action $filterBtn;
 
-    /** @var Action */
-    protected $resetBtn;
+    protected Action $resetBtn;
 
     /**
      * Filters constructor.

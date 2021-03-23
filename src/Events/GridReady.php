@@ -8,8 +8,7 @@ use AbterPhp\Framework\Grid\IGrid;
 
 class GridReady
 {
-    /** @var IGrid */
-    private $grid;
+    private IGrid $grid;
 
     /**
      * GridReady constructor.

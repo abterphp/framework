@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class EnvReaderTest extends TestCase
 {
     /** @var EnvReader - System Under Test */
-    protected $sut;
+    protected EnvReader $sut;
 
     public function setUp(): void
     {
@@ -26,7 +26,7 @@ class EnvReaderTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function isStagingProvider(): array
     {
@@ -55,7 +55,7 @@ class EnvReaderTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function isTestingProvider(): array
     {
@@ -113,7 +113,7 @@ class EnvReaderTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function isProductionProvider(): array
     {

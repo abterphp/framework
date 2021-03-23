@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class BuildersBootstrapperTest extends TestCase
 {
-    /** @var BuildersBootstrapper */
+    /** @var BuildersBootstrapper - System Under Test */
     protected BuildersBootstrapper $sut;
 
     public function setUp(): void

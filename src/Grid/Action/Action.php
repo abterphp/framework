@@ -10,20 +10,19 @@ use Opulence\Orm\IEntity;
 
 class Action extends Button implements IAction
 {
-    /** @var IEntity */
-    protected $entity;
+    protected ?IEntity $entity = null;
 
-    /** @var array */
-    protected $attributeCallbacks = [];
+    /** @var array<string,callable> */
+    protected array $attributeCallbacks = [];
 
     /**
      * Action constructor.
      *
-     * @param INode[]|INode|string|null $content
-     * @param string[]                  $intents
-     * @param array                     $attributes
-     * @param array                     $attributeCallbacks
-     * @param string|null               $tag
+     * @param INode[]|INode|string|null          $content
+     * @param string[]                           $intents
+     * @param array<string,null|string|string[]> $attributes
+     * @param array<string,callable>             $attributeCallbacks
+     * @param string|null                        $tag
      */
     public function __construct(
         $content,

@@ -13,16 +13,16 @@ use PHPUnit\Framework\TestCase;
 class ButtonFactoryTest extends TestCase
 {
     /** @var ButtonFactory - System Under Test */
-    protected $sut;
+    protected ButtonFactory $sut;
 
     /** @var UrlGenerator|MockObject */
     protected $urlGeneratorMock;
 
     /** @var string[][] */
-    protected $iconAttributes = [];
+    protected array $iconAttributes = [];
 
     /** @var string[][] */
-    protected $textAttributes = [];
+    protected array $textAttributes = [];
 
     public function setUp(): void
     {

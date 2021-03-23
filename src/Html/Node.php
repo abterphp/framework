@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Html;
 
 use AbterPhp\Framework\I18n\ITranslator;
+use InvalidArgumentException;
 
 class Node implements INode
 {
@@ -12,23 +13,22 @@ class Node implements INode
     protected $content;
 
     /**
-     * Intents are a way to achieve frontend-framework independency.
+     * Intents are a way to achieve frontend-framework independence.
      * A button with an intention of "primary-action" can then
      * receive a "btn btn-primary" class from a Bootstrap-based
      * decorator
      *
      * @var string[]
      */
-    protected $intents = [];
+    protected array $intents = [];
 
-    /** @var ITranslator */
-    protected $translator;
+    protected ?ITranslator $translator = null;
 
     /**
      * Node constructor.
      *
-     * @param mixed $content
-     * @param array $intents
+     * @param INode|string[]|string|null $content
+     * @param string[]                   $intents
      */
     public function __construct($content = null, array $intents = [])
     {
@@ -49,7 +49,7 @@ class Node implements INode
     }
 
     /**
-     * @param string|INode|null $content
+     * @param INode|string[]|string|null $content
      *
      * @return INode
      */
@@ -71,15 +71,15 @@ class Node implements INode
             return $this;
         }
 
-        throw new \InvalidArgumentException();
+        throw new InvalidArgumentException();
     }
 
     /**
-     * @see Node::$intents
-     *
      * @param string $intent
      *
      * @return bool
+     * @see Node::$intents
+     *
      */
     public function hasIntent(string $intent): bool
     {
@@ -87,9 +87,9 @@ class Node implements INode
     }
 
     /**
+     * @return string[]
      * @see Node::$intents
      *
-     * @return string[]
      */
     public function getIntents(): array
     {
@@ -97,11 +97,11 @@ class Node implements INode
     }
 
     /**
-     * @see Node::$intents
-     *
      * @param string ...$intent
      *
      * @return $this
+     * @see Node::$intents
+     *
      */
     public function setIntent(string ...$intent): INode
     {

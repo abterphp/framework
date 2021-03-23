@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Assets;
 
-use AbterPhp\Framework\Assets\CacheManager\Flysystem as CacheManager;
+use AbterPhp\Framework\Assets\CacheManager\ICacheManager;
 use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
-use AbterPhp\Framework\Filesystem\FileFinder;
+use AbterPhp\Framework\Config\Routes;
+use AbterPhp\Framework\Filesystem\IFileFinder;
 use AbterPhp\Framework\TestDouble\MockFactory;
-use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemException;
 use MatthiasMullie\Minify\CSS as CssMinifier;
 use MatthiasMullie\Minify\JS as JsMinifier;
@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 class AssetManagerTest extends TestCase
 {
     /** @var AssetManager - System Under Test */
-    protected $sut;
+    protected AssetManager $sut;
 
     /** @var CssMinifier|MockObject */
     protected $cssMinifierMock;
@@ -29,14 +29,17 @@ class AssetManagerTest extends TestCase
     /** @var MinifierFactory|MockObject */
     protected $minifierFactoryMock;
 
-    /** @var FileFinder|MockObject */
+    /** @var IFileFinder|MockObject */
     protected $fileFinderMock;
 
-    /** @var CacheManager|MockObject */
+    /** @var ICacheManager|MockObject */
     protected $cacheManagerMock;
 
     /** @var UrlFixer|MockObject */
     protected $urlFixerMock;
+
+    /** @var Routes|MockObject */
+    protected $routesMock;
 
     public function setUp(): void
     {
@@ -54,18 +57,21 @@ class AssetManagerTest extends TestCase
             ]
         );
 
-        $this->fileFinderMock = $this->createMock(FileFinder::class);
+        $this->fileFinderMock = $this->createMock(IFileFinder::class);
 
-        $this->cacheManagerMock = $this->createMock(CacheManager::class);
+        $this->cacheManagerMock = $this->createMock(ICacheManager::class);
 
         $this->urlFixerMock = $this->createMock(UrlFixer::class);
         $this->urlFixerMock->expects($this->any())->method('fixCss')->willReturnArgument(0);
+
+        $this->routesMock = $this->createMock(Routes::class);
 
         $this->sut = new AssetManager(
             $this->minifierFactoryMock,
             $this->fileFinderMock,
             $this->cacheManagerMock,
-            $this->urlFixerMock
+            $this->urlFixerMock,
+            $this->routesMock
         );
 
         parent::setUp();

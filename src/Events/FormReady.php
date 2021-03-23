@@ -8,8 +8,7 @@ use AbterPhp\Framework\Form\IForm;
 
 class FormReady
 {
-    /** @var IForm */
-    private $form;
+    private IForm $form;
 
     /**
      * FormReady constructor.

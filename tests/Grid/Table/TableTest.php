@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Table;
 
-use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Grid\Component\Body;
 use AbterPhp\Framework\Grid\Component\Header;
 use AbterPhp\Framework\TestDouble\Domain\MockEntityFactory;
@@ -14,7 +13,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 class TableTest extends TestCase
 {
     /** @var Table - System Under Test */
-    protected $sut;
+    protected Table $sut;
 
     /** @var Body|MockObject */
     protected $body;

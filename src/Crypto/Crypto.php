@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Crypto;
 
 use AbterPhp\Framework\Exception\Security as SecurityException;
+use Exception;
 use Opulence\Cryptography\Encryption\IEncrypter;
 use Opulence\Cryptography\Hashing\IHasher;
 
@@ -14,32 +15,27 @@ class Crypto
 
     protected const SECRET_HASH_LENGTH = 128;
 
-    /** @var IHasher */
-    protected $hasher;
+    protected IHasher $hasher;
 
-    /** @var IEncrypter */
-    protected $encrypter;
+    protected IEncrypter $encrypter;
 
-    /** @var string */
-    protected $pepper = '';
+    protected string $pepper = '';
 
-    /** @var array */
-    protected $hashOptions = [];
+    /** @var array<string,string> */
+    protected array $hashOptions = [];
 
-    /** @var string */
-    protected $frontendSalt = '';
+    protected string $frontendSalt = '';
 
-    /** @var string */
-    protected $rawSecretRegexp;
+    protected string $rawSecretRegexp;
 
     /**
      * Authenticator constructor.
      *
-     * @param IEncrypter $encrypter
-     * @param IHasher    $hasher
-     * @param string     $pepper
-     * @param array      $hashOptions
-     * @param string     $frontendSalt
+     * @param IEncrypter           $encrypter
+     * @param IHasher              $hasher
+     * @param string               $pepper
+     * @param array<string,string> $hashOptions
+     * @param string               $frontendSalt
      */
     public function __construct(
         IEncrypter $encrypter,
@@ -64,7 +60,7 @@ class Crypto
      *
      * @return string
      */
-    public function prepareSecret(string $rawText)
+    public function prepareSecret(string $rawText): string
     {
         return hash('sha3-512', $this->frontendSalt . $rawText);
     }
@@ -83,7 +79,7 @@ class Crypto
             $hashedSecret = $this->hasher->hash($rawSecret, $this->hashOptions, $this->pepper);
 
             $hashCryptedSecret = $this->encrypter->encrypt($hashedSecret);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new SecurityException($e->getMessage(), $e->getCode(), $e);
         }
 
@@ -103,7 +99,7 @@ class Crypto
             $hashedSecret = $this->encrypter->decrypt($storedSecret);
 
             $verified = $this->hasher->verify($hashedSecret, $secret, $this->pepper);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new SecurityException($e->getMessage(), $e->getCode(), $e);
         }
 
@@ -115,7 +111,7 @@ class Crypto
      */
     protected function assertRawSecret(string $secret)
     {
-        if (\mb_strlen($secret) !== static::SECRET_HASH_LENGTH) {
+        if (mb_strlen($secret) !== static::SECRET_HASH_LENGTH) {
             throw new SecurityException(static::ERROR_INVALID_SECRET);
         }
 

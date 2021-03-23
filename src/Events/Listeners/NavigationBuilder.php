@@ -12,11 +12,9 @@ use Opulence\Sessions\ISession;
 
 class NavigationBuilder
 {
-    /** @var string */
-    protected $username;
+    protected string $username;
 
-    /** @var Enforcer */
-    protected $enforcer;
+    protected Enforcer $enforcer;
 
     /**
      * NavigationBuilder constructor.

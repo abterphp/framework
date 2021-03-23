@@ -8,16 +8,17 @@ use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Node;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 abstract class NodeTestCase extends TestCase
 {
     /**
-     * @return array
+     * @return array[]
      */
     public function setContentFailureProvider(): array
     {
         return [
-            [new \stdClass()],
+            [new stdClass()],
         ];
     }
 
@@ -55,7 +56,7 @@ abstract class NodeTestCase extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function toStringReturnsRawContentByDefaultProvider(): array
     {
@@ -92,7 +93,8 @@ abstract class NodeTestCase extends TestCase
     /**
      * @dataProvider toStringCanReturnTranslatedContentProvider
      *
-     * @param mixed $rawContent
+     * @param mixed  $rawContent
+     * @param array  $translations
      * @param string $expectedResult
      */
     public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
@@ -116,7 +118,7 @@ abstract class NodeTestCase extends TestCase
      *
      * @param string|null $className
      * @param string[]    $intents
-     * @param int|null    $expectedResult
+     * @param bool        $expectedResult
      */
     public function testIsMatch(?string $className, array $intents, bool $expectedResult)
     {

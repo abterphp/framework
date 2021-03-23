@@ -23,17 +23,11 @@ class UserBlock extends Tag implements INodeContainer
 
     public const AVATAR_BASE_URL = 'https://www.gravatar.com/avatar/%1$s';
 
-    /** @var ISession */
-    protected $session;
+    protected ISession $session;
 
-    /** @var INode */
-    protected $mediaLeft;
-
-    /** @var INode */
-    protected $mediaBody;
-
-    /** @var INode */
-    protected $mediaRight;
+    protected INode $mediaLeft;
+    protected INode $mediaBody;
+    protected INode $mediaRight;
 
     /**
      * UserBlock constructor.

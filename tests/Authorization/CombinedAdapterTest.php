@@ -11,22 +11,22 @@ use PHPUnit\Framework\TestCase;
 
 class CombinedAdapterTest extends TestCase
 {
-    /** @var CombinedAdapter - System Under Test */
-    protected $sut;
-
-    /** @var CasbinAdapter|MockObject */
-    protected $defaultAdapterMock;
-
-    /** @var CacheManager|MockObject */
-    protected $cacheManagerMock;
-
-    protected $exampleConfig = <<<'EOF'
+    protected const EXAMPLE_CONFIG = <<<'EOF'
 [policy_definition]
 p = sub, obj, act
 
 [role_definition]
 g = _, _
 EOF;
+
+    /** @var CombinedAdapter - System Under Test */
+    protected CombinedAdapter $sut;
+
+    /** @var CasbinAdapter|MockObject */
+    protected $defaultAdapterMock;
+
+    /** @var CacheManager|MockObject */
+    protected $cacheManagerMock;
 
     public function setUp(): void
     {
@@ -110,7 +110,7 @@ EOF;
         ];
 
         $model = new CasbinModel();
-        $model->loadModelFromText($this->exampleConfig);
+        $model->loadModelFromText(static::EXAMPLE_CONFIG);
 
         $this->cacheManagerMock->expects($this->once())->method('getAll')->willReturn($cachedData);
 
@@ -133,7 +133,7 @@ EOF;
         ];
 
         $model = new CasbinModel();
-        $model->loadModelFromText($this->exampleConfig);
+        $model->loadModelFromText(static::EXAMPLE_CONFIG);
 
         $model->addPolicies('g', 'g', $cachedData['g']);
         $model->addPolicies('p', 'p', $cachedData['p']);

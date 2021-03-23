@@ -36,34 +36,34 @@ class Pagination extends Tag implements IPagination, ITemplater
     public const LABEL_CONTENT = 'framework:pageSize';
 
     /** @var array */
-    protected $params = [];
+    protected array $params = [];
 
     /** @var int */
-    protected $rangeStart = 0;
+    protected int $rangeStart = 0;
 
     /** @var int */
-    protected $rangeEnd = 0;
+    protected int $rangeEnd = 0;
 
     /** @var int */
-    protected $pageSize = 0;
+    protected int $pageSize = 0;
 
     /** @var int */
-    protected $totalCount = 0;
+    protected int $totalCount = 0;
 
     /** @var int */
-    protected $numberCount = 5;
+    protected int $numberCount = 5;
 
     /** @var array */
-    protected $attributes = [];
+    protected array $attributes = [];
 
     /** @var Numbers */
-    protected $numbers;
+    protected Numbers $numbers;
 
     /** @var Select */
-    protected $sizeOptions;
+    protected Select $sizeOptions;
 
     /** @var string */
-    protected $template = self::DEFAULT_TEMPLATE;
+    protected string $template = self::DEFAULT_TEMPLATE;
 
     /**
      * Pagination constructor.

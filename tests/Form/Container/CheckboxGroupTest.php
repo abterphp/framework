@@ -7,17 +7,17 @@ namespace AbterPhp\Framework\Form\Container;
 use AbterPhp\Framework\Form\Element\Input;
 use AbterPhp\Framework\Form\Extra\Help;
 use AbterPhp\Framework\Form\Label\Label;
-use AbterPhp\Framework\Form\Label\ToggleLabelTest;
 use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class CheckboxGroupTest extends \PHPUnit\Framework\TestCase
+class CheckboxGroupTest extends TestCase
 {
     /**
-     * @return array
+     * @return array[]
      */
-    public function renderProvider()
+    public function renderProvider(): array
     {
         return [
             'simple' => ['<foo>', '<bar>', '<baz>', [], null, null, '<div><bar></div>'],

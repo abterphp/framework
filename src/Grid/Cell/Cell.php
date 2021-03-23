@@ -16,8 +16,7 @@ class Cell extends Component implements ICell
 
     public const GROUP_ACTIONS = 'actions';
 
-    /** @var string */
-    protected $group = '';
+    protected string $group = '';
 
     /**
      * Cell constructor.

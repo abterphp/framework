@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class CryptoBootstrapperTest extends TestCase
 {
-    /** @var CryptoBootstrapper */
+    /** @var CryptoBootstrapper - System Under Test */
     protected CryptoBootstrapper $sut;
 
     public function setUp(): void

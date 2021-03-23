@@ -2,13 +2,15 @@
 
 namespace AbterPhp\Framework\Helper;
 
+use Exception;
+
 class UuidV4
 {
     /**
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
-    public static function generate()
+    public static function generate(): string
     {
         $string = \random_bytes(16);
         $string[6] = \chr(\ord($string[6]) & 0x0f | 0x40);

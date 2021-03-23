@@ -31,19 +31,15 @@ class FormGroup extends Tag implements ITemplater
     public const CLASS_REQUIRED = 'required';
 
     /** @var string[][] */
-    protected $attributes = [];
+    protected array $attributes = [];
 
-    /** @var IElement */
-    protected $input;
+    protected IElement $input;
 
-    /** @var Label */
-    protected $label;
+    protected Label $label;
 
-    /** @var INode|null */
-    protected $help;
+    protected ?INode $help;
 
-    /** @var string */
-    protected $template = self::DEFAULT_TEMPLATE;
+    protected string $template = self::DEFAULT_TEMPLATE;
 
     /**
      * FormGroup constructor.

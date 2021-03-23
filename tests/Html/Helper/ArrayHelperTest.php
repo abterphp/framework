@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 
 class ArrayHelperTest extends TestCase
 {
-    /**
-     * @return array
-     */
     public function toStylesProvider(): array
     {
         return [

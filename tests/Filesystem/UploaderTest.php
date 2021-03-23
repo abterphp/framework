@@ -13,14 +13,13 @@ use PHPUnit\Framework\TestCase;
 
 class UploaderTest extends TestCase
 {
+    protected const FILE_MANAGER_PATH = '/root/to/path';
+
     /** @var Uploader - System Under Test */
-    protected $sut;
+    protected Uploader $sut;
 
     /** @var Filesystem|MockObject */
     protected $filesystemMock;
-
-    /** @var string */
-    protected $fileManagerPath = '/root/to/path';
 
     public function setUp(): void
     {
@@ -28,7 +27,7 @@ class UploaderTest extends TestCase
 
         $this->filesystemMock = $this->createMock(Filesystem::class);
 
-        $this->sut = new Uploader($this->filesystemMock, $this->fileManagerPath);
+        $this->sut = new Uploader($this->filesystemMock, self::FILE_MANAGER_PATH);
     }
 
     public function testPersistWithoutFileData()

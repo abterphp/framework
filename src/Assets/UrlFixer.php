@@ -6,11 +6,9 @@ namespace AbterPhp\Framework\Assets;
 
 class UrlFixer
 {
-    /** @var string[] */
-    protected $quotes = ['"', "'"];
+    protected const QUOTES = ['"', "'"];
 
-    /** @var string */
-    protected $cacheUrl = '';
+    protected string $cacheUrl = '';
 
     /**
      * UrlFixer constructor.
@@ -45,7 +43,7 @@ class UrlFixer
             }
 
             $q = mb_substr($match, 0, 1);
-            $q = in_array($q, $this->quotes, true) ? $q : '';
+            $q = in_array($q, static::QUOTES, true) ? $q : '';
 
             if ($q && mb_substr($match, -1) !== $q) {
                 continue;
@@ -72,7 +70,7 @@ class UrlFixer
      * Fix URL will try to turn a URL into a full qualified URI
      *
      * - Data URLs skipped
-     * - Already fully qualitied URIs skipped
+     * - Already fully qualified URIs skipped
      *
      * @param string $url
      * @param string $path

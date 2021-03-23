@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class TemplateTest extends TestCase
 {
     /** @var Template - System Under Test */
-    protected $sut;
+    protected Template $sut;
 
     public function setUp(): void
     {

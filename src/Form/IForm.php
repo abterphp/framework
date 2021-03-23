@@ -8,5 +8,4 @@ use AbterPhp\Framework\Html\IComponent;
 
 interface IForm extends IComponent
 {
-
 }

@@ -13,7 +13,7 @@ class Data implements IData
      * an identifier of "first-block" would mean that the template will be substituted in
      * other templates having the subtemplate {{block/first-block}}
      */
-    protected $identifier = '';
+    protected string $identifier = '';
 
     /**
      * @var string[]
@@ -21,12 +21,12 @@ class Data implements IData
      * variable subtemplates in templates looks like this {{var/keyName}}
      * where keyName is the name of key in $vars
      */
-    protected $vars = [];
+    protected array $vars = [];
 
     /**
      * @var string[]
      */
-    protected $templates = [];
+    protected array $templates = [];
 
     /**
      * Data constructor.

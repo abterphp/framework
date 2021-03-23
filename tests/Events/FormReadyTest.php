@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class FormReadyTest extends TestCase
 {
     /** @var FormReady - System Under Test */
-    protected $sut;
+    protected FormReady $sut;
 
     /** @var Form|MockObject */
     protected $formMock;

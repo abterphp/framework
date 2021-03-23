@@ -21,7 +21,7 @@ use Opulence\Views\Compilers\Fortune\ITranspiler;
 class EnforcerBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getBindings(): array
     {

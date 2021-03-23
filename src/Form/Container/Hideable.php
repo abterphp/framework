@@ -32,15 +32,14 @@ class Hideable extends Component implements ITemplater
         </div>';
 
     /** @var string */
-    protected $template = self::DEFAULT_TEMPLATE;
+    protected string $template = self::DEFAULT_TEMPLATE;
 
-    /** @var array */
-    protected $attributes = [
+    /** @var array<string,null|string[]> */
+    protected array $attributes = [
         Html5::ATTR_CLASS => [self::CLASS_HIDABLE],
     ];
 
-    /** @var Button */
-    protected $hiderBtn;
+    protected Button $hiderBtn;
 
     /**
      * Hideable constructor.

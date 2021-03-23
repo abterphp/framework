@@ -27,16 +27,16 @@ class Security implements IMiddleware
     public const TEST_OAUTH2_ENCRYPTION_KEY       = 'def00000cea4c75b84279f43b56dd90851609717c5d29c215fd2c67f9b1acb0c3b1c5ff8528dbeecf0c1f368baa33284aa36d00b24994872970933e8881802287553ff7d'; // phpcs:ignore
 
     /** @var ICacheBridge */
-    protected $cacheBridge;
+    protected ICacheBridge $cacheBridge;
 
     /** @var string */
-    protected $environment;
+    protected string $environment;
 
     /** @var string[] */
-    protected $environmentData;
+    protected array $environmentData;
 
     /** @var string[] */
-    protected $settings;
+    protected array $settings;
 
     /**
      * Security constructor.

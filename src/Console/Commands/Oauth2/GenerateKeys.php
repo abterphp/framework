@@ -12,9 +12,7 @@ class GenerateKeys extends Command
     public const NAME = 'oauth2:generatekeys';
 
     protected string $privateKeyPassword;
-
     protected string $privateKeyPath;
-
     protected string $publicKeyPath;
 
     protected bool $isOpenSslAvailable = true;

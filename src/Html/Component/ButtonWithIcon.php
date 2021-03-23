@@ -11,23 +11,20 @@ use AbterPhp\Framework\Html\ITemplater;
 
 class ButtonWithIcon extends Button implements ITemplater
 {
+    public const INTENT_BUTTON_ICON = 'button-icon';
+    public const INTENT_BUTTON_TEXT = 'button-text';
+
     /**
      *   %1$s - text
      *   %2$s - icon
      */
     protected const DEFAULT_TEMPLATE = '%2$s %1$s';
 
-    public const INTENT_BUTTON_ICON = 'button-icon';
-    public const INTENT_BUTTON_TEXT = 'button-text';
+    protected string $template = self::DEFAULT_TEMPLATE;
 
-    /** @var string */
-    protected $template = self::DEFAULT_TEMPLATE;
+    protected IComponent $text;
 
-    /** @var IComponent */
-    protected $text;
-
-    /** @var IComponent */
-    protected $icon;
+    protected IComponent $icon;
 
     /**
      * ButtonWithIcon constructor.

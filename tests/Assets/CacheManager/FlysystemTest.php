@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 class FlysystemTest extends TestCase
 {
     /** @var Flysystem - System Under Test */
-    protected $sut;
+    protected Flysystem $sut;
 
     public function setUp(): void
     {

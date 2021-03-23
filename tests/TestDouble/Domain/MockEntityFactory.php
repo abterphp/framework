@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\TestDouble\Domain;
 
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
-use AbterPhp\Framework\TestDouble\MockFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 

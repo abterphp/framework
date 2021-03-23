@@ -19,9 +19,9 @@ use PHPUnit\Framework\TestCase;
 
 class ViewBootstrapperTest extends TestCase
 {
-    private const BASE_PATH = 'exampleDir';
+    protected const BASE_PATH = 'exampleDir';
 
-    /** @var ViewBootstrapper */
+    /** @var ViewBootstrapper - System Under Test */
     protected ViewBootstrapper $sut;
 
     protected vfsStreamDirectory $root;

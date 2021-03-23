@@ -9,9 +9,6 @@ use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 
 class CollectionTest extends NodeTestCase
 {
-    /**
-     * @return array
-     */
     public function toStringReturnsRawContentByDefaultProvider(): array
     {
         return [

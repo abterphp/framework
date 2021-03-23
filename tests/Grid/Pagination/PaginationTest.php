@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class PaginationTest extends TestCase
 {
-    /**
-     * @return array
-     */
-    public function getTestToStringDataProvider()
+    public function getTestToStringDataProvider(): array
     {
         return [
             [1, 10, 8, 5, ['>1<']],

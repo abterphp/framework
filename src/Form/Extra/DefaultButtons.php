@@ -10,8 +10,6 @@ use AbterPhp\Framework\Html\Component\Button;
 
 class DefaultButtons extends Component
 {
-    protected const DEFAULT_TAG = 'div';
-
     public const BTN_CONTENT_SAVE            = 'framework:save';
     public const BTN_CONTENT_SAVE_AND_BACK   = 'framework:saveAndBack';
     public const BTN_CONTENT_SAVE_AND_EDIT   = 'framework:saveAndEdit';
@@ -25,14 +23,13 @@ class DefaultButtons extends Component
     public const BTN_VALUE_NEXT_CREATE = 'create';
     public const BTN_VALUE_NEXT_BACK   = 'back';
 
+    protected const DEFAULT_TAG = 'div';
+
     /** @var Button[] */
-    protected $components;
+    protected array $components;
 
-    /** @var array */
-    protected $attributes = [];
-
-    /** @var array */
-    protected $btnAttributes = [
+    /** @var array<string,null|string[]> */
+    protected array $btnAttributes = [
         Html5::ATTR_NAME  => [self::BTN_NAME_NEXT],
         Html5::ATTR_TYPE  => [Button::TYPE_SUBMIT],
         Html5::ATTR_VALUE => [self::BTN_VALUE_NEXT_NONE],

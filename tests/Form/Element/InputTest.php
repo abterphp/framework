@@ -8,14 +8,16 @@ use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Html\Helper\ArrayHelper;
 use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class InputTest extends TestCase
 {
     /**
-     * @return array
+     * @return array[]
      */
-    public function renderProvider()
+    public function renderProvider(): array
     {
         $attributes = StubAttributeFactory::createAttributes();
 
@@ -126,7 +128,7 @@ class InputTest extends TestCase
     {
         return [
             'array'    => [[]],
-            'stdclass' => [new \stdClass()],
+            'stdclass' => [new stdClass()],
             'int'      => [123],
             'bool'     => [false],
             'float'    => [123.53],
@@ -140,7 +142,7 @@ class InputTest extends TestCase
      */
     public function testSetValueThrowsExceptionOnInvalid($value)
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $sut = new Input('id', 'name');
 

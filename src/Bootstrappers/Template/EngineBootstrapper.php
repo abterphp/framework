@@ -20,7 +20,7 @@ use Opulence\Ioc\IocException;
 class EngineBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getBindings(): array
     {

@@ -13,22 +13,22 @@ use Opulence\Routing\Urls\UrlGenerator;
 class ButtonFactory
 {
     /** @var UrlGenerator */
-    protected $urlGenerator;
+    protected UrlGenerator $urlGenerator;
 
     /** @var array */
-    protected $iconAttributes = [];
+    protected array $iconAttributes = [];
 
     /** @var array */
-    protected $textAttributes = [];
+    protected array $textAttributes = [];
 
     /** @var array */
-    protected $attributes = [];
+    protected array $attributes = [];
 
     /** @var string */
-    protected $iconTag = Html5::TAG_I;
+    protected string $iconTag = Html5::TAG_I;
 
     /** @var string */
-    protected $textTag = Html5::TAG_SPAN;
+    protected string $textTag = Html5::TAG_SPAN;
 
     /**
      * ButtonFactory constructor.

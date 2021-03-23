@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 class FileFinderTest extends TestCase
 {
     /** @var FileFinder - System Under Test */
-    protected $sut;
+    protected FileFinder $sut;
 
     public function setUp(): void
     {

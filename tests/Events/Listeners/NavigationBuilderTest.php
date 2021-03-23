@@ -17,11 +17,10 @@ use PHPUnit\Framework\TestCase;
 
 class NavigationBuilderTest extends TestCase
 {
-    /** @var NavigationBuilder - System Under Test */
-    protected $sut;
+    protected const USERNAME = 'foo';
 
-    /** @var string */
-    protected $username = 'foo';
+    /** @var NavigationBuilder - System Under Test */
+    protected NavigationBuilder $sut;
 
     /** @var ISession|MockObject */
     protected $sessionMock;
@@ -32,7 +31,7 @@ class NavigationBuilderTest extends TestCase
     public function setUp(): void
     {
         $this->sessionMock = $this->createMock(ISession::class);
-        $this->sessionMock->expects($this->any())->method('get')->willReturn($this->username);
+        $this->sessionMock->expects($this->any())->method('get')->willReturn(static::USERNAME);
 
         $this->enforcerMock = $this->createMock(Enforcer::class);
 

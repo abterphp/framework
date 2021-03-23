@@ -9,10 +9,10 @@ use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 abstract class FooBarStub implements IStringerEntity
 {
     /** @var string */
-    protected $foo;
+    protected string $foo;
 
     /** @var string */
-    protected $bar;
+    protected string $bar;
 
     /**
      * @return string

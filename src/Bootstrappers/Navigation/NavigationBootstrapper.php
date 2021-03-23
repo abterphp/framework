@@ -13,11 +13,12 @@ use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
+use Opulence\Ioc\IocException;
 
 class NavigationBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
-    /** @var array */
-    protected $bindingIntents = [
+    /** @var string[][] */
+    protected array $bindingIntents = [
         NavConstant::NAVBAR  => [Navigation::INTENT_NAVBAR],
         NavConstant::PRIMARY => [Navigation::INTENT_PRIMARY],
     ];
@@ -33,7 +34,7 @@ class NavigationBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @param IContainer $container
      *
-     * @throws \Opulence\Ioc\IocException
+     * @throws IocException
      */
     public function registerBindings(IContainer $container)
     {

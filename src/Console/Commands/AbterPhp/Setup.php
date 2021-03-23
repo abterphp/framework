@@ -14,8 +14,8 @@ class Setup extends Command
 
     protected const DESCRIPTION = 'Setup Abterphp';
 
-    /** @var array */
-    protected $subCommands = [
+    /** @var string[] */
+    protected array $subCommands = [
         /** @see GenerateKeys::doExecute() */
         GenerateKeys::NAME,
     ];

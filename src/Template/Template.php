@@ -6,17 +6,16 @@ namespace AbterPhp\Framework\Template;
 
 class Template
 {
-    /** @var string */
-    protected $rawContent = '';
+    protected string $rawContent = '';
 
     /** @var ParsedTemplate[][][] */
-    protected $parsedTemplates = [];
+    protected array $parsedTemplates = [];
 
     /** @var string[] */
-    protected $vars = [];
+    protected array $vars = [];
 
-    /** @var array */
-    protected $types = ['block'];
+    /** @var string[] */
+    protected array $types = ['block'];
 
     /**
      * Template constructor.
@@ -173,7 +172,7 @@ class Template
                 continue;
             }
 
-            $parsedTemplate->addOccurence($occurence);
+            $parsedTemplate->addOccurrence($occurence);
 
             return;
         }
@@ -201,7 +200,7 @@ class Template
                 }
 
                 foreach ($identifierTemplates as $parsedTemplate) {
-                    $content = str_replace($parsedTemplate->getOccurences(), $replace, $content);
+                    $content = str_replace($parsedTemplate->getOccurrences(), $replace, $content);
                 }
             }
         }

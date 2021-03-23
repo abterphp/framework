@@ -8,16 +8,15 @@ use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 
 class EntityChange
 {
-    /** @var IStringerEntity */
-    private $entity;
+    private IStringerEntity $entity;
 
-    /** @var string */
-    private $eventType;
+    private string $eventType;
 
     /**
      * EntityCreated constructor.
      *
      * @param IStringerEntity $entity
+     * @param string          $eventType
      */
     public function __construct(IStringerEntity $entity, string $eventType)
     {

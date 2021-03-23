@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class CacheManagerBootstrapperTest extends TestCase
 {
-    /** @var CacheManagerBootstrapper */
+    /** @var CacheManagerBootstrapper - System Under Test */
     protected CacheManagerBootstrapper $sut;
 
     public function setUp(): void

@@ -13,16 +13,13 @@ use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 
 class CellTest extends ComponentTest
 {
-    /** @var string */
-    protected $content = 'foo';
-
-    /** @var string */
-    protected $group = 'bar';
+    protected const CONTENT = 'foo';
+    protected const GROUP = 'bar';
 
     /**
-     * @return array
+     * @return array[]
      */
-    public function renderProvider()
+    public function renderProvider(): array
     {
         $attribs = StubAttributeFactory::createAttributes();
         $str     = ArrayHelper::toAttributes($attribs);
@@ -65,7 +62,7 @@ class CellTest extends ComponentTest
 
     public function testGetNodesDefault()
     {
-        $defaultNode = new Node($this->content);
+        $defaultNode = new Node(static::CONTENT);
 
         $expectedNodes = [$defaultNode];
 
@@ -78,7 +75,7 @@ class CellTest extends ComponentTest
 
     public function testGetNodes()
     {
-        $defaultNode = new Node($this->content);
+        $defaultNode = new Node(static::CONTENT);
 
         $node1 = new Node('1');
         $node2 = new Node(new Node('2'));
@@ -101,7 +98,7 @@ class CellTest extends ComponentTest
 
     public function testGetExtendedNodes()
     {
-        $defaultNode = new Node($this->content);
+        $defaultNode = new Node(static::CONTENT);
 
         $node1 = new Node('1');
         $node2 = new Node(new Node('2'));
@@ -124,7 +121,7 @@ class CellTest extends ComponentTest
 
     public function testGetDescendantNodes()
     {
-        $defaultNode = new Node($this->content);
+        $defaultNode = new Node(static::CONTENT);
 
         $node1 = new Node('1');
         $node2 = new Node(new Node('2'));
@@ -147,7 +144,7 @@ class CellTest extends ComponentTest
 
     public function testGetExtendedDescendantNodes()
     {
-        $defaultNode = new Node($this->content);
+        $defaultNode = new Node(static::CONTENT);
 
         $node1 = new Node('1');
         $node2 = new Node(new Node('2'));
@@ -244,7 +241,7 @@ class CellTest extends ComponentTest
 
         $actualResult = $sut->getGroup();
 
-        $this->assertSame($this->group, $actualResult);
+        $this->assertSame(static::GROUP, $actualResult);
     }
 
     /**
@@ -277,8 +274,8 @@ class CellTest extends ComponentTest
      */
     private function createNode($content = null): INode
     {
-        $content = $content ?: $this->content;
+        $content = $content ?: static::CONTENT;
 
-        return $this->createElement($content, $this->group, [], null, null);
+        return $this->createElement($content, static::GROUP, [], null, null);
     }
 }

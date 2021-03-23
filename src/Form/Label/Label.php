@@ -14,11 +14,10 @@ class Label extends Component
 
     public const INTENT_TOGGLE = 'toggle';
 
-    /** @var string */
-    protected $template;
+    protected string $template;
 
-    /** @var array */
-    protected $attributes = [
+    /** @var array<string,null|string|string[]> */
+    protected array $attributes = [
         Html5::ATTR_FOR => '',
     ];
 

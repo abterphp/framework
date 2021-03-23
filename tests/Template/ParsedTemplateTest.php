@@ -8,47 +8,40 @@ use PHPUnit\Framework\TestCase;
 
 class ParsedTemplateTest extends TestCase
 {
+    protected const TYPE = 'foo';
+    protected const IDENTIFIER = 'bar';
+    protected const ATTRIBUTES  = ['body' => 'baz'];
+    protected const OCCURRENCES = ['one', 'two', 'three'];
+
     /** @var ParsedTemplate - System Under Test */
-    protected $sut;
-
-    /** @var string */
-    protected $type = 'foo';
-
-    /** @var string */
-    protected $identifier = 'bar';
-
-    /** @var string[] */
-    protected $attributes = ['body' => 'baz'];
-
-    /** @var string[] */
-    protected $occurences = ['one', 'two', 'three'];
+    protected ParsedTemplate $sut;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->sut = new ParsedTemplate($this->type, $this->identifier, $this->attributes, $this->occurences);
+        $this->sut = new ParsedTemplate(static::TYPE, static::IDENTIFIER, static::ATTRIBUTES, static::OCCURRENCES);
     }
 
     public function testGetIdentifierRetrievesOriginallyProvidedType()
     {
         $actualResult = $this->sut->getType();
 
-        $this->assertSame($this->type, $actualResult);
+        $this->assertSame(static::TYPE, $actualResult);
     }
 
     public function testGetIdentifierRetrievesOriginallyProvidedIdentifier()
     {
         $actualResult = $this->sut->getIdentifier();
 
-        $this->assertSame($this->identifier, $actualResult);
+        $this->assertSame(static::IDENTIFIER, $actualResult);
     }
 
     public function testGetAttributesRetrievesOriginallyProvidedAttributes()
     {
         $actualResult = $this->sut->getAttributes();
 
-        $this->assertSame($this->attributes, $actualResult);
+        $this->assertSame(static::ATTRIBUTES, $actualResult);
     }
 
     public function testGetAttributeFindsAndRetrievesOriginallyProvidedAttributes()
@@ -57,7 +50,7 @@ class ParsedTemplateTest extends TestCase
 
         $actualResult = $this->sut->getAttribute($key);
 
-        $this->assertSame($this->attributes['body'], $actualResult);
+        $this->assertSame(static::ATTRIBUTES['body'], $actualResult);
     }
 
     public function testGetAttributeFindsAndRetrievesNullIfAttributeIsNotSet()
@@ -69,22 +62,22 @@ class ParsedTemplateTest extends TestCase
         $this->assertNull($actualResult);
     }
 
-    public function testGetOccurencesRetrievesOriginallyProvidedOccurencesByDefault()
+    public function testGetOccurrencesRetrievesOriginallyProvidedOccurrencesByDefault()
     {
-        $actualResult = $this->sut->getOccurences();
+        $actualResult = $this->sut->getOccurrences();
 
-        $this->assertSame($this->occurences, $actualResult);
+        $this->assertSame(static::OCCURRENCES, $actualResult);
     }
 
-    public function testGetOccurencesRetrievesAddedOccurences()
+    public function testGetOccurrencesRetrievesAddedOccurrences()
     {
         $expectedResult = ['one', 'two', 'three', 'four'];
 
-        $newOccurence = 'four';
+        $newOccurrence = 'four';
 
-        $this->sut->addOccurence($newOccurence);
+        $this->sut->addOccurrence($newOccurrence);
 
-        $actualResult = $this->sut->getOccurences();
+        $actualResult = $this->sut->getOccurrences();
 
         $this->assertSame($expectedResult, $actualResult);
     }

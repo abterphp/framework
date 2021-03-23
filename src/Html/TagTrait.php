@@ -5,14 +5,14 @@ namespace AbterPhp\Framework\Html;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Html\Helper\ArrayHelper;
 
-// TODO: See if recaftoring can help with removing suppressed issues
+// TODO: See if refactoring can help with removing suppressed issues
 trait TagTrait
 {
-    /** @var array */
-    protected $attributes = [];
+    /** @var array<string,null|string|string[]|array<string,string>> */
+    protected array $attributes = [];
 
-    /** @var string */
-    protected $tag = '';
+    /** @var string|null */
+    protected ?string $tag = null;
 
     /**
      * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn, PhanUndeclaredConstant, PhanUndeclaredConstantOfClass
@@ -86,11 +86,15 @@ trait TagTrait
             return null;
         }
 
-        if (null === $this->attributes[$key]) {
+        $attr = $this->attributes[$key];
+
+        if (null === $attr) {
             return null;
         }
 
-        return implode(' ', $this->attributes[$key]);
+        $attr = (array)$attr;
+
+        return implode(' ', $attr);
     }
 
     /**
@@ -114,7 +118,7 @@ trait TagTrait
     }
 
     /**
-     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn, PhanTypeMismatchArgumentNullableInternal
      *
      * Removes a single attribute value
      *
@@ -129,7 +133,7 @@ trait TagTrait
             return $this;
         }
 
-        if (!array_key_exists($value, $this->attributes[$key])) {
+        if (!is_array($this->attributes[$key]) || !array_key_exists($value, $this->attributes[$key])) {
             return $this;
         }
 
@@ -197,7 +201,7 @@ trait TagTrait
     }
 
     /**
-     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn, PhanTypeMismatchArgumentNullableInternal
      *
      * @param array $attributes
      *

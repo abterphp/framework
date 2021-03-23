@@ -9,9 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 class DateHelperTest extends TestCase
 {
-    /**
-     * @return array
-     */
     public function mysqlDateProvider(): array
     {
         return [

@@ -10,6 +10,8 @@ use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 interface ITable extends IComponent
 {
     /**
+     * @param string $baseUrl
+     *
      * @return string
      */
     public function getSortedUrl(string $baseUrl): string;

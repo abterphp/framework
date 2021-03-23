@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 class DummyTest extends TestCase
 {
     /** @var Dummy - System Under Test */
-    protected $sut;
+    protected Dummy $sut;
 
     public function setUp(): void
     {

@@ -12,10 +12,9 @@ use Opulence\Orm\Ids\Generators\UuidV4Generator;
 class IdGeneratorRegistry implements IIdGeneratorRegistry
 {
     /** @var IIdGenerator[] The mapping of class names to their Id generators */
-    private $generators = [];
+    private array $generators = [];
 
-    /** @var UuidV4Generator */
-    private $uuidV4Generator;
+    private ?UuidV4Generator $uuidV4Generator = null;
 
     /**
      * @return UuidV4Generator

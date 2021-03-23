@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class MinifierFactoryBootstrapperTest extends TestCase
 {
-    /** @var MinifierFactoryBootstrapper */
+    /** @var MinifierFactoryBootstrapper - System Under Test */
     protected MinifierFactoryBootstrapper $sut;
 
     public function setUp(): void

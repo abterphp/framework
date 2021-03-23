@@ -10,7 +10,7 @@ use Swift_Message;
 class MessageFactoryTest extends TestCase
 {
     /** @var MessageFactory - System Under Test */
-    protected $sut;
+    protected MessageFactory $sut;
 
     public function setUp(): void
     {

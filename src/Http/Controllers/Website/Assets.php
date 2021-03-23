@@ -8,19 +8,21 @@ use AbterPhp\Framework\Assets\AssetManager;
 use AbterPhp\Framework\Http\Controllers\ControllerAbstract;
 use AbterPhp\Framework\Session\FlashService;
 use Dflydev\ApacheMimeTypes\FlatRepository;
+use League\Flysystem\FilesystemException;
 use Opulence\Http\Responses\Response;
 use Opulence\Http\Responses\ResponseHeaders;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 class Assets extends ControllerAbstract
 {
     protected const HEADER_CONTENT_TYPE = 'Content-Type';
 
     /** @var AssetManager */
-    protected $assetManager;
+    protected AssetManager $assetManager;
 
     /** @var FlatRepository */
-    protected $memeRepository;
+    protected FlatRepository $memeRepository;
 
     /**
      * Assets constructor.
@@ -48,6 +50,7 @@ class Assets extends ControllerAbstract
      * @param string $path
      *
      * @return Response The response
+     * @throws FilesystemException|Throwable
      */
     public function asset(string $path): Response
     {
@@ -106,7 +109,7 @@ class Assets extends ControllerAbstract
 
     /**
      * @return Response
-     * @throws \Throwable
+     * @throws Throwable
      */
     protected function createNotFound(): Response
     {
@@ -120,7 +123,7 @@ class Assets extends ControllerAbstract
 
     /**
      * @return Response
-     * @throws \Throwable
+     * @throws Throwable
      */
     protected function createForbidden(): Response
     {

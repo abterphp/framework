@@ -21,7 +21,7 @@ use SessionHandlerInterface;
 
 class SessionBootstrapperTest extends TestCase
 {
-    /** @var SessionBootstrapper */
+    /** @var SessionBootstrapper - System Under Test */
     protected SessionBootstrapper $sut;
 
     public function setUp(): void

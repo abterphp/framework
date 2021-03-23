@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class NavigationReadyTest extends TestCase
 {
     /** @var NavigationReady - System Under Test */
-    protected $sut;
+    protected NavigationReady $sut;
 
     /** @var Navigation|MockObject */
     protected $navigationMock;

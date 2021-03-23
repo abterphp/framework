@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 class FlashServiceTest extends TestCase
 {
     /** @var FlashService - System Under Test */
-    protected $sut;
+    protected FlashService $sut;
 
     /** @var ISession|MockObject */
     protected $sessionMock;
@@ -34,7 +34,7 @@ class FlashServiceTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function mergeSuccessMessagesProvider(): array
     {

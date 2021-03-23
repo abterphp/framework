@@ -10,7 +10,8 @@ use PHPUnit\Framework\TestCase;
 
 class SetupTest extends TestCase
 {
-    private Setup $sut;
+    /** @var Setup - System Under Test */
+    protected Setup $sut;
 
     public function setUp(): void
     {

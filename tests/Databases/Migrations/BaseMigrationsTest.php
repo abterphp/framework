@@ -14,19 +14,13 @@ use PHPUnit\Framework\TestCase;
 class BaseMigrationsTest extends TestCase
 {
     /** @var BaseMigration - System Under Test */
-    protected $sut;
+    protected BaseMigration $sut;
 
     /** @var Connection|MockObject */
     protected $connectionMock;
 
     /** @var FileFinder|MockObject */
     protected $fileFinderMock;
-
-    /** @var string */
-    protected $migrationsPath = 'foo';
-
-    /** @var string */
-    protected $driverName = 'bar';
 
     public function setUp(): void
     {

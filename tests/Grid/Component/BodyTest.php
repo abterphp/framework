@@ -14,7 +14,7 @@ class BodyTest extends TestCase
 {
     public function testSetEntitiesWithEmptyEntities()
     {
-        $sut = new Body([], [], null);
+        $sut = new Body([], null);
 
         $sut->setEntities([]);
 
@@ -27,7 +27,7 @@ class BodyTest extends TestCase
         $entities[] = $this->createEntity('foo', 1);
         $entities[] = $this->createEntity('bar', 2);
 
-        $sut = new Body([], [], null);
+        $sut = new Body([], null);
 
         $sut->setEntities($entities);
 
@@ -49,7 +49,7 @@ class BodyTest extends TestCase
             'bar' => 'getBar',
         ];
 
-        $sut = new Body($getters, [], null);
+        $sut = new Body($getters, null);
 
         $sut->setEntities($entities);
 
@@ -73,7 +73,7 @@ class BodyTest extends TestCase
             'bar' => [$entities[0], 'getBar'],
         ];
 
-        $sut = new Body($getters, [], null);
+        $sut = new Body($getters, null);
 
         $sut->setEntities($entities);
 
@@ -95,7 +95,7 @@ class BodyTest extends TestCase
             'bar' => [$entities[0], 'getBar'],
         ];
 
-        $sut = new Body($getters, [], null);
+        $sut = new Body($getters, null);
 
         $sut->setEntities($entities);
 
@@ -139,7 +139,7 @@ class BodyTest extends TestCase
             'bar' => [$entities[0], 'getBar'],
         ];
 
-        $sut = new Body($getters, [], null);
+        $sut = new Body($getters, null);
 
         $nodes = $sut->getExtendedNodes();
 
@@ -159,7 +159,7 @@ class BodyTest extends TestCase
             'bar' => [$entities[0], 'getBar'],
         ];
 
-        $sut = new Body($getters, [], $actions);
+        $sut = new Body($getters, $actions);
 
         $nodes = $sut->getExtendedNodes();
 

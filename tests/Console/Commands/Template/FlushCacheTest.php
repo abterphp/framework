@@ -11,10 +11,11 @@ use PHPUnit\Framework\TestCase;
 
 class FlushCacheTest extends TestCase
 {
-    private FlushCache $sut;
+    /** @var FlushCache - System Under Test */
+    protected FlushCache $sut;
 
     /** @var CacheManager|MockObject */
-    private $cacheManagerMock;
+    protected $cacheManagerMock;
 
     public function setUp(): void
     {

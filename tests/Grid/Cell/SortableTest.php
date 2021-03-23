@@ -12,9 +12,9 @@ use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 class SortableTest extends ComponentTest
 {
     /**
-     * @return array
+     * @return array[]
      */
-    public function renderProvider()
+    public function renderProvider(): array
     {
         $attribs = StubAttributeFactory::createAttributes();
         $str     = ArrayHelper::toAttributes($attribs);
@@ -41,7 +41,7 @@ class SortableTest extends ComponentTest
      * @param string      $expectedResult
      */
     public function testRender(
-        $content,
+        string $content,
         string $group,
         string $inputName,
         string $fieldName,
@@ -60,7 +60,7 @@ class SortableTest extends ComponentTest
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function queryParamProvider(): array
     {
@@ -75,7 +75,7 @@ class SortableTest extends ComponentTest
     /**
      * @dataProvider queryParamProvider
      *
-     * @param array $params
+     * @param array          $params
      * @param        ?string $expectedResult
      */
     public function testQueryParam(array $params, ?string $expectedResult)
@@ -90,7 +90,7 @@ class SortableTest extends ComponentTest
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function shoartingProvider(): array
     {
@@ -169,7 +169,7 @@ class SortableTest extends ComponentTest
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function getQueryPartProvider(): array
     {
@@ -198,7 +198,7 @@ class SortableTest extends ComponentTest
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function getQuerySortConditionsProvider(): array
     {
@@ -244,7 +244,7 @@ class SortableTest extends ComponentTest
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function toStringReturnsRawContentByDefaultProvider(): array
     {
@@ -267,7 +267,7 @@ class SortableTest extends ComponentTest
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function toStringCanReturnTranslatedContentProvider(): array
     {
@@ -282,6 +282,7 @@ class SortableTest extends ComponentTest
      * @dataProvider toStringCanReturnTranslatedContentProvider
      *
      * @param mixed  $rawContent
+     * @param array  $translations
      * @param string $expectedResult
      */
     public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
@@ -300,7 +301,7 @@ class SortableTest extends ComponentTest
      *
      * @param string|null $className
      * @param string[]    $intents
-     * @param int|null    $expectedResult
+     * @param bool        $expectedResult
      */
     public function testIsMatch(?string $className, array $intents, bool $expectedResult)
     {
@@ -313,9 +314,10 @@ class SortableTest extends ComponentTest
     }
 
     /**
-     * @param string      $content
+     * @param string|null $content
      * @param string      $group
      * @param string      $inputName
+     * @param string      $fieldName
      * @param array       $attributes
      * @param array|null  $translations
      * @param string|null $tag
@@ -323,7 +325,7 @@ class SortableTest extends ComponentTest
      * @return Sortable
      */
     private function createNode(
-        $content,
+        ?string $content,
         string $group,
         string $inputName,
         string $fieldName,

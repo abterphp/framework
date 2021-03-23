@@ -18,8 +18,8 @@ class FlushCache extends Command
 
     protected const OPULENCE_FRAMEWORK_FLUSHCACHE = 'framework:flushcache';
 
-    /** @var array */
-    protected $subCommands = [
+    /** @var string[] */
+    protected array $subCommands = [
         /** @see AssetsFlushCacheCommand::doExecute() */
         AssetsFlushCacheCommand::NAME,
         /** @see TemplateFlushCacheCommand::doExecute() */

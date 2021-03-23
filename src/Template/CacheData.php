@@ -9,16 +9,10 @@ class CacheData
     public const PAYLOAD_KEY_DATE         = 'date';
     public const PAYLOAD_KEY_SUBTEMPLATES = 'subTemplates';
 
-    /** @var string */
-    protected $date = '';
+    protected string $date = '';
 
     /** @var string[][] */
-    protected $subTemplates = [];
-
-    public function __construct()
-    {
-        $this->date = date('Y-m-d H:i:s');
-    }
+    protected array $subTemplates = [];
 
     /**
      * @param string $date
@@ -49,6 +43,10 @@ class CacheData
      */
     public function getDate(): string
     {
+        if ($this->date === '') {
+            $this->date = date('Y-m-d H:i:s');
+        }
+
         return $this->date;
     }
 

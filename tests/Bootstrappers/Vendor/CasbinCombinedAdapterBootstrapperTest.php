@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class CasbinCombinedAdapterBootstrapperTest extends TestCase
 {
-    /** @var CasbinCombinedAdapterBootstrapper */
+    /** @var CasbinCombinedAdapterBootstrapper - System Under Test */
     protected CasbinCombinedAdapterBootstrapper $sut;
 
     public function setUp(): void

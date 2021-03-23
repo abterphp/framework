@@ -19,8 +19,7 @@ class UserBlockTest extends TagTest
     /** @var ISession|MockObject */
     protected $sessionMock;
 
-    /** @var array */
-    protected $sessionData = [
+    protected array $sessionData = [
         SessionConstant::USERNAME            => 'Mr. Wolf',
         SessionConstant::EMAIL               => 'mrwolf@example.com',
         SessionConstant::IS_GRAVATAR_ALLOWED => true,

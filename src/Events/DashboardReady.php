@@ -8,8 +8,7 @@ use AbterPhp\Framework\Dashboard\Dashboard;
 
 class DashboardReady
 {
-    /** @var Dashboard */
-    private $dashboard;
+    private Dashboard $dashboard;
 
     /**
      * DashboardReady constructor.

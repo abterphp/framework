@@ -7,47 +7,37 @@ namespace AbterPhp\Framework\Grid\Component;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Grid\Cell\Cell;
+use AbterPhp\Framework\Grid\Collection\Cells;
 use AbterPhp\Framework\Grid\Row\IRow;
 use AbterPhp\Framework\Grid\Row\Row;
 use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Grid\Collection\Cells;
 use AbterPhp\Framework\Html\INode;
 
 class Body extends Component
 {
     protected const DEFAULT_TAG = Html5::TAG_TBODY;
 
-    /** @var array */
-    protected $getters;
+    /** @var array<string,callable> */
+    protected array $getters;
 
-    /** @var array */
-    protected $rowArguments;
-
-    /** @var Actions|null */
-    protected $actions;
+    protected ?Actions $actions;
 
     /** @var IRow[] */
-    protected $nodes = [];
+    protected array $nodes = [];
 
-    /** @var string */
-    protected $nodeClass = IRow::class;
+    protected string $nodeClass = IRow::class;
 
     /**
      * Body constructor.
      *
-     * @param array        $getters
-     * @param array        $rowArguments
-     * @param Actions|null $actions
+     * @param array<string,callable> $getters
+     * @param Actions|null           $actions
      */
-    public function __construct(
-        array $getters,
-        array $rowArguments,
-        ?Actions $actions
-    ) {
+    public function __construct(array $getters, ?Actions $actions)
+    {
         parent::__construct();
 
         $this->getters      = $getters;
-        $this->rowArguments = $rowArguments;
         $this->actions      = $actions;
     }
 
@@ -63,7 +53,7 @@ class Body extends Component
 
             $actions = $this->actions ? $this->actions->duplicate() : null;
 
-            $row = new Row($cells, $actions, $this->rowArguments);
+            $row = new Row($cells, $actions);
             $row->setEntity($entity);
 
             $this->nodes[] = $row;

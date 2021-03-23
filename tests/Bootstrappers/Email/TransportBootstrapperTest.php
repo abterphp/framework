@@ -13,7 +13,7 @@ use Swift_Transport;
 
 class TransportBootstrapperTest extends TestCase
 {
-    /** @var TransportBootstrapper */
+    /** @var TransportBootstrapper - System Under Test */
     protected TransportBootstrapper $sut;
 
     public function setUp(): void

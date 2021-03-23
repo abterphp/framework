@@ -80,6 +80,9 @@ class HeaderTest extends TestCase
         }
     }
 
+    /**
+     * @return array[]
+     */
     public function getSortedUrlProvider(): array
     {
         return [

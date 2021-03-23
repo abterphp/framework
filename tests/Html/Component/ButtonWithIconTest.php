@@ -14,10 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class ButtonWithIconTest extends TestCase
 {
-    /**
-     * @return array
-     */
-    public function renderProvider()
+    public function renderProvider(): array
     {
         $attr = StubAttributeFactory::createAttributes();
         $str  = ArrayHelper::toAttributes($attr);

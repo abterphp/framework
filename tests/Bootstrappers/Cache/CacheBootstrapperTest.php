@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 class CacheBootstrapperTest extends TestCase
 {
-    /** @var CacheBootstrapper */
+    /** @var CacheBootstrapper - System Under Test */
     protected CacheBootstrapper $sut;
 
     public function setUp(): void

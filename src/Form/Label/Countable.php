@@ -26,7 +26,7 @@ class Countable extends Label implements ITemplater
     protected const CLASS_COUNT = 'count';
 
     /** @var string */
-    protected $template = self::DEFAULT_TEMPLATE;
+    protected string $template = self::DEFAULT_TEMPLATE;
 
     /** @var Component */
     protected $counter;

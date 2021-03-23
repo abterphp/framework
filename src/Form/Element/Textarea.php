@@ -10,14 +10,14 @@ use AbterPhp\Framework\Html\Tag;
 
 class Textarea extends Tag implements IElement
 {
+    public const CLASS_WYSIWYG = 'wysiwyg';
+
     protected const DEFAULT_TAG = Html5::TAG_TEXTAREA;
 
     protected const DEFAULT_ROW = '3';
 
-    public const CLASS_WYSIWYG = 'wysiwyg';
-
-    /** @var array */
-    protected $attributes = [];
+    /** @var array<string,null|string[]> */
+    protected array $attributes = [];
 
     /**
      * Textarea constructor.

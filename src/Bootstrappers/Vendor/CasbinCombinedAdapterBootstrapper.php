@@ -15,7 +15,7 @@ use Opulence\Ioc\IocException;
 class CasbinCombinedAdapterBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getBindings(): array
     {

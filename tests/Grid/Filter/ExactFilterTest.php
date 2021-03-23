@@ -7,7 +7,7 @@ namespace AbterPhp\Framework\Grid\Filter;
 class ExactFilterTest extends FilterTest
 {
     /**
-     * @return array
+     * @return array[]
      */
     public function getWhereConditionsProvider(): array
     {
@@ -36,7 +36,7 @@ class ExactFilterTest extends FilterTest
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function getQueryParamsProvider(): array
     {
@@ -65,7 +65,7 @@ class ExactFilterTest extends FilterTest
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function getQueryPartProvider(): array
     {

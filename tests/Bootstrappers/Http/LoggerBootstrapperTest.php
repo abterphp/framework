@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
 
 class LoggerBootstrapperTest extends TestCase
 {
-    /** @var LoggerBootstrapper */
+    /** @var LoggerBootstrapper - System Under Test */
     protected LoggerBootstrapper $sut;
 
     public function setUp(): void

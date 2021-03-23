@@ -17,8 +17,7 @@ class BaseMigration extends Migration
     protected const UP   = 'up';
     protected const DOWN = 'down';
 
-    /** @var IFileFinder */
-    protected $fileFinder;
+    protected IFileFinder $fileFinder;
 
     /**
      * Init constructor.

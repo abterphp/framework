@@ -27,20 +27,16 @@ class Navigation extends Tag implements INodeContainer
     public const INTENT_PRIMARY   = 'primary';
     public const INTENT_SECONDARY = 'secondary';
 
-    /** @var ICollection */
-    protected $prefix;
+    protected ICollection $prefix;
+    protected ICollection $postfix;
 
-    /** @var ICollection */
-    protected $postfix;
-
-    /** @var IComponent|null */
-    protected $wrapper;
+    protected ?IComponent $wrapper = null;
 
     /** @var Item[][] */
-    protected $itemsByWeight = [];
+    protected array $itemsByWeight = [];
 
     /** @var Item[] */
-    protected $nodes = [];
+    protected array $nodes = [];
 
     /**
      * Navigation constructor.

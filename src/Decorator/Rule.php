@@ -7,16 +7,16 @@ namespace AbterPhp\Framework\Decorator;
 class Rule
 {
     /** @var string[] */
-    protected $requiredIntents = [];
+    protected array $requiredIntents = [];
 
     /** @var string|null */
-    protected $requiredClassName = null;
+    protected ?string $requiredClassName = null;
 
     /** @var string[] */
-    protected $defaultClasses = [];
+    protected array $defaultClasses = [];
 
     /** @var string[][] */
-    protected $intentClassMap = [];
+    protected array $intentClassMap = [];
 
     /** @var callable */
     protected $callback;

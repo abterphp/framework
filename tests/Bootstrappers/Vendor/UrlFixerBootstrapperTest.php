@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class UrlFixerBootstrapperTest extends TestCase
 {
-    /** @var UrlFixerBootstrapper */
+    /** @var UrlFixerBootstrapper - System Under Test */
     protected UrlFixerBootstrapper $sut;
 
     public function setUp(): void

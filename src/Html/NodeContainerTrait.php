@@ -6,7 +6,7 @@ namespace AbterPhp\Framework\Html;
 
 use AbterPhp\Framework\I18n\ITranslator;
 
-// TODO: See if recaftoring can help with removing suppressed issues
+// TODO: See if refactoring can help with removing suppressed issues
 trait NodeContainerTrait
 {
     /**
@@ -71,7 +71,6 @@ trait NodeContainerTrait
         $this->translator = $translator;
 
         $nodes = $this->getExtendedNodes();
-        /** @var INode $node */
         foreach ($nodes as $node) {
             $node->setTranslator($translator);
         }

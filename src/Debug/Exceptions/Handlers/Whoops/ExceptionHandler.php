@@ -5,20 +5,19 @@ namespace AbterPhp\Framework\Debug\Exceptions\Handlers\Whoops;
 use Opulence\Debug\Exceptions\Handlers\IExceptionHandler;
 use Psr\Log\LoggerInterface;
 use Throwable;
+use Whoops\Handler\PlainTextHandler;
+use Whoops\Handler\PrettyPageHandler;
 
 /**
  * @SuppressWarnings(PHPMD)
  */
 class ExceptionHandler implements IExceptionHandler
 {
-    /** @var LoggerInterface */
-    protected $logger;
+    protected LoggerInterface $logger;
 
-    /** @var ExceptionRenderer */
-    protected $whoopsRenderer;
+    protected ExceptionRenderer $whoopsRenderer;
 
-    /** @var string|null */
-    protected $sapi;
+    protected ?string $sapi = null;
 
     /**
      * @param LoggerInterface   $logger
@@ -72,9 +71,9 @@ class ExceptionHandler implements IExceptionHandler
     {
         $whoops = $this->whoopsRenderer->getRun();
 
-        $whoops->pushHandler(new \Whoops\Handler\PlainTextHandler($this->logger));
+        $whoops->pushHandler(new PlainTextHandler($this->logger));
         if ($this->getSapi() !== 'cli') {
-            $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+            $whoops->pushHandler(new PrettyPageHandler());
         }
 
         $whoops->register();

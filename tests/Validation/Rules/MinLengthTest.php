@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class MinLengthTest extends TestCase
 {
     /**
-     * @return array
+     * @return array[]
      */
     public function passesProvider(): array
     {

@@ -8,10 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class StringHelperTest extends TestCase
 {
-    /**
-     * @return array
-     */
-    public function wrapInTagDataProvider()
+    public function wrapInTagDataProvider(): array
     {
         return [
             'empty'           => ['', null, [], ''],

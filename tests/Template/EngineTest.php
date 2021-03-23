@@ -30,7 +30,7 @@ class EngineTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function runProvider(): array
     {

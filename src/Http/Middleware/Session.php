@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Http\Middleware;
 
+use Exception;
 use Opulence\Framework\Configuration\Config;
 use Opulence\Framework\Sessions\Http\Middleware\Session as BaseSession;
 use Opulence\Http\Responses\Cookie;
@@ -18,6 +19,8 @@ class Session extends BaseSession
      * @SuppressWarnings(PHPMD.StaticAccess)
      *
      * Runs garbage collection, if necessary
+     *
+     * @throws Exception
      */
     protected function gc()
     {

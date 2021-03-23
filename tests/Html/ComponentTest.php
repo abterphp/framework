@@ -324,7 +324,7 @@ class ComponentTest extends CollectionTest
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function isMatchProvider(): array
     {
@@ -384,7 +384,7 @@ class ComponentTest extends CollectionTest
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function collectProvider(): array
     {
@@ -447,7 +447,8 @@ class ComponentTest extends CollectionTest
     /**
      * @dataProvider toStringCanReturnTranslatedContentProvider
      *
-     * @param mixed $rawContent
+     * @param mixed  $rawContent
+     * @param array  $translations
      * @param string $expectedResult
      */
     public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
@@ -466,7 +467,7 @@ class ComponentTest extends CollectionTest
      *
      * @param string|null $className
      * @param string[]    $intents
-     * @param int|null    $expectedResult
+     * @param bool        $expectedResult
      */
     public function testIsMatch(?string $className, array $intents, bool $expectedResult)
     {

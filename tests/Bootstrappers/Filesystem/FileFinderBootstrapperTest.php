@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class FileFinderBootstrapperTest extends TestCase
 {
-    /** @var FileFinderBootstrapper */
+    /** @var FileFinderBootstrapper - System Under Test */
     protected FileFinderBootstrapper $sut;
 
     public function setUp(): void

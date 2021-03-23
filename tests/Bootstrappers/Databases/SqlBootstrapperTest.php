@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class SqlBootstrapperTest extends TestCase
 {
-    /** @var SqlBootstrapper */
+    /** @var SqlBootstrapper - System Under Test */
     protected SqlBootstrapper $sut;
 
     public function setUp(): void

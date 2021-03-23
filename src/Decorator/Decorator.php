@@ -10,7 +10,7 @@ use AbterPhp\Framework\Html\ITag;
 abstract class Decorator
 {
     /** @var Rule[] */
-    protected $rules = [];
+    protected array $rules = [];
 
     /**
      * @param Rule $rule

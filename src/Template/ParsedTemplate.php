@@ -5,16 +5,16 @@ namespace AbterPhp\Framework\Template;
 class ParsedTemplate
 {
     /** @var string */
-    protected $type;
+    protected string $type;
 
     /** @var string */
-    protected $identifier;
+    protected string $identifier;
 
     /** @var string[] */
-    protected $attributes;
+    protected array $attributes;
 
     /** @var string[] */
-    protected $occurences;
+    protected array $occurrences;
 
     /**
      * ParsedData constructor.
@@ -29,7 +29,7 @@ class ParsedTemplate
         $this->type       = $type;
         $this->identifier = $identifier;
         $this->attributes = $attributes;
-        $this->occurences = $occurences;
+        $this->occurrences = $occurences;
     }
 
     /**
@@ -72,13 +72,13 @@ class ParsedTemplate
     }
 
     /**
-     * @param string $occurence
+     * @param string $occurrence
      *
      * @return ParsedTemplate
      */
-    public function addOccurence(string $occurence): ParsedTemplate
+    public function addOccurrence(string $occurrence): ParsedTemplate
     {
-        $this->occurences[] = $occurence;
+        $this->occurrences[] = $occurrence;
 
         return $this;
     }
@@ -86,8 +86,8 @@ class ParsedTemplate
     /**
      * @return string[]
      */
-    public function getOccurences(): array
+    public function getOccurrences(): array
     {
-        return $this->occurences;
+        return $this->occurrences;
     }
 }

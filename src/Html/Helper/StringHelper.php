@@ -15,7 +15,7 @@ class StringHelper
      *
      * @return string
      */
-    public static function wrapInTag($content, string $tag = null, array $attributes = [])
+    public static function wrapInTag($content, string $tag = null, array $attributes = []): string
     {
         if (empty($tag)) {
             return (string)$content;
@@ -32,7 +32,7 @@ class StringHelper
      *
      * @return string
      */
-    public static function createTag(string $tag, array $attributes = [])
+    public static function createTag(string $tag, array $attributes = []): string
     {
         $attributeHtml = ArrayHelper::toAttributes($attributes);
 

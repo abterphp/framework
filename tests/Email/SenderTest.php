@@ -12,7 +12,7 @@ use Swift_Message;
 class SenderTest extends TestCase
 {
     /** @var Sender - System Under Test */
-    protected $sut;
+    protected Sender $sut;
 
     /** @var Swift_Mailer|MockObject */
     protected $mailerMock;
@@ -23,8 +23,7 @@ class SenderTest extends TestCase
     /** @var MessageFactory|MockObject */
     protected $messageFactory;
 
-    /** @var array */
-    protected $recipients = ['john@example.com', 'jane' => 'jane@example.com'];
+    protected array $recipients = ['john@example.com', 'jane' => 'jane@example.com'];
 
     public function setUp(): void
     {

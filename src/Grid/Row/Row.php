@@ -22,16 +22,16 @@ class Row extends Tag implements IRow
     protected const DEFAULT_TAG = Html5::TAG_TR;
 
     /** @var Cells */
-    protected $cells;
+    protected Cells $cells;
 
     /** @var Actions|null */
-    protected $actions;
+    protected ?Actions $actions;
 
     /** @var Cell */
-    protected $actionCell;
+    protected Cell $actionCell;
 
     /** @var IEntity */
-    protected $entity;
+    protected IEntity $entity;
 
     /**
      * Row constructor.

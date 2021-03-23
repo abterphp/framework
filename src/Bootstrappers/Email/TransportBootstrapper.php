@@ -17,7 +17,7 @@ use Swift_Transport;
 class TransportBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getBindings(): array
     {

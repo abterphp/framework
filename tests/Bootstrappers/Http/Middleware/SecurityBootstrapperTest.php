@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class SecurityBootstrapperTest extends TestCase
 {
-    /** @var SecurityBootstrapper */
+    /** @var SecurityBootstrapper - System Under Test */
     protected SecurityBootstrapper $sut;
 
     public function setUp(): void

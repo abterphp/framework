@@ -10,10 +10,10 @@ use PHPUnit\Framework\TestCase;
 
 class SecretGeneratorTest extends TestCase
 {
-    private const ROOT = 'exampleDir';
-    private const CONFIG = 'exampleDir/config.php';
-    private const CONFIG_EXTRA_KEY = 'MY_RANDOM_PASSWORD';
-    private const CONFIG_CONTENT = <<<EOF
+    protected const ROOT = 'exampleDir';
+    protected const CONFIG = 'exampleDir/config.php';
+    protected const CONFIG_EXTRA_KEY = 'MY_RANDOM_PASSWORD';
+    protected const CONFIG_CONTENT = <<<EOF
 <?php
 Environment::setVar("DB_PASSWORD", "mypassword");
 Environment::setVar("ENCRYPTION_KEY", "mypassword");
@@ -23,9 +23,10 @@ Environment::setVar("OAUTH2_PRIVATE_KEY_PASSWORD", "mypassword");
 Environment::setVar("MY_RANDOM_PASSWORD", "mypassword");
 EOF;
 
-    private SecretGenerator $sut;
+    /** @var SecretGenerator - System Under Test */
+    protected SecretGenerator $sut;
 
-    private string $configUrl;
+    protected string $configUrl;
 
     public function setUp(): void
     {

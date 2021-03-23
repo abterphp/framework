@@ -10,9 +10,9 @@ use PHPUnit\Framework\TestCase;
 class ToggleLabelTest extends TestCase
 {
     /**
-     * @return array
+     * @return array[]
      */
-    public function renderProvider()
+    public function renderProvider(): array
     {
         return [
             'simple'            => [

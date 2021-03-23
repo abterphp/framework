@@ -14,11 +14,9 @@ use Opulence\Routing\Middleware\IMiddleware;
 
 class EnvironmentWarning implements IMiddleware
 {
-    /** @var ITranslator */
-    protected $translator;
+    protected ITranslator $translator;
 
-    /** @var string */
-    protected $environment;
+    protected string $environment;
 
     /**
      * EnvironmentWarning constructor.

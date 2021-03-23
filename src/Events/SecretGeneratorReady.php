@@ -8,8 +8,7 @@ use AbterPhp\Framework\Console\Commands\Security\SecretGenerator;
 
 class SecretGeneratorReady
 {
-    /** @var SecretGenerator */
-    private $secretGenerator;
+    private SecretGenerator $secretGenerator;
 
     /**
      * SecretGeneratorReady constructor.

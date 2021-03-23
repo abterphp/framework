@@ -9,20 +9,16 @@ use PHPUnit\Framework\TestCase;
 
 class GenerateKeysTest extends TestCase
 {
-    private GenerateKeys $sut;
+    protected const PRIVATE_KEY_PASS = 'foo-pass';
+    protected const PRIVATE_KEY_PATH = '/tmp/private';
+    protected const PUBLIC_KEY_PATH  = '/tmp/public';
 
-    /** @var string */
-    private $privateKeyPassword = 'foopass';
-
-    /** @var string */
-    private $privateKeyPath = '/tmp/private';
-
-    /** @var string */
-    private $publicKeyPath = '/tmp/public';
+    /** @var GenerateKeys - System Under Test */
+    protected GenerateKeys $sut;
 
     public function setUp(): void
     {
-        $this->sut = new GenerateKeys($this->privateKeyPassword, $this->privateKeyPath, $this->publicKeyPath);
+        $this->sut = new GenerateKeys(static::PRIVATE_KEY_PASS, static::PRIVATE_KEY_PATH, static::PUBLIC_KEY_PATH);
     }
 
     public function testExecuteWritesFatalIfOpenSslIsNotAvailable()
@@ -46,7 +42,7 @@ class GenerateKeysTest extends TestCase
             $this->markTestSkipped('no openssl installed');
         }
 
-        if (!is_writable(dirname($this->privateKeyPath)) || !is_writable(dirname($this->publicKeyPath))) {
+        if (!is_writable(dirname(static::PRIVATE_KEY_PATH)) || !is_writable(dirname(static::PUBLIC_KEY_PATH))) {
             $this->markTestSkipped('private or public key path are not writable');
         }
 
@@ -55,7 +51,7 @@ class GenerateKeysTest extends TestCase
             ->getMock();
 
         $this->sut->execute($responseMock);
-        $this->assertFileExists($this->privateKeyPath);
-        $this->assertFileExists($this->publicKeyPath);
+        $this->assertFileExists(static::PRIVATE_KEY_PATH);
+        $this->assertFileExists(static::PUBLIC_KEY_PATH);
     }
 }

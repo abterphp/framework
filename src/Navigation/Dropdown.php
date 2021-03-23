@@ -18,20 +18,14 @@ class Dropdown extends Component
 
     public const WRAPPER_INTENT = 'dropdown-wrapper-intent';
 
-    /** @var IComponent|null */
-    protected $wrapper;
-
-    /** @var ICollection */
-    protected $prefix;
-
-    /** @var ICollection */
-    protected $postfix;
+    protected ?IComponent $wrapper = null;
+    protected ICollection $prefix;
+    protected ICollection $postfix;
 
     /** @var Item[] */
-    protected $nodes;
+    protected array $nodes = [];
 
-    /** @var string */
-    protected $nodeClass = Item::class;
+    protected string $nodeClass = Item::class;
 
     /**
      * Component constructor.

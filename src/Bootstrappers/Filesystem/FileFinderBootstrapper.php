@@ -33,7 +33,7 @@ class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
     }
 
     /**
-     * @param array $assetPaths
+     * @param string[] $assetPaths
      *
      * @return $this
      */
@@ -45,7 +45,7 @@ class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
     }
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getBindings(): array
     {

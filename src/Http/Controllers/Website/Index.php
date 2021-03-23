@@ -7,14 +7,15 @@ namespace AbterPhp\Framework\Http\Controllers\Website;
 use AbterPhp\Framework\Http\Controllers\ControllerAbstract;
 use Opulence\Http\Responses\Response;
 use Opulence\Http\Responses\ResponseHeaders;
+use Throwable;
 
 class Index extends ControllerAbstract
 {
-
     /**
      * 404 page
      *
      * @return Response The response
+     * @throws Throwable
      */
     public function asset(): Response
     {
@@ -30,6 +31,7 @@ class Index extends ControllerAbstract
      * 404 page
      *
      * @return Response The response
+     * @throws Throwable
      */
     public function notFound(): Response
     {

@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Debug\Exceptions\Handlers\Whoops;
 
+use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\RunInterface;
 
 class ExceptionHandlerTest extends TestCase
 {
     /** @var ExceptionHandler - System Under Test */
-    protected $sut;
+    protected ExceptionHandler $sut;
 
     /** @var LoggerInterface|MockObject */
     protected $loggerMock;
@@ -35,7 +35,7 @@ class ExceptionHandlerTest extends TestCase
 
     public function testHandleRendersException()
     {
-        $exceptionStub = new \Exception();
+        $exceptionStub = new Exception();
 
         $this->exceptionRendererMock->expects($this->atLeastOnce())->method('render')->with($exceptionStub);
 

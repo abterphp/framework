@@ -8,8 +8,7 @@ use AbterPhp\Framework\Authorization\CombinedAdapter;
 
 class AuthReady
 {
-    /** @var CombinedAdapter */
-    private $adapter;
+    private CombinedAdapter $adapter;
 
     /**
      * AuthReady constructor.

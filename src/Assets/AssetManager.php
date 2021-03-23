@@ -22,23 +22,21 @@ class AssetManager
     protected const EXT_CSS = '.css';
     protected const EXT_JS  = '.js';
 
-    /** @var MinifierFactory */
-    protected $minifierFactory;
+    protected MinifierFactory $minifierFactory;
 
-    /** @var IFileFinder */
-    protected $fileFinder;
+    protected IFileFinder $fileFinder;
 
-    /** @var ICacheManager */
-    protected $cacheManager;
+    protected ICacheManager $cacheManager;
 
-    /** @var JsMinifier[] */
-    protected $jsMinifiers = [];
+    protected UrlFixer $urlFixer;
 
-    /** @var CssMinifier[] */
-    protected $cssMinifiers = [];
+    protected Routes $routes;
 
-    /** @var UrlFixer */
-    protected $urlFixer;
+    /** @var array<string,JsMinifier> */
+    protected array $jsMinifiers = [];
+
+    /** @var array<string,CssMinifier> */
+    protected array $cssMinifiers = [];
 
     /**
      * AssetManager constructor.
@@ -47,17 +45,20 @@ class AssetManager
      * @param IFileFinder     $fileFinder
      * @param ICacheManager   $cacheManager
      * @param UrlFixer        $urlFixer
+     * @param Routes          $routes
      */
     public function __construct(
         MinifierFactory $minifierFactory,
         IFileFinder $fileFinder,
         ICacheManager $cacheManager,
-        UrlFixer $urlFixer
+        UrlFixer $urlFixer,
+        Routes $routes
     ) {
         $this->minifierFactory = $minifierFactory;
         $this->fileFinder      = $fileFinder;
         $this->cacheManager    = $cacheManager;
         $this->urlFixer        = $urlFixer;
+        $this->routes          = $routes;
     }
 
     /**
@@ -105,13 +106,13 @@ class AssetManager
      */
     protected function getExtension(string $path): string
     {
-        $dotrpos = strrpos($path, '.');
+        $dotRPos = strrpos($path, '.');
 
-        if ($dotrpos === false) {
+        if ($dotRPos === false) {
             return '';
         }
 
-        return substr($path, $dotrpos);
+        return substr($path, $dotRPos);
     }
 
     /**
@@ -257,7 +258,7 @@ class AssetManager
             return $path;
         }
 
-        $cachePath = Routes::getCacheUrl();
+        $cachePath = $this->routes->getCacheUrl();
         if (!$cachePath) {
             return $path;
         }

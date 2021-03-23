@@ -13,11 +13,9 @@ class FlashService
     protected const ERROR   = 'error';
     protected const SUCCESS = 'success';
 
-    /** @var ISession */
-    protected $session;
+    protected ISession $session;
 
-    /** @var ITranslator */
-    protected $translator;
+    protected ITranslator $translator;
 
     /**
      * Helper constructor.
@@ -60,7 +58,7 @@ class FlashService
     /**
      * @return array
      */
-    public function retrieveSuccessMessages()
+    public function retrieveSuccessMessages(): array
     {
         return (array)$this->session->get(static::SUCCESS);
     }
@@ -68,7 +66,7 @@ class FlashService
     /**
      * @return array
      */
-    public function retrieveErrorMessages()
+    public function retrieveErrorMessages(): array
     {
         return (array)$this->session->get(static::ERROR);
     }

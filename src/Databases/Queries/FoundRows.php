@@ -8,8 +8,7 @@ use Opulence\Databases\ConnectionPools\ConnectionPool;
 
 class FoundRows
 {
-    /** @var ConnectionPool */
-    protected $connectionPool;
+    protected ConnectionPool $connectionPool;
 
     /**
      * FoundRows constructor.

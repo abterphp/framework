@@ -9,19 +9,16 @@ class Engine
     protected const ERROR_MSG_CACHING_FAILURE = 'Caching failure';
 
     /** @var ILoader[] */
-    protected $loaders = [];
+    protected array $loaders = [];
 
     /** @var string[][] */
-    protected $allSubTemplateIds = [];
+    protected array $allSubTemplateIds = [];
 
-    /** @var Renderer */
-    protected $renderer;
+    protected Renderer $renderer;
 
-    /** @var CacheManager */
-    protected $cacheManager;
+    protected CacheManager $cacheManager;
 
-    /** @var bool */
-    protected $isCacheAllowed;
+    protected bool $isCacheAllowed;
 
     /**
      * Engine constructor.

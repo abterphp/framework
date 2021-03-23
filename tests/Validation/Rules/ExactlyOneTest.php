@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class ExactlyOneTest extends TestCase
 {
     /** @var ExactlyOne - System Under Test */
-    protected $sut;
+    protected ExactlyOne $sut;
 
     public function setUp(): void
     {
@@ -19,7 +19,7 @@ class ExactlyOneTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function passesProvider(): array
     {
@@ -51,7 +51,7 @@ class ExactlyOneTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function failureProvider(): array
     {

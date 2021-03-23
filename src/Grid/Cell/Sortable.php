@@ -14,6 +14,14 @@ use AbterPhp\Framework\Html\ITemplater;
 
 class Sortable extends Cell implements ICell, ITemplater
 {
+    public const DIR_ASC  = 'ASC';
+    public const DIR_DESC = 'DESC';
+
+    public const BTN_INTENT_SHOARTING    = 'grid-sortable-shoarting';
+    public const BTN_INTENT_CARET_DOWN   = 'caret-down';
+    public const BTN_INTENT_CARET_UP     = 'caret-up';
+    public const BTN_INTENT_CARET_ACTIVE = 'caret-active';
+
     protected const DEFAULT_TAG = Html5::TAG_TH;
 
     /**
@@ -24,34 +32,20 @@ class Sortable extends Cell implements ICell, ITemplater
 
     protected const NAME_PREFIX = 'sort-';
 
-    public const DIR_ASC  = 'ASC';
-    public const DIR_DESC = 'DESC';
+    protected string $template = self::DEFAULT_TEMPLATE;
 
-    public const BTN_INTENT_SHOARTING    = 'grid-sortable-shoarting';
-    public const BTN_INTENT_CARET_DOWN   = 'caret-down';
-    public const BTN_INTENT_CARET_UP     = 'caret-up';
-    public const BTN_INTENT_CARET_ACTIVE = 'caret-active';
+    protected string $baseUrl = '';
 
-    /** @var string */
-    protected $template = self::DEFAULT_TEMPLATE;
+    protected string $fieldName = '';
 
-    /** @var string */
-    protected $baseUrl;
+    protected string $inputName = '';
 
-    /** @var string */
-    protected $fieldName = '';
+    /** @var string[] */
+    protected array $sortConditions = [];
 
-    /** @var string */
-    protected $inputName = '';
+    protected int $value = 0;
 
-    /** @var array */
-    protected $sortConditions = [];
-
-    /** @var int */
-    protected $value = 0;
-
-    /** @var Button */
-    protected $sortBtn;
+    protected Button $sortBtn;
 
     /**
      * Sortable constructor.
@@ -78,7 +72,7 @@ class Sortable extends Cell implements ICell, ITemplater
         $this->fieldName = $fieldName;
         $this->inputName = static::NAME_PREFIX . $inputName;
 
-        $this->sortBtn = new Component(null, [static::BTN_INTENT_SHOARTING], [], Html5::TAG_A);
+        $this->sortBtn = new Button(null, [static::BTN_INTENT_SHOARTING], [], Html5::TAG_A);
     }
 
     /**
@@ -170,7 +164,7 @@ class Sortable extends Cell implements ICell, ITemplater
     }
 
     /**
-     * @return array
+     * @return array<string,string>
      */
     public function getSortConditions(): array
     {

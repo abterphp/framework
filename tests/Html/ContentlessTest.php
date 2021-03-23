@@ -47,7 +47,7 @@ class ContentlessTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function getAttributeProvider(): array
     {
@@ -259,7 +259,7 @@ class ContentlessTest extends TestCase
      *
      * @param string|null $className
      * @param string[]    $intents
-     * @param int|null    $expectedResult
+     * @param bool        $expectedResult
      */
     public function testIsMatch(?string $className, array $intents, bool $expectedResult)
     {

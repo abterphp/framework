@@ -101,7 +101,7 @@ class CombinedAdapter implements CasbinAdapter
      *
      * @return bool
      */
-    protected function loadAdapterPolicies($model): bool
+    protected function loadAdapterPolicies(Model $model): bool
     {
         $this->defaultAdapter->loadPolicy($model);
 

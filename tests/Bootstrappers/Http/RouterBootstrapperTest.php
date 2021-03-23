@@ -14,10 +14,10 @@ use PHPUnit\Framework\TestCase;
 
 class RouterBootstrapperTest extends TestCase
 {
-    private const ROOT_PATH = 'exampleDir';
+    protected const ROOT_PATH = 'exampleDir';
 
-    /** @var RouterBootstrapper */
-    private RouterBootstrapper $sut;
+    /** @var RouterBootstrapper - System Under Test */
+    protected RouterBootstrapper $sut;
 
     public function setUp(): void
     {

@@ -21,10 +21,10 @@ class Collection implements ICollection
     protected const ERROR_INVALID_TYPE_RETURN  = 'Retrieved value is not an instance of "%s"';
 
     /** @var INode[] */
-    protected $nodes = [];
+    protected array $nodes = [];
 
     /** @var string */
-    protected $nodeClass = INode::class;
+    protected string $nodeClass = INode::class;
 
     /** @var ITranslator */
     protected $translator;

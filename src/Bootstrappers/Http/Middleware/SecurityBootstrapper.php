@@ -16,7 +16,7 @@ use Opulence\Ioc\IocException;
 class SecurityBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getBindings(): array
     {

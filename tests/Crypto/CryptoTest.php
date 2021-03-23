@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Crypto;
 
 use AbterPhp\Framework\Exception\Security;
+use Exception;
 use Opulence\Cryptography\Encryption\IEncrypter;
 use Opulence\Cryptography\Hashing\IHasher;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -12,23 +13,18 @@ use PHPUnit\Framework\TestCase;
 
 class CryptoTest extends TestCase
 {
+    protected const SALT         = '*?!-321-rab-oof';
+    protected const PEPPER       = 'foo-bar-123-!?*';
+    protected const HASH_OPTIONS = [];
+
     /** @var Crypto - System Under Test */
-    protected $sut;
+    protected Crypto $sut;
 
     /** @var IEncrypter|MockObject */
     protected $encrypterMock;
 
     /** @var IHasher|MockObject */
     protected $hasherMock;
-
-    /** @var string */
-    protected $pepper = 'foo-bar-123-!?*';
-
-    /** @var array */
-    protected $hashOptions = [];
-
-    /** @var string */
-    protected $salt = '*?!-321-rab-oof';
 
     public function setUp(): void
     {
@@ -39,9 +35,9 @@ class CryptoTest extends TestCase
         $this->sut = new Crypto(
             $this->encrypterMock,
             $this->hasherMock,
-            $this->pepper,
-            $this->hashOptions,
-            $this->salt
+            static::PEPPER,
+            static::HASH_OPTIONS,
+            static::SALT
         );
 
         parent::setUp();
@@ -64,7 +60,7 @@ class CryptoTest extends TestCase
         $this->hasherMock
             ->expects($this->once())
             ->method('hash')
-            ->with($secret, $this->hashOptions, $this->pepper)
+            ->with($secret, static::HASH_OPTIONS, static::PEPPER)
             ->willReturn($hashedSecret);
 
         $this->encrypterMock->expects($this->once())->method('encrypt')->with($hashedSecret)->willReturn(
@@ -92,7 +88,7 @@ class CryptoTest extends TestCase
      *
      * @param string $secret
      */
-    public function testHashCryptThrowsSecurityExceptionIfSecretIsInvalid($secret)
+    public function testHashCryptThrowsSecurityExceptionIfSecretIsInvalid(string $secret)
     {
         $this->expectException(Security::class);
 
@@ -108,7 +104,7 @@ class CryptoTest extends TestCase
 
         $secret = str_repeat('f00ba788', 16);
 
-        $this->hasherMock->expects($this->once())->method('hash')->willThrowException(new \Exception());
+        $this->hasherMock->expects($this->once())->method('hash')->willThrowException(new Exception());
         $this->encrypterMock->expects($this->never())->method('encrypt');
 
         $this->sut->hashCrypt($secret);
@@ -122,7 +118,7 @@ class CryptoTest extends TestCase
         $hashedSecret = 'bar';
 
         $this->hasherMock->expects($this->any())->method('hash')->willReturn($hashedSecret);
-        $this->encrypterMock->expects($this->once())->method('encrypt')->willThrowException(new \Exception());
+        $this->encrypterMock->expects($this->once())->method('encrypt')->willThrowException(new Exception());
 
         $this->sut->hashCrypt($secret);
     }

@@ -10,10 +10,6 @@ use AbterPhp\Framework\Html\Tag;
 
 class Input extends Tag implements IElement
 {
-    protected const DEFAULT_TAG = Html5::TAG_INPUT;
-
-    protected const DEFAULT_TYPE = self::TYPE_TEXT;
-
     public const TYPE_BUTTON         = 'button';
     public const TYPE_CHECKBOX       = 'checkbox';
     public const TYPE_COLOR          = 'color';
@@ -40,6 +36,10 @@ class Input extends Tag implements IElement
     public const NAME_HTTP_METHOD = '_method';
 
     public const AUTOCOMPLETE_OFF = 'off';
+
+    protected const DEFAULT_TAG = Html5::TAG_INPUT;
+
+    protected const DEFAULT_TYPE = self::TYPE_TEXT;
 
     /**
      * Input constructor.
@@ -91,7 +91,7 @@ class Input extends Tag implements IElement
     }
 
     /**
-     * @param string $value
+     * @param string|string[] $value
      *
      * @return $this
      */

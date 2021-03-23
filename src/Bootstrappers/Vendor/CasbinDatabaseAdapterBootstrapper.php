@@ -17,7 +17,7 @@ use Opulence\Ioc\IContainer;
 class CasbinDatabaseAdapterBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getBindings(): array
     {

@@ -6,11 +6,12 @@ namespace AbterPhp\Framework\Template;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 class RendererTest extends TestCase
 {
     /** @var Renderer - System Under Test */
-    protected $sut;
+    protected Renderer $sut;
 
     /** @var Template|MockObject */
     protected $templateMock;
@@ -172,7 +173,7 @@ class RendererTest extends TestCase
 
     public function testRenderThrowsExceptionIfLoaderIsNotSetForType()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
 
         $templateMock = $this->createTemplate(['foo' => ['foo0']], 'rendered');
 

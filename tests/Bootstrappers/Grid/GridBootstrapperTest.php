@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class GridBootstrapperTest extends TestCase
 {
-    /** @var GridBootstrapper */
+    /** @var GridBootstrapper - System Under Test */
     protected GridBootstrapper $sut;
 
     public function setUp(): void

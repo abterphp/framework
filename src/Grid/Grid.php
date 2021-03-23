@@ -33,23 +33,17 @@ class Grid extends Component implements IGrid, ITemplater
     protected const ATTRIBUTE_FILTER_CLASS  = 'grid-filters';
     protected const ATTRIBUTE_ACTIONS_CLASS = 'grid-actions';
 
-    /** @var string */
-    protected $containerClass = '';
+    protected string $containerClass = '';
 
-    /** @var ITable */
-    protected $table;
+    protected ITable $table;
 
-    /** @var IPagination */
-    protected $pagination;
+    protected ?IPagination $pagination = null;
 
-    /** @var Filters */
-    protected $filters;
+    protected ?Filters $filters = null;
 
-    /** @var Actions */
-    protected $actions;
+    protected ?Actions $actions = null;
 
-    /** @var string */
-    protected $template = self::DEFAULT_TEMPLATE;
+    protected string $template = self::DEFAULT_TEMPLATE;
 
     /**
      * Grid constructor.
@@ -85,6 +79,30 @@ class Grid extends Component implements IGrid, ITemplater
             $this->filters = $filters;
             $this->filters->appendToAttribute(Html5::ATTR_CLASS, static::ATTRIBUTE_FILTER_CLASS);
         }
+    }
+
+    /**
+     * @return Filters
+     */
+    public function getFilters(): Filters
+    {
+        if ($this->filters === null) {
+            $this->filters = new Filters();
+        }
+
+        return $this->filters;
+    }
+
+    /**
+     * @return Actions
+     */
+    public function getActions(): Actions
+    {
+        if ($this->actions === null) {
+            $this->actions = new Actions();
+        }
+
+        return $this->actions;
     }
 
     /**
@@ -201,8 +219,8 @@ class Grid extends Component implements IGrid, ITemplater
      */
     public function __toString(): string
     {
-        $filters    = (string)$this->filters;
-        $actions    = $this->actions ? (string)$this->actions : '';
+        $filters    = (string)$this->getFilters();
+        $actions    = (string)$this->getActions();
         $table      = (string)$this->table;
         $pagination = (string)$this->pagination;
 

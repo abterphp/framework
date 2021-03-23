@@ -14,7 +14,7 @@ class Dashboard extends Component
     protected const CLASS_DASHBOARD = 'dashboard-container';
 
     /** @var string[] */
-    protected $attributes = [
+    protected array $attributes = [
         Html5::ATTR_CLASS => self::CLASS_DASHBOARD,
     ];
 }

@@ -21,7 +21,7 @@ use Opulence\Redis\Redis;
 class CacheManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getBindings(): array
     {

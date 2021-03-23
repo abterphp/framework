@@ -10,20 +10,19 @@ use PHPUnit\Framework\TestCase;
 
 class EntityChangeTest extends TestCase
 {
+    protected const EVENT_TYPE = 'foo';
+
     /** @var EntityChange - System Under Test */
-    protected $sut;
+    protected EntityChange $sut;
 
     /** @var IStringerEntity|MockObject */
     protected $entityMock;
-
-    /** @var string */
-    protected $eventType = 'foo';
 
     public function setUp(): void
     {
         $this->entityMock = $this->createMock(IStringerEntity::class);
 
-        $this->sut = new EntityChange($this->entityMock, $this->eventType);
+        $this->sut = new EntityChange($this->entityMock, static::EVENT_TYPE);
 
         parent::setUp();
     }
@@ -58,6 +57,6 @@ class EntityChangeTest extends TestCase
     {
         $actualResult = $this->sut->getEventType();
 
-        $this->assertSame($this->eventType, $actualResult);
+        $this->assertSame(static::EVENT_TYPE, $actualResult);
     }
 }

@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class DefaultBuilderTest extends TestCase
 {
     /** @var DefaultBuilder - System Under Test */
-    protected $sut;
+    protected DefaultBuilder $sut;
 
     public function setUp(): void
     {

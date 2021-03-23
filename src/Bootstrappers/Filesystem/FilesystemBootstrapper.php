@@ -14,7 +14,7 @@ use Opulence\Ioc\IContainer;
 class FilesystemBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getBindings(): array
     {

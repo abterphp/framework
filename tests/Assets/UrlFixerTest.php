@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 
 class UrlFixerTest extends TestCase
 {
-    /** @var UrlFixer */
-    protected $sut;
+    protected const CACHE_URL = 'xxx/www';
 
-    protected $cacheUrl = 'xxx/www';
+    /** @var UrlFixer - System Under Test */
+    protected UrlFixer $sut;
 
     public function setUp(): void
     {
-        $this->sut = new UrlFixer($this->cacheUrl);
+        $this->sut = new UrlFixer(self::CACHE_URL);
     }
 
     /**

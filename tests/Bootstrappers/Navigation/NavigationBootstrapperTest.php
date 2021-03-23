@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class NavigationBootstrapperTest extends TestCase
 {
-    /** @var NavigationBootstrapper */
+    /** @var NavigationBootstrapper - System Under Test */
     protected NavigationBootstrapper $sut;
 
     public function setUp(): void

@@ -13,10 +13,9 @@ class Select extends Component implements IElement
     protected const DEFAULT_TAG = Html5::TAG_SELECT;
 
     /** @var Option[] */
-    protected $nodes = [];
+    protected array $nodes = [];
 
-    /** @var string */
-    protected $nodeClass = Option::class;
+    protected string $nodeClass = Option::class;
 
     /**
      * Select constructor.
@@ -63,7 +62,6 @@ class Select extends Component implements IElement
      */
     public function setValueInner(array $values): IElement
     {
-        /** @var Option $option */
         foreach ($this->nodes as $option) {
             if (in_array($option->getValue(), $values, true)) {
                 $option->setAttribute(Html5::ATTR_SELECTED, null);

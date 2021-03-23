@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 
 class MysqlTest extends TestCase
 {
-    /**
-     * @return array
-     */
     public function nullableParamProvider(): array
     {
         return [

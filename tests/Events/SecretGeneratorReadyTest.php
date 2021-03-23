@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class SecretGeneratorReadyTest extends TestCase
 {
     /** @var SecretGeneratorReady - System Under Test */
-    protected $sut;
+    protected SecretGeneratorReady $sut;
 
     /** @var SecretGenerator|MockObject */
     protected $secretGeneratorMock;

@@ -10,6 +10,7 @@ use AbterPhp\Framework\Grid\Component\Filters;
 use AbterPhp\Framework\Grid\Pagination\IPagination;
 use AbterPhp\Framework\Grid\Pagination\Pagination;
 use AbterPhp\Framework\Grid\Table\Table;
+use LogicException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -105,7 +106,7 @@ class GridTest extends TestCase
 
     public function testGetPageThrowsExceptionIfPaginationIsMissing()
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
 
         /** @var Table|MockObject $table */
         $table = $this->createMock(Table::class);
@@ -151,7 +152,7 @@ class GridTest extends TestCase
 
     public function testGetWhereConditionsThrowsExceptionIfFiltersIsMissing()
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
 
         /** @var Table|MockObject $table */
         $table = $this->createMock(Table::class);
@@ -181,7 +182,7 @@ class GridTest extends TestCase
 
     public function testGetSqlParamsThrowsExceptionIfFiltersIsMissing()
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
 
         /** @var Table|MockObject $table */
         $table = $this->createMock(Table::class);
@@ -221,7 +222,7 @@ class GridTest extends TestCase
 
     public function testSetTotalCountThrowsExceptionIfPaginationIsMissing()
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
 
         /** @var Table|MockObject $table */
         $table = $this->createMock(Table::class);

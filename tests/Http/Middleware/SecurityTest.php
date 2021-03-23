@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Http\Middleware;
 
 use AbterPhp\Framework\Constant\Env;
+use Exception;
 use Opulence\Cache\ArrayBridge;
 use Opulence\Environments\Environment;
 use Opulence\Http\Requests\Request;
@@ -132,7 +133,7 @@ class SecurityTest extends TestCase
 
         $sut->setSettings(['display_errors' => '']);
 
-        $this->cacheBridgeMock->expects($this->any())->method('get')->willThrowException(new \Exception());
+        $this->cacheBridgeMock->expects($this->any())->method('get')->willThrowException(new Exception());
         $this->cacheBridgeMock->expects($this->once())->method('set')->willReturn(true);
 
         $actualResult = $sut->handle($requestMock, $next);

@@ -9,7 +9,7 @@ class ArrayHelper
     protected const ERROR_INVALID_ATTRIBUTES = 'invalid attributes (array of string[] and null items)';
 
     /**
-     * @param array $styles
+     * @param array<string,string> $styles
      *
      * @return string
      */
@@ -24,8 +24,8 @@ class ArrayHelper
     }
 
     /**
-     * @param array  $attributes
-     * @param string $prefix string to prepend if the result is not empty
+     * @param array<string,string[]> $attributes
+     * @param string                 $prefix string to prepend if the result is not empty
      *
      * @return string
      */
@@ -54,7 +54,10 @@ class ArrayHelper
      * Merges two sets of attributes, but without filtering out duplicates of any sort
      * (Developed to be used in factories before Component creation)
      *
-     * @return array
+     * @param array<string,null|string[]> $existing
+     * @param array<string,null|string[]> $new
+     *
+     * @return array<string,null|string[]>
      */
     public static function unsafeMergeAttributes(array $existing, array $new): array
     {
@@ -70,10 +73,10 @@ class ArrayHelper
     }
 
     /**
-     * @param array $existing
-     * @param array $new
-     * @param bool  $safe if true, $existing will be formatted, which is of course slower.
-     *                    should only be false if $existing is already formatted
+     * @param array<string,null|string[]> $existing
+     * @param array<string,null|string[]> $new
+     * @param bool                        $safe if true, $existing will be formatted, which is of course slower.
+     *                                          should only be false if $existing is already formatted
      *
      * @return array
      */
@@ -147,7 +150,7 @@ class ArrayHelper
     }
 
     /**
-     * @param array $parts
+     * @param array<string,string> $parts
      *
      * @return string
      */

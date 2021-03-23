@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class SecretGeneratorBootstrapperTest extends TestCase
 {
-    /** @var SecretGeneratorBootstrapper */
+    /** @var SecretGeneratorBootstrapper - System Under Test */
     protected SecretGeneratorBootstrapper $sut;
 
     public function setUp(): void

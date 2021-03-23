@@ -11,10 +11,10 @@ use AbterPhp\Framework\Html\INode;
 class Cells extends Collection
 {
     /** @var ICell[] */
-    protected $nodes = [];
+    protected array $nodes = [];
 
     /** @var string */
-    protected $nodeClass = ICell::class;
+    protected string $nodeClass = ICell::class;
 
     /**
      * @param string $content

@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class GenerateKeysBootstrapperTest extends TestCase
 {
-    /** @var GenerateKeysBootstrapper */
+    /** @var GenerateKeysBootstrapper - System Under Test */
     protected GenerateKeysBootstrapper $sut;
 
     public function setUp(): void

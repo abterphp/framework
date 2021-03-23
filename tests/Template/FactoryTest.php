@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class FactoryTest extends TestCase
 {
     /** @var Factory - System Under Test */
-    protected $sut;
+    protected Factory $sut;
 
     public function setUp(): void
     {

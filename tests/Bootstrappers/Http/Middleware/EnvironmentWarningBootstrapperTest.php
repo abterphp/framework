@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class EnvironmentWarningBootstrapperTest extends TestCase
 {
-    /** @var EnvironmentWarningBootstrapper */
+    /** @var EnvironmentWarningBootstrapper - System Under Test */
     protected EnvironmentWarningBootstrapper $sut;
 
     public function setUp(): void

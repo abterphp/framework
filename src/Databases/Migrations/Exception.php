@@ -46,8 +46,13 @@ class Exception extends \RuntimeException
      *
      * @return string
      */
-    private function customMessage($errorInfo, $query, $className, $fileName, $message): string
-    {
+    private function customMessage(
+        array $errorInfo,
+        string $query,
+        ?string $className,
+        ?string $fileName,
+        string $message
+    ): string {
         $pieces   = [];
         $pieces[] = sprintf('Class: %s', $className ?: '(missing)');
         $pieces[] = sprintf('File: %s', $fileName ?: '(missing)');

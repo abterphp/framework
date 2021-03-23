@@ -10,7 +10,8 @@ use PHPUnit\Framework\TestCase;
 
 class FlushCacheTest extends TestCase
 {
-    private FlushCache $sut;
+    /** @var FlushCache - System Under Test */
+    protected FlushCache $sut;
 
     public function setUp(): void
     {

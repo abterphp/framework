@@ -52,6 +52,7 @@ class I18nBootstrapper extends Bootstrapper
 
     /**
      * @inheritdoc
+     * @throws IocException
      */
     public function registerBindings(IContainer $container)
     {

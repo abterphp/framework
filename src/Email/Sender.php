@@ -8,14 +8,12 @@ use Swift_Mailer;
 
 class Sender implements ISender
 {
-    /** @var Swift_Mailer */
-    protected $mailer;
+    protected Swift_Mailer $mailer;
 
-    /** @var MessageFactory */
-    protected $messageFactory;
+    protected MessageFactory $messageFactory;
 
-    /** @var array */
-    protected $failedRecipients = [];
+    /** @var string[] */
+    protected array $failedRecipients = [];
 
     /**
      * Sender constructor.
@@ -65,7 +63,7 @@ class Sender implements ISender
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getFailedRecipients(): array
     {

@@ -17,9 +17,9 @@ use PHPUnit\Framework\TestCase;
 class ActionTest extends TestCase
 {
     /**
-     * @return array
+     * @return array[]
      */
-    public function renderProvider()
+    public function renderProvider(): array
     {
         $attributes = StubAttributeFactory::createAttributes();
         $str        = ArrayHelper::toAttributes($attributes);

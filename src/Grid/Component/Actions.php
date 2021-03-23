@@ -13,10 +13,9 @@ class Actions extends Component
     protected const DEFAULT_TAG = Html5::TAG_DIV;
 
     /** @var IAction[] */
-    protected $nodes = [];
+    protected array $nodes = [];
 
-    /** @var string */
-    protected $nodeClass = IAction::class;
+    protected string $nodeClass = IAction::class;
 
     /**
      * @return Actions

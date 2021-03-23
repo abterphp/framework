@@ -15,7 +15,7 @@ use Opulence\Ioc\IContainer;
 class DashboardBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getBindings(): array
     {

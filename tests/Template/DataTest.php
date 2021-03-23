@@ -8,30 +8,25 @@ use PHPUnit\Framework\TestCase;
 
 class DataTest extends TestCase
 {
+    public const IDENTIFIER = 'foo';
+    public const VARS       = ['body' => 'bar'];
+    public const TEMPLATES  = ['one', 'two', 'three'];
+
     /** @var Data - System Under Test */
-    protected $sut;
-
-    /** @var string */
-    protected $identifier = 'foo';
-
-    /** @var string[] */
-    protected $vars = ['body' => 'bar'];
-
-    /** @var string[] */
-    protected $templates = ['one', 'two', 'three'];
+    protected Data $sut;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->sut = new Data($this->identifier, $this->vars, $this->templates);
+        $this->sut = new Data(static::IDENTIFIER, static::VARS, static::TEMPLATES);
     }
 
     public function testGetIdentifierRetrievesOriginallyProvidedIdentifierByDefault()
     {
         $actualResult = $this->sut->getIdentifier();
 
-        $this->assertSame($this->identifier, $actualResult);
+        $this->assertSame(static::IDENTIFIER, $actualResult);
     }
 
     public function testGetIdentifierRetrievesLastSetIdentifier()
@@ -49,7 +44,7 @@ class DataTest extends TestCase
     {
         $actualResult = $this->sut->getVars();
 
-        $this->assertSame($this->vars, $actualResult);
+        $this->assertSame(static::VARS, $actualResult);
     }
 
     public function testGetVarsRetrievesLastSetVars()
@@ -67,7 +62,7 @@ class DataTest extends TestCase
     {
         $actualResult = $this->sut->getTemplates();
 
-        $this->assertSame($this->templates, $actualResult);
+        $this->assertSame(static::TEMPLATES, $actualResult);
     }
 
     public function testGetTemplatesRetrievesLastSetTemplates()
