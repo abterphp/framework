@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Crypto;
 
 use AbterPhp\Framework\Constant\Env;
@@ -23,7 +25,7 @@ class PasswordGeneratorBootstrapperTest extends TestCase
         Environment::unsetVar(Env::OAUTH2_SECRET_LENGTH);
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         Environment::setVar(Env::OAUTH2_SECRET_LENGTH, '128');
 

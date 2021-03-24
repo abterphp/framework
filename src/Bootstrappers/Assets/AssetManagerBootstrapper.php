@@ -34,7 +34,7 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @param IContainer $container
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $this->registerAssets($container);
         $this->registerViewFunction($container);
@@ -43,7 +43,7 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @param IContainer $container
      */
-    private function registerAssets(IContainer $container)
+    private function registerAssets(IContainer $container): void
     {
         /** @var FileFinder $fileFinder */
         $fileFinder = $container->resolve(FileFinder::class);
@@ -64,7 +64,7 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @param ICacheManager $cacheManager
      */
-    private function registerCachePaths(ICacheManager $cacheManager)
+    private function registerCachePaths(ICacheManager $cacheManager): void
     {
         $cacheDir = sprintf(
             '%s%s%s',
@@ -79,7 +79,7 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @param IContainer $container
      */
-    private function registerViewFunction(IContainer $container)
+    private function registerViewFunction(IContainer $container): void
     {
         /** @var AssetManager $assetManager */
         $assetManager = $container->resolve(AssetManager::class);

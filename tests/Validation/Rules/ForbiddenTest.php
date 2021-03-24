@@ -12,7 +12,7 @@ class ForbiddenTest extends TestCase
     /**
      * Tests that an empty array fails
      */
-    public function testEmptyArrayPasses()
+    public function testEmptyArrayPasses(): void
     {
         $rule = new Forbidden();
         $this->assertTrue($rule->passes([]));
@@ -26,7 +26,7 @@ class ForbiddenTest extends TestCase
     /**
      * Tests getting the slug
      */
-    public function testGettingSlug()
+    public function testGettingSlug(): void
     {
         $rule = new Forbidden();
         $this->assertEquals('forbidden', $rule->getSlug());
@@ -35,7 +35,7 @@ class ForbiddenTest extends TestCase
     /**
      * Tests that a set value passes
      */
-    public function testSetValueFails()
+    public function testSetValueFails(): void
     {
         $rule = new Forbidden();
         $this->assertFalse($rule->passes(0));
@@ -47,7 +47,7 @@ class ForbiddenTest extends TestCase
     /**
      * Tests that an unset value fails
      */
-    public function testUnsetValuePasses()
+    public function testUnsetValuePasses(): void
     {
         $rule = new Forbidden();
         $this->assertTrue($rule->passes(null));

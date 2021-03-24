@@ -37,14 +37,14 @@ class Base64Test extends TestCase
      * @param array $allValues
      * @param bool  $expectedResult
      */
-    public function testPasses($value, array $allValues, bool $expectedResult)
+    public function testPasses($value, array $allValues, bool $expectedResult): void
     {
         $actualResult = $this->sut->passes($value, $allValues);
 
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testGetSlug()
+    public function testGetSlug(): void
     {
         $actualResult = $this->sut->getSlug();
 

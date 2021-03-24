@@ -8,7 +8,7 @@ use AbterPhp\Framework\TestCase\Html\NodeTestCase;
 
 class TagTest extends NodeTestCase
 {
-    public function testDefaultToString()
+    public function testDefaultToString(): void
     {
         $sut = $this->createNode();
 
@@ -51,7 +51,7 @@ class TagTest extends NodeTestCase
      * @param string[]    $intents
      * @param bool        $expectedResult
      */
-    public function testIsMatch(?string $className, array $intents, bool $expectedResult)
+    public function testIsMatch(?string $className, array $intents, bool $expectedResult): void
     {
         $sut = $this->createNode();
         $sut->setIntent('foo', 'bar');
@@ -61,7 +61,7 @@ class TagTest extends NodeTestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testUnsetAttributeWorksIfAttributeIsNotSet()
+    public function testUnsetAttributeWorksIfAttributeIsNotSet(): void
     {
         $key   = 'foo';
         $value = 'bar';
@@ -77,7 +77,7 @@ class TagTest extends NodeTestCase
         $this->assertNull($actualResult);
     }
 
-    public function testUnsetAttributeValueWorksIfAttributeIsNotSet()
+    public function testUnsetAttributeValueWorksIfAttributeIsNotSet(): void
     {
         $key   = 'foo';
         $value = 'bar';
@@ -91,7 +91,7 @@ class TagTest extends NodeTestCase
         $this->assertNull($actualResult);
     }
 
-    public function testUnsetAttributeValueWorksIfAttributeIsSet()
+    public function testUnsetAttributeValueWorksIfAttributeIsSet(): void
     {
         $key   = 'foo';
         $value = 'bar';
@@ -107,7 +107,7 @@ class TagTest extends NodeTestCase
         $this->assertNull($actualResult);
     }
 
-    public function testUnsetAttributeValueWorksIfAttributeIsSetButValueIsNot()
+    public function testUnsetAttributeValueWorksIfAttributeIsSetButValueIsNot(): void
     {
         $key   = 'foo';
         $value1 = 'bar';

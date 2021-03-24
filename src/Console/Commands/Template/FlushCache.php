@@ -29,7 +29,7 @@ class FlushCache extends Command
     /**
      * @inheritdoc
      */
-    protected function define()
+    protected function define(): void
     {
         $this->setName(static::NAME)
             ->setDescription('Flushes templates')
@@ -39,7 +39,7 @@ class FlushCache extends Command
     /**
      * @inheritdoc
      */
-    protected function doExecute(IResponse $response)
+    protected function doExecute(IResponse $response): void
     {
         $this->cacheManager->flush();
         $response->writeln('<info>Template cache is flushed</info>');

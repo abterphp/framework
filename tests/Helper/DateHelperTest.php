@@ -23,7 +23,7 @@ class DateHelperTest extends TestCase
      * @param DateTime|null $date
      * @param string        $expectedResult
      */
-    public function testMysqlDate(?DateTime $date, string $expectedResult)
+    public function testMysqlDate(?DateTime $date, string $expectedResult): void
     {
         $actualResult = DateHelper::mysqlDate($date);
 
@@ -47,7 +47,7 @@ class DateHelperTest extends TestCase
      * @param DateTime|null $dateTime
      * @param int           $expectedResult
      */
-    public function testMysqlDateTime(?DateTime $dateTime, int $expectedResult)
+    public function testMysqlDateTime(?DateTime $dateTime, int $expectedResult): void
     {
         $actualResult = DateHelper::mysqlDateTime($dateTime);
 

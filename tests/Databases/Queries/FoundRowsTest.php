@@ -19,7 +19,7 @@ class FoundRowsTest extends QueryTestCase
         $this->sut = new FoundRows($this->connectionPoolMock);
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $expectedResult = 10;
 
@@ -42,7 +42,7 @@ class FoundRowsTest extends QueryTestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testGetReturnsZeroIfExecuteFails()
+    public function testGetReturnsZeroIfExecuteFails(): void
     {
         $returnValue = 10;
         $expectedResult = 0;

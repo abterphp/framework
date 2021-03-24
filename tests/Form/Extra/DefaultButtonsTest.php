@@ -42,7 +42,7 @@ class DefaultButtonsTest extends TestCase
         array $translations,
         ?string $tag,
         string $expected
-    ) {
+    ): void {
         $sut = $this->createElement($showUrl, $attributes, $translations, $tag);
 
         $actualResult   = (string)$sut;

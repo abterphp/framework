@@ -22,14 +22,14 @@ class DataTest extends TestCase
         $this->sut = new Data(static::IDENTIFIER, static::VARS, static::TEMPLATES);
     }
 
-    public function testGetIdentifierRetrievesOriginallyProvidedIdentifierByDefault()
+    public function testGetIdentifierRetrievesOriginallyProvidedIdentifierByDefault(): void
     {
         $actualResult = $this->sut->getIdentifier();
 
         $this->assertSame(static::IDENTIFIER, $actualResult);
     }
 
-    public function testGetIdentifierRetrievesLastSetIdentifier()
+    public function testGetIdentifierRetrievesLastSetIdentifier(): void
     {
         $expectedResult = 'foo';
 
@@ -40,14 +40,14 @@ class DataTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testGetVarsRetrievesOriginallyProvidedVarsByDefault()
+    public function testGetVarsRetrievesOriginallyProvidedVarsByDefault(): void
     {
         $actualResult = $this->sut->getVars();
 
         $this->assertSame(static::VARS, $actualResult);
     }
 
-    public function testGetVarsRetrievesLastSetVars()
+    public function testGetVarsRetrievesLastSetVars(): void
     {
         $expectedResult = ['foo'];
 
@@ -58,14 +58,14 @@ class DataTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testGetTemplatesRetrievesOriginallyProvidedTemplatesByDefault()
+    public function testGetTemplatesRetrievesOriginallyProvidedTemplatesByDefault(): void
     {
         $actualResult = $this->sut->getTemplates();
 
         $this->assertSame(static::TEMPLATES, $actualResult);
     }
 
-    public function testGetTemplatesRetrievesLastSetTemplates()
+    public function testGetTemplatesRetrievesLastSetTemplates(): void
     {
         $expectedResult = ['foo'];
 

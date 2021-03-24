@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\TestDouble\I18n;
 
 use AbterPhp\Framework\I18n\ITranslator;

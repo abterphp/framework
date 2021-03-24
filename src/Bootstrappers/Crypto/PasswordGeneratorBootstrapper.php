@@ -27,7 +27,7 @@ class PasswordGeneratorBootstrapper extends Bootstrapper implements ILazyBootstr
      * @param IContainer $container
      *
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $secretLength = $this->getSecretLength();
         $generator    = new ComputerPasswordGenerator();

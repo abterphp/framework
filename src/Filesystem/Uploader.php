@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Filesystem;
 
+use Exception;
 use League\Flysystem\UnableToReadFile;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
@@ -106,10 +109,11 @@ class Uploader
      * randomness and uniqueness.
      *
      * @return string
+     * @throws Exception
      */
     protected function randFileName(): string
     {
-        return substr(md5(rand(0, PHP_INT_MAX)), 0, 12);
+        return substr(md5(random_bytes(12), true), 0, 12);
     }
 
     /**

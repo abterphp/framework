@@ -24,7 +24,7 @@ class LikeFilterTest extends FilterTest
      * @param array $params
      * @param array $expectedResult
      */
-    public function testGetWhereConditions(array $params, array $expectedResult)
+    public function testGetWhereConditions(array $params, array $expectedResult): void
     {
         $sut = $this->createFilter();
 
@@ -53,7 +53,7 @@ class LikeFilterTest extends FilterTest
      * @param array $params
      * @param array $expectedResult
      */
-    public function testGetQueryParams(array $params, array $expectedResult)
+    public function testGetQueryParams(array $params, array $expectedResult): void
     {
         $sut = $this->createFilter();
 
@@ -82,7 +82,7 @@ class LikeFilterTest extends FilterTest
      * @param array  $params
      * @param string $expectedResult
      */
-    public function testGetQueryPart(array $params, string $expectedResult)
+    public function testGetQueryPart(array $params, string $expectedResult): void
     {
         $sut = $this->createFilter();
 

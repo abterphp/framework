@@ -24,7 +24,7 @@ class CollectionTest extends NodeTestCase
      * @param mixed  $rawContent
      * @param string $expectedResult
      */
-    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult)
+    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult): void
     {
         $sut = $this->createNode($rawContent);
 
@@ -49,10 +49,14 @@ class CollectionTest extends NodeTestCase
      * @dataProvider toStringCanReturnTranslatedContentProvider
      *
      * @param mixed  $rawContent
+     * @param array  $translations
      * @param string $expectedResult
      */
-    public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
-    {
+    public function testToStringCanReturnTranslatedContent(
+        $rawContent,
+        array $translations,
+        string $expectedResult
+    ): void {
         $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
 
         $sut = $this->createNode($rawContent);
@@ -69,7 +73,7 @@ class CollectionTest extends NodeTestCase
      * @param string[]    $intents
      * @param int|null    $expectedResult
      */
-    public function testIsMatch(?string $className, array $intents, bool $expectedResult)
+    public function testIsMatch(?string $className, array $intents, bool $expectedResult): void
     {
         $sut = $this->createNode();
         $sut->setIntent('foo', 'bar');
@@ -79,7 +83,7 @@ class CollectionTest extends NodeTestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testCountWithoutOffset()
+    public function testCountWithoutOffset(): void
     {
         $expectedResult = 2;
 
@@ -94,7 +98,7 @@ class CollectionTest extends NodeTestCase
         $this->assertSame($expectedResult, count($sut));
     }
 
-    public function testCountWithExplicitOffset()
+    public function testCountWithExplicitOffset(): void
     {
         $expectedResult = 2;
 
@@ -109,7 +113,7 @@ class CollectionTest extends NodeTestCase
         $this->assertSame($expectedResult, count($sut));
     }
 
-    public function testCountWithMixedOffset()
+    public function testCountWithMixedOffset(): void
     {
         $node1 = new Node('1');
         $node2 = new Node('2');
@@ -128,7 +132,7 @@ class CollectionTest extends NodeTestCase
         $this->assertSame($expectedCount, count($sut));
     }
 
-    public function testArrayAccessWithoutOffset()
+    public function testArrayAccessWithoutOffset(): void
     {
         $node1 = new Node('1');
         $node2 = new Node('2');
@@ -142,7 +146,7 @@ class CollectionTest extends NodeTestCase
         $this->assertSame($node2, $sut[1]);
     }
 
-    public function testArrayAccessWithExplicitOffset()
+    public function testArrayAccessWithExplicitOffset(): void
     {
         $node1 = new Node('1');
         $node2 = new Node('2');
@@ -156,7 +160,7 @@ class CollectionTest extends NodeTestCase
         $this->assertSame($node2, $sut[1]);
     }
 
-    public function testArrayAccessThrowExceptionWhenMadeDirty()
+    public function testArrayAccessThrowExceptionWhenMadeDirty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -167,7 +171,7 @@ class CollectionTest extends NodeTestCase
         $sut[1] = $node1;
     }
 
-    public function testArrayAccessWithMixedOffset()
+    public function testArrayAccessWithMixedOffset(): void
     {
         $node1 = new Node('1');
         $node2 = new Node('2');
@@ -203,7 +207,7 @@ class CollectionTest extends NodeTestCase
     /**
      * @dataProvider contentFailureProvider
      */
-    public function testConstructFailure($item)
+    public function testConstructFailure($item): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -213,7 +217,7 @@ class CollectionTest extends NodeTestCase
     /**
      * @dataProvider contentFailureProvider
      */
-    public function testSetContentFailure($item)
+    public function testSetContentFailure($item): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -240,7 +244,7 @@ class CollectionTest extends NodeTestCase
     /**
      * @dataProvider offsetSetFailureProvider
      */
-    public function testArrayAccessFailureWithoutOffset($item)
+    public function testArrayAccessFailureWithoutOffset($item): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -252,7 +256,7 @@ class CollectionTest extends NodeTestCase
     /**
      * @dataProvider offsetSetFailureProvider
      */
-    public function testArrayAccessFailureWithExplicitOffset($item)
+    public function testArrayAccessFailureWithExplicitOffset($item): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -261,7 +265,7 @@ class CollectionTest extends NodeTestCase
         $sut[] = $item;
     }
 
-    public function testArrayAccessUnset()
+    public function testArrayAccessUnset(): void
     {
         $node1 = new Node('1');
 
@@ -276,7 +280,7 @@ class CollectionTest extends NodeTestCase
         $this->assertfalse($sut->offsetExists(0));
     }
 
-    public function testSetContent()
+    public function testSetContent(): void
     {
         $node1 = new Node('1');
         $node2 = new Node('2');
@@ -299,7 +303,7 @@ class CollectionTest extends NodeTestCase
         $this->assertEquals($expectedNodes, $actualResult);
     }
 
-    public function testGetNodes()
+    public function testGetNodes(): void
     {
         $node1 = new Node('1');
         $node2 = new Node(new Node('2'));
@@ -320,7 +324,7 @@ class CollectionTest extends NodeTestCase
         $this->assertEquals($expectedNodes, $actualResult);
     }
 
-    public function testGetExtendedNodes()
+    public function testGetExtendedNodes(): void
     {
         $node1 = new Node('1');
         $node2 = new Node(new Node('2'));
@@ -341,7 +345,7 @@ class CollectionTest extends NodeTestCase
         $this->assertEquals($expectedNodes, $actualResult);
     }
 
-    public function testGetDescendantNodes()
+    public function testGetDescendantNodes(): void
     {
         $node1 = new Node('1');
         $node2 = new Node(new Node('2'));
@@ -362,7 +366,7 @@ class CollectionTest extends NodeTestCase
         $this->assertEquals($expectedNodes, $actualResult);
     }
 
-    public function testGetExtendedDescendantNodes()
+    public function testGetExtendedDescendantNodes(): void
     {
         $node1 = new Node('1');
         $node2 = new Node(new Node('2'));
@@ -383,7 +387,7 @@ class CollectionTest extends NodeTestCase
         $this->assertEquals($expectedNodes, $actualResult);
     }
 
-    public function testIterator()
+    public function testIterator(): void
     {
         $node1 = new Node('1');
         $node2 = new Node('2');
@@ -408,7 +412,7 @@ class CollectionTest extends NodeTestCase
         }
     }
 
-    public function testGetRawContentReturnsNonTranslatedContent()
+    public function testGetRawContentReturnsNonTranslatedContent(): void
     {
         $this->assertTrue(true, 'No need to test getRawContent');
     }
@@ -483,7 +487,7 @@ class CollectionTest extends NodeTestCase
         array $nodesToInsert,
         bool $expectedResult,
         array $expectedNodes
-    ) {
+    ): void {
         $sut = $this->createNode($content);
 
         $actualResult = $sut->insertBefore($nodeToFind, ...$nodesToInsert);
@@ -562,7 +566,7 @@ class CollectionTest extends NodeTestCase
         array $nodesToInsert,
         bool $expectedResult,
         array $expectedNodes
-    ) {
+    ): void {
         $sut = $this->createNode($content);
 
         $actualResult = $sut->insertAfter($nodeToFind, ...$nodesToInsert);
@@ -648,7 +652,7 @@ class CollectionTest extends NodeTestCase
         array $nodesToInsert,
         bool $expectedResult,
         array $expectedNodes
-    ) {
+    ): void {
         $sut = $this->createNode($content);
 
         $actualResult = $sut->replace($nodeToFind, ...$nodesToInsert);
@@ -725,7 +729,7 @@ class CollectionTest extends NodeTestCase
         INode $nodeToFind,
         bool $expectedResult,
         array $expectedNodes
-    ) {
+    ): void {
         $sut = $this->createNode($content);
 
         $actualResult = $sut->remove($nodeToFind);
@@ -776,7 +780,7 @@ class CollectionTest extends NodeTestCase
         array $intents,
         string $intentToCheck,
         bool $expectedResult
-    ) {
+    ): void {
         $sut = $this->createNode();
 
         $sut->setIntent(...$intents);

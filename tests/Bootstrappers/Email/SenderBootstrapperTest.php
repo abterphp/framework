@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Email;
 
 use AbterPhp\Framework\Email\MessageFactory;
@@ -18,7 +20,7 @@ class SenderBootstrapperTest extends TestCase
         $this->sut = new SenderBootstrapper();
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         $transportMock      = $this->getMockBuilder(Swift_Transport::class)->getMock();
         $messageFactoryMock = $this->getMockBuilder(MessageFactory::class)->getMock();

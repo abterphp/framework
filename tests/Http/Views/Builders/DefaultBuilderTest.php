@@ -20,7 +20,7 @@ class DefaultBuilderTest extends TestCase
         $this->sut = new DefaultBuilder();
     }
 
-    public function testBuild()
+    public function testBuild(): void
     {
         /** @var View|MockObject $viewMock */
         $viewMock = $this->createMock(View::class);

@@ -77,7 +77,7 @@ class AssetManagerTest extends TestCase
         parent::setUp();
     }
 
-    public function testAddCss()
+    public function testAddCss(): void
     {
         $groupName = 'foo';
         $rawPath   = 'bar';
@@ -91,7 +91,7 @@ class AssetManagerTest extends TestCase
         $this->sut->addCss($groupName, $rawPath);
     }
 
-    public function testAddCssWithPathWtihExtension()
+    public function testAddCssWithPathWtihExtension(): void
     {
         $groupName = 'foo';
         $rawPath   = 'bar.css';
@@ -105,7 +105,7 @@ class AssetManagerTest extends TestCase
         $this->sut->addCss($groupName, $rawPath);
     }
 
-    public function testAddJs()
+    public function testAddJs(): void
     {
         $groupName = 'foo';
         $rawPath   = 'bar';
@@ -119,7 +119,7 @@ class AssetManagerTest extends TestCase
         $this->sut->addJs($groupName, $rawPath);
     }
 
-    public function testAddJsWithPathWithExtension()
+    public function testAddJsWithPathWithExtension(): void
     {
         $groupName = 'foo';
         $rawPath   = 'bar.js';
@@ -133,7 +133,7 @@ class AssetManagerTest extends TestCase
         $this->sut->addJs($groupName, $rawPath);
     }
 
-    public function testAddCssContent()
+    public function testAddCssContent(): void
     {
         $groupName = 'foo';
         $content   = 'baz';
@@ -143,7 +143,7 @@ class AssetManagerTest extends TestCase
         $this->sut->addCssContent($groupName, $content);
     }
 
-    public function testAddJsContent()
+    public function testAddJsContent(): void
     {
         $groupName = 'foo';
         $content   = 'baz';
@@ -153,7 +153,7 @@ class AssetManagerTest extends TestCase
         $this->sut->addJsContent($groupName, $content);
     }
 
-    public function testAddJsVar()
+    public function testAddJsVar(): void
     {
         $groupName       = 'foo';
         $name            = 'fooer';
@@ -165,7 +165,7 @@ class AssetManagerTest extends TestCase
         $this->sut->addJsVar($groupName, $name, $value);
     }
 
-    public function testRenderRawReturnsNullIfReadingFails()
+    public function testRenderRawReturnsNullIfReadingFails(): void
     {
         $cachePath = 'foo.css';
 
@@ -174,7 +174,7 @@ class AssetManagerTest extends TestCase
         $this->assertNull($actualResult);
     }
 
-    public function testRenderRawWritesCacheIfContentIsRead()
+    public function testRenderRawWritesCacheIfContentIsRead(): void
     {
         $expectedResult = 'baz';
 
@@ -196,7 +196,7 @@ class AssetManagerTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testRenderCss()
+    public function testRenderCss(): void
     {
         $groupName = 'foo';
         $cachePath = 'foo.css';
@@ -211,7 +211,7 @@ class AssetManagerTest extends TestCase
         $this->assertSame($content, $actualResult);
     }
 
-    public function testRenderJs()
+    public function testRenderJs(): void
     {
         $groupName = 'foo';
         $cachePath = 'foo.js';
@@ -226,7 +226,7 @@ class AssetManagerTest extends TestCase
         $this->assertSame($content, $actualResult);
     }
 
-    public function testEnsureCssWebPathUsesCacheByDefault()
+    public function testEnsureCssWebPathUsesCacheByDefault(): void
     {
         $groupName = 'foo';
         $cachePath = 'foo.css';
@@ -242,7 +242,7 @@ class AssetManagerTest extends TestCase
         $this->assertSame($webPath, $actualResult);
     }
 
-    public function testEnsureJsWebPathUsesCacheByDefault()
+    public function testEnsureJsWebPathUsesCacheByDefault(): void
     {
         $groupName = 'foo';
         $cachePath = 'foo.js';
@@ -258,7 +258,7 @@ class AssetManagerTest extends TestCase
         $this->assertSame($webPath, $actualResult);
     }
 
-    public function testEnsureImgWebPathThrowsExceptionIfRenderingFails()
+    public function testEnsureImgWebPathThrowsExceptionIfRenderingFails(): void
     {
         $this->expectException(FilesystemException::class);
 
@@ -270,7 +270,7 @@ class AssetManagerTest extends TestCase
         $this->sut->ensureImgWebPath($cachePath);
     }
 
-    public function testEnsureImgWebPathUsesCacheByDefault()
+    public function testEnsureImgWebPathUsesCacheByDefault(): void
     {
         $cachePath = 'foo.js';
         $webPath   = '/baz';
@@ -284,7 +284,7 @@ class AssetManagerTest extends TestCase
         $this->assertSame($webPath, $actualResult);
     }
 
-    public function testEnsureCssWebPathRendersIfCacheDoesNotExist()
+    public function testEnsureCssWebPathRendersIfCacheDoesNotExist(): void
     {
         $groupName = 'foo';
         $cachePath = 'foo.css';
@@ -302,7 +302,7 @@ class AssetManagerTest extends TestCase
         $this->assertSame($webPath, $actualResult);
     }
 
-    public function testEnsureJsWebPathRendersIfCacheDoesNotExist()
+    public function testEnsureJsWebPathRendersIfCacheDoesNotExist(): void
     {
         $groupName = 'foo';
         $cachePath = 'foo.js';
@@ -320,7 +320,7 @@ class AssetManagerTest extends TestCase
         $this->assertSame($webPath, $actualResult);
     }
 
-    public function testEnsureImgWebPathRendersIfCacheDoesNotExist()
+    public function testEnsureImgWebPathRendersIfCacheDoesNotExist(): void
     {
         $cachePath = 'foo.js';
         $webPath   = '/baz';

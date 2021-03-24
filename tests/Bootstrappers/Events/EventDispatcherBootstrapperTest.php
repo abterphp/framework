@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Events;
 
 use Opulence\Events\Dispatchers\EventRegistry;
@@ -17,11 +19,11 @@ class EventDispatcherBootstrapperTest extends TestCase
         $this->sut = new EventDispatcherBootstrapper();
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         $listenerName = 'foo';
-        $events1      = [$listenerName => [fn() => null]];
-        $events2      = [$listenerName => [fn() => null]];
+        $events1      = [$listenerName => [fn () => null]];
+        $events2      = [$listenerName => [fn () => null]];
 
         $this->sut->setBaseEvents($events1);
         $this->sut->setModuleEvents($events2);
@@ -39,13 +41,13 @@ class EventDispatcherBootstrapperTest extends TestCase
         $this->assertCount(2, $actual->getListeners($listenerName));
     }
 
-    public function testRegisterBindingsMixed()
+    public function testRegisterBindingsMixed(): void
     {
         $listenerName1 = 'foo';
-        $events1       = [$listenerName1 => [fn() => null]];
+        $events1       = [$listenerName1 => [fn () => null]];
 
         $listenerName2 = 'bar';
-        $events2       = [$listenerName2 => [fn() => null]];
+        $events2       = [$listenerName2 => [fn () => null]];
 
         $this->sut->setBaseEvents($events1);
         $this->sut->setModuleEvents($events2);

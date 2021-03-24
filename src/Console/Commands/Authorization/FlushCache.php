@@ -29,7 +29,7 @@ class FlushCache extends Command
     /**
      * @inheritdoc
      */
-    protected function define()
+    protected function define(): void
     {
         $this->setName(static::NAME)
             ->setDescription('Flushes authorization rules cache')
@@ -39,7 +39,7 @@ class FlushCache extends Command
     /**
      * @inheritdoc
      */
-    protected function doExecute(IResponse $response)
+    protected function doExecute(IResponse $response): void
     {
         $this->cacheManager->clearAll();
         $response->writeln('<info>Authorization cache is flushed</info>');

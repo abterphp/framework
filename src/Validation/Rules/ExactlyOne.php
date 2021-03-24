@@ -58,7 +58,7 @@ class ExactlyOne implements IRuleWithArgs, IRuleWithErrorPlaceholders
     /**
      * @inheritdoc
      */
-    public function setArgs(array $args)
+    public function setArgs(array $args): void
     {
         if (count($args) < 1) {
             throw new InvalidArgumentException('Must pass valid field names');

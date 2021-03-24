@@ -10,7 +10,7 @@ use Whoops\RunInterface;
 
 class ExceptionRendererTest extends TestCase
 {
-    public function testGetRunGetsRun()
+    public function testGetRunGetsRun(): void
     {
         $runMock = $this->createRunMock();
 
@@ -21,7 +21,7 @@ class ExceptionRendererTest extends TestCase
         $this->assertSame($runMock, $actualResult);
     }
 
-    public function testRenderCallsHandleException()
+    public function testRenderCallsHandleException(): void
     {
         $isDevelopmentEnvironment = true;
 
@@ -36,7 +36,7 @@ class ExceptionRendererTest extends TestCase
         $sut->render($exceptionStub);
     }
 
-    public function testRenderInProduction()
+    public function testRenderInProduction(): void
     {
         $isDevelopmentEnvironment = false;
 

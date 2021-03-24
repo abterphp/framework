@@ -43,7 +43,7 @@ class CryptoTest extends TestCase
         parent::setUp();
     }
 
-    public function testPrepareSecret()
+    public function testPrepareSecret(): void
     {
         $actualResult = $this->sut->prepareSecret('sha-512');
 
@@ -51,7 +51,7 @@ class CryptoTest extends TestCase
         $this->assertMatchesRegularExpression('/^[0-9a-f]{128}$/', $actualResult);
     }
 
-    public function testHashCryptHashesAndEncryptsSecret()
+    public function testHashCryptHashesAndEncryptsSecret(): void
     {
         $secret         = str_repeat('f00ba788', 16);
         $hashedSecret   = 'bar';
@@ -88,7 +88,7 @@ class CryptoTest extends TestCase
      *
      * @param string $secret
      */
-    public function testHashCryptThrowsSecurityExceptionIfSecretIsInvalid(string $secret)
+    public function testHashCryptThrowsSecurityExceptionIfSecretIsInvalid(string $secret): void
     {
         $this->expectException(Security::class);
 
@@ -98,7 +98,7 @@ class CryptoTest extends TestCase
         $this->sut->hashCrypt($secret);
     }
 
-    public function testHashCryptThrowsSecurityExceptionIfHasherThrowsException()
+    public function testHashCryptThrowsSecurityExceptionIfHasherThrowsException(): void
     {
         $this->expectException(Security::class);
 
@@ -110,7 +110,7 @@ class CryptoTest extends TestCase
         $this->sut->hashCrypt($secret);
     }
 
-    public function testHashCryptThrowsSecurityExceptionIfEncrypterThrowsException()
+    public function testHashCryptThrowsSecurityExceptionIfEncrypterThrowsException(): void
     {
         $this->expectException(Security::class);
 
@@ -123,17 +123,17 @@ class CryptoTest extends TestCase
         $this->sut->hashCrypt($secret);
     }
 
-    public function testVerifySecretThrowsSecurityExceptionIfEncrypterThrowsException()
+    public function testVerifySecretThrowsSecurityExceptionIfEncrypterThrowsException(): void
     {
         $this->markTestIncomplete('Hasher::verify is static...');
     }
 
-    public function testVerifySecretThrowsSecurityExceptionIfHasherThrowsException()
+    public function testVerifySecretThrowsSecurityExceptionIfHasherThrowsException(): void
     {
         $this->markTestIncomplete('Hasher::verify is static...');
     }
 
-    public function testVerifySecret()
+    public function testVerifySecret(): void
     {
         $this->markTestIncomplete('Hasher::verify is static...');
     }

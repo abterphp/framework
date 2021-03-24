@@ -31,7 +31,7 @@ class CasbinDatabaseAdapterBootstrapper extends Bootstrapper implements ILazyBoo
      *
      * @throws Config
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $driverClass = Environment::getVar('DB_DRIVER', PostgreSqlDriver::class);
 

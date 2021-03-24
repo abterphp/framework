@@ -78,7 +78,7 @@ class Row extends Tag implements IRow
     /**
      * @param IEntity $entity
      */
-    public function setEntity(IEntity $entity)
+    public function setEntity(IEntity $entity): void
     {
         $this->entity = $entity;
 

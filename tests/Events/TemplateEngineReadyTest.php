@@ -25,7 +25,7 @@ class TemplateEngineReadyTest extends TestCase
         parent::setUp();
     }
 
-    public function testGetEngine()
+    public function testGetEngine(): void
     {
         $actualResult = $this->sut->getEngine();
 

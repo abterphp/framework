@@ -30,7 +30,7 @@ class MaxLengthTest extends TestCase
      * @param array $args
      * @param bool  $expectedResult
      */
-    public function testPasses($value, array $allValues, array $args, bool $expectedResult)
+    public function testPasses($value, array $allValues, array $args, bool $expectedResult): void
     {
         $sut = new MaxLength();
         $sut->setArgs($args);
@@ -40,7 +40,7 @@ class MaxLengthTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testGetSlug()
+    public function testGetSlug(): void
     {
         $sut = new MaxLength();
         $sut->setArgs([1]);

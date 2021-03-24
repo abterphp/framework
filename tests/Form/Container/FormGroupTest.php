@@ -45,7 +45,7 @@ class FormGroupTest extends TestCase
         ?array $translations,
         ?string $tag,
         string $expectedResult
-    ) {
+    ): void {
         $sut = $this->createElement($inputOutput, $labelOutput, $helpOutput, $attributes, $translations, $tag);
 
         $actualResult   = (string)$sut;
@@ -96,7 +96,7 @@ class FormGroupTest extends TestCase
         return $formGroup;
     }
 
-    public function testGetExtendedNodesIncludesInputLabelAndHelp()
+    public function testGetExtendedNodesIncludesInputLabelAndHelp(): void
     {
         $input = new Input('foo', 'foo');
         $label = new Label('foo', 'Foo');
@@ -111,7 +111,7 @@ class FormGroupTest extends TestCase
         $this->assertContains($help, $actualResult);
     }
 
-    public function testGetElementsReturnsInput()
+    public function testGetElementsReturnsInput(): void
     {
         $input = new Input('foo', 'foo');
         $label = new Label('foo', 'Foo');
@@ -123,7 +123,7 @@ class FormGroupTest extends TestCase
         $this->assertSame([$input], $actualResult);
     }
 
-    public function testSetValueSetsInputValue()
+    public function testSetValueSetsInputValue(): void
     {
         $expectedResult = 'bar';
 
@@ -140,7 +140,7 @@ class FormGroupTest extends TestCase
         $this->assertStringContainsString($expectedResult, $actualResult);
     }
 
-    public function testSetTemplateChangesRender()
+    public function testSetTemplateChangesRender(): void
     {
         $expectedResult = '==||==';
 
@@ -157,7 +157,7 @@ class FormGroupTest extends TestCase
         $this->assertStringContainsString($expectedResult, $actualResult);
     }
 
-    public function testGetInput()
+    public function testGetInput(): void
     {
         /** @var Input|MockObject $input */
         $input = $this->createMock(Input::class);
@@ -172,7 +172,7 @@ class FormGroupTest extends TestCase
         $this->assertSame($input, $actualResult);
     }
 
-    public function testGetLabel()
+    public function testGetLabel(): void
     {
         /** @var Input|MockObject $input */
         $input = $this->createMock(Input::class);
@@ -187,7 +187,7 @@ class FormGroupTest extends TestCase
         $this->assertSame($label, $actualResult);
     }
 
-    public function testGetHelp()
+    public function testGetHelp(): void
     {
         /** @var Input|MockObject $input */
         $input = $this->createMock(Input::class);

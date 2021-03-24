@@ -67,7 +67,7 @@ class CountableTest extends TestCase
         ?array $translations,
         ?string $tag,
         string $expectedResult
-    ) {
+    ): void {
         $sut = $this->createElement($inputId, $content, $attributes, $translations, $tag);
 
         $this->assertSame($expectedResult, (string)$sut);
@@ -98,7 +98,7 @@ class CountableTest extends TestCase
         return $label;
     }
 
-    public function testSetTemplateChangesRender()
+    public function testSetTemplateChangesRender(): void
     {
         $expectedResult = '==||==';
 

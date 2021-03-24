@@ -30,7 +30,7 @@ class MinLengthTest extends TestCase
      * @param array $args
      * @param bool  $expectedResult
      */
-    public function testPasses($value, array $allValues, array $args, bool $expectedResult)
+    public function testPasses($value, array $allValues, array $args, bool $expectedResult): void
     {
         $sut = new MinLength();
         $sut->setArgs($args);
@@ -40,7 +40,7 @@ class MinLengthTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testGetSlug()
+    public function testGetSlug(): void
     {
         $sut = new MinLength();
         $sut->setArgs([1]);

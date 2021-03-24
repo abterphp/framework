@@ -42,7 +42,7 @@ class Numbers extends Actions
     /**
      * @param string $baseUrl
      */
-    public function setBaseUrl(string $baseUrl)
+    public function setBaseUrl(string $baseUrl): void
     {
         $this->baseUrl = $baseUrl;
     }
@@ -54,7 +54,7 @@ class Numbers extends Actions
      * @param array $pageNumbers
      * @param int   $lastPage
      */
-    public function populate(int $currentPage, array $pageNumbers, int $lastPage)
+    public function populate(int $currentPage, array $pageNumbers, int $lastPage): void
     {
         $lastNumber = $pageNumbers[count($pageNumbers) - 1];
 
@@ -73,7 +73,7 @@ class Numbers extends Actions
      * @param bool $isFirstVisible
      * @param int  $currentPage
      */
-    protected function attachLeft(bool $isFirst, bool $isFirstVisible, int $currentPage)
+    protected function attachLeft(bool $isFirst, bool $isFirstVisible, int $currentPage): void
     {
         if (!$isFirstVisible) {
             $this->realBtnAttr[Html5::ATTR_HREF] = sprintf('%spage=%d', $this->baseUrl, 1);
@@ -96,7 +96,7 @@ class Numbers extends Actions
      * @param int[] $numbers
      * @param int   $currentPage
      */
-    protected function attachNumbers(array $numbers, int $currentPage)
+    protected function attachNumbers(array $numbers, int $currentPage): void
     {
         foreach ($numbers as $number) {
             if ($currentPage == $number) {
@@ -115,7 +115,7 @@ class Numbers extends Actions
      * @param int  $currentPage
      * @param int  $lastPage
      */
-    protected function attachRight(bool $isLast, bool $isLastVisible, int $currentPage, int $lastPage)
+    protected function attachRight(bool $isLast, bool $isLastVisible, int $currentPage, int $lastPage): void
     {
         if (!$isLastVisible) {
             $this->nodes[] = new Action('...', $this->fakeBtnIntents, $this->fakeBtnAttr);

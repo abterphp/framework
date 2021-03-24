@@ -25,7 +25,7 @@ class CacheManagerTest extends TestCase
         $this->sut = new CacheManager($this->cacheBridgeMock);
     }
 
-    public function testGetCacheDataReturnsNullIfCacheBridgeThrowsException()
+    public function testGetCacheDataReturnsNullIfCacheBridgeThrowsException(): void
     {
         $cacheId = 'foo';
 
@@ -68,7 +68,7 @@ class CacheManagerTest extends TestCase
      * @param mixed          $payload
      * @param CacheData|null $expectedResult
      */
-    public function testGetCacheData($payload, ?CacheData $expectedResult)
+    public function testGetCacheData($payload, ?CacheData $expectedResult): void
     {
         $cacheId = 'foo';
 
@@ -85,7 +85,7 @@ class CacheManagerTest extends TestCase
         $this->assertEquals($expectedResult->getSubTemplates(), $actualResult->getSubTemplates());
     }
 
-    public function testStoreCacheDataCallsCacheBridge()
+    public function testStoreCacheDataCallsCacheBridge(): void
     {
         $cacheId = 'foo';
         $blocks  = ['A' => 'A', 'B' => 'B'];
@@ -106,7 +106,7 @@ class CacheManagerTest extends TestCase
         $this->sut->storeCacheData($cacheId, $blocks);
     }
 
-    public function testGetDocumentCallsCacheBridge()
+    public function testGetDocumentCallsCacheBridge(): void
     {
         $cacheId        = 'foo';
         $expectedResult = 'bar';
@@ -120,7 +120,7 @@ class CacheManagerTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testGetDocumentReturnsEmptyIfCacheBridgeThrowsException()
+    public function testGetDocumentReturnsEmptyIfCacheBridgeThrowsException(): void
     {
         $cacheId = 'foo';
 
@@ -131,7 +131,7 @@ class CacheManagerTest extends TestCase
         $this->assertSame('', $actualResult);
     }
 
-    public function testStoreDocumentCallsCacheBridge()
+    public function testStoreDocumentCallsCacheBridge(): void
     {
         $cacheId = 'foo';
 
@@ -144,7 +144,7 @@ class CacheManagerTest extends TestCase
         $this->sut->storeDocument($cacheId, $payload);
     }
 
-    public function testFlushCallsCacheBridge()
+    public function testFlushCallsCacheBridge(): void
     {
         $this->cacheBridgeMock->expects($this->once())->method('flush');
 

@@ -36,7 +36,7 @@ class ButtonFactoryTest extends TestCase
         $this->sut = new ButtonFactory($this->urlGeneratorMock, $this->textAttributes, $this->iconAttributes);
     }
 
-    public function testCreateFromUrlCreatesSimpleButtonByDefault()
+    public function testCreateFromUrlCreatesSimpleButtonByDefault(): void
     {
         $url  = '/best/url/ever';
         $text = 'button text';
@@ -47,7 +47,7 @@ class ButtonFactoryTest extends TestCase
         $this->assertNotInstanceOf(ButtonWithIcon::class, $actualResult);
     }
 
-    public function testCreateFromUrlCanCreateButtonWithIcon()
+    public function testCreateFromUrlCanCreateButtonWithIcon(): void
     {
         $url  = '/best/url/ever';
         $text = 'button text';
@@ -59,7 +59,7 @@ class ButtonFactoryTest extends TestCase
         $this->assertInstanceOf(ButtonWithIcon::class, $actualResult);
     }
 
-    public function testCreateFromUrlCanCreateComplexButtonWithIcon()
+    public function testCreateFromUrlCanCreateComplexButtonWithIcon(): void
     {
         $url         = '/best/url/ever';
         $text        = 'button text';
@@ -84,7 +84,7 @@ class ButtonFactoryTest extends TestCase
         $this->assertSame($expectedResult, (string)$actualResult);
     }
 
-    public function testCreateFromNameCreatesSimpleButtonByDefault()
+    public function testCreateFromNameCreatesSimpleButtonByDefault(): void
     {
         $name = 'best-route-ever';
         $text = 'button text';
@@ -100,7 +100,7 @@ class ButtonFactoryTest extends TestCase
         $this->assertNotInstanceOf(ButtonWithIcon::class, $actualResult);
     }
 
-    public function testCreateFromNameCanCreateButtonWithIcon()
+    public function testCreateFromNameCanCreateButtonWithIcon(): void
     {
         $name = 'best-route-ever';
         $text = 'button text';
@@ -117,7 +117,7 @@ class ButtonFactoryTest extends TestCase
         $this->assertInstanceOf(ButtonWithIcon::class, $actualResult);
     }
 
-    public function testCreateFromNameCanCreateComplexButtonWithIcon()
+    public function testCreateFromNameCanCreateComplexButtonWithIcon(): void
     {
         $name        = 'best-route-ever';
         $text        = 'button text';

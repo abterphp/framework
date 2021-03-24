@@ -40,7 +40,7 @@ class TemplateTest extends TestCase
                             'content-one-1' => [
                                 new ParsedTemplate('block', 'content-one-1', [], ['{{block/content-one-1}}']), // phpcs:ignore
                             ],
-                        ]
+                        ],
                 ],
             ],
             'content-only-2' => [
@@ -98,7 +98,7 @@ class TemplateTest extends TestCase
      * @param string $rawContent
      * @param array  $expectedTemplates
      */
-    public function testParse(string $rawContent, array $expectedTemplates)
+    public function testParse(string $rawContent, array $expectedTemplates): void
     {
         $this->sut->setRawContent($rawContent);
 
@@ -214,7 +214,7 @@ class TemplateTest extends TestCase
      * @param array  $templateData
      * @param string $expectedResult
      */
-    public function testRender(string $rawContent, array $vars, array $templateData, string $expectedResult)
+    public function testRender(string $rawContent, array $vars, array $templateData, string $expectedResult): void
     {
         $this->sut->setRawContent($rawContent)->setVars($vars)->setTypes(['block', 'gallery']);
 

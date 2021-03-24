@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Orm\Ids\Generators;
 
 use Opulence\Orm\Ids\Generators\IIdGenerator;
@@ -43,7 +45,7 @@ class IdGeneratorRegistry implements IIdGeneratorRegistry
     /**
      * @inheritdoc
      */
-    public function registerIdGenerator(string $className, IIdGenerator $generator)
+    public function registerIdGenerator(string $className, IIdGenerator $generator): void
     {
         $this->generators[$className] = $generator;
     }

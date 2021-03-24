@@ -31,7 +31,7 @@ class CellsTest extends CollectionTest
      * @param string $rawContent
      * @param string $expectedResult
      */
-    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult)
+    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult): void
     {
         $sut = $this->createNode($rawContent);
 
@@ -54,12 +54,15 @@ class CellsTest extends CollectionTest
     /**
      * @dataProvider toStringCanReturnTranslatedContentProvider
      *
-     * @param string $rawContent
-     * @param array  $translations
-     * @param string $expectedResult
+     * @param null|string|INode|INode[] $rawContent
+     * @param array                     $translations
+     * @param string                    $expectedResult
      */
-    public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
-    {
+    public function testToStringCanReturnTranslatedContent(
+        $rawContent,
+        array $translations,
+        string $expectedResult
+    ): void {
         $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
 
         $sut = $this->createNode($rawContent);
@@ -69,7 +72,7 @@ class CellsTest extends CollectionTest
         $this->assertStringContainsString($expectedResult, (string)$sut);
     }
 
-    public function testCountWithoutOffset()
+    public function testCountWithoutOffset(): void
     {
         $expectedResult = 2;
 
@@ -84,7 +87,7 @@ class CellsTest extends CollectionTest
         $this->assertSame($expectedResult, count($sut));
     }
 
-    public function testCountWithExplicitOffset()
+    public function testCountWithExplicitOffset(): void
     {
         $expectedResult = 2;
 
@@ -99,7 +102,7 @@ class CellsTest extends CollectionTest
         $this->assertSame($expectedResult, count($sut));
     }
 
-    public function testCountWithMixedOffset()
+    public function testCountWithMixedOffset(): void
     {
         $node1 = new Cell('1', 'A');
         $node2 = new Cell('2', 'A');
@@ -118,7 +121,7 @@ class CellsTest extends CollectionTest
         $this->assertSame($expectedCount, count($sut));
     }
 
-    public function testArrayAccessWithoutOffset()
+    public function testArrayAccessWithoutOffset(): void
     {
         $node1 = new Cell('1', 'A');
         $node2 = new Cell('2', 'A');
@@ -132,7 +135,7 @@ class CellsTest extends CollectionTest
         $this->assertSame($node2, $sut[1]);
     }
 
-    public function testArrayAccessWithExplicitOffset()
+    public function testArrayAccessWithExplicitOffset(): void
     {
         $node1 = new Cell('1', 'A');
         $node2 = new Cell('2', 'A');
@@ -146,7 +149,7 @@ class CellsTest extends CollectionTest
         $this->assertSame($node2, $sut[1]);
     }
 
-    public function testArrayAccessThrowExceptionWhenMadeDirty()
+    public function testArrayAccessThrowExceptionWhenMadeDirty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -157,7 +160,7 @@ class CellsTest extends CollectionTest
         $sut[1] = $node1;
     }
 
-    public function testArrayAccessWithMixedOffset()
+    public function testArrayAccessWithMixedOffset(): void
     {
         $node1 = new Cell('1', 'A');
         $node2 = new Cell('2', 'A');
@@ -196,7 +199,7 @@ class CellsTest extends CollectionTest
      *
      * @param $item
      */
-    public function testConstructFailure($item)
+    public function testConstructFailure($item): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -208,7 +211,7 @@ class CellsTest extends CollectionTest
      *
      * @param $item
      */
-    public function testSetContentFailure($item)
+    public function testSetContentFailure($item): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -237,7 +240,7 @@ class CellsTest extends CollectionTest
      *
      * @param $item
      */
-    public function testArrayAccessFailureWithoutOffset($item)
+    public function testArrayAccessFailureWithoutOffset($item): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -249,7 +252,7 @@ class CellsTest extends CollectionTest
     /**
      * @dataProvider offsetSetFailureProvider
      */
-    public function testArrayAccessFailureWithExplicitOffset($item)
+    public function testArrayAccessFailureWithExplicitOffset($item): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -258,7 +261,7 @@ class CellsTest extends CollectionTest
         $sut[] = $item;
     }
 
-    public function testSetContent()
+    public function testSetContent(): void
     {
         $node1 = new Cell('1', 'A');
         $node2 = new Cell('2', 'A');
@@ -278,7 +281,7 @@ class CellsTest extends CollectionTest
         $this->assertEquals($expectedNodes, $sut->getExtendedNodes());
     }
 
-    public function testGetNodes()
+    public function testGetNodes(): void
     {
         $node1 = new Cell('1', 'A');
         $node2 = new Cell('2', 'A');
@@ -298,7 +301,7 @@ class CellsTest extends CollectionTest
         $this->assertEquals($expectedNodes, $actualResult);
     }
 
-    public function testGetExtendedNodes()
+    public function testGetExtendedNodes(): void
     {
         $node1 = new Cell('1', 'A');
         $node2 = new Cell('2', 'A');
@@ -318,7 +321,7 @@ class CellsTest extends CollectionTest
         $this->assertEquals($expectedNodes, $actualResult);
     }
 
-    public function testGetDescendantNodes()
+    public function testGetDescendantNodes(): void
     {
         $nodeContent1 = new Node('1');
         $nodeContent2 = new Node('2');
@@ -335,11 +338,16 @@ class CellsTest extends CollectionTest
         $sut[]  = $node1;
 
         $expectedNodes = [
-            $node1, $nodeContent1,
-            $node2, $nodeContent2,
-            $node1, $nodeContent1,
-            $node1, $nodeContent1,
-            $node1, $nodeContent1,
+            $node1,
+            $nodeContent1,
+            $node2,
+            $nodeContent2,
+            $node1,
+            $nodeContent1,
+            $node1,
+            $nodeContent1,
+            $node1,
+            $nodeContent1,
         ];
 
         $actualResult = $sut->getDescendantNodes();
@@ -347,7 +355,7 @@ class CellsTest extends CollectionTest
         $this->assertEquals($expectedNodes, $actualResult);
     }
 
-    public function testGetExtendedDescendantNodes()
+    public function testGetExtendedDescendantNodes(): void
     {
         $nodeContent1 = new Node('1');
         $nodeContent2 = new Node('2');
@@ -364,11 +372,16 @@ class CellsTest extends CollectionTest
         $sut[]  = $node1;
 
         $expectedNodes = [
-            $node1, $nodeContent1,
-            $node2, $nodeContent2,
-            $node1, $nodeContent1,
-            $node1, $nodeContent1,
-            $node1, $nodeContent1,
+            $node1,
+            $nodeContent1,
+            $node2,
+            $nodeContent2,
+            $node1,
+            $nodeContent1,
+            $node1,
+            $nodeContent1,
+            $node1,
+            $nodeContent1,
         ];
 
         $actualResult = $sut->getExtendedDescendantNodes();
@@ -376,7 +389,7 @@ class CellsTest extends CollectionTest
         $this->assertEquals($expectedNodes, $actualResult);
     }
 
-    public function testIterator()
+    public function testIterator(): void
     {
         $node1 = new Cell('1', 'A');
         $node2 = new Cell('2', 'A');
@@ -401,7 +414,7 @@ class CellsTest extends CollectionTest
         }
     }
 
-    public function testGetRawContentReturnsNonTranslatedContent()
+    public function testGetRawContentReturnsNonTranslatedContent(): void
     {
         $this->assertTrue(true, 'No need to test getRawContent');
     }
@@ -579,7 +592,7 @@ class CellsTest extends CollectionTest
         ];
     }
 
-    public function testArrayAccessUnset()
+    public function testArrayAccessUnset(): void
     {
         $node1 = new Cell('1', 'A');
 
@@ -594,7 +607,7 @@ class CellsTest extends CollectionTest
         $this->assertfalse($sut->offsetExists(0));
     }
 
-    public function testCreateNodeThrowsLogicException()
+    public function testCreateNodeThrowsLogicException(): void
     {
         $this->expectException(LogicException::class);
 

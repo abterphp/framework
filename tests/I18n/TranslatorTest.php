@@ -47,7 +47,7 @@ class TranslatorTest extends TestCase
      * @param array  $args
      * @param string $expectedResult
      */
-    public function testTranslate(string $expression, array $args, string $expectedResult)
+    public function testTranslate(string $expression, array $args, string $expectedResult): void
     {
         $actualResult = $this->sut->translate($expression, ...$args);
 
@@ -76,7 +76,7 @@ class TranslatorTest extends TestCase
      * @param array  $args
      * @param bool   $expectedResult
      */
-    public function testCanTranslate(string $expression, array $args, bool $expectedResult)
+    public function testCanTranslate(string $expression, array $args, bool $expectedResult): void
     {
         $actualResult = $this->sut->canTranslate($expression, ...$args);
 

@@ -128,7 +128,7 @@ class Security implements IMiddleware
         return $next($request);
     }
 
-    private function checkGeneralSecrets()
+    private function checkGeneralSecrets(): void
     {
         if ($this->getVar(Env::DB_PASSWORD) === static::TEST_DB_PASSWORD) {
             throw new SecurityException('Invalid DB_PASSWORD environment variable.');
@@ -147,7 +147,7 @@ class Security implements IMiddleware
         }
     }
 
-    private function checkOauth2Secrets()
+    private function checkOauth2Secrets(): void
     {
         if ($this->getVar(Env::OAUTH2_PRIVATE_KEY_PATH) === static::TEST_OAUTH2_PRIVATE_KEY_PATH) {
             throw new SecurityException('Invalid OAUTH2_PRIVATE_KEY_PATH environment variable.');
@@ -166,7 +166,7 @@ class Security implements IMiddleware
         }
     }
 
-    private function checkPhpSettings()
+    private function checkPhpSettings(): void
     {
         $displayErrors = $this->getSetting('display_errors');
         if ($displayErrors && mb_strtolower($displayErrors) !== 'off') {

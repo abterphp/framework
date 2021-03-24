@@ -26,7 +26,7 @@ class RoutesTest extends TestCase
         Environment::unsetVar(Env::CACHE_BASE_PATH);
     }
 
-    public function testGetMediaUrlPreset()
+    public function testGetMediaUrlPreset(): void
     {
         $mediaBaseUrl = 'foo';
 
@@ -37,7 +37,7 @@ class RoutesTest extends TestCase
         $this->assertEquals($mediaBaseUrl, $actualResult);
     }
 
-    public function testGetMediaUrlFromEnvVar()
+    public function testGetMediaUrlFromEnvVar(): void
     {
         $mediaBaseUrl = 'foo';
 
@@ -48,7 +48,7 @@ class RoutesTest extends TestCase
         $this->assertEquals($mediaBaseUrl, $actualResult);
     }
 
-    public function testGetCacheUrlPreset()
+    public function testGetCacheUrlPreset(): void
     {
         $cacheUrl = 'foo';
 
@@ -59,7 +59,7 @@ class RoutesTest extends TestCase
         $this->assertEquals($cacheUrl, $actualResult);
     }
 
-    public function testGetCacheUrlFromEmptyEnvVar()
+    public function testGetCacheUrlFromEmptyEnvVar(): void
     {
         $cacheBasePath = '';
 
@@ -70,7 +70,7 @@ class RoutesTest extends TestCase
         $this->assertEquals($cacheBasePath, $actualResult);
     }
 
-    public function testGetCacheUrlFromEnvVar()
+    public function testGetCacheUrlFromEnvVar(): void
     {
         $cacheBasePath = 'foo';
         $expectedBasePath = '/foo';
@@ -82,7 +82,7 @@ class RoutesTest extends TestCase
         $this->assertEquals($expectedBasePath, $actualResult);
     }
 
-    public function testGetAssetsPathPreset()
+    public function testGetAssetsPathPreset(): void
     {
         $cacheUrl = 'foo';
 
@@ -93,7 +93,7 @@ class RoutesTest extends TestCase
         $this->assertEquals($cacheUrl, $actualResult);
     }
 
-    public function testGetAssetsPathFromEmptyEnvVar()
+    public function testGetAssetsPathFromEmptyEnvVar(): void
     {
         $cacheBasePath = '';
 
@@ -104,7 +104,7 @@ class RoutesTest extends TestCase
         $this->assertEquals($cacheBasePath, $actualResult);
     }
 
-    public function testGetAssetsPathFromEnvVar()
+    public function testGetAssetsPathFromEnvVar(): void
     {
         $cacheBasePath = 'foo';
         $expectedBasePath = 'foo/:path';

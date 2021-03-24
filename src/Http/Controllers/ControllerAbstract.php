@@ -36,7 +36,7 @@ abstract class ControllerAbstract extends Controller
     /**
      * @param string $title
      */
-    protected function sharedViewSetup(string $title)
+    protected function sharedViewSetup(string $title): void
     {
         $this->view->setVar(static::VAR_TITLE, $title);
         $this->view->setVar(static::VAR_MSG_ERROR, $this->flashService->retrieveErrorMessages());

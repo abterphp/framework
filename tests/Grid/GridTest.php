@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 class GridTest extends TestCase
 {
-    public function testToStringContainsTable()
+    public function testToStringContainsTable(): void
     {
         /** @var Table|MockObject $table */
         $table = $this->createMock(Table::class);
@@ -28,7 +28,7 @@ class GridTest extends TestCase
         $this->assertStringContainsString('!A!', (string)$sut);
     }
 
-    public function testToStringContainsPagination()
+    public function testToStringContainsPagination(): void
     {
         /** @var Table|MockObject $table */
         $table = $this->createMock(Table::class);
@@ -44,7 +44,7 @@ class GridTest extends TestCase
         $this->assertStringContainsString('!B!', (string)$sut);
     }
 
-    public function testToStringContainsFilters()
+    public function testToStringContainsFilters(): void
     {
         /** @var Table|MockObject $table */
         $table = $this->createMock(Table::class);
@@ -60,7 +60,7 @@ class GridTest extends TestCase
         $this->assertStringContainsString('!C!', (string)$sut);
     }
 
-    public function testToStringContainsActions()
+    public function testToStringContainsActions(): void
     {
         /** @var Table|MockObject $table */
         $table = $this->createMock(Table::class);
@@ -76,7 +76,7 @@ class GridTest extends TestCase
         $this->assertStringContainsString('!D!', (string)$sut);
     }
 
-    public function testToStringCanWrapContentInForm()
+    public function testToStringCanWrapContentInForm(): void
     {
         /** @var Table|MockObject $table */
         $table = $this->createMock(Table::class);
@@ -88,7 +88,7 @@ class GridTest extends TestCase
         $this->assertStringContainsString('div', (string)$sut);
     }
 
-    public function testSetTemplateChangesToString()
+    public function testSetTemplateChangesToString(): void
     {
         $template = '--||--';
 
@@ -104,7 +104,7 @@ class GridTest extends TestCase
         $this->assertStringContainsString($template, (string)$sut);
     }
 
-    public function testGetPageThrowsExceptionIfPaginationIsMissing()
+    public function testGetPageThrowsExceptionIfPaginationIsMissing(): void
     {
         $this->expectException(LogicException::class);
 
@@ -116,7 +116,7 @@ class GridTest extends TestCase
         $sut->getPageSize();
     }
 
-    public function testGetPageSizeCallsPagination()
+    public function testGetPageSizeCallsPagination(): void
     {
         $pageSize = 438;
 
@@ -135,7 +135,7 @@ class GridTest extends TestCase
         $this->assertSame($pageSize, $actualResult);
     }
 
-    public function testGetSortConditionsCallsTable()
+    public function testGetSortConditionsCallsTable(): void
     {
         $sortConditions = ['foo' => 'bar'];
 
@@ -150,7 +150,7 @@ class GridTest extends TestCase
         $this->assertSame($sortConditions, $actualResult);
     }
 
-    public function testGetWhereConditionsThrowsExceptionIfFiltersIsMissing()
+    public function testGetWhereConditionsThrowsExceptionIfFiltersIsMissing(): void
     {
         $this->expectException(LogicException::class);
 
@@ -162,7 +162,7 @@ class GridTest extends TestCase
         $sut->getWhereConditions();
     }
 
-    public function testGetWhereConditionsCallsFilters()
+    public function testGetWhereConditionsCallsFilters(): void
     {
         $whereConditions = ['foo' => 'bar'];
 
@@ -180,7 +180,7 @@ class GridTest extends TestCase
         $this->assertSame($whereConditions, $actualResult);
     }
 
-    public function testGetSqlParamsThrowsExceptionIfFiltersIsMissing()
+    public function testGetSqlParamsThrowsExceptionIfFiltersIsMissing(): void
     {
         $this->expectException(LogicException::class);
 
@@ -192,7 +192,7 @@ class GridTest extends TestCase
         $sut->getSqlParams();
     }
 
-    public function testGetSqlParamsCallsFilters()
+    public function testGetSqlParamsCallsFilters(): void
     {
         $tableSqlParams = ['foo' => 'bar'];
         $filterSqlParams = ['bar' => 'baz'];
@@ -220,7 +220,7 @@ class GridTest extends TestCase
         }
     }
 
-    public function testSetTotalCountThrowsExceptionIfPaginationIsMissing()
+    public function testSetTotalCountThrowsExceptionIfPaginationIsMissing(): void
     {
         $this->expectException(LogicException::class);
 
@@ -232,7 +232,7 @@ class GridTest extends TestCase
         $sut->setTotalCount(123);
     }
 
-    public function testGetTotalCountCallsPagination()
+    public function testGetTotalCountCallsPagination(): void
     {
         $totalCount = 10;
 
@@ -248,7 +248,7 @@ class GridTest extends TestCase
         $sut->setTotalCount($totalCount);
     }
 
-    public function testSetEntitiesCallsTable()
+    public function testSetEntitiesCallsTable(): void
     {
         $entity = $this->createMock(IStringerEntity::class);
 
@@ -293,8 +293,12 @@ class GridTest extends TestCase
      * @param IPagination|null $pagination
      * @param array            $expectedResult
      */
-    public function testGetExtendedNodes($tableStub, ?Filters $filters, ?IPagination $pagination, array $expectedResult)
-    {
+    public function testGetExtendedNodes(
+        $tableStub,
+        ?Filters $filters,
+        ?IPagination $pagination,
+        array $expectedResult
+    ): void {
         $sut = new Grid($tableStub, $pagination, $filters);
 
         $actualResult = $sut->getExtendedNodes();

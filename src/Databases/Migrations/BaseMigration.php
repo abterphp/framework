@@ -70,7 +70,7 @@ class BaseMigration extends Migration
      *
      * @throws FilesystemException
      */
-    protected function execute(string $filename)
+    protected function execute(string $filename): void
     {
         $content = $this->fileFinder->read($filename);
         if (empty($content)) {

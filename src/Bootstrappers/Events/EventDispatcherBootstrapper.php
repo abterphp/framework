@@ -75,7 +75,7 @@ class EventDispatcherBootstrapper extends BaseBootstrapper
     /**
      * @inheritdoc
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $eventRegistry = new EventRegistry();
         $container->bindInstance(EventRegistry::class, $eventRegistry);

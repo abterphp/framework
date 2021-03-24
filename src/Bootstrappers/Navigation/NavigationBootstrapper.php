@@ -36,7 +36,7 @@ class NavigationBootstrapper extends Bootstrapper implements ILazyBootstrapper
      *
      * @throws IocException
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         /** @var ITranslator $translator */
         $translator = $container->resolve(ITranslator::class);

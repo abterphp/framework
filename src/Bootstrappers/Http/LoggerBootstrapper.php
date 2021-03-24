@@ -21,14 +21,14 @@ class LoggerBootstrapper extends Bootstrapper implements ILazyBootstrapper
     public function getBindings(): array
     {
         return [
-            LoggerInterface::class
+            LoggerInterface::class,
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $logger   = new Logger('application');
         $filePath = Environment::getVar(Env::DIR_LOGS);

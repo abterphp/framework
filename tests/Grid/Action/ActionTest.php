@@ -25,12 +25,11 @@ class ActionTest extends TestCase
         $str        = ArrayHelper::toAttributes($attributes);
 
         $callbacks = [
-            StubAttributeFactory::ATTRIBUTE_FOO => function () {
-                return [StubAttributeFactory::VALUE_FOO, StubAttributeFactory::VALUE_BAZ];
-            },
-            StubAttributeFactory::ATTRIBUTE_BAR => function () {
-                return StubAttributeFactory::VALUE_BAR_BAZ;
-            },
+            StubAttributeFactory::ATTRIBUTE_FOO => fn() => [
+                StubAttributeFactory::VALUE_FOO,
+                StubAttributeFactory::VALUE_BAZ,
+            ],
+            StubAttributeFactory::ATTRIBUTE_BAR => fn() => StubAttributeFactory::VALUE_BAR_BAZ,
         ];
 
         return [
@@ -60,7 +59,7 @@ class ActionTest extends TestCase
         ?array $translations,
         ?string $tag,
         string $expectedResult
-    ) {
+    ): void {
         $sut = $this->createElement($content, $attributes, $attributeCallbacks, $translations, $tag);
 
         $actualResult1 = (string)$sut;
@@ -70,7 +69,7 @@ class ActionTest extends TestCase
         $this->assertSame($expectedResult, $actualResult2);
     }
 
-    public function testRenderCallsCallbackWithEntity()
+    public function testRenderCallsCallbackWithEntity(): void
     {
         $expectedResult = "<button foo=\"bar\">Button</button>";
 
@@ -81,9 +80,7 @@ class ActionTest extends TestCase
         $content            = 'Button';
         $attributes         = [];
         $attributeCallbacks = [
-            StubAttributeFactory::ATTRIBUTE_FOO => function ($value, IEntity $entity) {
-                return [$entity->getId()];
-            },
+            StubAttributeFactory::ATTRIBUTE_FOO => fn($value, IEntity $entity) => [$entity->getId()],
         ];
 
         $sut = $this->createElement($content, $attributes, $attributeCallbacks, null, null);
@@ -94,7 +91,7 @@ class ActionTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testDuplicate()
+    public function testDuplicate(): void
     {
         $attributes = StubAttributeFactory::createAttributes();
 

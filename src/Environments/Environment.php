@@ -13,7 +13,7 @@ class Environment extends OpulenceEnvironment
      *
      * @param string $name The name of the environment variable to unset
      */
-    public static function unsetVar(string $name)
+    public static function unsetVar(string $name): void
     {
         putenv("$name");
         if (array_key_exists($name, $_ENV)) {

@@ -30,7 +30,7 @@ class ArrayHelperTest extends TestCase
      * @param array $errors
      * @param array $expectedResult
      */
-    public function testFlatten(array $errors, array $expectedResult)
+    public function testFlatten(array $errors, array $expectedResult): void
     {
         $actualResult = ArrayHelper::flatten($errors);
 

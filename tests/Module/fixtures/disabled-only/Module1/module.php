@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Broken\Module1;
 
 use AbterPhp\Framework\Constant\Module;

@@ -25,7 +25,7 @@ class SecurityTest extends TestCase
         $this->cacheBridgeMock = $this->createMock(ArrayBridge::class);
     }
 
-    public function testHandleSkipsAllIfEnvironmentIsNotProduction()
+    public function testHandleSkipsAllIfEnvironmentIsNotProduction(): void
     {
         $sut = new Security($this->cacheBridgeMock, Environment::TESTING);
 
@@ -35,9 +35,7 @@ class SecurityTest extends TestCase
         /** @var Response|MockObject $requestMock */
         $responseMock = $this->createMock(Response::class);
 
-        $next = function () use ($responseMock) {
-            return $responseMock;
-        };
+        $next = fn () => $responseMock;
 
         $this->cacheBridgeMock->expects($this->never())->method('get');
 
@@ -46,7 +44,7 @@ class SecurityTest extends TestCase
         $this->assertSame($responseMock, $actualResult);
     }
 
-    public function testHandleSkipsAllIfCacheIsSet()
+    public function testHandleSkipsAllIfCacheIsSet(): void
     {
         $sut = new Security($this->cacheBridgeMock, Environment::PRODUCTION);
 
@@ -56,9 +54,7 @@ class SecurityTest extends TestCase
         /** @var Response|MockObject $requestMock */
         $responseMock = $this->createMock(Response::class);
 
-        $next = function () use ($responseMock) {
-            return $responseMock;
-        };
+        $next = fn () => $responseMock;
 
         $this->cacheBridgeMock->expects($this->once())->method('get')->willReturn(true);
 
@@ -67,7 +63,7 @@ class SecurityTest extends TestCase
         $this->assertSame($responseMock, $actualResult);
     }
 
-    public function testHandleSetsCacheIfAllGood()
+    public function testHandleSetsCacheIfAllGood(): void
     {
         $sut = new Security($this->cacheBridgeMock, Environment::PRODUCTION);
 
@@ -77,9 +73,7 @@ class SecurityTest extends TestCase
         /** @var Response|MockObject $requestMock */
         $responseMock = $this->createMock(Response::class);
 
-        $next = function () use ($responseMock) {
-            return $responseMock;
-        };
+        $next = fn () => $responseMock;
 
         $sut->setVar(
             [
@@ -104,7 +98,7 @@ class SecurityTest extends TestCase
         $this->assertSame($responseMock, $actualResult);
     }
 
-    public function testHandleRunsNormalIfCacheGetThrowsException()
+    public function testHandleRunsNormalIfCacheGetThrowsException(): void
     {
         $sut = new Security($this->cacheBridgeMock, Environment::PRODUCTION);
 
@@ -114,9 +108,7 @@ class SecurityTest extends TestCase
         /** @var Response|MockObject $requestMock */
         $responseMock = $this->createMock(Response::class);
 
-        $next = function () use ($responseMock) {
-            return $responseMock;
-        };
+        $next = fn () => $responseMock;
 
         $sut->setVar(
             [
@@ -288,7 +280,7 @@ class SecurityTest extends TestCase
      * @param array $environmentData
      * @param array $settingsData
      */
-    public function testHandleThrowsSecurityExceptionIfNeeded(array $environmentData, array $settingsData)
+    public function testHandleThrowsSecurityExceptionIfNeeded(array $environmentData, array $settingsData): void
     {
         $this->expectException(\AbterPhp\Framework\Exception\Security::class);
 
@@ -300,9 +292,7 @@ class SecurityTest extends TestCase
         /** @var Response|MockObject $requestMock */
         $responseMock = $this->createMock(Response::class);
 
-        $next = function () use ($responseMock) {
-            return $responseMock;
-        };
+        $next = fn () => $responseMock;
 
         $sut->setVar($environmentData);
 
@@ -315,7 +305,7 @@ class SecurityTest extends TestCase
         $this->assertSame($responseMock, $actualResult);
     }
 
-    public function testGetSettingsCanUseValuesSet()
+    public function testGetSettingsCanUseValuesSet(): void
     {
         $key   = 'foo';
         $value = 'bar';
@@ -329,7 +319,7 @@ class SecurityTest extends TestCase
         $this->assertSame($actualValue, $value);
     }
 
-    public function testGetSettingsCanCheckPhpSettingsIfValueIsNotSet()
+    public function testGetSettingsCanCheckPhpSettingsIfValueIsNotSet(): void
     {
         $key   = 'memory_limit';
         $value = ini_get($key);

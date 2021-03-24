@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Assets;
 
 use AbterPhp\Framework\Assets\CacheManager\ICacheManager;
@@ -25,7 +27,7 @@ class CacheManagerBootstrapperTest extends TestCase
         Environment::unsetVar(Env::CACHE_BASE_PATH);
     }
 
-    public function testRegisterBindingsDevelopment()
+    public function testRegisterBindingsDevelopment(): void
     {
         Environment::setVar(Env::ENV_NAME, Environment::DEVELOPMENT);
         Environment::setVar(Env::DIR_MEDIA, '/tmp/foo');
@@ -39,7 +41,7 @@ class CacheManagerBootstrapperTest extends TestCase
         $this->assertInstanceOf(ICacheManager::class, $actual);
     }
 
-    public function testRegisterBindingsProduction()
+    public function testRegisterBindingsProduction(): void
     {
         Environment::setVar(Env::ENV_NAME, Environment::PRODUCTION);
         Environment::setVar(Env::DIR_MEDIA, '/tmp/foo');

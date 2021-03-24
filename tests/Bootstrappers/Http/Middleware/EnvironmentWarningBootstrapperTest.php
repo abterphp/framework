@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Http\Middleware;
 
 use AbterPhp\Framework\Constant\Env;
@@ -24,7 +26,7 @@ class EnvironmentWarningBootstrapperTest extends TestCase
         Environment::unsetVar(Env::ENV_NAME);
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         Environment::setVar(Env::ENV_NAME, 'foo');
 

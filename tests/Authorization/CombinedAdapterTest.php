@@ -12,12 +12,12 @@ use PHPUnit\Framework\TestCase;
 class CombinedAdapterTest extends TestCase
 {
     protected const EXAMPLE_CONFIG = <<<'EOF'
-[policy_definition]
-p = sub, obj, act
+        [policy_definition]
+        p = sub, obj, act
 
-[role_definition]
-g = _, _
-EOF;
+        [role_definition]
+        g = _, _
+        EOF;
 
     /** @var CombinedAdapter - System Under Test */
     protected CombinedAdapter $sut;
@@ -39,7 +39,7 @@ EOF;
         parent::setUp();
     }
 
-    public function createSutWithoutCacheManager()
+    public function createSutWithoutCacheManager(): void
     {
         $this->cacheManagerMock = null;
 
@@ -67,7 +67,7 @@ EOF;
      *
      * @param array $adaptersMocks
      */
-    public function testLoadPolicyCallsAdaptersByDefault(array $adaptersMocks)
+    public function testLoadPolicyCallsAdaptersByDefault(array $adaptersMocks): void
     {
         $this->createSutWithoutCacheManager();
 
@@ -83,7 +83,7 @@ EOF;
         $this->sut->loadPolicy($model);
     }
 
-    public function testLoadPolicyCanLoadPoliciesFromCache()
+    public function testLoadPolicyCanLoadPoliciesFromCache(): void
     {
         $cacheData = ['g' => [], 'p' => []];
 
@@ -96,7 +96,7 @@ EOF;
         $this->sut->loadPolicy($model);
     }
 
-    public function testLoadPolicyCanPopulatePoliciesFromCache()
+    public function testLoadPolicyCanPopulatePoliciesFromCache(): void
     {
         $cachedData = [
             'g' => [
@@ -119,7 +119,7 @@ EOF;
         $this->sut->loadPolicy($model);
     }
 
-    public function testLoadPolicyCanStorePoliciesInCache()
+    public function testLoadPolicyCanStorePoliciesInCache(): void
     {
         $cachedData = [
             'g' => [
@@ -147,7 +147,7 @@ EOF;
         $this->sut->loadPolicy($model);
     }
 
-    public function testSavePolicyCallsDefaultAdapter()
+    public function testSavePolicyCallsDefaultAdapter(): void
     {
         $model = new CasbinModel();
 
@@ -159,7 +159,7 @@ EOF;
         $this->sut->savePolicy($model);
     }
 
-    public function testAddPolicyCallsDefaultAdapter()
+    public function testAddPolicyCallsDefaultAdapter(): void
     {
         $sec   = 'foo';
         $ptype = 'bar';
@@ -173,7 +173,7 @@ EOF;
         $this->sut->addPolicy($sec, $ptype, [$rule]);
     }
 
-    public function testRemovePolicyCallsDefaultAdapter()
+    public function testRemovePolicyCallsDefaultAdapter(): void
     {
         $sec   = 'foo';
         $ptype = 'bar';
@@ -187,7 +187,7 @@ EOF;
         $this->sut->removePolicy($sec, $ptype, [$rule]);
     }
 
-    public function testRemoveFilteredPolicyWithoutFieldValuesCallsDefaultAdapter()
+    public function testRemoveFilteredPolicyWithoutFieldValuesCallsDefaultAdapter(): void
     {
         $sec        = 'foo';
         $ptype      = 'bar';
@@ -201,7 +201,7 @@ EOF;
         $this->sut->removeFilteredPolicy($sec, $ptype, $fieldIndex);
     }
 
-    public function testRemoveFilteredPolicyWithFieldValuesCallsDefaultAdapter()
+    public function testRemoveFilteredPolicyWithFieldValuesCallsDefaultAdapter(): void
     {
         $sec         = 'foo';
         $ptype       = 'bar';

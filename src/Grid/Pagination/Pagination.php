@@ -105,7 +105,7 @@ class Pagination extends Tag implements IPagination, ITemplater
     /**
      * @param array $params
      */
-    protected function setParams(array $params)
+    protected function setParams(array $params): void
     {
         $page = 1;
         if (array_key_exists(static::PARAM_KEY_PAGE, $params)) {
@@ -122,7 +122,7 @@ class Pagination extends Tag implements IPagination, ITemplater
     /**
      * @param array $pageSizes
      */
-    protected function checkArguments(array $pageSizes)
+    protected function checkArguments(array $pageSizes): void
     {
         if ($this->numberCount % 2 !== 1 || $this->numberCount < 1) {
             throw new \InvalidArgumentException(static::ERROR_MSG_INVALID_NUMBER_COUNT);
@@ -136,7 +136,7 @@ class Pagination extends Tag implements IPagination, ITemplater
      * @param string $baseUrl
      * @param array  $pageSizes
      */
-    protected function buildComponents(string $baseUrl, array $pageSizes)
+    protected function buildComponents(string $baseUrl, array $pageSizes): void
     {
         $baseUrl    = $this->getPageSizeUrl($baseUrl);
         $attributes = [

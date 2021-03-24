@@ -13,7 +13,7 @@ class UuidV4Test extends TestCase
      */
     protected const REGEX_UUID = '/^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$/';
 
-    public function testFormat()
+    public function testFormat(): void
     {
         $actualResult = UuidV4::generate();
 

@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ActionsTest extends TestCase
 {
-    public function testDuplicateWithEmptyNodes()
+    public function testDuplicateWithEmptyNodes(): void
     {
         $sut = new Actions();
 
@@ -19,7 +19,7 @@ class ActionsTest extends TestCase
         $this->assertEquals($sut, $duplicate);
     }
 
-    public function testDuplicateWithNodes()
+    public function testDuplicateWithNodes(): void
     {
         $sut = new Actions();
 

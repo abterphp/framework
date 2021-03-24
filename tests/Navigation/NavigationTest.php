@@ -29,7 +29,7 @@ class NavigationTest extends TestCase
         $this->enforcerMock = $this->createMock(Enforcer::class);
     }
 
-    public function testDefaultGetExtended()
+    public function testDefaultGetExtended(): void
     {
         $sut = new Navigation();
 
@@ -40,7 +40,7 @@ class NavigationTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testGetExtendedWithOptionalsReplaced()
+    public function testGetExtendedWithOptionalsReplaced(): void
     {
         $wrapper = new Component('YYY', [], [], 'foo');
         $prefix  = new Component('XXX', [], [], 'bar');
@@ -59,7 +59,7 @@ class NavigationTest extends TestCase
         $this->assertContains($postfix, $actualResult);
     }
 
-    public function testGetDescendantNodesIgnoresOptionals()
+    public function testGetDescendantNodesIgnoresOptionals(): void
     {
         $wrapper = new Component('YYY', [], [], 'foo');
         $prefix  = new Component('XXX', [], [], 'bar');
@@ -76,7 +76,7 @@ class NavigationTest extends TestCase
         $this->assertSame([], $actualResult);
     }
 
-    public function testGetDescendantNodesGetsChildren()
+    public function testGetDescendantNodesGetsChildren(): void
     {
         $node       = new Node('A');
         $component  = new Component($node);
@@ -95,7 +95,7 @@ class NavigationTest extends TestCase
         $this->assertContains($node, $actualResult);
     }
 
-    public function testGetDescendantRespectsDepth()
+    public function testGetDescendantRespectsDepth(): void
     {
         $node       = new Node('A');
         $component  = new Component($node);
@@ -114,7 +114,7 @@ class NavigationTest extends TestCase
         $this->assertNotContains($node, $actualResult);
     }
 
-    public function testGetExtendedDescendantNodesIgnoresOptionals()
+    public function testGetExtendedDescendantNodesIgnoresOptionals(): void
     {
         $wrapper = new Component(null, [], [], 'foo');
         $prefix  = new Component(null, [], [], 'bar');
@@ -131,7 +131,7 @@ class NavigationTest extends TestCase
         $this->assertSame([$prefix, $postfix, $wrapper], $actualResult);
     }
 
-    public function testSetContent()
+    public function testSetContent(): void
     {
         $this->expectException(\LogicException::class);
 
@@ -140,14 +140,14 @@ class NavigationTest extends TestCase
         $sut->setContent('');
     }
 
-    public function testDefaultToString()
+    public function testDefaultToString(): void
     {
         $sut = new Navigation();
 
         $this->assertSame('<ul></ul>', (string)$sut);
     }
 
-    public function testToStringWithOptionalsModified()
+    public function testToStringWithOptionalsModified(): void
     {
         $sut = new Navigation();
 
@@ -158,7 +158,7 @@ class NavigationTest extends TestCase
         $this->assertSame('<bar>XXX</bar><foo><ul></ul></foo><baz>ZZZ</baz>', (string)$sut);
     }
 
-    public function testRenderDisplaysItemsInProperOrder()
+    public function testRenderDisplaysItemsInProperOrder(): void
     {
         $rawItems = [new Item('AAA'), new Item('BBB'), new Item('CCC'), new Item('DDD')];
         $items    = [
@@ -180,7 +180,7 @@ class NavigationTest extends TestCase
         $this->assertMatchesRegularExpression('/^\s*\<ul.*CCC.*DDD.*AAA.*BBB.*\<\/ul\>\s*$/Ums', $rendered);
     }
 
-    public function testGetWrapperReturnsNullByDefault()
+    public function testGetWrapperReturnsNullByDefault(): void
     {
         $sut = new Navigation();
 
@@ -189,7 +189,7 @@ class NavigationTest extends TestCase
         $this->assertNull($actualResult);
     }
 
-    public function testGetWrapperReturnsLastLestWrapper()
+    public function testGetWrapperReturnsLastLestWrapper(): void
     {
         $sut = new Navigation();
 
@@ -203,7 +203,7 @@ class NavigationTest extends TestCase
         $this->assertSame($componentStub, $actualResult);
     }
 
-    public function testSetTranslatorSetsTranslatorOnNodes()
+    public function testSetTranslatorSetsTranslatorOnNodes(): void
     {
         $sut = new Navigation();
 

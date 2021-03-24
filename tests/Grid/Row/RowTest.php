@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 class RowTest extends TestCase
 {
-    public function testSetEntitySetsEntityWorksWithoutActions()
+    public function testSetEntitySetsEntityWorksWithoutActions(): void
     {
         $sut = new Row(new Cells());
 
@@ -27,7 +27,7 @@ class RowTest extends TestCase
         $this->assertSame($stubEntity, $sut->getEntity());
     }
 
-    public function testSetEntitySetsEntityOnAllActions()
+    public function testSetEntitySetsEntityOnAllActions(): void
     {
         $stubEntity = MockEntityFactory::createEntityStub($this);
 
@@ -47,7 +47,7 @@ class RowTest extends TestCase
         $sut->setEntity($stubEntity);
     }
 
-    public function testRender()
+    public function testRender(): void
     {
         $stubEntity = MockEntityFactory::createEntityStub($this, 'foo', null, 'id-1');
 
@@ -75,7 +75,7 @@ class RowTest extends TestCase
         $this->assertStringContainsString($actualResult, $repeatedResult);
     }
 
-    public function testGetNodes()
+    public function testGetNodes(): void
     {
         $cells   = new Cells(new Cell(new Component('abc', [], [], Html5::TAG_I), 'foo-group'));
         $actions = new Actions();
@@ -87,7 +87,7 @@ class RowTest extends TestCase
         $this->assertCount(0, $nodes);
     }
 
-    public function testGetExtendedNodes()
+    public function testGetExtendedNodes(): void
     {
         $cells   = new Cells(new Cell(new Component('abc', [], [], Html5::TAG_I), 'foo-group'));
         $actions = new Actions();
@@ -101,7 +101,7 @@ class RowTest extends TestCase
         $this->assertInstanceOf(Cell::class, $nodes[1]);
     }
 
-    public function testGetDescendantNodes()
+    public function testGetDescendantNodes(): void
     {
         $cells   = new Cells(new Cell(new Component('abc', [], [], Html5::TAG_I), 'foo-group'));
         $actions = new Actions();
@@ -113,7 +113,7 @@ class RowTest extends TestCase
         $this->assertCount(0, $nodes);
     }
 
-    public function testGetExtendedDescendantNodes()
+    public function testGetExtendedDescendantNodes(): void
     {
         $node      = new Node('abc');
         $component = new Component($node, [], [], Html5::TAG_I);

@@ -25,7 +25,7 @@ class GridReadyTest extends TestCase
         parent::setUp();
     }
 
-    public function testGetGrid()
+    public function testGetGrid(): void
     {
         $actualResult = $this->sut->getGrid();
 

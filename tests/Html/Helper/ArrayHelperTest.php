@@ -26,7 +26,7 @@ class ArrayHelperTest extends TestCase
      * @param array  $styles
      * @param string $expectedResult
      */
-    public function testToStyles(array $styles, string $expectedResult)
+    public function testToStyles(array $styles, string $expectedResult): void
     {
         $actualResult = ArrayHelper::toStyles($styles);
 
@@ -63,7 +63,7 @@ class ArrayHelperTest extends TestCase
      * @param string $prepend
      * @param string $expectedResult
      */
-    public function testToAttributes(array $attributes, string $prepend, string $expectedResult)
+    public function testToAttributes(array $attributes, string $prepend, string $expectedResult): void
     {
         $actualResult = ArrayHelper::toAttributes($attributes, $prepend);
 
@@ -93,12 +93,15 @@ class ArrayHelperTest extends TestCase
     /**
      * @dataProvider unsafeMergeAttributesProvider
      *
-     * @param array $existingAttributes
-     * @param array $newAttributes
-     * @param array $expectedResult
+     * @param array<string,null|string[]> $existingAttributes
+     * @param array<string,null|string[]> $newAttributes
+     * @param array<string,null|string[]> $expectedResult
      */
-    public function testUnsafeMergeAttributes(array $existingAttributes, array $newAttributes, array $expectedResult)
-    {
+    public function testUnsafeMergeAttributes(
+        array $existingAttributes,
+        array $newAttributes,
+        array $expectedResult
+    ): void {
         $actualResult = ArrayHelper::unsafeMergeAttributes($existingAttributes, $newAttributes);
 
         $this->assertEquals($expectedResult, $actualResult);
@@ -158,7 +161,7 @@ class ArrayHelperTest extends TestCase
      * @param array $newAttributes
      * @param array $expectedResult
      */
-    public function testMergeAttributes(array $existingAttributes, array $newAttributes, array $expectedResult)
+    public function testMergeAttributes(array $existingAttributes, array $newAttributes, array $expectedResult): void
     {
         $actualResult = ArrayHelper::mergeAttributes($existingAttributes, $newAttributes);
 
@@ -192,7 +195,7 @@ class ArrayHelperTest extends TestCase
      * @param mixed      $value
      * @param array|null $expectedResult
      */
-    public function testFormatAttribute($value, ?array $expectedResult)
+    public function testFormatAttribute($value, ?array $expectedResult): void
     {
         $actualResult = ArrayHelper::formatAttribute($value);
 
@@ -215,7 +218,7 @@ class ArrayHelperTest extends TestCase
      *
      * @param mixed $value
      */
-    public function testFormatAttributeFailure($value)
+    public function testFormatAttributeFailure($value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -241,7 +244,7 @@ class ArrayHelperTest extends TestCase
      * @param array  $parts
      * @param string $expectedResult
      */
-    public function testToQuery(array $parts, string $expectedResult)
+    public function testToQuery(array $parts, string $expectedResult): void
     {
         $actualResult = ArrayHelper::toQuery($parts);
 

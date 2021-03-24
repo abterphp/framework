@@ -27,14 +27,14 @@ class EntityChangeTest extends TestCase
         parent::setUp();
     }
 
-    public function testGetEntity()
+    public function testGetEntity(): void
     {
         $actualResult = $this->sut->getEntity();
 
         $this->assertSame($this->entityMock, $actualResult);
     }
 
-    public function testGetEntityId()
+    public function testGetEntityId(): void
     {
         $expectedResult = 'foo';
 
@@ -44,7 +44,7 @@ class EntityChangeTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testGetEntityName()
+    public function testGetEntityName(): void
     {
         $expectedResult = get_class($this->entityMock);
 
@@ -53,7 +53,7 @@ class EntityChangeTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testGetEntityType()
+    public function testGetEntityType(): void
     {
         $actualResult = $this->sut->getEventType();
 

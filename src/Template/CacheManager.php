@@ -114,7 +114,7 @@ class CacheManager
         return $this->cacheBridge->has($key);
     }
 
-    public function flush()
+    public function flush(): void
     {
         $this->cacheBridge->flush();
     }

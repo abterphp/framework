@@ -18,7 +18,7 @@ class SetupTest extends TestCase
         $this->sut = new Setup();
     }
 
-    public function testExecuteCallsDefaultSubCommand()
+    public function testExecuteCallsDefaultSubCommand(): void
     {
         $responseMock = $this->getMockBuilder(IResponse::class)
             ->disableOriginalConstructor()
@@ -35,7 +35,7 @@ class SetupTest extends TestCase
         $this->sut->execute($responseMock);
     }
 
-    public function testExecuteCallsAdditionalSubCommands()
+    public function testExecuteCallsAdditionalSubCommands(): void
     {
         $responseMock = $this->getMockBuilder(IResponse::class)
             ->disableOriginalConstructor()
@@ -54,7 +54,7 @@ class SetupTest extends TestCase
         $this->sut->execute($responseMock);
     }
 
-    public function testExecutesWritesResponseOnExceptions()
+    public function testExecutesWritesResponseOnExceptions(): void
     {
         $ex = new \RuntimeException('foo');
 

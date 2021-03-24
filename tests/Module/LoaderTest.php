@@ -10,7 +10,7 @@ class LoaderTest extends TestCase
 {
     protected const MODULE_FILE_NAME = 'module.php';
 
-    public function testNoRootsWorks()
+    public function testNoRootsWorks(): void
     {
         $loader = new Loader([]);
 
@@ -19,7 +19,7 @@ class LoaderTest extends TestCase
         $this->assertEmpty($actual);
     }
 
-    public function testEmptyRootsAreSkipped()
+    public function testEmptyRootsAreSkipped(): void
     {
         $loader = new Loader(['']);
 
@@ -28,7 +28,7 @@ class LoaderTest extends TestCase
         $this->assertEmpty($actual);
     }
 
-    public function testEmptyRootWorks()
+    public function testEmptyRootWorks(): void
     {
         $loader = new Loader([__DIR__ . '/fixtures/empty'], static::MODULE_FILE_NAME);
 
@@ -37,7 +37,7 @@ class LoaderTest extends TestCase
         $this->assertEmpty($actual);
     }
 
-    public function testDisabledModulesAreSkipped()
+    public function testDisabledModulesAreSkipped(): void
     {
         $loader = new Loader([__DIR__ . '/fixtures/disabled-only'], static::MODULE_FILE_NAME);
 
@@ -46,7 +46,7 @@ class LoaderTest extends TestCase
         $this->assertEmpty($actual);
     }
 
-    public function testSingleNonEmptyWorks()
+    public function testSingleNonEmptyWorks(): void
     {
         $loader = new Loader([__DIR__ . '/fixtures/src'], static::MODULE_FILE_NAME);
 
@@ -55,7 +55,7 @@ class LoaderTest extends TestCase
         $this->assertNotEmpty($actual);
     }
 
-    public function testMultipleRootWorks()
+    public function testMultipleRootWorks(): void
     {
         $loader = new Loader([__DIR__ . '/fixtures/src', __DIR__ . '/fixtures/vendor'], static::MODULE_FILE_NAME);
 
@@ -64,7 +64,7 @@ class LoaderTest extends TestCase
         $this->assertNotEmpty($actual);
     }
 
-    public function testSimpleCircularDependencyFound()
+    public function testSimpleCircularDependencyFound(): void
     {
         $this->expectException(\LogicException::class);
 
@@ -73,7 +73,7 @@ class LoaderTest extends TestCase
         $loader->loadModules();
     }
 
-    public function testComplexCircularDependencyFound()
+    public function testComplexCircularDependencyFound(): void
     {
         $this->expectException(\LogicException::class);
 

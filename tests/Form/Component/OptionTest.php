@@ -49,7 +49,7 @@ class OptionTest extends TestCase
         ?array $translations,
         ?string $tag,
         string $expectedResult
-    ) {
+    ): void {
         $sut = $this->createElement($value, $content, $isSelected, $attributes, $translations, $tag);
 
         $actualResult1 = (string)$sut;
@@ -86,7 +86,7 @@ class OptionTest extends TestCase
         return $option;
     }
 
-    public function testGetValueReturnsEmptyStringIfValueIsUnset()
+    public function testGetValueReturnsEmptyStringIfValueIsUnset(): void
     {
         $sut = new Option('foo', 'Foo');
 
@@ -97,7 +97,7 @@ class OptionTest extends TestCase
         $this->assertSame('', $actualResult);
     }
 
-    public function testGetValueReturnsEmptyStringIfValueIsNull()
+    public function testGetValueReturnsEmptyStringIfValueIsNull(): void
     {
         $sut = new Option('foo', 'Foo');
 

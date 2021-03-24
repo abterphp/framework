@@ -27,7 +27,7 @@ class SenderBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @inheritdoc
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         /** @var Swift_Transport $transport */
         $transport = $container->resolve(Swift_Transport::class);

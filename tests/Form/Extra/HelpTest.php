@@ -45,7 +45,7 @@ class HelpTest extends TestCase
         ?array $translations,
         ?string $tag,
         string $expectedResult
-    ) {
+    ): void {
         $sut = $this->createElement($content, $attributes, $translations, $tag);
 
         $actualResult   = (string)$sut;

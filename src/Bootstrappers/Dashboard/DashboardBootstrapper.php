@@ -29,7 +29,7 @@ class DashboardBootstrapper extends Bootstrapper implements ILazyBootstrapper
      *
      * @throws \Opulence\Ioc\IocException
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $dashboard = new Dashboard();
 

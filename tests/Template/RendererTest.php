@@ -77,12 +77,15 @@ class RendererTest extends TestCase
     /**
      * @dataProvider hasAllValidLoadersProvider
      *
-     * @param array $subTemplates
-     * @param array $hasAnyChangedSinceValues
-     * @param bool  $expectedResult
+     * @param array<string,string[]> $subTemplates
+     * @param array<string,bool>     $hasAnyChangedSinceValues
+     * @param bool                   $expectedResult
      */
-    public function testHasAllValidLoaders(array $subTemplates, array $hasAnyChangedSinceValues, bool $expectedResult)
-    {
+    public function testHasAllValidLoaders(
+        array $subTemplates,
+        array $hasAnyChangedSinceValues,
+        bool $expectedResult
+    ): void {
         $date = '2019-04-02';
 
         foreach ($hasAnyChangedSinceValues as $templateType => $hasAnyChangedSinceValue) {
@@ -139,7 +142,7 @@ class RendererTest extends TestCase
      * @param array  $loaderData
      * @param string $expectedResult
      */
-    public function testRender(array $templateData, array $loaderData, string $expectedResult)
+    public function testRender(array $templateData, array $loaderData, string $expectedResult): void
     {
         $rawContent = '';
         $vars       = [];
@@ -150,7 +153,7 @@ class RendererTest extends TestCase
         $templateMock->expects($this->any())->method('parse')->willReturn(...array_values($templateData));
         $templateMock->expects($this->any())->method('render')->willReturn(...array_keys($templateData));
 
-        $templateMocks = array_fill(0, count($templateData), $templateMock);
+        $templateMocks                       = array_fill(0, count($templateData), $templateMock);
         $templateMocks[count($templateData)] = $this->createMock(Template::class);
 
         $this->templateFactoryMock
@@ -171,7 +174,7 @@ class RendererTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testRenderThrowsExceptionIfLoaderIsNotSetForType()
+    public function testRenderThrowsExceptionIfLoaderIsNotSetForType(): void
     {
         $this->expectException(RuntimeException::class);
 

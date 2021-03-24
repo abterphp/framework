@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Views;
 
 use Opulence\Http\Requests\Request;
@@ -20,7 +22,7 @@ class ViewFunctionsBootstrapperTest extends TestCase
         $this->sut = new ViewFunctionsBootstrapper();
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         $requestMock      = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->getMock();
         $urlGeneratorMock = $this->getMockBuilder(UrlGenerator::class)->disableOriginalConstructor()->getMock();
@@ -38,7 +40,7 @@ class ViewFunctionsBootstrapperTest extends TestCase
         $this->sut->registerBindings($container);
     }
 
-    public function testCreateMetaViewFunction()
+    public function testCreateMetaViewFunction(): void
     {
         $nameStub = 'foo';
         $contentStubs = ['', 'bar', 'baz'];
@@ -47,7 +49,7 @@ class ViewFunctionsBootstrapperTest extends TestCase
         $this->assertSame("<meta property=\"$nameStub\" name=\"$nameStub\" content=\"{$contentStubs[1]}\">\n", $actual);
     }
 
-    public function testCreateAuthorNameViewFunction()
+    public function testCreateAuthorNameViewFunction(): void
     {
         $authorStub = 'foo';
 
@@ -55,7 +57,7 @@ class ViewFunctionsBootstrapperTest extends TestCase
         $this->assertSame("<meta property=\"author\" name=\"author\" content=\"{$authorStub}\">\n", $actual);
     }
 
-    public function testCreateAuthorLinkViewFunction()
+    public function testCreateAuthorLinkViewFunction(): void
     {
         $authorStub = 'https://foo.example.com/';
 

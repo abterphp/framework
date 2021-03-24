@@ -39,7 +39,7 @@ class Action extends Button implements IAction
     /**
      * @param IEntity $entity
      */
-    public function setEntity(IEntity $entity)
+    public function setEntity(IEntity $entity): void
     {
         $this->entity = $entity;
     }

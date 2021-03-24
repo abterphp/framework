@@ -26,7 +26,7 @@ class GridBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @param IContainer $container
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $defaultPageSize = (int)Environment::getVar(Env::PAGINATION_SIZE_DEFAULT);
         $numberCount     = (int)Environment::getVar(Env::PAGINATION_NUMBER_COUNT);

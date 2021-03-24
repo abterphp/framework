@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class BodyTest extends TestCase
 {
-    public function testSetEntitiesWithEmptyEntities()
+    public function testSetEntitiesWithEmptyEntities(): void
     {
         $sut = new Body([], null);
 
@@ -21,7 +21,7 @@ class BodyTest extends TestCase
         $this->assertCount(0, $sut);
     }
 
-    public function testSetEntitiesWithoutGetters()
+    public function testSetEntitiesWithoutGetters(): void
     {
         $entities   = [];
         $entities[] = $this->createEntity('foo', 1);
@@ -38,7 +38,7 @@ class BodyTest extends TestCase
         $this->assertCount(0, $sut[1]->getCells());
     }
 
-    public function testSetEntitiesWithPropertyGetters()
+    public function testSetEntitiesWithPropertyGetters(): void
     {
         $entities   = [];
         $entities[] = $this->createEntity('foo', 1);
@@ -60,16 +60,14 @@ class BodyTest extends TestCase
         $this->assertCount(2, $sut[1]->getCells());
     }
 
-    public function testSetEntitiesWithCallableGetters()
+    public function testSetEntitiesWithCallableGetters(): void
     {
         $entities   = [];
         $entities[] = $this->createEntity('foo', 1);
         $entities[] = $this->createEntity('bar', 2);
 
         $getters = [
-            'foo' => function ($entity) {
-                return $entity->getFoo();
-            },
+            'foo' => fn ($entity) => $entity->getFoo(),
             'bar' => [$entities[0], 'getBar'],
         ];
 
@@ -84,7 +82,7 @@ class BodyTest extends TestCase
         $this->assertCount(2, $sut[1]->getCells());
     }
 
-    public function testSetEntitiesWithMixedGetters()
+    public function testSetEntitiesWithMixedGetters(): void
     {
         $entities   = [];
         $entities[] = $this->createEntity('foo', 1);
@@ -128,7 +126,7 @@ class BodyTest extends TestCase
         return $entity;
     }
 
-    public function testGetExtendedNodesWithoutActions()
+    public function testGetExtendedNodesWithoutActions(): void
     {
         $entities   = [];
         $entities[] = $this->createEntity('foo', 1);
@@ -146,7 +144,7 @@ class BodyTest extends TestCase
         $this->assertSame([], $nodes);
     }
 
-    public function testGetExtendedNodesWithActions()
+    public function testGetExtendedNodesWithActions(): void
     {
         $actions = new Actions();
 

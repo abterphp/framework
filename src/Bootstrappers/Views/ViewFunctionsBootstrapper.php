@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Views;
 
 use Opulence\Framework\Views\Bootstrappers\ViewFunctionsBootstrapper as OpulenceViewFunctionsBootstrapper;
@@ -14,7 +16,7 @@ class ViewFunctionsBootstrapper extends OpulenceViewFunctionsBootstrapper
      *
      * @throws IocException
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $this->registerCustomBindings($container);
 
@@ -26,7 +28,7 @@ class ViewFunctionsBootstrapper extends OpulenceViewFunctionsBootstrapper
      *
      * @throws IocException
      */
-    public function registerCustomBindings(IContainer $container)
+    public function registerCustomBindings(IContainer $container): void
     {
         /** @var ITranspiler $transpiler */
         $transpiler = $container->resolve(ITranspiler::class);

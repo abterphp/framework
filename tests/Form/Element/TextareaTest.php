@@ -72,7 +72,7 @@ class TextareaTest extends TestCase
         ?array $translations,
         ?string $tag,
         string $expectedResult
-    ) {
+    ): void {
         $sut = $this->createElement($inputId, $name, $value, $attributes, $translations, $tag);
 
         $actualResult   = (string)$sut;
@@ -109,7 +109,7 @@ class TextareaTest extends TestCase
         return $textarea;
     }
 
-    public function testSetValueSetsAttribute()
+    public function testSetValueSetsAttribute(): void
     {
         $expectedResult = 'foo';
 
@@ -139,7 +139,7 @@ class TextareaTest extends TestCase
      *
      * @param mixed $value
      */
-    public function testSetValueThrowsExceptionOnInvalid($value)
+    public function testSetValueThrowsExceptionOnInvalid($value): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -148,7 +148,7 @@ class TextareaTest extends TestCase
         $sut->setValue($value);
     }
 
-    public function testGetNameReturnsEmptyStringIfUnset()
+    public function testGetNameReturnsEmptyStringIfUnset(): void
     {
         $sut = new Textarea('id', 'name');
 
@@ -159,7 +159,7 @@ class TextareaTest extends TestCase
         $this->assertSame('', $actualResult);
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $expectedResult = 'foo';
 
@@ -170,7 +170,7 @@ class TextareaTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testGetNameReturnEmptyStringIfAttributeIsNull()
+    public function testGetNameReturnEmptyStringIfAttributeIsNull(): void
     {
         $expectedResult = '';
 

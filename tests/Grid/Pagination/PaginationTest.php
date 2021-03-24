@@ -24,14 +24,19 @@ class PaginationTest extends TestCase
     /**
      * @dataProvider getTestToStringDataProvider
      *
-     * @param int      $page
-     * @param int      $pageSize
-     * @param int      $totalCount
-     * @param int      $numberCount
+     * @param int $page
+     * @param int $pageSize
+     * @param int $totalCount
+     * @param int $numberCount
      * @param string[] $expectedResult
      */
-    public function testToString(int $page, int $pageSize, int $totalCount, int $numberCount, array $expectedResult)
-    {
+    public function testToString(
+        int $page,
+        int $pageSize,
+        int $totalCount,
+        int $numberCount,
+        array $expectedResult
+    ): void {
         $params = ['page' => (string)$page];
 
         $sut = new Pagination($params, '', $numberCount, $pageSize, [$pageSize], [], []);
@@ -47,7 +52,7 @@ class PaginationTest extends TestCase
         $this->assertSame($actualResult, (string)$sut);
     }
 
-    public function testConstructFailureOnEvenNumberCount()
+    public function testConstructFailureOnEvenNumberCount(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -56,7 +61,7 @@ class PaginationTest extends TestCase
         new Pagination($params, '', 4, 10, [10], [], []);
     }
 
-    public function testConstructFailureOnInvalidPageSize()
+    public function testConstructFailureOnInvalidPageSize(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -65,7 +70,7 @@ class PaginationTest extends TestCase
         new Pagination($params, '', 5, 8, [10], [], []);
     }
 
-    public function testConstructFailureOnInvalidPageSizeParam()
+    public function testConstructFailureOnInvalidPageSizeParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -74,7 +79,7 @@ class PaginationTest extends TestCase
         new Pagination($params, '', 4, 10, [10], [], []);
     }
 
-    public function testSetTotalCountFailureOnNegativeTotalCount()
+    public function testSetTotalCountFailureOnNegativeTotalCount(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -85,7 +90,7 @@ class PaginationTest extends TestCase
         $sut->setTotalCount(-1);
     }
 
-    public function testSetTotalCountFailureOutOfRangeTotalCount()
+    public function testSetTotalCountFailureOutOfRangeTotalCount(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -96,7 +101,7 @@ class PaginationTest extends TestCase
         $sut->setTotalCount(0);
     }
 
-    public function testGetNodes()
+    public function testGetNodes(): void
     {
         $sut = new Pagination([], '', 5, 10, [10], [], []);
 
@@ -105,7 +110,7 @@ class PaginationTest extends TestCase
         $this->assertSame([], $actualResult);
     }
 
-    public function testGetExtendedNodes()
+    public function testGetExtendedNodes(): void
     {
         $sut = new Pagination([], '', 5, 10, [10], [], []);
 
@@ -116,7 +121,7 @@ class PaginationTest extends TestCase
         $this->assertInstanceOf(Select::class, $actualResult[1]);
     }
 
-    public function testTemplateIsChangeable()
+    public function testTemplateIsChangeable(): void
     {
         $sut = new Pagination([], '', 5, 10, [10], [], []);
 
@@ -125,7 +130,7 @@ class PaginationTest extends TestCase
         $this->assertMatchesRegularExpression('/\<foo\>.*\<\/foo\>\<bar\>.*\<\/bar\>/', (string)$sut);
     }
 
-    public function testSetSortedUrlCanSetsUrlOnNumbersBeforeTotalCountIsSet()
+    public function testSetSortedUrlCanSetsUrlOnNumbersBeforeTotalCountIsSet(): void
     {
         $url = '/foo?';
 
@@ -140,7 +145,7 @@ class PaginationTest extends TestCase
         $this->assertStringContainsString($url, $actualResult);
     }
 
-    public function testSetSortedUrlCanNotSetsUrlOnNumbersAfterTotalCountIsSet()
+    public function testSetSortedUrlCanNotSetsUrlOnNumbersAfterTotalCountIsSet(): void
     {
         $url = '/foo?';
 

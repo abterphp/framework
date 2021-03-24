@@ -11,7 +11,7 @@ use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 
 class ItemTest extends ComponentTest
 {
-    public function testDefaultToString()
+    public function testDefaultToString(): void
     {
         $sut = $this->createNode();
 
@@ -61,7 +61,7 @@ class ItemTest extends ComponentTest
      * @param array  $translations
      * @param string $expectedResult
      */
-    public function testToStringWithTranslation($content, array $translations, string $expectedResult)
+    public function testToStringWithTranslation($content, array $translations, string $expectedResult): void
     {
         $translator = MockTranslatorFactory::createSimpleTranslator($this, $translations);
 
@@ -77,7 +77,7 @@ class ItemTest extends ComponentTest
      * @param mixed  $rawContent
      * @param string $expectedResult
      */
-    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult)
+    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult): void
     {
         $sut = $this->createNode($rawContent);
 
@@ -88,10 +88,14 @@ class ItemTest extends ComponentTest
      * @dataProvider toStringCanReturnTranslatedContentProvider
      *
      * @param mixed  $rawContent
+     * @param array  $translations
      * @param string $expectedResult
      */
-    public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
-    {
+    public function testToStringCanReturnTranslatedContent(
+        $rawContent,
+        array $translations,
+        string $expectedResult
+    ): void {
         $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
 
         $sut = $this->createNode($rawContent);
@@ -101,7 +105,7 @@ class ItemTest extends ComponentTest
         $this->assertStringContainsString($expectedResult, (string)$sut);
     }
 
-    public function testGetResourceGetsLastSetResource()
+    public function testGetResourceGetsLastSetResource(): void
     {
         $content  = 'foo';
         $resource = 'bar';
@@ -115,10 +119,10 @@ class ItemTest extends ComponentTest
         $this->assertSame($resource, $actualResult);
     }
 
-    public function testGetRoleGetsLastSetResource()
+    public function testGetRoleGetsLastSetResource(): void
     {
-        $content  = 'foo';
-        $role = 'bar';
+        $content = 'foo';
+        $role    = 'bar';
 
         $sut = $this->createNode($content);
 
@@ -129,20 +133,20 @@ class ItemTest extends ComponentTest
         $this->assertSame($role, $actualResult);
     }
 
-    public function testDisabledItemCastsToEmptyString()
+    public function testDisabledItemCastsToEmptyString(): void
     {
-        $content  = 'foo';
-        $sut = $this->createNode($content);
+        $content = 'foo';
+        $sut     = $this->createNode($content);
 
         $sut->disable();
 
         $this->assertSame('', (string)$sut);
     }
 
-    public function testEnableCanRevertDisabling()
+    public function testEnableCanRevertDisabling(): void
     {
-        $content  = 'foo';
-        $sut = $this->createNode($content);
+        $content = 'foo';
+        $sut     = $this->createNode($content);
 
         $sut->disable();
         $sut->enable();

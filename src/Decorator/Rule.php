@@ -42,7 +42,7 @@ class Rule
         $this->defaultClasses    = $defaultClasses;
         $this->intentClassMap    = $intentClassMap;
         if (!$callback) {
-            $callback = fn($x) => $x;
+            $callback = fn ($x) => $x;
         }
         $this->callback = $callback;
     }

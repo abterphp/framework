@@ -42,7 +42,7 @@ class SenderTest extends TestCase
         $this->sut = new Sender($this->mailerMock, $this->messageFactory);
     }
 
-    public function testSend()
+    public function testSend(): void
     {
         $this->mailerMock->expects($this->once())->method('send')->willReturn(count($this->recipients));
 
@@ -54,7 +54,7 @@ class SenderTest extends TestCase
         $this->sut->send($subject, $body, $this->recipients, $senders, $replyTo);
     }
 
-    public function testGetFailedRecipientsIsEmptyByDefault()
+    public function testGetFailedRecipientsIsEmptyByDefault(): void
     {
         $recipients = $this->sut->getFailedRecipients();
 

@@ -32,7 +32,7 @@ class FlysystemTest extends TestCase
         return $this->createMock(Filesystem::class);
     }
 
-    public function testHasThrowsExceptionWhenThereAreNoFilesystemsRegistered()
+    public function testHasThrowsExceptionWhenThereAreNoFilesystemsRegistered(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -41,7 +41,7 @@ class FlysystemTest extends TestCase
         $this->sut->fileExists($path);
     }
 
-    public function testHasThrowsExceptionWhenNoMatchingFilesystemIsFound()
+    public function testHasThrowsExceptionWhenNoMatchingFilesystemIsFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -49,9 +49,7 @@ class FlysystemTest extends TestCase
 
         $this->sut->registerFilesystem(
             $fs,
-            function () {
-                return false;
-            }
+            fn () => false
         );
 
         $path = 'foo.ext';
@@ -59,7 +57,7 @@ class FlysystemTest extends TestCase
         $this->sut->fileExists($path);
     }
 
-    public function testFileExistsUsesTheFirstCheckedFilesystem()
+    public function testFileExistsUsesTheFirstCheckedFilesystem(): void
     {
         $expectedResult = true;
 
@@ -68,15 +66,11 @@ class FlysystemTest extends TestCase
 
         $this->sut->registerFilesystem(
             $fs1,
-            function () {
-                return false;
-            }
+            fn () => false
         );
         $this->sut->registerFilesystem(
             $fs2,
-            function () {
-                return true;
-            }
+            fn () => true
         );
 
         $path = 'foo.ext';
@@ -89,7 +83,7 @@ class FlysystemTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testReadThrowsExceptionWhenThereAreNoFilesystemsRegistered()
+    public function testReadThrowsExceptionWhenThereAreNoFilesystemsRegistered(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -98,7 +92,7 @@ class FlysystemTest extends TestCase
         $this->sut->read($path);
     }
 
-    public function testReadThrowsExceptionWhenNoMatchingFilesystemIsFound()
+    public function testReadThrowsExceptionWhenNoMatchingFilesystemIsFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -106,9 +100,7 @@ class FlysystemTest extends TestCase
 
         $this->sut->registerFilesystem(
             $fs,
-            function () {
-                return false;
-            }
+            fn () => false
         );
 
         $path = 'foo.ext';
@@ -116,7 +108,7 @@ class FlysystemTest extends TestCase
         $this->sut->read($path);
     }
 
-    public function testReadReturnsNullIfPathDoesNotExist()
+    public function testReadReturnsNullIfPathDoesNotExist(): void
     {
         $fs = $this->createFilesystemMock();
         $fs->expects($this->once())->method('fileExists')->willReturn(false);
@@ -129,7 +121,7 @@ class FlysystemTest extends TestCase
         $this->assertNull($actualResult);
     }
 
-    public function testReadReturnsNullIfFileCanNotBeRead()
+    public function testReadReturnsNullIfFileCanNotBeRead(): void
     {
         $path = 'foo.ext';
 
@@ -143,7 +135,7 @@ class FlysystemTest extends TestCase
         $this->assertNull($actualResult);
     }
 
-    public function testReadReturnsContentIfFileIsReadable()
+    public function testReadReturnsContentIfFileIsReadable(): void
     {
         $expectedResult = 'bar';
 
@@ -159,7 +151,7 @@ class FlysystemTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testReadUsesTheFirstCheckedFilesystem()
+    public function testReadUsesTheFirstCheckedFilesystem(): void
     {
         $expectedResult = 'bar';
 
@@ -168,15 +160,11 @@ class FlysystemTest extends TestCase
 
         $this->sut->registerFilesystem(
             $fs1,
-            function () {
-                return false;
-            }
+            fn () => false
         );
         $this->sut->registerFilesystem(
             $fs2,
-            function () {
-                return true;
-            }
+            fn () => true
         );
 
         $path = 'foo.ext';
@@ -190,7 +178,7 @@ class FlysystemTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testWriteThrowsExceptionWhenThereAreNoFilesystemsRegistered()
+    public function testWriteThrowsExceptionWhenThereAreNoFilesystemsRegistered(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -200,7 +188,7 @@ class FlysystemTest extends TestCase
         $this->sut->write($path, $content);
     }
 
-    public function testWriteThrowsExceptionWhenNoMatchingFilesystemIsFound()
+    public function testWriteThrowsExceptionWhenNoMatchingFilesystemIsFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -208,9 +196,7 @@ class FlysystemTest extends TestCase
 
         $this->sut->registerFilesystem(
             $fs,
-            function () {
-                return false;
-            }
+            fn () => false
         );
 
         $path    = 'foo.ext';
@@ -219,7 +205,7 @@ class FlysystemTest extends TestCase
         $this->sut->write($path, $content);
     }
 
-    public function testWriteReturnsFalseIfWritingFails()
+    public function testWriteReturnsFalseIfWritingFails(): void
     {
         $fs = $this->createFilesystemMock();
 
@@ -233,7 +219,7 @@ class FlysystemTest extends TestCase
         $this->sut->write($path, $content);
     }
 
-    public function testWriteReturnsTrueOnSuccess()
+    public function testWriteReturnsTrueOnSuccess(): void
     {
         $fs = $this->createFilesystemMock();
 
@@ -249,22 +235,18 @@ class FlysystemTest extends TestCase
         $this->assertTrue($actualResult);
     }
 
-    public function testWriteUsesTheFirstCheckedFilesystem()
+    public function testWriteUsesTheFirstCheckedFilesystem(): void
     {
         $fs1 = $this->createFilesystemMock();
         $fs2 = $this->createFilesystemMock();
 
         $this->sut->registerFilesystem(
             $fs1,
-            function () {
-                return false;
-            }
+            fn () => false
         );
         $this->sut->registerFilesystem(
             $fs2,
-            function () {
-                return true;
-            }
+            fn () => true
         );
 
         $path    = 'foo.ext';
@@ -278,7 +260,7 @@ class FlysystemTest extends TestCase
         $this->assertTrue($actualResult);
     }
 
-    public function testWriteReturnsFalseOnFileExistExceptionIfWritingIsNotForced()
+    public function testWriteReturnsFalseOnFileExistExceptionIfWritingIsNotForced(): void
     {
         $fs = $this->createFilesystemMock();
 
@@ -294,7 +276,7 @@ class FlysystemTest extends TestCase
         $this->assertFalse($actualResult);
     }
 
-    public function testWriteTriesToDeleteExistingFileIfWritingIsForcedAndFileExists()
+    public function testWriteTriesToDeleteExistingFileIfWritingIsForcedAndFileExists(): void
     {
         $expectedResult = true;
 
@@ -314,7 +296,7 @@ class FlysystemTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testGetWebPath()
+    public function testGetWebPath(): void
     {
         $path      = 'foo.ext';
         $timestamp = time();
@@ -331,7 +313,7 @@ class FlysystemTest extends TestCase
         $this->assertNotSame($path, $actualResult);
     }
 
-    public function testFlushDeletesAllFlushableFilesInAllRegisteredFilesystems()
+    public function testFlushDeletesAllFlushableFilesInAllRegisteredFilesystems(): void
     {
         $fs1 = $this->createFilesystemMock();
         $fs2 = $this->createFilesystemMock();
@@ -353,7 +335,7 @@ class FlysystemTest extends TestCase
         $this->sut->flush();
     }
 
-    public function testFlushIgnoresDotGitignoreFiles()
+    public function testFlushIgnoresDotGitignoreFiles(): void
     {
         $fs = $this->createFilesystemMock();
 
@@ -368,7 +350,7 @@ class FlysystemTest extends TestCase
         $this->sut->flush();
     }
 
-    public function testFlushIgnoresPhpFiles()
+    public function testFlushIgnoresPhpFiles(): void
     {
         $fs = $this->createFilesystemMock();
 
@@ -383,7 +365,7 @@ class FlysystemTest extends TestCase
         $this->sut->flush();
     }
 
-    public function testFlushUsesSetIsFlushableCallback()
+    public function testFlushUsesSetIsFlushableCallback(): void
     {
         $this->sut->setIsFlushable(
             function ($obj) {

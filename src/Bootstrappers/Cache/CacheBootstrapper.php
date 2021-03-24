@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Cache;
 
 use Opulence\Cache\ArrayBridge;
@@ -32,7 +34,7 @@ class CacheBootstrapper extends Bootstrapper implements ILazyBootstrapper
      *
      * @throws IocException
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $cacheBridge = $this->getCacheBridge($container);
 

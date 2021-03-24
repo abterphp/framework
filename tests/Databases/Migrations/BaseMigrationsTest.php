@@ -33,7 +33,7 @@ class BaseMigrationsTest extends TestCase
         parent::setUp();
     }
 
-    public function testGetCreationDateCreatesADateTime()
+    public function testGetCreationDateCreatesADateTime(): void
     {
         $actualResult = $this->sut->getCreationDate();
 
@@ -43,7 +43,7 @@ class BaseMigrationsTest extends TestCase
         $this->assertSame('0,0,0,0,0', $diff->format('%y,%m,%d,%h,%m'));
     }
 
-    public function testDownLoadsAFileAndExecutesItAsSql()
+    public function testDownLoadsAFileAndExecutesItAsSql(): void
     {
         $content = 'SELECT 1;';
 
@@ -65,7 +65,7 @@ class BaseMigrationsTest extends TestCase
         $this->sut->down();
     }
 
-    public function testUpLoadsAFileAndExecutesItAsSql()
+    public function testUpLoadsAFileAndExecutesItAsSql(): void
     {
         $content = 'SELECT 1;';
 
@@ -87,7 +87,7 @@ class BaseMigrationsTest extends TestCase
         $this->sut->up();
     }
 
-    public function testDownThrowsExceptionIfExecutionFails()
+    public function testDownThrowsExceptionIfExecutionFails(): void
     {
         $this->expectException(Exception::class);
 
@@ -114,7 +114,7 @@ class BaseMigrationsTest extends TestCase
         $this->sut->down();
     }
 
-    public function testUpThrowsExceptionIfExecutionFails()
+    public function testUpThrowsExceptionIfExecutionFails(): void
     {
         $this->expectException(Exception::class);
 

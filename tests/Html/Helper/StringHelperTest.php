@@ -36,7 +36,7 @@ class StringHelperTest extends TestCase
         ?string $tag,
         array $attributes,
         string $expectedResult
-    ) {
+    ): void {
         $actualResult = StringHelper::wrapInTag($content, $tag, $attributes);
 
         $this->assertSame($expectedResult, $actualResult);
@@ -65,7 +65,7 @@ class StringHelperTest extends TestCase
      * @param string $tag
      * @param string $expectedResult
      */
-    public function testWrapByLines(string $text, string $tag, string $expectedResult)
+    public function testWrapByLines(string $text, string $tag, string $expectedResult): void
     {
         $actualResult = StringHelper::wrapByLines($text, $tag);
 

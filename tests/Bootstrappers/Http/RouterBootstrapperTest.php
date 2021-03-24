@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Http;
 
 use Opulence\Framework\Configuration\Config;
@@ -29,7 +31,7 @@ class RouterBootstrapperTest extends TestCase
         Config::set('paths', 'config.http', null);
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         vfsStream::setup(static::ROOT_PATH);
         $exampleDir = vfsStream::url(static::ROOT_PATH);

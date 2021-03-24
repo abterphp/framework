@@ -40,21 +40,21 @@ class NavigationBuilderTest extends TestCase
         parent::setUp();
     }
 
-    public function testHandleWorksWithoutNodes()
+    public function testHandleWorksWithoutNodes(): void
     {
         $navigationReady = $this->createNavigationEvent([], $this->once());
 
         $this->sut->handle($navigationReady);
     }
 
-    public function testHandleWorksWithNonResourceNodes()
+    public function testHandleWorksWithNonResourceNodes(): void
     {
         $navigationReady = $this->createNavigationEvent([new Node()], $this->once());
 
         $this->sut->handle($navigationReady);
     }
 
-    public function testHandleSkipsItemsWithoutRoleAndResource()
+    public function testHandleSkipsItemsWithoutRoleAndResource(): void
     {
         $itemMock = $this->createMock(Item::class);
         $itemMock->expects($this->once())->method('getResource')->willReturn(null);
@@ -66,7 +66,7 @@ class NavigationBuilderTest extends TestCase
         $this->sut->handle($navigationReady);
     }
 
-    public function testHandleSkipItemsTheUserHasAccessTo()
+    public function testHandleSkipItemsTheUserHasAccessTo(): void
     {
         $role     = 'foo';
         $resource = 'bar';
@@ -83,7 +83,7 @@ class NavigationBuilderTest extends TestCase
         $this->sut->handle($navigationReady);
     }
 
-    public function testHandleDisableItemsTheUserHasNoAccessTo()
+    public function testHandleDisableItemsTheUserHasNoAccessTo(): void
     {
         $role     = 'foo';
         $resource = 'bar';

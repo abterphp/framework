@@ -65,6 +65,6 @@ class Exception extends \RuntimeException
         $pieces[] = sprintf('Driver error code: %s', $errorInfo[1]);
         $pieces[] = sprintf('Driver error message: %s', $errorInfo[2]);
 
-        return join("\n", $pieces);
+        return implode("\n", $pieces);
     }
 }

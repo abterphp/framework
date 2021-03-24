@@ -35,7 +35,7 @@ class CacheManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
      *
      * @throws IocException
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $cacheBridge = $this->getCacheBridge($container);
 

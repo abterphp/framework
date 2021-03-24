@@ -22,35 +22,35 @@ class OptionsTest extends TestCase
         $this->sut = new Options(static::DEFAULT_PAGE_SIZE, static::PAGE_SIZE_OPTIONS, static::NUMBER_COUNT);
     }
 
-    public function testGetDefaultPageSize()
+    public function testGetDefaultPageSize(): void
     {
         $actualResult = $this->sut->getDefaultPageSize();
 
         $this->assertSame(static::DEFAULT_PAGE_SIZE, $actualResult);
     }
 
-    public function testGetPageSizeOptions()
+    public function testGetPageSizeOptions(): void
     {
         $actualResult = $this->sut->getPageSizeOptions();
 
         $this->assertSame(static::PAGE_SIZE_OPTIONS, $actualResult);
     }
 
-    public function testGetNumberCount()
+    public function testGetNumberCount(): void
     {
         $actualResult = $this->sut->getNumberCount();
 
         $this->assertSame(static::NUMBER_COUNT, $actualResult);
     }
 
-    public function testGetAttributesEmptyByDefault()
+    public function testGetAttributesEmptyByDefault(): void
     {
         $actualResult = $this->sut->getAttributes();
 
         $this->assertSame([], $actualResult);
     }
 
-    public function testGetAttributes()
+    public function testGetAttributes(): void
     {
         $attributes = ['foo' => 'bar'];
 

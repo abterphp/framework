@@ -25,7 +25,7 @@ class CacheManagerTest extends TestCase
         parent::setUp();
     }
 
-    public function testStoreAll()
+    public function testStoreAll(): void
     {
         $data    = ['foo' => 'bar'];
         $payload = '{"foo":"bar"}';
@@ -38,7 +38,7 @@ class CacheManagerTest extends TestCase
         $this->sut->storeAll($data);
     }
 
-    public function testGetAllReturnsNullIfCacheBridgeThrowsException()
+    public function testGetAllReturnsNullIfCacheBridgeThrowsException(): void
     {
         $this->cacheBridgeMock
             ->expects($this->once())
@@ -70,7 +70,7 @@ class CacheManagerTest extends TestCase
      * @param mixed $payload
      * @param mixed $expectedResult
      */
-    public function testGetAll($payload, $expectedResult)
+    public function testGetAll($payload, $expectedResult): void
     {
         $this->cacheBridgeMock
             ->expects($this->any())
@@ -82,7 +82,7 @@ class CacheManagerTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testClearAllCallsCacheBridge()
+    public function testClearAllCallsCacheBridge(): void
     {
         $this->cacheBridgeMock
             ->expects($this->once())

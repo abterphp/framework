@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 
 class ContentlessTest extends TestCase
 {
-    public function testToStringIsEmptyByDefault()
+    public function testToStringIsEmptyByDefault(): void
     {
         $sut = $this->createNode();
 
         $this->assertStringContainsString('', (string)$sut);
     }
 
-    public function testSetIntentsCanOverwriteExistingIntents()
+    public function testSetIntentsCanOverwriteExistingIntents(): void
     {
         $sut = $this->createNode();
 
@@ -25,7 +25,7 @@ class ContentlessTest extends TestCase
         $this->assertEquals(['bar', 'baz'], $sut->getIntents());
     }
 
-    public function testAddIntentAppendsToExistingIntents()
+    public function testAddIntentAppendsToExistingIntents(): void
     {
         $sut = $this->createNode();
 
@@ -35,7 +35,7 @@ class ContentlessTest extends TestCase
         $this->assertEquals(['foo', 'bar', 'baz'], $sut->getIntents());
     }
 
-    public function testHasAttributeWithNonEmptyAttribute()
+    public function testHasAttributeWithNonEmptyAttribute(): void
     {
         $sut = $this->createNode();
 
@@ -67,7 +67,7 @@ class ContentlessTest extends TestCase
      * @param             $value
      * @param string|null $expectedResult
      */
-    public function testGetAttributes($value, ?string $expectedResult)
+    public function testGetAttributes($value, ?string $expectedResult): void
     {
         $key = 'foo';
 
@@ -81,7 +81,7 @@ class ContentlessTest extends TestCase
         $this->assertEquals([$key => $expectedResult], $actualResult);
     }
 
-    public function testHasAttributeWithEmptyAttribute()
+    public function testHasAttributeWithEmptyAttribute(): void
     {
         $sut = $this->createNode();
 
@@ -92,7 +92,7 @@ class ContentlessTest extends TestCase
         $this->assertTrue($sut->hasAttribute('foo'));
     }
 
-    public function testHasAttributeWithMissingAttributeSet()
+    public function testHasAttributeWithMissingAttributeSet(): void
     {
         $sut = $this->createNode();
 
@@ -109,7 +109,7 @@ class ContentlessTest extends TestCase
      * @param             $value
      * @param string|null $expectedResult
      */
-    public function testGetAttribute($value, ?string $expectedResult)
+    public function testGetAttribute($value, ?string $expectedResult): void
     {
         $key = 'foo';
 
@@ -129,7 +129,7 @@ class ContentlessTest extends TestCase
      * @param             $value
      * @param string|null $expectedResult
      */
-    public function testUnsetAttribute($value, ?string $expectedResult)
+    public function testUnsetAttribute($value, ?string $expectedResult): void
     {
         $key = 'foo';
 
@@ -148,7 +148,7 @@ class ContentlessTest extends TestCase
         $this->assertNull($repeatedResult);
     }
 
-    public function testSetAttributesOverridesExistingAttributesSet()
+    public function testSetAttributesOverridesExistingAttributesSet(): void
     {
         $originalAttributes = ['foo' => 'bar'];
         $newAttributes      = ['bar' => 'baz'];
@@ -163,7 +163,7 @@ class ContentlessTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testAddAttributesOverridesExistingAttributesSet()
+    public function testAddAttributesOverridesExistingAttributesSet(): void
     {
         $originalAttributes = ['foo' => 'bar', 'bar' => 'foo'];
         $newAttributes      = ['bar' => 'baz'];
@@ -178,7 +178,7 @@ class ContentlessTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testSetAttributeOverridesExistingAttributeSet()
+    public function testSetAttributeOverridesExistingAttributeSet(): void
     {
         $key                = 'bar';
         $originalAttributes = ['foo' => 'bar', 'bar' => 'foo'];
@@ -194,7 +194,7 @@ class ContentlessTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testAppendToAttributeKeepsExistingAttributeSet()
+    public function testAppendToAttributeKeepsExistingAttributeSet(): void
     {
         $key                = 'bar';
         $originalAttributes = ['foo' => 'bar', 'bar' => 'foo'];
@@ -210,7 +210,7 @@ class ContentlessTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testAppendToClassKeepsExistingAttributeSet()
+    public function testAppendToClassKeepsExistingAttributeSet(): void
     {
         $originalAttributes = ['foo' => 'bar', 'class' => 'foo'];
         $newClasses         = ['class1', 'class2'];
@@ -225,7 +225,7 @@ class ContentlessTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testFind()
+    public function testFind(): void
     {
         $this->expectException(\LogicException::class);
 
@@ -261,7 +261,7 @@ class ContentlessTest extends TestCase
      * @param string[]    $intents
      * @param bool        $expectedResult
      */
-    public function testIsMatch(?string $className, array $intents, bool $expectedResult)
+    public function testIsMatch(?string $className, array $intents, bool $expectedResult): void
     {
         $sut = $this->createNode();
         $sut->setIntent('foo', 'bar');
@@ -271,7 +271,7 @@ class ContentlessTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testFindFirstChild()
+    public function testFindFirstChild(): void
     {
         $this->expectException(\LogicException::class);
 
@@ -283,7 +283,7 @@ class ContentlessTest extends TestCase
         $sut->findFirstChild($className, ...$intents);
     }
 
-    public function testCollect()
+    public function testCollect(): void
     {
         $this->expectException(\LogicException::class);
 
@@ -296,7 +296,7 @@ class ContentlessTest extends TestCase
         $sut->collect($className, $intents, $depth);
     }
 
-    public function testSetContent()
+    public function testSetContent(): void
     {
         $this->expectException(\LogicException::class);
 

@@ -25,7 +25,7 @@ abstract class FooBarStub implements IStringerEntity
     /**
      * @param string $id
      */
-    public function setId($id)
+    public function setId($id): void
     {
         $this->id = $id;
     }

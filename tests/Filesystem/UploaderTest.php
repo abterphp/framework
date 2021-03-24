@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Filesystem;
 
 use League\Flysystem\Filesystem;
@@ -30,14 +32,14 @@ class UploaderTest extends TestCase
         $this->sut = new Uploader($this->filesystemMock, self::FILE_MANAGER_PATH);
     }
 
-    public function testPersistWithoutFileData()
+    public function testPersistWithoutFileData(): void
     {
         $actualResult = $this->sut->persist([]);
 
         $this->assertEquals([], $actualResult);
     }
 
-    public function testPersist()
+    public function testPersist(): void
     {
         $fileType = 'foo';
 
@@ -51,7 +53,7 @@ class UploaderTest extends TestCase
         $this->assertArrayHasKey($fileType, $actualResult);
     }
 
-    public function testPersistPopulatesErrorsIfUploadedFileThrowsException()
+    public function testPersistPopulatesErrorsIfUploadedFileThrowsException(): void
     {
         $fileType = 'foo';
         $msg      = 'bar';
@@ -72,7 +74,7 @@ class UploaderTest extends TestCase
         $this->assertEquals([$fileType => $msg], $this->sut->getErrors());
     }
 
-    public function testDeleteReturnsFalseIfPathDoesNotExist()
+    public function testDeleteReturnsFalseIfPathDoesNotExist(): void
     {
         $path = 'example.foo';
 
@@ -84,7 +86,7 @@ class UploaderTest extends TestCase
         $this->assertFalse($actualResult);
     }
 
-    public function testDeleteReturnsFalseIfFileSystemThrowsException()
+    public function testDeleteReturnsFalseIfFileSystemThrowsException(): void
     {
         $path = 'example.foo';
 
@@ -98,7 +100,7 @@ class UploaderTest extends TestCase
         $this->assertFalse($actualResult);
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $path = 'example.foo';
 
@@ -110,7 +112,7 @@ class UploaderTest extends TestCase
         $this->assertTrue($actualResult);
     }
 
-    public function testGetContentReturnsNullIfPathDoesNotExist()
+    public function testGetContentReturnsNullIfPathDoesNotExist(): void
     {
         $path = 'example.foo';
 
@@ -122,7 +124,7 @@ class UploaderTest extends TestCase
         $this->assertNull($actualResult);
     }
 
-    public function testGetContentReturnsFalseIfFileSystemThrowsException()
+    public function testGetContentReturnsFalseIfFileSystemThrowsException(): void
     {
         $path = 'example.foo';
 
@@ -136,7 +138,7 @@ class UploaderTest extends TestCase
         $this->assertNull($actualResult);
     }
 
-    public function testGetContent()
+    public function testGetContent(): void
     {
         $path    = 'example.foo';
         $content = 'This is the content';
@@ -149,7 +151,7 @@ class UploaderTest extends TestCase
         $this->assertEquals($content, $actualResult);
     }
 
-    public function testGetContentReturnsNullIfReadingFails()
+    public function testGetContentReturnsNullIfReadingFails(): void
     {
         $path      = 'example.foo';
         $exception = UnableToReadFile::fromLocation($path);
@@ -162,7 +164,7 @@ class UploaderTest extends TestCase
         $this->assertNull($actualResult);
     }
 
-    public function testGetStreamReturnsFalselIfPathDoesNotExist()
+    public function testGetStreamReturnsFalselIfPathDoesNotExist(): void
     {
         $path = 'example.foo';
 
@@ -174,7 +176,7 @@ class UploaderTest extends TestCase
         $this->assertFalse($actualResult);
     }
 
-    public function testGetStreamReturnsFalseIfFileSystemThrowsException()
+    public function testGetStreamReturnsFalseIfFileSystemThrowsException(): void
     {
         $path = 'example.foo';
 
@@ -188,7 +190,7 @@ class UploaderTest extends TestCase
         $this->assertFalse($actualResult);
     }
 
-    public function testGetStream()
+    public function testGetStream(): void
     {
         $path    = 'example.foo';
         $content = "foo";
@@ -201,7 +203,7 @@ class UploaderTest extends TestCase
         $this->assertEquals($content, $actualResult);
     }
 
-    public function testGetSizeReturnsNullIfPathDoesNotExist()
+    public function testGetSizeReturnsNullIfPathDoesNotExist(): void
     {
         $path = 'example.foo';
 
@@ -213,7 +215,7 @@ class UploaderTest extends TestCase
         $this->assertNull($actualResult);
     }
 
-    public function testGetSizeReturnsNullIfFileSystemThrowsException()
+    public function testGetSizeReturnsNullIfFileSystemThrowsException(): void
     {
         $path = 'example.foo';
 
@@ -227,7 +229,7 @@ class UploaderTest extends TestCase
         $this->assertNull($actualResult);
     }
 
-    public function testGetSizeReturnsNullIfSizeIsNotAvailable()
+    public function testGetSizeReturnsNullIfSizeIsNotAvailable(): void
     {
         $path = 'example.foo';
         $exception = UnableToRetrieveMetadata::create($path, 'size');
@@ -240,7 +242,7 @@ class UploaderTest extends TestCase
         $this->assertNull($actualResult);
     }
 
-    public function testGetSize()
+    public function testGetSize(): void
     {
         $path = 'example.foo';
         $size = 3;
@@ -253,7 +255,7 @@ class UploaderTest extends TestCase
         $this->assertEquals($size, $actualResult);
     }
 
-    public function testUploaderWillUseRootDirectoryByDefault()
+    public function testUploaderWillUseRootDirectoryByDefault(): void
     {
         $this->sut = new Uploader($this->filesystemMock);
 
@@ -267,13 +269,11 @@ class UploaderTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testUploaderWillUsePathFactoryIfSet()
+    public function testUploaderWillUsePathFactoryIfSet(): void
     {
         $this->sut = new Uploader($this->filesystemMock);
 
-        $fooPathFactory = function ($filename) {
-            return "/foo-base-dir/$filename";
-        };
+        $fooPathFactory = fn ($filename) => "/foo-base-dir/$filename";
 
         $key  = 'foo';
         $path = 'example.foo';

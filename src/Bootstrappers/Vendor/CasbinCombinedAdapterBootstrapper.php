@@ -29,7 +29,7 @@ class CasbinCombinedAdapterBootstrapper extends Bootstrapper implements ILazyBoo
      *
      * @throws IocException
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $cacheManager    = $container->resolve(CacheManager::class);
         $databaseAdapter = $container->resolve(Adapter::class);

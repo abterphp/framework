@@ -42,7 +42,7 @@ class ButtonTest extends TestCase
         ?array $translations,
         ?string $tag,
         string $expectedResult
-    ) {
+    ): void {
         $sut = $this->createElement($content, $intents, $attributes, $translations, $tag);
 
         $actualResult1 = (string)$sut;

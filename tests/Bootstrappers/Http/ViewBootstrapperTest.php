@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Http;
 
 use AbterPhp\Framework\Constant\Env;
@@ -45,7 +47,7 @@ class ViewBootstrapperTest extends TestCase
         Config::set('paths', 'views.raw', '');
     }
 
-    public function testRegisterBindingsDefault()
+    public function testRegisterBindingsDefault(): void
     {
         Environment::setVar(Env::ENV_NAME, 'foo');
 
@@ -81,7 +83,7 @@ class ViewBootstrapperTest extends TestCase
         $this->assertInstanceOf(IViewReader::class, $actual);
     }
 
-    public function testRegisterBindingsArrayCache()
+    public function testRegisterBindingsArrayCache(): void
     {
         Environment::setVar(Env::ENV_NAME, 'foo');
 

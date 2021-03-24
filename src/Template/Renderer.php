@@ -10,6 +10,7 @@ class Renderer
 
     protected Factory $templateFactory;
 
+    /** @var array<string,ILoader> */
     protected array $loaders = [];
 
     /**
@@ -36,8 +37,8 @@ class Renderer
     }
 
     /**
-     * @param string[][] $subTemplates
-     * @param string     $date
+     * @param array<string,string[]> $subTemplates
+     * @param string                 $date
      *
      * @return bool
      */
@@ -127,7 +128,7 @@ class Renderer
     /**
      * @param string $type
      */
-    protected function assertType(string $type)
+    protected function assertType(string $type): void
     {
         if (array_key_exists($type, $this->loaders)) {
             return;

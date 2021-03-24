@@ -25,7 +25,7 @@ class SecretGeneratorBootstrapper extends Bootstrapper implements ILazyBootstrap
     /**
      * @inheritdoc
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $eventDispatcher = $container->resolve(IEventDispatcher::class);
 

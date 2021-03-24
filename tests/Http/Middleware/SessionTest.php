@@ -39,7 +39,7 @@ class SessionTest extends TestCase
         $this->sut = new Session($this->sessionMock, $this->sessionHandlerMock);
     }
 
-    public function testHandleWithoutGc()
+    public function testHandleWithoutGc(): void
     {
         Config::set('sessions', 'gc.divisor', 1);
         Config::set('sessions', 'gc.chance', 0);
@@ -56,16 +56,14 @@ class SessionTest extends TestCase
         /** @var Response|MockObject $requestMock */
         $responseMock = $this->createMock(Response::class);
 
-        $next = function () use ($responseMock) {
-            return $responseMock;
-        };
+        $next = fn () => $responseMock;
 
         $actualResult = $this->sut->handle($requestMock, $next);
 
         $this->assertSame($responseMock, $actualResult);
     }
 
-    public function testHandleWithGc()
+    public function testHandleWithGc(): void
     {
         Config::set('sessions', 'gc.divisor', 1);
         Config::set('sessions', 'gc.chance', 2);
@@ -82,9 +80,7 @@ class SessionTest extends TestCase
         /** @var Response|MockObject $requestMock */
         $responseMock = $this->createMock(Response::class);
 
-        $next = function () use ($responseMock) {
-            return $responseMock;
-        };
+        $next = fn () => $responseMock;
 
         $this->sessionHandlerMock->expects($this->once())->method('gc');
 

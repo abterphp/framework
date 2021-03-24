@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Databases;
 
 use Opulence\Databases\IConnection;
@@ -18,7 +20,7 @@ class MigrationsBootstrapperTest extends TestCase
         $this->sut = new MigrationsBootstrapper();
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         $connectionMock = $this->getMockBuilder(IConnection::class)->getMock();
 

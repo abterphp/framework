@@ -25,7 +25,7 @@ class AuthReadyTest extends TestCase
         parent::setUp();
     }
 
-    public function testGetAdapter()
+    public function testGetAdapter(): void
     {
         $actualResult = $this->sut->getAdapter();
 

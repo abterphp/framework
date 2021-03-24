@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Databases;
 
 use Opulence\Databases\ConnectionPools\ConnectionPool;
@@ -18,7 +20,7 @@ class SqlBootstrapperTest extends TestCase
         $this->sut = new SqlBootstrapper();
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         $container = new Container();
 

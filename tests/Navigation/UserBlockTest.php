@@ -33,18 +33,14 @@ class UserBlockTest extends TagTest
 
         $sessionData = &$this->sessionData;
         $this->sessionMock->expects($this->any())->method('has')->willReturnCallback(
-            function ($key) use ($sessionData) {
-                return isset($sessionData[$key]);
-            }
+            fn ($key) => isset($sessionData[$key])
         );
         $this->sessionMock->expects($this->any())->method('get')->willReturnCallback(
-            function ($key) use ($sessionData) {
-                return isset($sessionData[$key]) ? $sessionData[$key] : '';
-            }
+            fn ($key) => $sessionData[$key] ?? ''
         );
     }
 
-    public function testConstructThrowsExceptionIfUsernameIsNotRetrievable()
+    public function testConstructThrowsExceptionIfUsernameIsNotRetrievable(): void
     {
         $this->expectException(\LogicException::class);
 
@@ -56,7 +52,7 @@ class UserBlockTest extends TagTest
         new UserBlock($sessionMock);
     }
 
-    public function testFallbackUserImageIsUsedIfGravatarIsNotAllowed()
+    public function testFallbackUserImageIsUsedIfGravatarIsNotAllowed(): void
     {
         $sessionData = [
             SessionConstant::USERNAME            => 'Mr. Wolf',
@@ -68,14 +64,10 @@ class UserBlockTest extends TagTest
         $sessionMock = $this->createMock(Session::class);
 
         $sessionMock->expects($this->any())->method('has')->willReturnCallback(
-            function ($key) use ($sessionData) {
-                return isset($sessionData[$key]);
-            }
+            fn ($key) => isset($sessionData[$key])
         );
         $sessionMock->expects($this->any())->method('get')->willReturnCallback(
-            function ($key) use ($sessionData) {
-                return isset($sessionData[$key]) ? $sessionData[$key] : '';
-            }
+            fn ($key) => $sessionData[$key] ?? ''
         );
 
         $sut = new UserBlock($sessionMock);
@@ -90,7 +82,7 @@ class UserBlockTest extends TagTest
         $this->assertStringContainsString('<div></div></a>', $rendered);
     }
 
-    public function testDefaultToString()
+    public function testDefaultToString(): void
     {
         $sut = $this->createNode();
 
@@ -104,7 +96,7 @@ class UserBlockTest extends TagTest
         $this->assertStringContainsString('<div></div></a>', $rendered);
     }
 
-    public function testToStringWithOptionalsSet()
+    public function testToStringWithOptionalsSet(): void
     {
         $sut = $this->createNode();
 
@@ -117,7 +109,7 @@ class UserBlockTest extends TagTest
         $this->assertStringContainsString("<a>AAA\nBBB\nCCC</a>", $rendered);
     }
 
-    public function testGetNodes()
+    public function testGetNodes(): void
     {
         $expectedNodes = [];
 
@@ -128,7 +120,7 @@ class UserBlockTest extends TagTest
         $this->assertEquals($expectedNodes, $actualResult);
     }
 
-    public function testGetExtendedNodes()
+    public function testGetExtendedNodes(): void
     {
         $sut = $this->createNode();
 
@@ -140,7 +132,7 @@ class UserBlockTest extends TagTest
         $this->assertInstanceOf(Component::class, $actualResult[2]);
     }
 
-    public function testGetMediaLeftReturnsINodeByDefault()
+    public function testGetMediaLeftReturnsINodeByDefault(): void
     {
         $sut = $this->createNode();
 
@@ -149,7 +141,7 @@ class UserBlockTest extends TagTest
         $this->assertInstanceOf(INode::class, $actualResult);
     }
 
-    public function testGetMediaRightReturnsINodeByDefault()
+    public function testGetMediaRightReturnsINodeByDefault(): void
     {
         $sut = $this->createNode();
 
@@ -158,7 +150,7 @@ class UserBlockTest extends TagTest
         $this->assertInstanceOf(INode::class, $actualResult);
     }
 
-    public function testGetMediaBodyReturnsINodeByDefault()
+    public function testGetMediaBodyReturnsINodeByDefault(): void
     {
         $sut = $this->createNode();
 
@@ -167,7 +159,7 @@ class UserBlockTest extends TagTest
         $this->assertInstanceOf(INode::class, $actualResult);
     }
 
-    public function testGetMediaLeftReturnsTheLastSetMediaLeft()
+    public function testGetMediaLeftReturnsTheLastSetMediaLeft(): void
     {
         /** @var IComponent $mediaLeft */
         $mediaLeft = $this->createMock(IComponent::class);
@@ -181,7 +173,7 @@ class UserBlockTest extends TagTest
         $this->assertSame($mediaLeft, $actualResult);
     }
 
-    public function testGetMediaRightReturnsTheLastSetMediaRight()
+    public function testGetMediaRightReturnsTheLastSetMediaRight(): void
     {
         /** @var IComponent $mediaRight */
         $mediaRight = $this->createMock(IComponent::class);
@@ -195,7 +187,7 @@ class UserBlockTest extends TagTest
         $this->assertSame($mediaRight, $actualResult);
     }
 
-    public function testGetMediaBodyReturnsTheLastSetMediaBody()
+    public function testGetMediaBodyReturnsTheLastSetMediaBody(): void
     {
         /** @var IComponent $mediaBody */
         $mediaBody = $this->createMock(IComponent::class);

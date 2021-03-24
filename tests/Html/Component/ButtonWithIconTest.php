@@ -54,7 +54,7 @@ class ButtonWithIconTest extends TestCase
         ?array $translations,
         ?string $tag,
         string $expectedResult
-    ) {
+    ): void {
         $sut = $this->createElement($text, $icon, $intents, $attributes, $translations, $tag);
 
         $actualResult1 = (string)$sut;
@@ -64,7 +64,7 @@ class ButtonWithIconTest extends TestCase
         $this->assertSame($expectedResult, $actualResult2);
     }
 
-    public function testSetTemplateChangesToString()
+    public function testSetTemplateChangesToString(): void
     {
         $template = '--||--';
 
@@ -80,7 +80,7 @@ class ButtonWithIconTest extends TestCase
         $this->assertStringContainsString($template, $actualResult);
     }
 
-    public function testGetTextRetrievesText()
+    public function testGetTextRetrievesText(): void
     {
         $text = new Component('A', [], [], Html5::TAG_B);
         $icon = new Component('B', [], [], Html5::TAG_I);
@@ -92,7 +92,7 @@ class ButtonWithIconTest extends TestCase
         $this->assertSame($text, $actualResult);
     }
 
-    public function testGetIconRetrievesIcon()
+    public function testGetIconRetrievesIcon(): void
     {
         $text = new Component('A', [], [], Html5::TAG_B);
         $icon = new Component('B', [], [], Html5::TAG_I);

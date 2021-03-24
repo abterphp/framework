@@ -21,7 +21,7 @@ class IdGeneratorRegistryTest extends TestCase
         $this->sut = new IdGeneratorRegistry();
     }
 
-    public function testGetIdGeneratorCreatesGeneratorByDefault()
+    public function testGetIdGeneratorCreatesGeneratorByDefault(): void
     {
         $className = 'foo';
 
@@ -30,7 +30,7 @@ class IdGeneratorRegistryTest extends TestCase
         $this->assertInstanceOf(UuidV4Generator::class, $actualResult);
     }
 
-    public function testGetIdGeneratorReturnsPreviouslyCreatedGenerator()
+    public function testGetIdGeneratorReturnsPreviouslyCreatedGenerator(): void
     {
         $className = 'foo';
 
@@ -40,7 +40,7 @@ class IdGeneratorRegistryTest extends TestCase
         $this->assertSame($repeatedResult, $actualResult);
     }
 
-    public function testGetIdGeneratorReturnsRegisteredGenerator()
+    public function testGetIdGeneratorReturnsRegisteredGenerator(): void
     {
         /** @var IIdGenerator|MockObject $idGenerator */
         $idGenerator = $this->createMock(IIdGenerator::class);

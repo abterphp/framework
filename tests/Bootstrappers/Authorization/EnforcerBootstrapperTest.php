@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Authorization;
 
 use AbterPhp\Framework\Authorization\CombinedAdapter;
@@ -28,7 +30,7 @@ class EnforcerBootstrapperTest extends TestCase
         Environment::unsetVar(Env::ENV_NAME);
     }
 
-    public function testRegisterBindingsWithoutSession()
+    public function testRegisterBindingsWithoutSession(): void
     {
         Environment::setVar(Env::DIR_AUTH_CONFIG, '/tmp');
         Environment::setVar(Env::ENV_NAME, 'foo');
@@ -46,7 +48,7 @@ class EnforcerBootstrapperTest extends TestCase
         $this->assertInstanceOf(Enforcer::class, $actual);
     }
 
-    public function testRegisterBindingsWithSession()
+    public function testRegisterBindingsWithSession(): void
     {
         $usernameStub = 'Foo';
 
@@ -87,7 +89,7 @@ class EnforcerBootstrapperTest extends TestCase
      *
      * @param bool $expectedResult
      */
-    public function testCreateCanViewViewFunctionChecksReadRole(bool $expectedResult)
+    public function testCreateCanViewViewFunctionChecksReadRole(bool $expectedResult): void
     {
         $usernameStub = 'foo';
         $keyStub      = 'bar';

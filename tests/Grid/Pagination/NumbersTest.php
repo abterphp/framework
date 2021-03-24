@@ -30,7 +30,7 @@ class NumbersTest extends TestCase
      * @param int      $lastPage
      * @param string[] $expected
      */
-    public function testPopulate(int $currentPage, array $pageNumbers, int $lastPage, array $expected)
+    public function testPopulate(int $currentPage, array $pageNumbers, int $lastPage, array $expected): void
     {
         $sut = new Numbers('/foo?');
 
@@ -42,7 +42,7 @@ class NumbersTest extends TestCase
         }
     }
 
-    public function testPopulateWithChangedBaseUrl()
+    public function testPopulateWithChangedBaseUrl(): void
     {
         $originalUrl = '/foo?';
         $finalUrl    = '/bar?';

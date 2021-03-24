@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Vendor2\Library2;
 
 use AbterPhp\Framework\Constant\Module;

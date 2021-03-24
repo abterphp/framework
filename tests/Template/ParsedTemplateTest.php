@@ -23,28 +23,28 @@ class ParsedTemplateTest extends TestCase
         $this->sut = new ParsedTemplate(static::TYPE, static::IDENTIFIER, static::ATTRIBUTES, static::OCCURRENCES);
     }
 
-    public function testGetIdentifierRetrievesOriginallyProvidedType()
+    public function testGetIdentifierRetrievesOriginallyProvidedType(): void
     {
         $actualResult = $this->sut->getType();
 
         $this->assertSame(static::TYPE, $actualResult);
     }
 
-    public function testGetIdentifierRetrievesOriginallyProvidedIdentifier()
+    public function testGetIdentifierRetrievesOriginallyProvidedIdentifier(): void
     {
         $actualResult = $this->sut->getIdentifier();
 
         $this->assertSame(static::IDENTIFIER, $actualResult);
     }
 
-    public function testGetAttributesRetrievesOriginallyProvidedAttributes()
+    public function testGetAttributesRetrievesOriginallyProvidedAttributes(): void
     {
         $actualResult = $this->sut->getAttributes();
 
         $this->assertSame(static::ATTRIBUTES, $actualResult);
     }
 
-    public function testGetAttributeFindsAndRetrievesOriginallyProvidedAttributes()
+    public function testGetAttributeFindsAndRetrievesOriginallyProvidedAttributes(): void
     {
         $key = 'body';
 
@@ -53,7 +53,7 @@ class ParsedTemplateTest extends TestCase
         $this->assertSame(static::ATTRIBUTES['body'], $actualResult);
     }
 
-    public function testGetAttributeFindsAndRetrievesNullIfAttributeIsNotSet()
+    public function testGetAttributeFindsAndRetrievesNullIfAttributeIsNotSet(): void
     {
         $key = 'something';
 
@@ -62,14 +62,14 @@ class ParsedTemplateTest extends TestCase
         $this->assertNull($actualResult);
     }
 
-    public function testGetOccurrencesRetrievesOriginallyProvidedOccurrencesByDefault()
+    public function testGetOccurrencesRetrievesOriginallyProvidedOccurrencesByDefault(): void
     {
         $actualResult = $this->sut->getOccurrences();
 
         $this->assertSame(static::OCCURRENCES, $actualResult);
     }
 
-    public function testGetOccurrencesRetrievesAddedOccurrences()
+    public function testGetOccurrencesRetrievesAddedOccurrences(): void
     {
         $expectedResult = ['one', 'two', 'three', 'four'];
 

@@ -32,7 +32,7 @@ class ManagerTest extends TestCase
         parent::setUp();
     }
 
-    public function createSutWithCache()
+    public function createSutWithCache(): void
     {
         $this->cacheMock = $this->createMock(Loader::class);
 
@@ -122,7 +122,7 @@ class ManagerTest extends TestCase
      * @param array $modules
      * @param array $expectedResult
      */
-    public function testGetHttpBootstrappers(array $modules, array $expectedResult)
+    public function testGetHttpBootstrappers(array $modules, array $expectedResult): void
     {
         $this->loaderMock->expects($this->any())->method('loadModules')->willReturn($modules);
 
@@ -209,7 +209,7 @@ class ManagerTest extends TestCase
      * @param array $modules
      * @param array $expectedResult
      */
-    public function testGetCliBootstrappers(array $modules, array $expectedResult)
+    public function testGetCliBootstrappers(array $modules, array $expectedResult): void
     {
         $this->loaderMock->expects($this->any())->method('loadModules')->willReturn($modules);
 
@@ -272,7 +272,7 @@ class ManagerTest extends TestCase
      * @param array $modules
      * @param array $expectedResult
      */
-    public function testGetCommands(array $modules, array $expectedResult)
+    public function testGetCommands(array $modules, array $expectedResult): void
     {
         $this->loaderMock->expects($this->any())->method('loadModules')->willReturn($modules);
 
@@ -390,7 +390,7 @@ class ManagerTest extends TestCase
      * @param array $modules
      * @param array $expectedResult
      */
-    public function testGetEvents(array $modules, array $expectedResult)
+    public function testGetEvents(array $modules, array $expectedResult): void
     {
         $this->loaderMock->expects($this->any())->method('loadModules')->willReturn($modules);
 
@@ -462,7 +462,7 @@ class ManagerTest extends TestCase
      * @param array $modules
      * @param array $expectedResult
      */
-    public function testGetMiddleware(array $modules, array $expectedResult)
+    public function testGetMiddleware(array $modules, array $expectedResult): void
     {
         $this->loaderMock->expects($this->any())->method('loadModules')->willReturn($modules);
 
@@ -544,7 +544,7 @@ class ManagerTest extends TestCase
      * @param array $modules
      * @param array $expectedResult
      */
-    public function testGetRoutePaths(array $modules, array $expectedResult)
+    public function testGetRoutePaths(array $modules, array $expectedResult): void
     {
         $this->loaderMock->expects($this->any())->method('loadModules')->willReturn($modules);
 
@@ -626,7 +626,7 @@ class ManagerTest extends TestCase
      * @param array $modules
      * @param array $expectedResult
      */
-    public function testGetMigrationPaths(array $modules, array $expectedResult)
+    public function testGetMigrationPaths(array $modules, array $expectedResult): void
     {
         $this->loaderMock->expects($this->any())->method('loadModules')->willReturn($modules);
 
@@ -679,7 +679,7 @@ class ManagerTest extends TestCase
      * @param array $modules
      * @param array $expectedResult
      */
-    public function testGetResourcePath(array $modules, array $expectedResult)
+    public function testGetResourcePath(array $modules, array $expectedResult): void
     {
         $this->loaderMock->expects($this->any())->method('loadModules')->willReturn($modules);
 
@@ -751,7 +751,7 @@ class ManagerTest extends TestCase
      * @param array $modules
      * @param array $expectedResult
      */
-    public function testGetAssetsPaths(array $modules, array $expectedResult)
+    public function testGetAssetsPaths(array $modules, array $expectedResult): void
     {
         $this->loaderMock->expects($this->any())->method('loadModules')->willReturn($modules);
 
@@ -760,7 +760,7 @@ class ManagerTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testInitCachesLoadedModules()
+    public function testInitCachesLoadedModules(): void
     {
         $modules = [];
 
@@ -770,7 +770,7 @@ class ManagerTest extends TestCase
         $this->sut->getAssetsPaths();
     }
 
-    public function testCacheWrapperIgnoresCacheExceptionsOnChecking()
+    public function testCacheWrapperIgnoresCacheExceptionsOnChecking(): void
     {
         $this->cacheMock = $this->createCacheWrapper();
         $this->cacheMock
@@ -788,7 +788,7 @@ class ManagerTest extends TestCase
         $this->sut->getAssetsPaths();
     }
 
-    public function testCacheWrapperIgnoresCacheExceptionsOnRead()
+    public function testCacheWrapperIgnoresCacheExceptionsOnRead(): void
     {
         $this->cacheMock = $this->createCacheWrapper();
         $this->cacheMock
@@ -811,7 +811,7 @@ class ManagerTest extends TestCase
         $this->sut->getAssetsPaths();
     }
 
-    public function testCacheWrapperIgnoresCacheExceptionsOnWrite()
+    public function testCacheWrapperIgnoresCacheExceptionsOnWrite(): void
     {
         $this->cacheMock = $this->createCacheWrapper();
         $this->cacheMock

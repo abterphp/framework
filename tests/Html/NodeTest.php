@@ -9,7 +9,7 @@ use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 
 class NodeTest extends NodeTestCase
 {
-    public function testGetRawContent()
+    public function testGetRawContent(): void
     {
         $rawContent = 'A';
 
@@ -35,7 +35,7 @@ class NodeTest extends NodeTestCase
         ];
     }
 
-    public function testGetRawContentReturnsNonTranslatedContent()
+    public function testGetRawContentReturnsNonTranslatedContent(): void
     {
         $rawContent        = 'foo';
         $translatedContent = 'bar';
@@ -50,7 +50,7 @@ class NodeTest extends NodeTestCase
         $this->assertStringContainsString($expectedResult, $sut->getRawContent());
     }
 
-    public function testGetTranslatorReturnsNullByDefault()
+    public function testGetTranslatorReturnsNullByDefault(): void
     {
         $sut = $this->createNode();
 
@@ -59,7 +59,7 @@ class NodeTest extends NodeTestCase
         $this->assertNull($actualResult);
     }
 
-    public function testGetTranslatorRetrievesTranslatorIfSet()
+    public function testGetTranslatorRetrievesTranslatorIfSet(): void
     {
         $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, []);
 

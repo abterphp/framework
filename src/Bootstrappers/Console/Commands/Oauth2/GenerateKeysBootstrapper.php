@@ -24,7 +24,7 @@ class GenerateKeysBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @inheritdoc
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $privateKeyPassword = Environment::getVar(Env::OAUTH2_PRIVATE_KEY_PASSWORD);
         $privateKeyPath     = Environment::getVar(Env::OAUTH2_PRIVATE_KEY_PATH);

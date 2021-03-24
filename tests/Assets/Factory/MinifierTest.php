@@ -20,14 +20,14 @@ class MinifierTest extends TestCase
         parent::setUp();
     }
 
-    public function testCreateCssMinifier()
+    public function testCreateCssMinifier(): void
     {
         $actualResult = $this->sut->createCssMinifier();
 
         $this->assertInstanceOf(CssMinifier::class, $actualResult);
     }
 
-    public function testCreateJsMinifier()
+    public function testCreateJsMinifier(): void
     {
         $actualResult = $this->sut->createJsMinifier();
 

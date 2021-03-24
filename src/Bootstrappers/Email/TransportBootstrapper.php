@@ -29,7 +29,7 @@ class TransportBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @inheritdoc
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $transport = null;
         if (Environment::getVar(Env::EMAIL_SMTP_HOST)) {

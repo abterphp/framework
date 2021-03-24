@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * Opulence
  *
@@ -39,7 +41,7 @@ class SecretGenerator extends Command
     /**
      * @inheritdoc
      */
-    protected function define()
+    protected function define(): void
     {
         $this->setName('abterphp:generatesecrets')
             ->setDescription('Creates secrets for AbterAdmin')
@@ -57,7 +59,7 @@ class SecretGenerator extends Command
      * @param string $name
      * @param int    $length
      */
-    public function addKey(string $name, int $length)
+    public function addKey(string $name, int $length): void
     {
         $this->keys[$name] = $length;
     }
@@ -66,7 +68,7 @@ class SecretGenerator extends Command
      * @inheritdoc
      * @throws Exception
      */
-    protected function doExecute(IResponse $response)
+    protected function doExecute(IResponse $response): void
     {
         $maxNameLength = strlen(Env::OAUTH2_ENCRYPTION_KEY);
         foreach ($this->keys as $name => $length) {
@@ -122,7 +124,7 @@ class SecretGenerator extends Command
      *
      * @throws Exception
      */
-    protected function handleKey(IResponse $response, string $name, string $key, int $maxNameLength)
+    protected function handleKey(IResponse $response, string $name, string $key, int $maxNameLength): void
     {
         if (!$this->optionIsSet('dry-run') && $this->getEnvFile()) {
             $contents    = file_get_contents($this->getEnvFile());

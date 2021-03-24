@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Http;
 
 use AbterPhp\Framework\Constant\Env;
@@ -23,7 +25,7 @@ class LoggerBootstrapperTest extends TestCase
         Environment::unsetVar(Env::DIR_LOGS);
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         Environment::setVar(Env::DIR_LOGS, '/tmp/baz');
 

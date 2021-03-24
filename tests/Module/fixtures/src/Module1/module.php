@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Src\Module1;
 
 use AbterPhp\Framework\Constant\Event;
@@ -50,7 +52,7 @@ return [
     Module::EVENTS             => [
         Event::NAVIGATION_READY => [
             /** @see \AbterPhp\Framework\Events\Listeners\NavigationBuilder::register */
-            'Events\Listeners\NavigationRegistrar@register'
+            'Events\Listeners\NavigationRegistrar@register',
         ],
     ],
     Module::MIDDLEWARE             => [

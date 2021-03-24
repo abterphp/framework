@@ -25,7 +25,7 @@ class FileFinder implements IFileFinder
         FilesystemOperator $filesystem,
         string $key = IFileFinder::DEFAULT_KEY,
         int $priority = -1
-    ) {
+    ): void {
         if (empty($this->filesystems[$key][$priority])) {
             $this->filesystems[$key][$priority] = [];
         }

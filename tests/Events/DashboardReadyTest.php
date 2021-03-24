@@ -25,7 +25,7 @@ class DashboardReadyTest extends TestCase
         parent::setUp();
     }
 
-    public function testGetDashboard()
+    public function testGetDashboard(): void
     {
         $actualResult = $this->sut->getDashboard();
 

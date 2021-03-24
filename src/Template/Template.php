@@ -6,16 +6,18 @@ namespace AbterPhp\Framework\Template;
 
 class Template
 {
+    public const TYPE_BLOCK = 'block';
+
     protected string $rawContent = '';
 
-    /** @var ParsedTemplate[][][] */
+    /** @var array<string,array<string,ParsedTemplate[]>> */
     protected array $parsedTemplates = [];
 
-    /** @var string[] */
+    /** @var array<string,string> */
     protected array $vars = [];
 
     /** @var string[] */
-    protected array $types = ['block'];
+    protected array $types = [self::TYPE_BLOCK];
 
     /**
      * Template constructor.
@@ -24,7 +26,7 @@ class Template
      * @param string[] $vars
      * @param string[] $types
      */
-    public function __construct(string $rawContent = '', array $vars = [], array $types = ['block'])
+    public function __construct(string $rawContent = '', array $vars = [], array $types = [self::TYPE_BLOCK])
     {
         $this->rawContent = $rawContent;
         $this->vars       = $vars;
@@ -86,7 +88,7 @@ class Template
     /**
      * Replaces is {{var/xxx}} occurances in the content
      */
-    private function replaceVars()
+    private function replaceVars(): void
     {
         $matches = [];
         preg_match_all('/\{\{\s*var\/([\w-]+)\s*\}\}/', $this->rawContent, $matches);
@@ -103,7 +105,7 @@ class Template
     }
 
     /**
-     * @return ParsedTemplate[][][]
+     * @return array<string,ParsedTemplate[][]>
      */
     private function parseTemplates(): array
     {

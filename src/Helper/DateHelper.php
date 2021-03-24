@@ -8,8 +8,8 @@ use DateTime;
 
 class DateHelper
 {
-    const MYSQL_DATE_FORMAT     = "Y-m-d";
-    const MYSQL_DATETIME_FORMAT = "Y-m-d H:i:s";
+    public const MYSQL_DATE_FORMAT     = "Y-m-d";
+    public const MYSQL_DATETIME_FORMAT = "Y-m-d H:i:s";
 
     /**
      * @param DateTime|null $date

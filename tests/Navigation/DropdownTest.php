@@ -15,14 +15,14 @@ use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 
 class DropdownTest extends ComponentTest
 {
-    public function testDefaultToString()
+    public function testDefaultToString(): void
     {
         $sut = $this->createNode();
 
         $this->assertSame('<div><ul></ul></div>', (string)$sut);
     }
 
-    public function testToStringWithoutWrapper()
+    public function testToStringWithoutWrapper(): void
     {
         $sut = $this->createNode();
 
@@ -137,7 +137,7 @@ class DropdownTest extends ComponentTest
         ];
     }
 
-    public function testCountWithExplicitOffset()
+    public function testCountWithExplicitOffset(): void
     {
         $expectedResult = 2;
 
@@ -152,7 +152,7 @@ class DropdownTest extends ComponentTest
         $this->assertSame($expectedResult, count($sut));
     }
 
-    public function testCountWithMixedOffset()
+    public function testCountWithMixedOffset(): void
     {
         $item1 = new Item('1');
         $item2 = new Item('2');
@@ -171,7 +171,7 @@ class DropdownTest extends ComponentTest
         $this->assertSame($expectedCount, count($sut));
     }
 
-    public function testArrayAccessWithoutOffset()
+    public function testArrayAccessWithoutOffset(): void
     {
         $item1 = new Item('1');
         $item2 = new Item('2');
@@ -185,7 +185,7 @@ class DropdownTest extends ComponentTest
         $this->assertSame($item2, $sut[1]);
     }
 
-    public function testArrayAccessWithExplicitOffset()
+    public function testArrayAccessWithExplicitOffset(): void
     {
         $item1 = new Item('1');
         $item2 = new Item('2');
@@ -199,7 +199,7 @@ class DropdownTest extends ComponentTest
         $this->assertSame($item2, $sut[1]);
     }
 
-    public function testArrayAccessThrowExceptionWhenMadeDirty()
+    public function testArrayAccessThrowExceptionWhenMadeDirty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -210,7 +210,7 @@ class DropdownTest extends ComponentTest
         $sut[1] = $item1;
     }
 
-    public function testArrayAccessWithMixedOffset()
+    public function testArrayAccessWithMixedOffset(): void
     {
         $item1 = new Item('1');
         $item2 = new Item('2');
@@ -244,7 +244,7 @@ class DropdownTest extends ComponentTest
         ];
     }
 
-    public function testCountWithoutOffset()
+    public function testCountWithoutOffset(): void
     {
         $expectedResult = 2;
 
@@ -259,7 +259,7 @@ class DropdownTest extends ComponentTest
         $this->assertSame($expectedResult, count($sut));
     }
 
-    public function testSetContent()
+    public function testSetContent(): void
     {
         $item1 = new Item('1');
         $item2 = new Item('2');
@@ -282,7 +282,7 @@ class DropdownTest extends ComponentTest
         $this->assertEquals($expectedNodes, $actualResult);
     }
 
-    public function testGetNodes()
+    public function testGetNodes(): void
     {
         $item1 = new Item('1');
         $item2 = new Item('2');
@@ -303,7 +303,7 @@ class DropdownTest extends ComponentTest
         $this->assertEquals($expectedNodes, $actualResult);
     }
 
-    public function testGetExtendedNodes()
+    public function testGetExtendedNodes(): void
     {
         $item1 = new Item('1');
         $item2 = new Item('2');
@@ -328,7 +328,7 @@ class DropdownTest extends ComponentTest
         $this->assertSame($expectedNodes, array_slice($actualResult, 3));
     }
 
-    public function testGetDescendantNodes()
+    public function testGetDescendantNodes(): void
     {
         $itemContent1 = new Node('1');
         $itemContent2 = new Node('2');
@@ -341,7 +341,7 @@ class DropdownTest extends ComponentTest
             $item2, $itemContent2,
             $item1, $itemContent1,
             $item1, $itemContent1,
-            $item1, $itemContent1
+            $item1, $itemContent1,
         ];
 
         $sut = $this->createNode();
@@ -358,7 +358,7 @@ class DropdownTest extends ComponentTest
         $this->assertEquals($expectedNodes, $actualResult);
     }
 
-    public function testGetExtendedDescendantNodes()
+    public function testGetExtendedDescendantNodes(): void
     {
         $itemContent1 = new Node('1');
         $itemContent2 = new Node('2');
@@ -371,7 +371,7 @@ class DropdownTest extends ComponentTest
             $item2, $itemContent2,
             $item1, $itemContent1,
             $item1, $itemContent1,
-            $item1, $itemContent1
+            $item1, $itemContent1,
         ];
 
         $sut = $this->createNode();
@@ -392,7 +392,7 @@ class DropdownTest extends ComponentTest
         $this->assertSame($expectedNodes, array_slice($actualResult, 3));
     }
 
-    public function testIterator()
+    public function testIterator(): void
     {
         $item1 = new Item('1');
         $item2 = new Item('2');
@@ -609,7 +609,7 @@ class DropdownTest extends ComponentTest
         ];
     }
 
-    public function testArrayAccessUnset()
+    public function testArrayAccessUnset(): void
     {
         $node1 = new Item('1');
 
@@ -631,7 +631,7 @@ class DropdownTest extends ComponentTest
      * @param array  $translations
      * @param string $expectedResult
      */
-    public function testToStringWithTranslation($content, array $translations, string $expectedResult)
+    public function testToStringWithTranslation($content, array $translations, string $expectedResult): void
     {
         $translator = MockTranslatorFactory::createSimpleTranslator($this, $translations);
 
@@ -648,7 +648,7 @@ class DropdownTest extends ComponentTest
      * @param string[]    $intents
      * @param int|null    $expectedResult
      */
-    public function testIsMatch(?string $className, array $intents, bool $expectedResult)
+    public function testIsMatch(?string $className, array $intents, bool $expectedResult): void
     {
         $sut = $this->createNode();
         $sut->setIntent('foo', 'bar');
@@ -658,7 +658,7 @@ class DropdownTest extends ComponentTest
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testGetPrefixGetsEmptyCollectionByDefault()
+    public function testGetPrefixGetsEmptyCollectionByDefault(): void
     {
         $sut = $this->createNode();
 
@@ -668,7 +668,7 @@ class DropdownTest extends ComponentTest
         $this->assertCount(0, $actualResult);
     }
 
-    public function testGetPrefixGetsLastPrefixSet()
+    public function testGetPrefixGetsLastPrefixSet(): void
     {
         $sut = $this->createNode();
 
@@ -682,7 +682,7 @@ class DropdownTest extends ComponentTest
         $this->assertSame($collectionStub, $actualResult);
     }
 
-    public function testGetPostfixGetsEmptyCollectionByDefault()
+    public function testGetPostfixGetsEmptyCollectionByDefault(): void
     {
         $sut = $this->createNode();
 
@@ -692,7 +692,7 @@ class DropdownTest extends ComponentTest
         $this->assertCount(0, $actualResult);
     }
 
-    public function testGetPostfixGetsLastPrefixSet()
+    public function testGetPostfixGetsLastPrefixSet(): void
     {
         $sut = $this->createNode();
 
@@ -706,7 +706,7 @@ class DropdownTest extends ComponentTest
         $this->assertSame($collectionStub, $actualResult);
     }
 
-    public function testGetWrapperCanReturnNull()
+    public function testGetWrapperCanReturnNull(): void
     {
         $sut = $this->createNode();
 
@@ -717,7 +717,7 @@ class DropdownTest extends ComponentTest
         $this->assertNull($actualResult);
     }
 
-    public function testGetWrapperReturnsComponentByDefault()
+    public function testGetWrapperReturnsComponentByDefault(): void
     {
         $sut = $this->createNode();
 
@@ -726,7 +726,7 @@ class DropdownTest extends ComponentTest
         $this->assertInstanceOf(IComponent::class, $actualResult);
     }
 
-    public function testGetWrapperReturnsLastSetWrapper()
+    public function testGetWrapperReturnsLastSetWrapper(): void
     {
         $sut = $this->createNode();
 

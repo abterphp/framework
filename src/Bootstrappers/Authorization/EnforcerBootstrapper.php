@@ -36,7 +36,7 @@ class EnforcerBootstrapper extends Bootstrapper implements ILazyBootstrapper
      * @throws CasbinException
      * @throws IocException
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         /** @var CombinedAdapter $combinedAdapter */
         $combinedAdapter = $container->resolve(CombinedAdapter::class);
@@ -57,7 +57,7 @@ class EnforcerBootstrapper extends Bootstrapper implements ILazyBootstrapper
      *
      * @throws IocException
      */
-    private function registerViewFunction(IContainer $container, Enforcer $enforcer)
+    private function registerViewFunction(IContainer $container, Enforcer $enforcer): void
     {
         if (!$container->hasBinding(ISession::class)) {
             return;
@@ -80,8 +80,6 @@ class EnforcerBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     public function createCanViewViewFunction(?string $username, Enforcer $enforcer): callable
     {
-        return function (string $key) use ($username, $enforcer) {
-            return $enforcer->enforce($username, 'admin_resource_' . $key, Role::READ);
-        };
+        return fn (string $key) => $enforcer->enforce($username, 'admin_resource_' . $key, Role::READ);
     }
 }

@@ -33,7 +33,7 @@ class FlushCache extends Command
     /**
      * @inheritdoc
      */
-    protected function define()
+    protected function define(): void
     {
         $this->setName(static::NAME)
             ->setDescription(static::DESCRIPTION);
@@ -42,7 +42,7 @@ class FlushCache extends Command
     /**
      * @param string $subCommand
      */
-    public function addSubCommand(string $subCommand)
+    public function addSubCommand(string $subCommand): void
     {
         $this->subCommands[] = $subCommand;
     }
@@ -50,7 +50,7 @@ class FlushCache extends Command
     /**
      * @inheritdoc
      */
-    protected function doExecute(IResponse $response)
+    protected function doExecute(IResponse $response): void
     {
         foreach ($this->subCommands as $subCommand) {
             try {

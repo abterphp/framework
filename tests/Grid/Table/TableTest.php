@@ -32,7 +32,7 @@ class TableTest extends TestCase
         $this->sut = new Table($this->body, $this->header);
     }
 
-    public function testToStringContainsHeaders()
+    public function testToStringContainsHeaders(): void
     {
         $this->body->expects($this->any())->method('__toString')->willReturn('!A!');
         $this->header->expects($this->any())->method('__toString')->willReturn('!B!');
@@ -40,7 +40,7 @@ class TableTest extends TestCase
         $this->assertStringContainsString('B', (string)$this->sut);
     }
 
-    public function testToStringContainsRows()
+    public function testToStringContainsRows(): void
     {
         $this->body->expects($this->any())->method('__toString')->willReturn('!A!');
         $this->header->expects($this->any())->method('__toString')->willReturn('!B!');
@@ -48,7 +48,7 @@ class TableTest extends TestCase
         $this->assertStringContainsString('!B!', (string)$this->sut);
     }
 
-    public function testSetTemplateCanChangeContent()
+    public function testSetTemplateCanChangeContent(): void
     {
         $template = '--||--';
 
@@ -64,7 +64,7 @@ class TableTest extends TestCase
         $this->assertStringContainsString($template, $actualResult);
     }
 
-    public function testGetSortedUrlCallsHeader()
+    public function testGetSortedUrlCallsHeader(): void
     {
         $stubBaseUrl   = '/foo?';
         $stubSortedUrl = '/foo?bar';
@@ -76,7 +76,7 @@ class TableTest extends TestCase
         $this->assertSame($stubSortedUrl, $actualResult);
     }
 
-    public function testGetSortedConditionsCallsHeader()
+    public function testGetSortedConditionsCallsHeader(): void
     {
         $stubSortedConditions = ['foo', 'bar'];
 
@@ -87,7 +87,7 @@ class TableTest extends TestCase
         $this->assertSame($stubSortedConditions, $actualResult);
     }
 
-    public function testGetSqlParamsCallsHeader()
+    public function testGetSqlParamsCallsHeader(): void
     {
         $stubQueryParams = ['foo', 'bar'];
 
@@ -98,7 +98,7 @@ class TableTest extends TestCase
         $this->assertSame($stubQueryParams, $actualResult);
     }
 
-    public function testSetEntitiesCallsBody()
+    public function testSetEntitiesCallsBody(): void
     {
         $stubEntity = MockEntityFactory::createEntityStub($this);
 
@@ -109,7 +109,7 @@ class TableTest extends TestCase
         $this->sut->setEntities($stubEntities);
     }
 
-    public function testGetExtendedNodes()
+    public function testGetExtendedNodes(): void
     {
         $actualResult = $this->sut->getExtendedNodes();
 

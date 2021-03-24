@@ -22,7 +22,7 @@ class Translator implements ITranslator
     /**
      * @param array $translations
      */
-    public function setTranslations(array $translations)
+    public function setTranslations(array $translations): void
     {
         $this->translations = $translations;
     }

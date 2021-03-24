@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Databases;
 
 use Opulence\Framework\Configuration\Config;
@@ -41,7 +43,7 @@ class MigrationsBootstrapper extends OpulenceMigrationsBootstrapper
     /**
      * @inheritdoc
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         /** @phan-suppress-next-line PhanTypeMismatchArgumentProbablyReal */
         $globalPaths = (array)Config::get('paths', 'database.migrations', []);

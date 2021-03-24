@@ -14,14 +14,14 @@ class SecretGeneratorTest extends TestCase
     protected const CONFIG = 'exampleDir/config.php';
     protected const CONFIG_EXTRA_KEY = 'MY_RANDOM_PASSWORD';
     protected const CONFIG_CONTENT = <<<EOF
-<?php
-Environment::setVar("DB_PASSWORD", "mypassword");
-Environment::setVar("ENCRYPTION_KEY", "mypassword");
-Environment::setVar("CRYPTO_FRONTEND_SALT", "mypassword");
-Environment::setVar("CRYPTO_ENCRYPTION_PEPPER", "mypassword");
-Environment::setVar("OAUTH2_PRIVATE_KEY_PASSWORD", "mypassword");
-Environment::setVar("MY_RANDOM_PASSWORD", "mypassword");
-EOF;
+        <?php
+        Environment::setVar("DB_PASSWORD", "mypassword");
+        Environment::setVar("ENCRYPTION_KEY", "mypassword");
+        Environment::setVar("CRYPTO_FRONTEND_SALT", "mypassword");
+        Environment::setVar("CRYPTO_ENCRYPTION_PEPPER", "mypassword");
+        Environment::setVar("OAUTH2_PRIVATE_KEY_PASSWORD", "mypassword");
+        Environment::setVar("MY_RANDOM_PASSWORD", "mypassword");
+        EOF;
 
     /** @var SecretGenerator - System Under Test */
     protected SecretGenerator $sut;
@@ -39,7 +39,7 @@ EOF;
         file_put_contents($this->configUrl, self::CONFIG_CONTENT);
     }
 
-    public function testExecuteThrowsExceptionIfConfigIsNotFoundAndNotInDryRunMode()
+    public function testExecuteThrowsExceptionIfConfigIsNotFoundAndNotInDryRunMode(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -52,7 +52,7 @@ EOF;
         $this->sut->execute($responseMock);
     }
 
-    public function testExecuteCreatesSixRandomStringsByDefault()
+    public function testExecuteCreatesSixRandomStringsByDefault(): void
     {
         $responseMock = $this->getMockBuilder(IResponse::class)
             ->disableOriginalConstructor()
@@ -63,7 +63,7 @@ EOF;
         $this->sut->execute($responseMock);
     }
 
-    public function testExecuteCreatesAdditionalRandomStringsForAdditionalKeys()
+    public function testExecuteCreatesAdditionalRandomStringsForAdditionalKeys(): void
     {
         $responseMock = $this->getMockBuilder(IResponse::class)
             ->disableOriginalConstructor()
@@ -76,7 +76,7 @@ EOF;
         $this->sut->execute($responseMock);
     }
 
-    public function testExecuteReplacesConfigValues()
+    public function testExecuteReplacesConfigValues(): void
     {
         $responseMock = $this->getMockBuilder(IResponse::class)
             ->disableOriginalConstructor()
@@ -91,7 +91,7 @@ EOF;
         $this->assertStringNotContainsString('mypassword', $content);
     }
 
-    public function testExecuteCanReplaceFilesMultipleTimes()
+    public function testExecuteCanReplaceFilesMultipleTimes(): void
     {
         $responseMock = $this->getMockBuilder(IResponse::class)
             ->disableOriginalConstructor()

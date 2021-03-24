@@ -85,7 +85,7 @@ class Flysystem implements ICacheManager
      * @param callable|null      $checker
      * @param int|null           $priority
      */
-    public function registerFilesystem(FilesystemOperator $filesystem, callable $checker = null, ?int $priority = null)
+    public function registerFilesystem(FilesystemOperator $filesystem, callable $checker = null, ?int $priority = null): void
     {
         $priority = $priority === null ? count($this->filesystems) * -1 : $priority;
 
@@ -189,7 +189,7 @@ class Flysystem implements ICacheManager
     /**
      * @throws FilesystemException
      */
-    public function flush()
+    public function flush(): void
     {
         foreach ($this->filesystems as $filesystem) {
             $objects = $filesystem->listContents('/', false);

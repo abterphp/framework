@@ -109,7 +109,7 @@ class Crypto
     /**
      * @param string $secret
      */
-    protected function assertRawSecret(string $secret)
+    protected function assertRawSecret(string $secret): void
     {
         if (mb_strlen($secret) !== static::SECRET_HASH_LENGTH) {
             throw new SecurityException(static::ERROR_INVALID_SECRET);

@@ -18,7 +18,7 @@ class FactoryTest extends TestCase
         $this->sut = new Factory();
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $rawContent = 'foo';
 

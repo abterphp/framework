@@ -57,7 +57,7 @@ class Collection implements ICollection
      * @param int|null $offset
      * @param INode    $value
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->verifyArgument($value);
 
@@ -83,7 +83,7 @@ class Collection implements ICollection
     /**
      * @param int $offset
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->nodes[$offset]);
     }
@@ -95,7 +95,7 @@ class Collection implements ICollection
      */
     public function offsetGet($offset)
     {
-        return isset($this->nodes[$offset]) ? $this->nodes[$offset] : null;
+        return $this->nodes[$offset] ?? null;
     }
 
     /**
@@ -106,7 +106,7 @@ class Collection implements ICollection
         return count($this->nodes);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
     }
@@ -127,7 +127,7 @@ class Collection implements ICollection
         return $this->position;
     }
 
-    public function next()
+    public function next(): void
     {
         ++$this->position;
     }
@@ -423,7 +423,7 @@ class Collection implements ICollection
         }
 
         foreach ($intents as $intent) {
-            if (!in_array($intent, $this->intents)) {
+            if (!in_array($intent, $this->intents, true)) {
                 return false;
             }
         }
@@ -451,7 +451,7 @@ class Collection implements ICollection
      *
      * @throws InvalidArgumentException
      */
-    protected function verifyArgument($content)
+    protected function verifyArgument($content): void
     {
         if ($content instanceof $this->nodeClass) {
             return;

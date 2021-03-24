@@ -41,7 +41,7 @@ class ExactlyOneTest extends TestCase
      * @param array $allValues
      * @param array $args
      */
-    public function testPasses($value, array $allValues, array $args)
+    public function testPasses($value, array $allValues, array $args): void
     {
         $this->sut->setArgs($args);
 
@@ -73,7 +73,7 @@ class ExactlyOneTest extends TestCase
      * @param array $allValues
      * @param array $args
      */
-    public function testFailures($value, array $allValues, array $args)
+    public function testFailures($value, array $allValues, array $args): void
     {
         $this->sut->setArgs($args);
 
@@ -82,7 +82,7 @@ class ExactlyOneTest extends TestCase
         $this->assertEquals(false, $actualResult);
     }
 
-    public function testGetErrorPlaceholders()
+    public function testGetErrorPlaceholders(): void
     {
         $this->sut->setArgs(['field2', 'field3']);
 
@@ -91,21 +91,21 @@ class ExactlyOneTest extends TestCase
         $this->assertEquals(['other1' => 'field2', 'other2' => 'field3'], $errorPlaceholders);
     }
 
-    public function testSetArgsThrowsExceptionWithoutArgs()
+    public function testSetArgsThrowsExceptionWithoutArgs(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         $this->sut->setArgs([]);
     }
 
-    public function testSetArgsThrowsExceptionWithNonStringArgs()
+    public function testSetArgsThrowsExceptionWithNonStringArgs(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         $this->sut->setArgs([123]);
     }
 
-    public function testGetSlug()
+    public function testGetSlug(): void
     {
         $actualResult = $this->sut->getSlug();
 

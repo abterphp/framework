@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Template;
 
 use AbterPhp\Framework\Template\CacheManager;
@@ -22,7 +24,7 @@ class CacheManagerBootstrapperTest extends TestCase
         $this->sut = new CacheManagerBootstrapper();
     }
 
-    public function testRegisterBindingsFileBridge()
+    public function testRegisterBindingsFileBridge(): void
     {
         Config::set('templates', 'file.path', '/tmp');
 
@@ -34,7 +36,7 @@ class CacheManagerBootstrapperTest extends TestCase
         $this->assertInstanceOf(CacheManager::class, $actual);
     }
 
-    public function testRegisterBindingsArrayBridge()
+    public function testRegisterBindingsArrayBridge(): void
     {
         Config::set('templates', 'cache.bridge', ArrayBridge::class);
 
@@ -46,7 +48,7 @@ class CacheManagerBootstrapperTest extends TestCase
         $this->assertInstanceOf(CacheManager::class, $actual);
     }
 
-    public function testRegisterBindingsMemcachedBridge()
+    public function testRegisterBindingsMemcachedBridge(): void
     {
         Config::set('templates', 'cache.bridge', MemcachedBridge::class);
         Config::set('templates', 'cache.clientName', 'foo');
@@ -63,7 +65,7 @@ class CacheManagerBootstrapperTest extends TestCase
         $this->assertInstanceOf(CacheManager::class, $actual);
     }
 
-    public function testRegisterBindingsRedisBridge()
+    public function testRegisterBindingsRedisBridge(): void
     {
         Config::set('templates', 'cache.bridge', RedisBridge::class);
         Config::set('templates', 'cache.clientName', 'foo');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Navigation;
 
 use AbterPhp\Framework\Constant\Navigation as NavConstant;
@@ -19,7 +21,7 @@ class NavigationBootstrapperTest extends TestCase
         $this->sut = new NavigationBootstrapper();
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         $translatorMock      = $this->getMockBuilder(ITranslator::class)->getMock();
         $eventDispatcherMock = $this->getMockBuilder(IEventDispatcher::class)->getMock();

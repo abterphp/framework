@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Vendor;
 
 use AbterPhp\Framework\Authorization\CacheManager;
@@ -18,7 +20,7 @@ class CasbinCombinedAdapterBootstrapperTest extends TestCase
         $this->sut = new CasbinCombinedAdapterBootstrapper();
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->disableOriginalConstructor()->getMock();
         $adapterMock      = $this->getMockBuilder(Adapter::class)->disableOriginalConstructor()->getMock();

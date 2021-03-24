@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Filesystem;
 
 use AbterPhp\Framework\Constant\Env;
@@ -24,7 +26,7 @@ class FilesystemBootstrapperTest extends TestCase
         Environment::unsetVar(Env::DIR_PRIVATE);
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         Environment::setVar(Env::DIR_PRIVATE, '/tmp/bar');
 

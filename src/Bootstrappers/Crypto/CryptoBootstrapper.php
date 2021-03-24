@@ -32,7 +32,7 @@ class CryptoBootstrapper extends Bootstrapper implements ILazyBootstrapper
      *
      * @throws IocException
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $encrypter = $container->resolve(IEncrypter::class);
         $hasher    = $container->resolve(IHasher::class);

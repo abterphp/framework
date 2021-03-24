@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Template;
 
 use AbterPhp\Framework\Template\CacheManager;
@@ -19,7 +21,7 @@ class EngineBootstrapperTest extends TestCase
         $this->sut = new EngineBootstrapper();
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         $eventDispatcherMock = $this->getMockBuilder(IEventDispatcher::class)->getMock();
         $cacheManagerMock    = $this->getMockBuilder(CacheManager::class)->disableOriginalConstructor()->getMock();

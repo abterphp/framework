@@ -25,7 +25,7 @@ class NavigationReadyTest extends TestCase
         parent::setUp();
     }
 
-    public function testGetNavigation()
+    public function testGetNavigation(): void
     {
         $actualResult = $this->sut->getNavigation();
 

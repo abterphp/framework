@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Cache;
 
 use AbterPhp\Framework\Constant\Env;
@@ -35,7 +37,7 @@ class CacheBootstrapperTest extends TestCase
         Config::set('cache', 'cache.keyPrefix', '');
     }
 
-    public function testRegisterBindingsFileBridge()
+    public function testRegisterBindingsFileBridge(): void
     {
         Config::set('cache', 'file.path', '/tmp');
 
@@ -47,7 +49,7 @@ class CacheBootstrapperTest extends TestCase
         $this->assertInstanceOf(FileBridge::class, $actual);
     }
 
-    public function testRegisterBindingsArrayBridge()
+    public function testRegisterBindingsArrayBridge(): void
     {
         Config::set('cache', 'cache.bridge', ArrayBridge::class);
 
@@ -59,7 +61,7 @@ class CacheBootstrapperTest extends TestCase
         $this->assertInstanceOf(ArrayBridge::class, $actual);
     }
 
-    public function testRegisterBindingsMemcachedBridge()
+    public function testRegisterBindingsMemcachedBridge(): void
     {
         Config::set('cache', 'cache.bridge', MemcachedBridge::class);
         Config::set('cache', 'cache.clientName', 'foo');
@@ -76,7 +78,7 @@ class CacheBootstrapperTest extends TestCase
         $this->assertInstanceOf(MemcachedBridge::class, $actual);
     }
 
-    public function testRegisterBindingsRedisBridge()
+    public function testRegisterBindingsRedisBridge(): void
     {
         Config::set('cache', 'cache.bridge', RedisBridge::class);
         Config::set('cache', 'cache.clientName', 'foo');

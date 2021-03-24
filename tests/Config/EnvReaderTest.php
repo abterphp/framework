@@ -45,7 +45,7 @@ class EnvReaderTest extends TestCase
      * @param string $envName
      * @param bool   $expectedResult
      */
-    public function testIsStaging(string $envName, bool $expectedResult)
+    public function testIsStaging(string $envName, bool $expectedResult): void
     {
         $this->sut->set(Env::ENV_NAME, $envName);
 
@@ -74,7 +74,7 @@ class EnvReaderTest extends TestCase
      * @param string $envName
      * @param bool   $expectedResult
      */
-    public function testIsTesting(string $envName, bool $expectedResult)
+    public function testIsTesting(string $envName, bool $expectedResult): void
     {
         $this->sut->set(Env::ENV_NAME, $envName);
 
@@ -103,7 +103,7 @@ class EnvReaderTest extends TestCase
      * @param string $envName
      * @param bool   $expectedResult
      */
-    public function testIsDevelopment(string $envName, bool $expectedResult)
+    public function testIsDevelopment(string $envName, bool $expectedResult): void
     {
         $this->sut->set(Env::ENV_NAME, $envName);
 
@@ -132,7 +132,7 @@ class EnvReaderTest extends TestCase
      * @param string $envName
      * @param bool   $expectedResult
      */
-    public function testIsProduction(string $envName, bool $expectedResult)
+    public function testIsProduction(string $envName, bool $expectedResult): void
     {
         $this->sut->set(Env::ENV_NAME, $envName);
 
@@ -141,7 +141,7 @@ class EnvReaderTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testIsReturnsFalseIfEnvironmentVariableIsNotSet()
+    public function testIsReturnsFalseIfEnvironmentVariableIsNotSet(): void
     {
         $name  = 'foo';
         $value = 'bar';
@@ -151,7 +151,7 @@ class EnvReaderTest extends TestCase
         $this->assertFalse($actualResult);
     }
 
-    public function testIsReturnsFalseIfEnvironmentVariableIsNotSetEvenComparedAgainstEmpty()
+    public function testIsReturnsFalseIfEnvironmentVariableIsNotSetEvenComparedAgainstEmpty(): void
     {
         $name  = 'foo';
         $value = '';
@@ -161,7 +161,7 @@ class EnvReaderTest extends TestCase
         $this->assertFalse($actualResult);
     }
 
-    public function testIsReturnsTrueIfEnvironmentVariableIsNotSetButDefaultIsSame()
+    public function testIsReturnsTrueIfEnvironmentVariableIsNotSetButDefaultIsSame(): void
     {
         $name  = 'foo';
         $value = 'bar';
@@ -171,7 +171,7 @@ class EnvReaderTest extends TestCase
         $this->assertFalse($actualResult);
     }
 
-    public function testIsReturnsTrueIfExpectedValueIsSetAsEnvironmentVariable()
+    public function testIsReturnsTrueIfExpectedValueIsSetAsEnvironmentVariable(): void
     {
         $name  = 'foo';
         $value = 'bar';
@@ -185,7 +185,7 @@ class EnvReaderTest extends TestCase
         $this->sut->clear($name);
     }
 
-    public function testIsIgnoresDefaultValueIfEnvironmentVariableIsSet()
+    public function testIsIgnoresDefaultValueIfEnvironmentVariableIsSet(): void
     {
         $name   = 'foo';
         $value  = 'bar';
@@ -200,7 +200,7 @@ class EnvReaderTest extends TestCase
         $this->sut->clear($name);
     }
 
-    public function testGetReturnsEmptyStringIfEnvironmentVariableIsNotSet()
+    public function testGetReturnsEmptyStringIfEnvironmentVariableIsNotSet(): void
     {
         $name = 'foo';
 
@@ -209,7 +209,7 @@ class EnvReaderTest extends TestCase
         $this->assertNull($actualResult);
     }
 
-    public function testGetReturnsDefaultIfEnvironmentVariableIsNotSetButDefaultIs()
+    public function testGetReturnsDefaultIfEnvironmentVariableIsNotSetButDefaultIs(): void
     {
         $name           = 'foo';
         $expectedResult = 'bar';
@@ -219,7 +219,7 @@ class EnvReaderTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testGetReturnsSetEnvironmentVariable()
+    public function testGetReturnsSetEnvironmentVariable(): void
     {
         $name  = 'foo';
         $value = 'bar';
@@ -233,7 +233,7 @@ class EnvReaderTest extends TestCase
         $this->sut->clear($name);
     }
 
-    public function testGetIgnoresDefaultValueIfEnvironmentVariableIsSet()
+    public function testGetIgnoresDefaultValueIfEnvironmentVariableIsSet(): void
     {
         $name   = 'foo';
         $value  = 'bar';

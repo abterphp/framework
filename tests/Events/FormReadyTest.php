@@ -25,7 +25,7 @@ class FormReadyTest extends TestCase
         parent::setUp();
     }
 
-    public function testGetForm()
+    public function testGetForm(): void
     {
         $actualResult = $this->sut->getForm();
 

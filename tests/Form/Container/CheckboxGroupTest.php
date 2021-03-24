@@ -43,7 +43,7 @@ class CheckboxGroupTest extends TestCase
         ?array $translations,
         ?string $tag,
         string $expectedResult
-    ) {
+    ): void {
         $sut = $this->createElement($inputOutput, $labelOutput, $helpOutput, $attributes, $translations, $tag);
 
         $actualResult   = (string)$sut;
@@ -93,7 +93,7 @@ class CheckboxGroupTest extends TestCase
         return $checkboxGroup;
     }
 
-    public function testGetCheckboxSpan()
+    public function testGetCheckboxSpan(): void
     {
         /** @var Input|MockObject $input */
         $input = $this->createMock(Input::class);

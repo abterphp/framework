@@ -24,21 +24,21 @@ class DecoratorTest extends TestCase
         parent::setUp();
     }
 
-    public function testDecorateWithEmptyRulesAndComponents()
+    public function testDecorateWithEmptyRulesAndComponents(): void
     {
         $this->sut->decorate([]);
 
         $this->assertTrue(true, 'No error was found.');
     }
 
-    public function testDecorateWithEmptyRules()
+    public function testDecorateWithEmptyRules(): void
     {
         $this->sut->decorate([new Component()]);
 
         $this->assertTrue(true, 'No error was found.');
     }
 
-    public function testDecorateWithEmptyComponents()
+    public function testDecorateWithEmptyComponents(): void
     {
         $this->sut->addRule(new Rule([], null, []));
 
@@ -47,7 +47,7 @@ class DecoratorTest extends TestCase
         $this->assertTrue(true, 'No error was found.');
     }
 
-    public function testDecorateNonMatchingComponents()
+    public function testDecorateNonMatchingComponents(): void
     {
         $this->sut->addRule(new Rule([], stdClass::class, ['dont-set-this']));
 
@@ -56,7 +56,7 @@ class DecoratorTest extends TestCase
         $this->assertTrue(true, 'No error was found.');
     }
 
-    public function testDecorateWithSingleMatchingComponent()
+    public function testDecorateWithSingleMatchingComponent(): void
     {
         $newClass = 'baz';
         $intents  = ['foo', 'bar'];
@@ -73,7 +73,7 @@ class DecoratorTest extends TestCase
         $this->assertStringContainsString($newClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
     }
 
-    public function testDecorateWithIntentClassMap()
+    public function testDecorateWithIntentClassMap(): void
     {
         $newClass = 'baz';
         $intents  = ['foo', 'bar'];
@@ -90,11 +90,11 @@ class DecoratorTest extends TestCase
         $this->assertStringContainsString($newClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
     }
 
-    public function testDecorateWithCallback()
+    public function testDecorateWithCallback(): void
     {
         $newClass = 'baz';
         $intents  = ['foo', 'bar'];
-        $callback = function (IComponent $component) use ($newClass) {
+        $callback = function (IComponent $component) use ($newClass): void {
             $component->appendToClass($newClass);
         };
 
@@ -110,13 +110,13 @@ class DecoratorTest extends TestCase
         $this->assertStringContainsString($newClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
     }
 
-    public function testDecorateWithCombined()
+    public function testDecorateWithCombined(): void
     {
         $defaultClass  = 'foo';
         $mapClass      = 'bar';
         $callbackClass = 'baz';
         $intents       = ['foo', 'bar'];
-        $callback      = function (IComponent $component) use ($callbackClass) {
+        $callback      = function (IComponent $component) use ($callbackClass): void {
             $component->appendToClass($callbackClass);
         };
 
@@ -133,7 +133,7 @@ class DecoratorTest extends TestCase
         $this->assertStringContainsString($callbackClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
     }
 
-    public function testDecorateMatchingNonTagNodeWorks()
+    public function testDecorateMatchingNonTagNodeWorks(): void
     {
         $node = $this->createMock(Node::class);
         $node->expects($this->once())->method('isMatch')->willReturn(true);

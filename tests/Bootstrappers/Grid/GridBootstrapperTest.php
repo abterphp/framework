@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Grid;
 
 use AbterPhp\Framework\Constant\Env;
@@ -25,7 +27,7 @@ class GridBootstrapperTest extends TestCase
         Environment::unsetVar(Env::ENV_NAME);
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         Environment::setVar(Env::PAGINATION_SIZE_OPTIONS, '5,25');
         Environment::setVar(Env::ENV_NAME, 'foo');

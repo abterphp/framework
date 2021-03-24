@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class FiltersTest extends TestCase
 {
-    public function testNodesMustBeFilters()
+    public function testNodesMustBeFilters(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -21,7 +21,7 @@ class FiltersTest extends TestCase
         $sut[] = new Component();
     }
 
-    public function testSetParamsSetsParamsOnAllNodes()
+    public function testSetParamsSetsParamsOnAllNodes(): void
     {
         $params = ['foo' => 'Foo!', 'bar' => 'Bar?'];
 
@@ -66,7 +66,7 @@ class FiltersTest extends TestCase
         string $baseUrl,
         string $expectedResult,
         string ...$whereConditions
-    ) {
+    ): void {
         $sut = new Filters();
 
         foreach ($whereConditions as $queryPart) {
@@ -108,7 +108,7 @@ class FiltersTest extends TestCase
     public function testGetWhereConditionsCollectsPartsFromAllNodes(
         array $expectedResult,
         array ...$whereConditions
-    ) {
+    ): void {
         $sut = new Filters();
 
         foreach ($whereConditions as $whereCondition) {
@@ -150,7 +150,7 @@ class FiltersTest extends TestCase
     public function testGetSqlParamsCollectsPartsFromAllNodes(
         array $expectedResult,
         array ...$sqlParams
-    ) {
+    ): void {
         $sut = new Filters();
 
         foreach ($sqlParams as $sqlParamsPiece) {
@@ -167,7 +167,7 @@ class FiltersTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testSetTranslatorSetsTranslatorOnButtons()
+    public function testSetTranslatorSetsTranslatorOnButtons(): void
     {
         $mockTranslator = MockTranslatorFactory::createSimpleTranslator($this, []);
 
@@ -180,7 +180,7 @@ class FiltersTest extends TestCase
         $this->assertNotNull($sut->getResetBtn()->getTranslator());
     }
 
-    public function testSetTranslatorSetsTranslatorOnFilters()
+    public function testSetTranslatorSetsTranslatorOnFilters(): void
     {
         $filterCount = 2;
 
@@ -200,7 +200,7 @@ class FiltersTest extends TestCase
         $sut->setTranslator($mockTranslator);
     }
 
-    public function testGetExtendedNodesIncludesButtons()
+    public function testGetExtendedNodesIncludesButtons(): void
     {
         $sut = new Filters();
 
@@ -211,7 +211,7 @@ class FiltersTest extends TestCase
         $this->assertContains($sut->getResetBtn(), $allNodes);
     }
 
-    public function testGetExtendedNodesReturnsFilters()
+    public function testGetExtendedNodesReturnsFilters(): void
     {
         $filterCount = 2;
 
@@ -232,7 +232,7 @@ class FiltersTest extends TestCase
         }
     }
 
-    public function testRenderWithoutFilters()
+    public function testRenderWithoutFilters(): void
     {
         $sut = new Filters();
 
@@ -246,7 +246,7 @@ class FiltersTest extends TestCase
         $this->assertSame($actualResult, $repeatedResult);
     }
 
-    public function testRenderWithFilters()
+    public function testRenderWithFilters(): void
     {
         $filterCount = 2;
 
@@ -269,7 +269,7 @@ class FiltersTest extends TestCase
         $this->assertSame($actualResult, $repeatedResult);
     }
 
-    public function testSetTemplateCanOverruleDefaultTemplate()
+    public function testSetTemplateCanOverruleDefaultTemplate(): void
     {
         $template = '--||--';
 

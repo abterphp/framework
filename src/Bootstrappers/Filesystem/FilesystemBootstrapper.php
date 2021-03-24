@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Filesystem;
 
 use AbterPhp\Framework\Constant\Env;
@@ -27,7 +29,7 @@ class FilesystemBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @param IContainer $container
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $dirPrivate        = Environment::getVar(Env::DIR_PRIVATE);
         $adapter           = new LocalFilesystemAdapter($dirPrivate);

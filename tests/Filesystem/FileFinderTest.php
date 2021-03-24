@@ -29,7 +29,7 @@ class FileFinderTest extends TestCase
         return $this->createMock(Filesystem::class);
     }
 
-    public function testReadWithoutFilesystems()
+    public function testReadWithoutFilesystems(): void
     {
         $path = 'foo';
 
@@ -38,7 +38,7 @@ class FileFinderTest extends TestCase
         $this->assertNull($actualResult);
     }
 
-    public function testReadWithOnlyDefaultFilesystem()
+    public function testReadWithOnlyDefaultFilesystem(): void
     {
         $fs = $this->createFilesystemMock();
 
@@ -55,7 +55,7 @@ class FileFinderTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testReadWithOnlyVendorFilesystemImplicit()
+    public function testReadWithOnlyVendorFilesystemImplicit(): void
     {
         $fs = $this->createFilesystemMock();
 
@@ -73,7 +73,7 @@ class FileFinderTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testReadWithOnlyVendorFilesystemExplicit()
+    public function testReadWithOnlyVendorFilesystemExplicit(): void
     {
         $fs = $this->createFilesystemMock();
 
@@ -90,7 +90,7 @@ class FileFinderTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testReadRespectsPriorities()
+    public function testReadRespectsPriorities(): void
     {
         $fs1 = $this->createFilesystemMock();
         $fs2 = $this->createFilesystemMock();
@@ -111,7 +111,7 @@ class FileFinderTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testReadSuppressesExceptionsInReading()
+    public function testReadSuppressesExceptionsInReading(): void
     {
         $fs1 = $this->createFilesystemMock();
 
@@ -127,7 +127,7 @@ class FileFinderTest extends TestCase
         $this->assertNull($actualResult);
     }
 
-    public function testFileExistsWithoutFilesystems()
+    public function testFileExistsWithoutFilesystems(): void
     {
         $path = 'foo';
 
@@ -136,7 +136,7 @@ class FileFinderTest extends TestCase
         $this->assertFalse($actualResult);
     }
 
-    public function testFileExistsWithOnlyDefaultFilesystem()
+    public function testFileExistsWithOnlyDefaultFilesystem(): void
     {
         $fs = $this->createFilesystemMock();
 
@@ -151,7 +151,7 @@ class FileFinderTest extends TestCase
         $this->assertTrue($actualResult);
     }
 
-    public function testFileExistsWithOnlyVendorFilesystemImplicit()
+    public function testFileExistsWithOnlyVendorFilesystemImplicit(): void
     {
         $fs = $this->createFilesystemMock();
 
@@ -166,7 +166,7 @@ class FileFinderTest extends TestCase
         $this->assertTrue($actualResult);
     }
 
-    public function testFileExistsWithOnlyVendorFilesystemExplicit()
+    public function testFileExistsWithOnlyVendorFilesystemExplicit(): void
     {
         $fs = $this->createFilesystemMock();
 

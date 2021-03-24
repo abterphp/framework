@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Filesystem;
 
 use AbterPhp\Framework\Constant\Env;
@@ -58,7 +60,7 @@ class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @param IContainer $container
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $fileFinder = new FileFinder();
 
@@ -71,7 +73,7 @@ class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @param FileFinder $fileFinder
      */
-    private function registerResourcePaths(FileFinder $fileFinder)
+    private function registerResourcePaths(FileFinder $fileFinder): void
     {
         foreach ($this->getAssetPaths() as $key => $paths) {
             foreach ($paths as $path) {

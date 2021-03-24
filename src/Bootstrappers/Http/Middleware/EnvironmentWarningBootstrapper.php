@@ -30,7 +30,7 @@ class EnvironmentWarningBootstrapper extends Bootstrapper implements ILazyBootst
      *
      * @throws IocException
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $environment = Environment::getVar(Env::ENV_NAME);
 

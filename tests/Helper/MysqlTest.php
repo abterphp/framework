@@ -41,7 +41,7 @@ class MysqlTest extends TestCase
      * @param array $expectedResult
      * @param int   $option
      */
-    public function testNullableParam($value, int $type, array $expectedResult, int $option = Mysql::OPTION_EMPTY)
+    public function testNullableParam($value, int $type, array $expectedResult, int $option = Mysql::OPTION_EMPTY): void
     {
         $actualResult = Mysql::nullableParam($value, $type, $option);
 

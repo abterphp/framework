@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 abstract class FilterTest extends TestCase
 {
-    public function testSetTemplateCanOverrideContent()
+    public function testSetTemplateCanOverrideContent(): void
     {
         $template = '--||--';
 
@@ -28,7 +28,7 @@ abstract class FilterTest extends TestCase
         $this->assertStringContainsString($actualResult, $repeatedResult);
     }
 
-    public function testGetExtendedNodesContainsLabelAndWrapper()
+    public function testGetExtendedNodesContainsLabelAndWrapper(): void
     {
         $sut = $this->createFilter();
 
@@ -38,7 +38,7 @@ abstract class FilterTest extends TestCase
         $this->assertContains($sut->getWrapper(), $actualResult);
     }
 
-    public function testSetTranslatorSetsTranslators()
+    public function testSetTranslatorSetsTranslators(): void
     {
         $mockTranslator = MockTranslatorFactory::createSimpleTranslator($this, []);
 

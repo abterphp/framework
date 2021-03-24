@@ -33,7 +33,7 @@ class ExceptionHandlerTest extends TestCase
         parent::setUp();
     }
 
-    public function testHandleRendersException()
+    public function testHandleRendersException(): void
     {
         $exceptionStub = new Exception();
 
@@ -42,7 +42,7 @@ class ExceptionHandlerTest extends TestCase
         $this->sut->handle($exceptionStub);
     }
 
-    public function testRegisterPushesTextHandlerByDefault()
+    public function testRegisterPushesTextHandlerByDefault(): void
     {
         $whoopsRunMock = $this->createWhoopsRunMock();
 
@@ -58,7 +58,7 @@ class ExceptionHandlerTest extends TestCase
         $this->sut->register();
     }
 
-    public function testRegisterPushesPlainTextAndPrettyHandlerIfSapiIsHttp()
+    public function testRegisterPushesPlainTextAndPrettyHandlerIfSapiIsHttp(): void
     {
         $whoopsRunMock = $this->createWhoopsRunMock();
 

@@ -104,7 +104,7 @@ class ViewBootstrapper extends BaseBootstrapper
     /**
      * @param FileViewNameResolver $resolver
      */
-    protected function registerPaths(FileViewNameResolver $resolver)
+    protected function registerPaths(FileViewNameResolver $resolver): void
     {
         $globalPath = Config::get('paths', 'views.raw');
         if ($globalPath) {

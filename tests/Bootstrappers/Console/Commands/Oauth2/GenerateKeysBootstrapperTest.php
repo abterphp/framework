@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Console\Commands\Oauth2;
 
 use AbterPhp\Framework\Console\Commands\Oauth2\GenerateKeys;
@@ -25,7 +27,7 @@ class GenerateKeysBootstrapperTest extends TestCase
         Environment::unsetVar(Env::OAUTH2_PUBLIC_KEY_PATH);
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         Environment::setVar(Env::OAUTH2_PRIVATE_KEY_PASSWORD, 'foo');
         Environment::setVar(Env::OAUTH2_PRIVATE_KEY_PATH, 'bar');

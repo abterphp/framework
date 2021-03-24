@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Vendor;
 
 use AbterPhp\Framework\Environments\Environment;
@@ -25,7 +27,7 @@ class CasbinDatabaseAdapterBootstrapperTest extends TestCase
         Environment::unsetVar('DB_DRIVER');
     }
 
-    public function testRegisterBindingsPostgresTriesToConnectToDB()
+    public function testRegisterBindingsPostgresTriesToConnectToDB(): void
     {
         Environment::setVar('DB_DRIVER', PostgreSqlDriver::class);
 
@@ -37,7 +39,7 @@ class CasbinDatabaseAdapterBootstrapperTest extends TestCase
         $this->sut->registerBindings($container);
     }
 
-    public function testRegisterBindingsMySQLTriesToConnectToDB()
+    public function testRegisterBindingsMySQLTriesToConnectToDB(): void
     {
         Environment::setVar('DB_DRIVER', MySqlDriver::class);
 
@@ -49,7 +51,7 @@ class CasbinDatabaseAdapterBootstrapperTest extends TestCase
         $this->sut->registerBindings($container);
     }
 
-    public function testRegisterBindingsThrowsInvalidDriverException()
+    public function testRegisterBindingsThrowsInvalidDriverException(): void
     {
         $dbDriverClassStub = 'FooClass';
 

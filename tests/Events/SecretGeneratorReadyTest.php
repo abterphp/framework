@@ -25,7 +25,7 @@ class SecretGeneratorReadyTest extends TestCase
         parent::setUp();
     }
 
-    public function testGetSecretGenerator()
+    public function testGetSecretGenerator(): void
     {
         $actualResult = $this->sut->getSecretGenerator();
 

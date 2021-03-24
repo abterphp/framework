@@ -27,7 +27,7 @@ abstract class NodeTestCase extends TestCase
      *
      * @param mixed $content
      */
-    public function testCreateFailure($content)
+    public function testCreateFailure($content): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -39,7 +39,7 @@ abstract class NodeTestCase extends TestCase
      *
      * @param mixed $content
      */
-    public function testSetContentFailure($content)
+    public function testSetContentFailure($content): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -48,7 +48,7 @@ abstract class NodeTestCase extends TestCase
         $sut->setContent($content);
     }
 
-    public function testDefaultToString()
+    public function testDefaultToString(): void
     {
         $sut = $this->createNode();
 
@@ -71,7 +71,7 @@ abstract class NodeTestCase extends TestCase
      * @param mixed  $rawContent
      * @param string $expectedResult
      */
-    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult)
+    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult): void
     {
         $sut = $this->createNode($rawContent);
 
@@ -97,8 +97,11 @@ abstract class NodeTestCase extends TestCase
      * @param array  $translations
      * @param string $expectedResult
      */
-    public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
-    {
+    public function testToStringCanReturnTranslatedContent(
+        $rawContent,
+        array $translations,
+        string $expectedResult
+    ): void {
         $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
 
         $sut = $this->createNode($rawContent);
@@ -120,7 +123,7 @@ abstract class NodeTestCase extends TestCase
      * @param string[]    $intents
      * @param bool        $expectedResult
      */
-    public function testIsMatch(?string $className, array $intents, bool $expectedResult)
+    public function testIsMatch(?string $className, array $intents, bool $expectedResult): void
     {
         $sut = $this->createNode();
         $sut->setIntent('foo', 'bar');
@@ -130,7 +133,7 @@ abstract class NodeTestCase extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testAddIntent()
+    public function testAddIntent(): void
     {
         $intent0 = 'foo';
         $intent1 = 'bar';
@@ -145,7 +148,7 @@ abstract class NodeTestCase extends TestCase
         $this->assertSame([$intent0, $intent1], $intents);
     }
 
-    public function testHasIntent()
+    public function testHasIntent(): void
     {
         $intent0 = 'foo';
         $intent1 = 'bar';

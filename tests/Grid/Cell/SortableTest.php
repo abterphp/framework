@@ -49,7 +49,7 @@ class SortableTest extends ComponentTest
         ?array $translations,
         ?string $tag,
         string $expectedResult
-    ) {
+    ): void {
         $sut = $this->createNode($content, $group, $inputName, $fieldName, $attributes, $translations, $tag);
 
         $actualResult1 = (string)$sut;
@@ -78,7 +78,7 @@ class SortableTest extends ComponentTest
      * @param array          $params
      * @param        ?string $expectedResult
      */
-    public function testQueryParam(array $params, ?string $expectedResult)
+    public function testQueryParam(array $params, ?string $expectedResult): void
     {
         $sut = new Sortable(null, 'g', 'i', 'f');
 
@@ -125,7 +125,7 @@ class SortableTest extends ComponentTest
      * @param array  $intentClassMap
      * @param string $expectedResult
      */
-    public function testShoarting(array $params, array $intentClassMap, string $expectedResult)
+    public function testShoarting(array $params, array $intentClassMap, string $expectedResult): void
     {
         $sut = new Sortable('ABC', 'g', 'i', 'f');
 
@@ -146,7 +146,7 @@ class SortableTest extends ComponentTest
         $this->assertSame($expectedResult, $actualResult2);
     }
 
-    public function testGetExtendedNodesReturnsSortBtn()
+    public function testGetExtendedNodesReturnsSortBtn(): void
     {
         $sut = new Sortable('ABC', 'g', 'i', 'f');
 
@@ -156,7 +156,7 @@ class SortableTest extends ComponentTest
         $this->assertContains($sut->getSortBtn(), $allNodes);
     }
 
-    public function testBaseUrlIsInSortBtnHref()
+    public function testBaseUrlIsInSortBtnHref(): void
     {
         $baseUrl = '/foobar';
         $params  = ['sort-i' => 10];
@@ -187,7 +187,7 @@ class SortableTest extends ComponentTest
      * @param array  $params
      * @param string $expectedResult
      */
-    public function testGetQueryPart(array $params, string $expectedResult)
+    public function testGetQueryPart(array $params, string $expectedResult): void
     {
         $sut = new Sortable('ABC', 'g', 'i', 'f');
         $sut->setParams($params);
@@ -217,7 +217,7 @@ class SortableTest extends ComponentTest
      * @param array $params
      * @param array $expectedResult
      */
-    public function testGetSortConditions(array $params, array $expectedResult)
+    public function testGetSortConditions(array $params, array $expectedResult): void
     {
         $sut = new Sortable('ABC', 'g', 'i', 'f');
         $sut->setParams($params);
@@ -227,7 +227,7 @@ class SortableTest extends ComponentTest
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testSetTemplate()
+    public function testSetTemplate(): void
     {
         $expectedResult = '<th>ABC <a></a> --||-- <a></a> ABC</th>';
 
@@ -259,7 +259,7 @@ class SortableTest extends ComponentTest
      * @param mixed  $rawContent
      * @param string $expectedResult
      */
-    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult)
+    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult): void
     {
         $sut = $this->createNode($rawContent, 'g', 'i', 'f', [], null, null);
 
@@ -281,12 +281,15 @@ class SortableTest extends ComponentTest
     /**
      * @dataProvider toStringCanReturnTranslatedContentProvider
      *
-     * @param mixed  $rawContent
-     * @param array  $translations
-     * @param string $expectedResult
+     * @param string|null $rawContent
+     * @param array       $translations
+     * @param string      $expectedResult
      */
-    public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
-    {
+    public function testToStringCanReturnTranslatedContent(
+        $rawContent,
+        array $translations,
+        string $expectedResult
+    ): void {
         $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
 
         $sut = $this->createNode($rawContent, 'g', 'i', 'f', [], null, null);
@@ -303,7 +306,7 @@ class SortableTest extends ComponentTest
      * @param string[]    $intents
      * @param bool        $expectedResult
      */
-    public function testIsMatch(?string $className, array $intents, bool $expectedResult)
+    public function testIsMatch(?string $className, array $intents, bool $expectedResult): void
     {
         $sut = $this->createNode(null, 'g', 'i', 'f', [], null, null);
         $sut->setIntent('foo', 'bar');

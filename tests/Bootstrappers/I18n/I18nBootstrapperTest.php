@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\I18n;
 
 use AbterPhp\Framework\Constant\Env;
@@ -35,7 +37,7 @@ class I18nBootstrapperTest extends TestCase
         Environment::unsetVar(Env::DEFAULT_LANGUAGE);
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         $langStub = 'en';
 

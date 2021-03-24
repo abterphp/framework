@@ -137,7 +137,7 @@ class Node implements INode
         }
 
         foreach ($intents as $intent) {
-            if (!in_array($intent, $this->intents)) {
+            if (!in_array($intent, $this->intents, true)) {
                 return false;
             }
         }

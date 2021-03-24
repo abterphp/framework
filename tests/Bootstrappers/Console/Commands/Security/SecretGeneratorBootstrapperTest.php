@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Console\Commands\Security;
 
 use AbterPhp\Framework\Console\Commands\Security\SecretGenerator;
@@ -17,7 +19,7 @@ class SecretGeneratorBootstrapperTest extends TestCase
         $this->sut = new SecretGeneratorBootstrapper();
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         $eventDispatchedMock = $this->getMockBuilder(IEventDispatcher::class)->getMock();
         $eventDispatchedMock->expects($this->once())->method('dispatch');

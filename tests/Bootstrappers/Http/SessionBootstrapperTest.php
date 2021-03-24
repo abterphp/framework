@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Http;
 
 use Opulence\Cache\ArrayBridge;
@@ -39,7 +41,7 @@ class SessionBootstrapperTest extends TestCase
         Config::set('sessions', 'cache.keyPrefix', '');
     }
 
-    public function testRegisterBindingsDefault()
+    public function testRegisterBindingsDefault(): void
     {
         Config::set('sessions', 'name', 'foo');
         Config::set('sessions', 'file.path', 'baz');
@@ -75,7 +77,7 @@ class SessionBootstrapperTest extends TestCase
      *
      * @throws IocException
      */
-    public function testRegisterBindingsCacheSession(string $cacheBridge)
+    public function testRegisterBindingsCacheSession(string $cacheBridge): void
     {
         Config::set('sessions', 'name', 'foo');
         Config::set('sessions', 'file.path', 'baz');
@@ -101,7 +103,7 @@ class SessionBootstrapperTest extends TestCase
         $this->assertInstanceOf(CacheSessionHandler::class, $actual);
     }
 
-    public function testRegisterBindingsEncryptedCacheSession()
+    public function testRegisterBindingsEncryptedCacheSession(): void
     {
         Config::set('sessions', 'name', 'foo');
         Config::set('sessions', 'file.path', 'baz');
@@ -123,7 +125,7 @@ class SessionBootstrapperTest extends TestCase
         $this->assertInstanceOf(CacheSessionHandler::class, $actual);
     }
 
-    public function testRegisterBindingsArraySessionHandler()
+    public function testRegisterBindingsArraySessionHandler(): void
     {
         Config::set('sessions', 'name', 'foo');
         Config::set('sessions', 'handler', ArraySessionHandler::class);

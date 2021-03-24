@@ -97,7 +97,7 @@ class MultiSelectTest extends TestCase
         ?array $translations,
         ?string $tag,
         string $expectedResult
-    ) {
+    ): void {
         $sut = $this->createElement($inputId, $name, $value, $options, $attributes, $translations, $tag);
 
         $actualResult   = (string)$sut;
@@ -140,7 +140,7 @@ class MultiSelectTest extends TestCase
         return $select;
     }
 
-    public function testSetValueSetsOptionsSelected()
+    public function testSetValueSetsOptionsSelected(): void
     {
         $sut = new MultiSelect('id', 'name');
 
@@ -179,7 +179,7 @@ class MultiSelectTest extends TestCase
      *
      * @param mixed $value
      */
-    public function testSetValueThrowsExceptionOnInvalid($value)
+    public function testSetValueThrowsExceptionOnInvalid($value): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -188,7 +188,7 @@ class MultiSelectTest extends TestCase
         $sut->setValue($value);
     }
 
-    public function testGetNameReturnsEmptyStringIfUnset()
+    public function testGetNameReturnsEmptyStringIfUnset(): void
     {
         $sut = new MultiSelect('id', 'name');
 
@@ -199,7 +199,7 @@ class MultiSelectTest extends TestCase
         $this->assertSame('', $actualResult);
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $expectedResult = 'foo';
 

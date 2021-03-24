@@ -33,7 +33,7 @@ class NavigationBuilder
      *
      * @throws \Opulence\Routing\Urls\URLException
      */
-    public function handle(NavigationReady $event)
+    public function handle(NavigationReady $event): void
     {
         $navigation = $event->getNavigation();
 

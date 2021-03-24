@@ -32,7 +32,7 @@ class SqlBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @inheritdoc
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $connectionPool = new SingleServerConnectionPool(
             new Driver(),

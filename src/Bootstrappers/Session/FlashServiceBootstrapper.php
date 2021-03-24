@@ -29,7 +29,7 @@ class FlashServiceBootstrapper extends Bootstrapper implements ILazyBootstrapper
      *
      * @throws IocException
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $session    = $container->resolve(ISession::class);
         $translator = $container->resolve(ITranslator::class);

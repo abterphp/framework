@@ -30,7 +30,7 @@ class CacheManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @param IContainer $container
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         if (Environment::getVar(Env::ENV_NAME) === Environment::DEVELOPMENT) {
             $cacheManager = new DummyCacheManager();
@@ -46,7 +46,7 @@ class CacheManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @param ICacheManager $cacheManager
      */
-    private function registerCachePaths(ICacheManager $cacheManager)
+    private function registerCachePaths(ICacheManager $cacheManager): void
     {
         $cacheDir = sprintf(
             '%s%s%s',

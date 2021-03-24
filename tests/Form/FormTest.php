@@ -37,7 +37,7 @@ class FormTest extends TestCase
         ?array $translations,
         ?string $tag,
         string $expectedResult
-    ) {
+    ): void {
         $sut = $this->createElement($action, $method, $attributes, $translations, $tag);
 
         $this->assertSame($expectedResult, (string)$sut);

@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class HeaderTest extends TestCase
 {
-    public function testSetBaseUrlSetsBaseUrlOfAllSortables()
+    public function testSetBaseUrlSetsBaseUrlOfAllSortables(): void
     {
         $expectedResult = '/foo';
 
@@ -30,7 +30,7 @@ class HeaderTest extends TestCase
         }
     }
 
-    public function testSetBaseUrlSkipsNonSortables()
+    public function testSetBaseUrlSkipsNonSortables(): void
     {
         $expectedResult = '/foo';
 
@@ -55,7 +55,7 @@ class HeaderTest extends TestCase
         }
     }
 
-    public function testSetParamsSkipsNonSortables()
+    public function testSetParamsSkipsNonSortables(): void
     {
         $params = [];
 
@@ -89,47 +89,47 @@ class HeaderTest extends TestCase
             'no-params' => [
                 [],
                 '/foo?',
-                '/foo?'
+                '/foo?',
             ],
             'non-matching-params' => [
                 ['bar' => '1'],
                 '/foo?',
-                '/foo?'
+                '/foo?',
             ],
             'matching-param-zero-value-is-ignored' => [
                 ['sort-A-input' => '0'],
                 '/foo?',
-                '/foo?'
+                '/foo?',
             ],
             'one-matching-param-positive' => [
                 ['sort-A-input' => '1'],
                 '/foo?',
-                '/foo?sort-A-input=1&'
+                '/foo?sort-A-input=1&',
             ],
             'one-matching-param-very-positive' => [
                 ['sort-A-input' => '100'],
                 '/foo?',
-                '/foo?sort-A-input=100&'
+                '/foo?sort-A-input=100&',
             ],
             'one-matching-param-negative' => [
                 ['sort-A-input' => '-1'],
                 '/foo?',
-                '/foo?sort-A-input=-1&'
+                '/foo?sort-A-input=-1&',
             ],
             'one-matching-param-very-negative' => [
                 ['sort-A-input' => '-100'],
                 '/foo?',
-                '/foo?sort-A-input=-100&'
+                '/foo?sort-A-input=-100&',
             ],
             'matching-param-one-matching-one-ignored' => [
                 ['sort-A-input' => '1', 'sort-B-input' => '0'],
                 '/foo?',
-                '/foo?sort-A-input=1&'
+                '/foo?sort-A-input=1&',
             ],
             'complex' => [
                 ['sort-A-input' => '1', 'sort-B-input' => '-1'],
                 '/foo?',
-                '/foo?sort-A-input=1&sort-B-input=-1&'
+                '/foo?sort-A-input=1&sort-B-input=-1&',
             ],
         ]   ;
     }
@@ -141,7 +141,7 @@ class HeaderTest extends TestCase
      * @param string $baseUrl
      * @param string $expectedResult
      */
-    public function testGetSortedUrl(array $params, string $baseUrl, string $expectedResult)
+    public function testGetSortedUrl(array $params, string $baseUrl, string $expectedResult): void
     {
         $sut = $this->createHeader(
             ['A' => 'A-input', 'B' => 'B-input'],
@@ -156,7 +156,7 @@ class HeaderTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testGetSortedUrlSkipsNonSortables()
+    public function testGetSortedUrlSkipsNonSortables(): void
     {
         $baseUrl = '/foo?';
         $params = [];
@@ -175,7 +175,7 @@ class HeaderTest extends TestCase
         $this->assertSame($baseUrl, $actualResult);
     }
 
-    public function testGetSortedConditions()
+    public function testGetSortedConditions(): void
     {
         $expectedResult = [
             'a_field ASC',
@@ -200,7 +200,7 @@ class HeaderTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testGetSortConditionSkipsNonSortables()
+    public function testGetSortConditionSkipsNonSortables(): void
     {
         $params = [];
 
@@ -232,8 +232,8 @@ class HeaderTest extends TestCase
         foreach ($rows as $row) {
             $cells = new Cells();
             foreach ($row as $content => $group) {
-                $inputName = isset($inputNames[$group]) ? $inputNames[$group] : '';
-                $fieldName = isset($fieldNames[$group]) ? $fieldNames[$group] : '';
+                $inputName = $inputNames[$group] ?? '';
+                $fieldName = $fieldNames[$group] ?? '';
 
                 $cells[] = new Sortable($content, $group, $inputName, $fieldName);
             }
@@ -243,7 +243,7 @@ class HeaderTest extends TestCase
         return $sut;
     }
 
-    public function testGetQueryParams()
+    public function testGetQueryParams(): void
     {
         $sut = $this->createHeader([], [], ['a' => 'A', 'b' => 'B'], ['c' => 'A', 'd' => 'B']);
 

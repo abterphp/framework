@@ -32,7 +32,7 @@ class FlashService
     /**
      * @param string[] $messages
      */
-    public function mergeSuccessMessages(array $messages)
+    public function mergeSuccessMessages(array $messages): void
     {
         $currentMessages = (array)$this->session->get(static::SUCCESS);
 
@@ -44,7 +44,7 @@ class FlashService
     /**
      * @param array  $messages
      */
-    public function mergeErrorMessages(array $messages)
+    public function mergeErrorMessages(array $messages): void
     {
         $messages = ArrayHelper::flatten($messages);
 

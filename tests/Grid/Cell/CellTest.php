@@ -14,7 +14,7 @@ use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 class CellTest extends ComponentTest
 {
     protected const CONTENT = 'foo';
-    protected const GROUP = 'bar';
+    protected const GROUP   = 'bar';
 
     /**
      * @return array[]
@@ -50,7 +50,7 @@ class CellTest extends ComponentTest
         ?array $translations,
         ?string $tag,
         string $expectedResult
-    ) {
+    ): void {
         $sut = $this->createElement($content, $group, $attributes, $translations, $tag);
 
         $actualResult1 = (string)$sut;
@@ -60,7 +60,7 @@ class CellTest extends ComponentTest
         $this->assertSame($expectedResult, $actualResult2);
     }
 
-    public function testGetNodesDefault()
+    public function testGetNodesDefault(): void
     {
         $defaultNode = new Node(static::CONTENT);
 
@@ -73,7 +73,7 @@ class CellTest extends ComponentTest
         $this->assertEquals($expectedNodes, $actualResult);
     }
 
-    public function testGetNodes()
+    public function testGetNodes(): void
     {
         $defaultNode = new Node(static::CONTENT);
 
@@ -96,7 +96,7 @@ class CellTest extends ComponentTest
         $this->assertEquals($expectedNodes, $actualResult);
     }
 
-    public function testGetExtendedNodes()
+    public function testGetExtendedNodes(): void
     {
         $defaultNode = new Node(static::CONTENT);
 
@@ -119,7 +119,7 @@ class CellTest extends ComponentTest
         $this->assertEquals($expectedNodes, $actualResult);
     }
 
-    public function testGetDescendantNodes()
+    public function testGetDescendantNodes(): void
     {
         $defaultNode = new Node(static::CONTENT);
 
@@ -142,7 +142,7 @@ class CellTest extends ComponentTest
         $this->assertEquals($expectedNodes, $actualResult);
     }
 
-    public function testGetExtendedDescendantNodes()
+    public function testGetExtendedDescendantNodes(): void
     {
         $defaultNode = new Node(static::CONTENT);
 
@@ -181,7 +181,7 @@ class CellTest extends ComponentTest
      * @param mixed  $rawContent
      * @param string $expectedResult
      */
-    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult)
+    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult): void
     {
         $sut = $this->createNode($rawContent);
 
@@ -207,8 +207,11 @@ class CellTest extends ComponentTest
      * @param array  $translations
      * @param string $expectedResult
      */
-    public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
-    {
+    public function testToStringCanReturnTranslatedContent(
+        $rawContent,
+        array $translations,
+        string $expectedResult
+    ): void {
         $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
 
         $sut = $this->createNode($rawContent);
@@ -225,7 +228,7 @@ class CellTest extends ComponentTest
      * @param string[]    $intents
      * @param bool        $expectedResult
      */
-    public function testIsMatch(?string $className, array $intents, bool $expectedResult)
+    public function testIsMatch(?string $className, array $intents, bool $expectedResult): void
     {
         $sut = $this->createNode();
         $sut->setIntent('foo', 'bar');
@@ -235,7 +238,7 @@ class CellTest extends ComponentTest
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testGroupRetrievesOriginallyProvidedGroup()
+    public function testGroupRetrievesOriginallyProvidedGroup(): void
     {
         $sut = $this->createNode();
 

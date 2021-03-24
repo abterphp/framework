@@ -49,7 +49,7 @@ class EngineTest extends TestCase
      * @param array  $renderStubs
      * @param string $expectedResult
      */
-    public function testRun(array $templates, array $vars, array $renderStubs, string $expectedResult)
+    public function testRun(array $templates, array $vars, array $renderStubs, string $expectedResult): void
     {
         $type       = 'foo';
         $documentId = 'foo0';
@@ -67,7 +67,7 @@ class EngineTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testRunThrowsExceptionIfDocumentStorageFails()
+    public function testRunThrowsExceptionIfDocumentStorageFails(): void
     {
         $this->expectException(Exception::class);
 
@@ -83,7 +83,7 @@ class EngineTest extends TestCase
         $this->sut->run($type, $documentId, $templates, $vars);
     }
 
-    public function testRunThrowsExceptionIfCacheDataStorageFails()
+    public function testRunThrowsExceptionIfCacheDataStorageFails(): void
     {
         $this->expectException(Exception::class);
 
@@ -99,7 +99,7 @@ class EngineTest extends TestCase
         $this->sut->run($type, $documentId, $templates, $vars);
     }
 
-    public function testRunWithValidCache()
+    public function testRunWithValidCache(): void
     {
         $expectedResult = 'bar';
 
@@ -116,7 +116,7 @@ class EngineTest extends TestCase
         $this->sut->run($type, $documentId, $templates, $vars);
     }
 
-    public function testRunWithoutValidCache()
+    public function testRunWithoutValidCache(): void
     {
         $sut = new Engine($this->rendererMock, $this->cacheManagerMock, false);
 
@@ -133,7 +133,7 @@ class EngineTest extends TestCase
         $sut->run($type, $documentId, $templates, $vars);
     }
 
-    public function testGetRendererReturnsRenderer()
+    public function testGetRendererReturnsRenderer(): void
     {
         $actualResult = $this->sut->getRenderer();
 

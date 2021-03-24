@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Debug\Exceptions\Handlers\Whoops;
 
 use Opulence\Debug\Exceptions\Handlers\IExceptionHandler;
@@ -59,7 +61,7 @@ class ExceptionHandler implements IExceptionHandler
      *
      * @param Throwable $ex The exception to handle
      */
-    public function handle($ex)
+    public function handle($ex): void
     {
         $this->whoopsRenderer->render($ex);
     }
@@ -67,7 +69,7 @@ class ExceptionHandler implements IExceptionHandler
     /**
      * Registers the handler with PHP
      */
-    public function register()
+    public function register(): void
     {
         $whoops = $this->whoopsRenderer->getRun();
 

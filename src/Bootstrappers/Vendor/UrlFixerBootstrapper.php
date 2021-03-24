@@ -28,7 +28,7 @@ class UrlFixerBootstrapper extends Bootstrapper implements ILazyBootstrapper
      *
      * @throws IocException
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         /** @var Routes $routes */
         $routes = $container->resolve(Routes::class);

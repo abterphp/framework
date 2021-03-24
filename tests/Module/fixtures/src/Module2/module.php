@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Src\Module2;
 
 use AbterPhp\Framework\Constant\Event;

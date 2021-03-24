@@ -89,7 +89,7 @@ class ArrayHelper
         }
 
         foreach ($new as $key => $value) {
-            $existingValue = isset($existing[$key]) ? $existing[$key] : [];
+            $existingValue = $existing[$key] ?? [];
             $newValue      = static::formatAttribute($value);
 
             if ($newValue !== null) {

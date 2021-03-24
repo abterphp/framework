@@ -67,7 +67,7 @@ class AssetManager
      *
      * @throws FilesystemException
      */
-    public function addCss(string $groupName, string $rawPath)
+    public function addCss(string $groupName, string $rawPath): void
     {
         $fixedPath = $rawPath;
         if ($this->getExtension($rawPath) !== static:: EXT_CSS) {
@@ -87,7 +87,7 @@ class AssetManager
      *
      * @throws FilesystemException
      */
-    public function addJs(string $groupName, string $rawPath)
+    public function addJs(string $groupName, string $rawPath): void
     {
         $fixedPath = $rawPath;
         if ($this->getExtension($rawPath) !== static:: EXT_JS) {
@@ -119,7 +119,7 @@ class AssetManager
      * @param string $groupName
      * @param string $content
      */
-    public function addCssContent(string $groupName, string $content)
+    public function addCssContent(string $groupName, string $content): void
     {
         $this->getCssMinifier($groupName)->add($content);
     }
@@ -128,7 +128,7 @@ class AssetManager
      * @param string $groupName
      * @param string $content
      */
-    public function addJsContent(string $groupName, string $content)
+    public function addJsContent(string $groupName, string $content): void
     {
         $this->getJsMinifier($groupName)->add($content);
     }
@@ -138,7 +138,7 @@ class AssetManager
      * @param string $name
      * @param mixed  $value
      */
-    public function addJsVar(string $groupName, string $name, $value)
+    public function addJsVar(string $groupName, string $name, $value): void
     {
         $this->getJsMinifier($groupName)->add(sprintf("var %s = %s;\n", $name, json_encode($value)));
     }

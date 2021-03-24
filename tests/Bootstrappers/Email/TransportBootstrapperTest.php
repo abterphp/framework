@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Email;
 
 use AbterPhp\Framework\Constant\Env;
@@ -31,7 +33,7 @@ class TransportBootstrapperTest extends TestCase
         Environment::unsetVar(Env::EMAIL_SENDMAIL_COMMAND);
     }
 
-    public function testRegisterBindingsSmtp()
+    public function testRegisterBindingsSmtp(): void
     {
         Environment::setVar(Env::EMAIL_SMTP_HOST, 'foo');
         Environment::setVar(Env::EMAIL_SMTP_PORT, 'bar');
@@ -44,7 +46,7 @@ class TransportBootstrapperTest extends TestCase
         $this->assertInstanceOf(Swift_SmtpTransport::class, $actual);
     }
 
-    public function testRegisterBindingsSmtpSetsUserNameAndPassword()
+    public function testRegisterBindingsSmtpSetsUserNameAndPassword(): void
     {
         Environment::setVar(Env::EMAIL_SMTP_HOST, 'foo');
         Environment::setVar(Env::EMAIL_SMTP_PORT, 'bar');
@@ -63,7 +65,7 @@ class TransportBootstrapperTest extends TestCase
         $this->assertSame('sterp', $actual->getPassword());
     }
 
-    public function testRegisterBindingsSendmail()
+    public function testRegisterBindingsSendmail(): void
     {
         Environment::setVar(Env::EMAIL_SENDMAIL_COMMAND, 'foo');
 
@@ -76,7 +78,7 @@ class TransportBootstrapperTest extends TestCase
         $this->assertInstanceOf(Swift_SendmailTransport::class, $actual);
     }
 
-    public function testRegisterBindingsTransport()
+    public function testRegisterBindingsTransport(): void
     {
         $this->expectException(Config::class);
 

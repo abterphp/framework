@@ -66,7 +66,7 @@ class Navigation extends Tag implements INodeContainer
         return $this;
     }
 
-    protected function resort()
+    protected function resort(): void
     {
         ksort($this->itemsByWeight);
 

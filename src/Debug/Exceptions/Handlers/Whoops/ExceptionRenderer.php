@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Debug\Exceptions\Handlers\Whoops;
 
 use Exception;
@@ -16,38 +18,38 @@ class ExceptionRenderer extends Http\ExceptionRenderer implements Http\IExceptio
     /** @var RunInterface */
     protected RunInterface $run;
 
-    const HTML = <<< EOF
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta name="viewport" content="initial-scale=1"/>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-            crossorigin="anonymous">
-    </head>
-    <body>
-        <main class="main">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="alert alert-danger" role="alert">
-                            <h4 class="alert-heading">Exception: %s</h4>
-                            <p>%s</p>
-                            <hr>
-                            <p class="mb-0">
-                                <a href="#" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"
-                                onclick="location.reload(); return false;">Try again</a>
-                                <a href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"
-                                onclick="window.history.back(); return false;">Back to previous page</a>
-                            </p>
+    public const HTML = <<< EOF
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <meta name="viewport" content="initial-scale=1"/>
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+                    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+                    crossorigin="anonymous">
+            </head>
+            <body>
+                <main class="main">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">
+                                <div class="alert alert-danger" role="alert">
+                                    <h4 class="alert-heading">Exception: %s</h4>
+                                    <p>%s</p>
+                                    <hr>
+                                    <p class="mb-0">
+                                        <a href="#" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"
+                                        onclick="location.reload(); return false;">Try again</a>
+                                        <a href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"
+                                        onclick="window.history.back(); return false;">Back to previous page</a>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </main>
-    </body>
-</html>
-EOF;
+                </main>
+            </body>
+        </html>
+        EOF;
 
 
     /**
@@ -96,7 +98,7 @@ EOF;
      *
      * @param Throwable|Exception $ex The thrown exception
      */
-    public function render($ex)
+    public function render($ex): void
     {
         if (!$this->inDevelopmentEnvironment) {
             $this->run->writeToOutput(false);
@@ -114,7 +116,7 @@ EOF;
     /**
      * @param Exception $ex
      */
-    public function devRender(Exception $ex)
+    public function devRender(Exception $ex): void
     {
         // Add support for HTTP library without having to necessarily depend on it
         $statusCode = 500;
@@ -155,7 +157,7 @@ EOF;
      * @param array $headers
      * @param int   $statusCode
      */
-    protected function devRenderHeaders(array $headers, int $statusCode)
+    protected function devRenderHeaders(array $headers, int $statusCode): void
     {
         header("HTTP/1.1 $statusCode", true, $statusCode);
 

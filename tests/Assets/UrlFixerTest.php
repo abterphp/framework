@@ -130,7 +130,7 @@ class UrlFixerTest extends TestCase
      * @param string $baseUrl
      * @param string $expectedOutput
      */
-    public function testFixCss(string $content, string $baseUrl, string $expectedOutput)
+    public function testFixCss(string $content, string $baseUrl, string $expectedOutput): void
     {
         $actualOutput = $this->sut->fixCss($content, $baseUrl);
 

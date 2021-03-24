@@ -34,7 +34,7 @@ class EngineBootstrapper extends Bootstrapper implements ILazyBootstrapper
      *
      * @throws IocException
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         /** @var IEventDispatcher $eventDispatcher */
         $eventDispatcher = $container->resolve(IEventDispatcher::class);

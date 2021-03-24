@@ -54,7 +54,7 @@ class FlashServiceTest extends TestCase
      * @param array $newMessages
      * @param array $expectedResult
      */
-    public function testMergeSuccessMessages(array $oldMessages, array $newMessages, array $expectedResult)
+    public function testMergeSuccessMessages(array $oldMessages, array $newMessages, array $expectedResult): void
     {
         $this->sessionMock
             ->expects($this->any())
@@ -90,7 +90,7 @@ class FlashServiceTest extends TestCase
      * @param array $newMessages
      * @param array $expectedResult
      */
-    public function testMergeErrorMessages(array $oldMessages, array $newMessages, array $expectedResult)
+    public function testMergeErrorMessages(array $oldMessages, array $newMessages, array $expectedResult): void
     {
         $this->sessionMock
             ->expects($this->any())
@@ -105,7 +105,7 @@ class FlashServiceTest extends TestCase
         $this->sut->mergeErrorMessages($newMessages);
     }
 
-    public function testRetrieveSuccessMessages()
+    public function testRetrieveSuccessMessages(): void
     {
         $expectedResult = ['bar'];
 
@@ -120,7 +120,7 @@ class FlashServiceTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testRetrieveErrorMessages()
+    public function testRetrieveErrorMessages(): void
     {
         $expectedResult = ['bar'];
 

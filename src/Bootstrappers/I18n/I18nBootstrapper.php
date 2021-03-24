@@ -54,7 +54,7 @@ class I18nBootstrapper extends Bootstrapper
      * @inheritdoc
      * @throws IocException
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $this->registerTranslator($container);
         $this->registerViewFunction($container);
@@ -65,7 +65,7 @@ class I18nBootstrapper extends Bootstrapper
      *
      * @throws IocException
      */
-    private function registerTranslator(IContainer $container)
+    private function registerTranslator(IContainer $container): void
     {
         $lang = $this->getLang($container);
 
@@ -166,7 +166,7 @@ class I18nBootstrapper extends Bootstrapper
      *
      * @throws IocException
      */
-    private function registerViewFunction(IContainer $container)
+    private function registerViewFunction(IContainer $container): void
     {
         /** @var Translator $translator */
         $translator = $container->resolve(Translator::class);
@@ -175,9 +175,7 @@ class I18nBootstrapper extends Bootstrapper
         $transpiler = $container->resolve(ITranspiler::class);
         $transpiler->registerViewFunction(
             'tr',
-            function (string $key, ...$args) use ($translator) {
-                return $translator->translate($key, ...$args);
-            }
+            fn (string $key, ...$args) => $translator->translate($key, ...$args)
         );
     }
 }

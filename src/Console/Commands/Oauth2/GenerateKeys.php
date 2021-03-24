@@ -52,7 +52,7 @@ class GenerateKeys extends Command
     /**
      * @inheritdoc
      */
-    protected function define()
+    protected function define(): void
     {
         $this->setName(static::NAME)
             ->setDescription('Generates openssl keys');
@@ -61,7 +61,7 @@ class GenerateKeys extends Command
     /**
      * @inheritdoc
      */
-    protected function doExecute(IResponse $response)
+    protected function doExecute(IResponse $response): void
     {
         if (!$this->isOpenSslAvailable) {
             $response->writeln('<fatal>OpenSSL is not installed.</fatal>');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Assets;
 
 use AbterPhp\Framework\Assets\AssetManager;
@@ -40,7 +42,7 @@ class AssetManagerBootstrapperTest extends TestCase
         Environment::unsetVar(Env::ENV_NAME);
     }
 
-    public function testRegisterBindingsBindsAnAssetManager()
+    public function testRegisterBindingsBindsAnAssetManager(): void
     {
         $fileFinderMock   = $this->createMock(FileFinder::class);
         $cacheManagerMock = $this->createMock(ICacheManager::class);
@@ -62,7 +64,7 @@ class AssetManagerBootstrapperTest extends TestCase
         $this->assertInstanceOf(AssetManager::class, $actual);
     }
 
-    public function testCreateAssetJsViewFunctionSimple()
+    public function testCreateAssetJsViewFunctionSimple(): void
     {
         $keyStub     = 'foo';
         $webPathStub = 'baz';
@@ -74,7 +76,7 @@ class AssetManagerBootstrapperTest extends TestCase
         $this->assertSame("<script src=\"$webPathStub\"></script>\n", $actual);
     }
 
-    public function testCreateAssetJsViewFunctionEmpty()
+    public function testCreateAssetJsViewFunctionEmpty(): void
     {
         $keyStub     = 'foo';
         $webPathStub = '';
@@ -86,7 +88,7 @@ class AssetManagerBootstrapperTest extends TestCase
         $this->assertSame('', $actual);
     }
 
-    public function testCreateAssetJsViewFunctionCustomType()
+    public function testCreateAssetJsViewFunctionCustomType(): void
     {
         $keyStub     = 'foo';
         $typeStub    = 'bar';
@@ -99,7 +101,7 @@ class AssetManagerBootstrapperTest extends TestCase
         $this->assertSame("<script type=\"$typeStub\" src=\"$webPathStub\"></script>\n", $actual);
     }
 
-    public function testCreateAssetJsViewFunctionMultiple()
+    public function testCreateAssetJsViewFunctionMultiple(): void
     {
         $keyStub1     = 'foo';
         $keyStub2     = 'bar';
@@ -118,7 +120,7 @@ class AssetManagerBootstrapperTest extends TestCase
         $this->assertStringContainsString("<script src=\"$webPathStub2\"></script>", $actual);
     }
 
-    public function testCreateAssetCssViewFunctionSimple()
+    public function testCreateAssetCssViewFunctionSimple(): void
     {
         $keyStub     = 'foo';
         $webPathStub = 'baz';
@@ -130,7 +132,7 @@ class AssetManagerBootstrapperTest extends TestCase
         $this->assertSame("<link href=\"$webPathStub\" rel=\"stylesheet\">\n", $actual);
     }
 
-    public function testCreateAssetCssViewFunctionEmpty()
+    public function testCreateAssetCssViewFunctionEmpty(): void
     {
         $keyStub     = 'foo';
         $webPathStub = '';
@@ -142,7 +144,7 @@ class AssetManagerBootstrapperTest extends TestCase
         $this->assertSame('', $actual);
     }
 
-    public function testCreateAssetCssViewFunctionMultiple()
+    public function testCreateAssetCssViewFunctionMultiple(): void
     {
         $keyStub1     = 'foo';
         $keyStub2     = 'bar';
@@ -161,7 +163,7 @@ class AssetManagerBootstrapperTest extends TestCase
         $this->assertStringContainsString("<link href=\"$webPathStub2\" rel=\"stylesheet\">", $actual);
     }
 
-    public function testCreateAssetImgViewFunction()
+    public function testCreateAssetImgViewFunction(): void
     {
         $keyStub     = 'foo';
         $altStub     = 'bar';

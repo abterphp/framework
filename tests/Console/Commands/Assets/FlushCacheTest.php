@@ -24,7 +24,7 @@ class FlushCacheTest extends TestCase
         $this->sut = new FlushCache($this->cacheManagerMock);
     }
 
-    public function testExecuteFlushesCache()
+    public function testExecuteFlushesCache(): void
     {
         $responseMock = $this->getMockBuilder(IResponse::class)
             ->disableOriginalConstructor()
@@ -36,7 +36,7 @@ class FlushCacheTest extends TestCase
         $this->sut->execute($responseMock);
     }
 
-    public function testExecutesWritesResponseOnExceptions()
+    public function testExecutesWritesResponseOnExceptions(): void
     {
         $ex = new \RuntimeException('foo');
 

@@ -21,7 +21,7 @@ class GenerateKeysTest extends TestCase
         $this->sut = new GenerateKeys(static::PRIVATE_KEY_PASS, static::PRIVATE_KEY_PATH, static::PUBLIC_KEY_PATH);
     }
 
-    public function testExecuteWritesFatalIfOpenSslIsNotAvailable()
+    public function testExecuteWritesFatalIfOpenSslIsNotAvailable(): void
     {
         $responseMock = $this->getMockBuilder(IResponse::class)
             ->disableOriginalConstructor()
@@ -36,7 +36,7 @@ class GenerateKeysTest extends TestCase
         $this->sut->execute($responseMock);
     }
 
-    public function testExecuteCreatesOpenSslKeys()
+    public function testExecuteCreatesOpenSslKeys(): void
     {
         if (!defined('OPENSSL_VERSION_NUMBER')) {
             $this->markTestSkipped('no openssl installed');

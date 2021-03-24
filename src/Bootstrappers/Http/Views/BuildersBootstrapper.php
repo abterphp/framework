@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Http\Views;
 
 use AbterPhp\Framework\Http\Views\Builders\DefaultBuilder;
@@ -16,7 +18,7 @@ class BuildersBootstrapper extends Bootstrapper
     /**
      * @inheritdoc
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         /** @var IViewFactory $viewFactory */
         $viewFactory = $container->resolve(IViewFactory::class);

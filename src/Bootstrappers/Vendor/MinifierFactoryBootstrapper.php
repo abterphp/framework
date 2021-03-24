@@ -24,7 +24,7 @@ class MinifierFactoryBootstrapper extends Bootstrapper implements ILazyBootstrap
     /**
      * @param IContainer $container
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $minifierFactory = new MinifierFactory();
 

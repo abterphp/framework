@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Crypto;
 
 use AbterPhp\Framework\Constant\Env;
@@ -29,7 +31,7 @@ class CryptoBootstrapperTest extends TestCase
         Environment::unsetVar(Env::CRYPTO_BCRYPT_COST);
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         Environment::setVar(Env::CRYPTO_ENCRYPTION_PEPPER, 'foo');
         Environment::setVar(Env::CRYPTO_FRONTEND_SALT, 'bar');
@@ -47,7 +49,7 @@ class CryptoBootstrapperTest extends TestCase
         $this->assertInstanceOf(Crypto::class, $actual);
     }
 
-    public function testRegisterBindingsBcrypt()
+    public function testRegisterBindingsBcrypt(): void
     {
         Environment::setVar(Env::CRYPTO_ENCRYPTION_PEPPER, 'foo');
         Environment::setVar(Env::CRYPTO_FRONTEND_SALT, 'bar');

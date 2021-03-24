@@ -8,7 +8,7 @@ use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 
 class ComponentTest extends CollectionTest
 {
-    public function testDefaultToString()
+    public function testDefaultToString(): void
     {
         $sut = $this->createNode();
 
@@ -32,7 +32,7 @@ class ComponentTest extends CollectionTest
      * @param array  $translations
      * @param string $expectedResult
      */
-    public function testToStringWithTranslation($content, array $translations, string $expectedResult)
+    public function testToStringWithTranslation($content, array $translations, string $expectedResult): void
     {
         $translator = MockTranslatorFactory::createSimpleTranslator($this, $translations);
 
@@ -68,7 +68,7 @@ class ComponentTest extends CollectionTest
         ];
     }
 
-    public function testSetIntentsCanOverwriteExistingIntents()
+    public function testSetIntentsCanOverwriteExistingIntents(): void
     {
         $sut = $this->createNode();
 
@@ -78,7 +78,7 @@ class ComponentTest extends CollectionTest
         $this->assertEquals(['bar', 'baz'], $sut->getIntents());
     }
 
-    public function testAddIntentAppendsToExistingIntents()
+    public function testAddIntentAppendsToExistingIntents(): void
     {
         $sut = $this->createNode();
 
@@ -88,7 +88,7 @@ class ComponentTest extends CollectionTest
         $this->assertEquals(['foo', 'bar', 'baz'], $sut->getIntents());
     }
 
-    public function testHasAttributeWithNonEmptyAttribute()
+    public function testHasAttributeWithNonEmptyAttribute(): void
     {
         $sut = $this->createNode();
 
@@ -120,7 +120,7 @@ class ComponentTest extends CollectionTest
      * @param             $value
      * @param string|null $expectedResult
      */
-    public function testGetAttributes($value, ?string $expectedResult)
+    public function testGetAttributes($value, ?string $expectedResult): void
     {
         $key = 'foo';
 
@@ -134,7 +134,7 @@ class ComponentTest extends CollectionTest
         $this->assertEquals([$key => $expectedResult], $actualResult);
     }
 
-    public function testHasAttributeWithEmptyAttribute()
+    public function testHasAttributeWithEmptyAttribute(): void
     {
         $sut = $this->createNode();
 
@@ -145,7 +145,7 @@ class ComponentTest extends CollectionTest
         $this->assertTrue($sut->hasAttribute('foo'));
     }
 
-    public function testHasAttributeWithMissingAttributeSet()
+    public function testHasAttributeWithMissingAttributeSet(): void
     {
         $sut = $this->createNode();
 
@@ -162,7 +162,7 @@ class ComponentTest extends CollectionTest
      * @param             $value
      * @param string|null $expectedResult
      */
-    public function testGetAttribute($value, ?string $expectedResult)
+    public function testGetAttribute($value, ?string $expectedResult): void
     {
         $key = 'foo';
 
@@ -182,7 +182,7 @@ class ComponentTest extends CollectionTest
      * @param             $value
      * @param string|null $expectedResult
      */
-    public function testUnsetAttribute($value, ?string $expectedResult)
+    public function testUnsetAttribute($value, ?string $expectedResult): void
     {
         $key = 'foo';
 
@@ -201,7 +201,7 @@ class ComponentTest extends CollectionTest
         $this->assertNull($repeatedResult);
     }
 
-    public function testUnsetAttributeWorksOnNotSetAttributes()
+    public function testUnsetAttributeWorksOnNotSetAttributes(): void
     {
         $key = 'foo';
 
@@ -214,7 +214,7 @@ class ComponentTest extends CollectionTest
         $this->assertNull($result);
     }
 
-    public function testSetAttributesOverridesExistingAttributesSet()
+    public function testSetAttributesOverridesExistingAttributesSet(): void
     {
         $originalAttributes = ['foo' => 'bar'];
         $newAttributes      = ['bar' => 'baz'];
@@ -229,7 +229,7 @@ class ComponentTest extends CollectionTest
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testAddAttributesOverridesExistingAttributesSet()
+    public function testAddAttributesOverridesExistingAttributesSet(): void
     {
         $originalAttributes = ['foo' => 'bar', 'bar' => 'foo'];
         $newAttributes      = ['bar' => 'baz'];
@@ -244,7 +244,7 @@ class ComponentTest extends CollectionTest
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testSetAttributeOverridesExistingAttributeSet()
+    public function testSetAttributeOverridesExistingAttributeSet(): void
     {
         $key                = 'bar';
         $originalAttributes = ['foo' => 'bar', 'bar' => 'foo'];
@@ -260,7 +260,7 @@ class ComponentTest extends CollectionTest
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testAppendToAttributeKeepsExistingAttributeSet()
+    public function testAppendToAttributeKeepsExistingAttributeSet(): void
     {
         $key                = 'bar';
         $originalAttributes = ['foo' => 'bar', 'bar' => 'foo'];
@@ -276,7 +276,7 @@ class ComponentTest extends CollectionTest
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testAppendToClassKeepsExistingAttributeSet()
+    public function testAppendToClassKeepsExistingAttributeSet(): void
     {
         $originalAttributes = ['foo' => 'bar', 'class' => 'foo'];
         $newClasses         = ['class1', 'class2'];
@@ -314,7 +314,7 @@ class ComponentTest extends CollectionTest
      * @param INode    $nodeToFind
      * @param int|null $expectedResult
      */
-    public function testFind(array $content, INode $nodeToFind, ?int $expectedResult)
+    public function testFind(array $content, INode $nodeToFind, ?int $expectedResult): void
     {
         $sut = $this->createNode($content);
 
@@ -374,7 +374,7 @@ class ComponentTest extends CollectionTest
      * @param string[]    $intents
      * @param INode|null  $expectedResult
      */
-    public function testFindFirstChild(array $content, ?string $className, array $intents, ?INode $expectedResult)
+    public function testFindFirstChild(array $content, ?string $className, array $intents, ?INode $expectedResult): void
     {
         $sut = $this->createNode($content);
 
@@ -422,8 +422,13 @@ class ComponentTest extends CollectionTest
      * @param string[]    $intents
      * @param INode[]     $expectedResult
      */
-    public function testCollect(array $content, ?string $className, int $depth, array $intents, array $expectedResult)
-    {
+    public function testCollect(
+        array $content,
+        ?string $className,
+        int $depth,
+        array $intents,
+        array $expectedResult
+    ): void {
         $sut = $this->createNode($content);
 
         $actualResult = $sut->collect($className, $intents, $depth);
@@ -437,7 +442,7 @@ class ComponentTest extends CollectionTest
      * @param mixed  $rawContent
      * @param string $expectedResult
      */
-    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult)
+    public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult): void
     {
         $sut = $this->createNode($rawContent);
 
@@ -451,8 +456,11 @@ class ComponentTest extends CollectionTest
      * @param array  $translations
      * @param string $expectedResult
      */
-    public function testToStringCanReturnTranslatedContent($rawContent, array $translations, string $expectedResult)
-    {
+    public function testToStringCanReturnTranslatedContent(
+        $rawContent,
+        array $translations,
+        string $expectedResult
+    ): void {
         $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
 
         $sut = $this->createNode($rawContent);
@@ -469,7 +477,7 @@ class ComponentTest extends CollectionTest
      * @param string[]    $intents
      * @param bool        $expectedResult
      */
-    public function testIsMatch(?string $className, array $intents, bool $expectedResult)
+    public function testIsMatch(?string $className, array $intents, bool $expectedResult): void
     {
         $sut = $this->createNode();
         $sut->setIntent('foo', 'bar');

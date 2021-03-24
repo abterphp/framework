@@ -19,7 +19,7 @@ class MessageFactoryTest extends TestCase
         $this->sut = new MessageFactory();
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $subject = 'foo';
 

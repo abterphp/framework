@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class HideableTest extends TestCase
 {
-    public function testRender()
+    public function testRender(): void
     {
         $expectedResult = 'foo';
 
@@ -22,7 +22,7 @@ class HideableTest extends TestCase
         $this->assertSame($actualResult, $repeatedResult);
     }
 
-    public function testRenderContainsHiderBtn()
+    public function testRenderContainsHiderBtn(): void
     {
         $expectedResult = 'foo';
 
@@ -33,7 +33,7 @@ class HideableTest extends TestCase
         $this->assertStringContainsString((string)$sut->getHiderBtn(), $actualResult);
     }
 
-    public function testGetExtendedNodesIncludesHiderBtn()
+    public function testGetExtendedNodesIncludesHiderBtn(): void
     {
         $expectedResult = 'foo';
 
@@ -44,7 +44,7 @@ class HideableTest extends TestCase
         $this->assertContains($sut->getHiderBtn(), $actualResult);
     }
 
-    public function testSetTranslatorSetsTranslatorOfHiderBtn()
+    public function testSetTranslatorSetsTranslatorOfHiderBtn(): void
     {
         $hiderBtnLabel  = 'foo';
         $expectedResult = 'bar';
@@ -58,7 +58,7 @@ class HideableTest extends TestCase
         $this->assertStringContainsString($expectedResult, (string)$sut->getHiderBtn());
     }
 
-    public function testSetTemplateChangesRender()
+    public function testSetTemplateChangesRender(): void
     {
         $expectedResult = '==||==';
 

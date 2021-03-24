@@ -30,7 +30,7 @@ class SecurityBootstrapper extends Bootstrapper implements ILazyBootstrapper
      *
      * @throws IocException
      */
-    public function registerBindings(IContainer $container)
+    public function registerBindings(IContainer $container): void
     {
         $cacheBridge = $container->resolve(ICacheBridge::class);
         $environment = Environment::getVar(Env::ENV_NAME);

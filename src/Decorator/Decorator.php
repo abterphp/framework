@@ -27,7 +27,7 @@ abstract class Decorator
     /**
      * @param INode[] $nodes
      */
-    public function decorate(array $nodes)
+    public function decorate(array $nodes): void
     {
         foreach ($this->rules as $rule) {
             foreach ($nodes as $node) {
@@ -40,7 +40,7 @@ abstract class Decorator
      * @param Rule  $rule
      * @param INode $node
      */
-    protected function decorateNode(Rule $rule, INode $node)
+    protected function decorateNode(Rule $rule, INode $node): void
     {
         if (!$node->isMatch($rule->getRequiredClassName(), ...$rule->getRequiredIntents())) {
             return;

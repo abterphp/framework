@@ -98,7 +98,7 @@ class SelectTest extends TestCase
         ?array $translations,
         ?string $tag,
         string $expectedResult
-    ) {
+    ): void {
         $sut = $this->createElement($inputId, $name, $value, $options, $attributes, $translations, $tag);
 
         $actualResult   = (string)$sut;
@@ -141,7 +141,7 @@ class SelectTest extends TestCase
         return $select;
     }
 
-    public function testSetValueSetsOptionsSelected()
+    public function testSetValueSetsOptionsSelected(): void
     {
         $sut = new Select('id', 'name');
 
@@ -176,7 +176,7 @@ class SelectTest extends TestCase
      *
      * @param mixed $value
      */
-    public function testSetValueThrowsExceptionOnInvalid($value)
+    public function testSetValueThrowsExceptionOnInvalid($value): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -185,7 +185,7 @@ class SelectTest extends TestCase
         $sut->setValue($value);
     }
 
-    public function testGetNameReturnsEmptyStringIfUnset()
+    public function testGetNameReturnsEmptyStringIfUnset(): void
     {
         $sut = new Select('id', 'name');
 
@@ -196,7 +196,7 @@ class SelectTest extends TestCase
         $this->assertSame('', $actualResult);
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $expectedResult = 'foo';
 
@@ -207,7 +207,7 @@ class SelectTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testGetNameReturnEmptyStringIfAttributeIsNull()
+    public function testGetNameReturnEmptyStringIfAttributeIsNull(): void
     {
         $expectedResult = '';
 

@@ -24,7 +24,7 @@ class EnvironmentWarningTest extends TestCase
         $this->translatorMock = MockTranslatorFactory::createSimpleTranslator($this, []);
     }
 
-    public function testHandleInProduction()
+    public function testHandleInProduction(): void
     {
         $sut = new EnvironmentWarning($this->translatorMock, Environment::PRODUCTION);
 
@@ -34,9 +34,7 @@ class EnvironmentWarningTest extends TestCase
         /** @var Response|MockObject $requestMock */
         $responseMock = $this->createMock(Response::class);
 
-        $next = function () use ($responseMock) {
-            return $responseMock;
-        };
+        $next = fn () => $responseMock;
 
         $responseMock->expects($this->never())->method('setContent');
 
@@ -45,7 +43,7 @@ class EnvironmentWarningTest extends TestCase
         $this->assertSame($responseMock, $actualResult);
     }
 
-    public function testHandleInTesting()
+    public function testHandleInTesting(): void
     {
         $sut = new EnvironmentWarning($this->translatorMock, Environment::TESTING);
 
@@ -55,9 +53,7 @@ class EnvironmentWarningTest extends TestCase
         /** @var Response|MockObject $requestMock */
         $responseMock = $this->createMock(Response::class);
 
-        $next = function () use ($responseMock) {
-            return $responseMock;
-        };
+        $next = fn () => $responseMock;
 
         $responseMock->expects($this->atLeastOnce())->method('setContent');
 

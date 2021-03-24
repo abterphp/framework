@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Framework\Bootstrappers\Dashboard;
 
 use AbterPhp\Framework\Dashboard\Dashboard;
@@ -17,7 +19,7 @@ class DashboardBootstrapperTest extends TestCase
         $this->sut = new DashboardBootstrapper();
     }
 
-    public function testRegisterBindings()
+    public function testRegisterBindings(): void
     {
         $eventDispatcherMock = $this->getMockBuilder(IEventDispatcher::class)->disableOriginalConstructor()->getMock();
         $eventDispatcherMock->expects($this->once())->method('dispatch');

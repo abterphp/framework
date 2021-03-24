@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class ConfigTest extends TestCase
 {
-    public function testConstructCreatesUsefulMessage()
+    public function testConstructCreatesUsefulMessage(): void
     {
         $className = '\Foo';
         $relatedEnvVars = ['bar' => 'baz'];
