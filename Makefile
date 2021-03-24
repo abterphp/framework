@@ -28,4 +28,4 @@ pull:
 	git pull
 	git submodule update --recursive --remote
 
-.PHONY: install update build precommit unit integration coverage pull
+.PHONY: build precommit install update unit integration coverage pull
