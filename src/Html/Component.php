@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Html;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Helper\TagHelper;
 
 /**
  * @SuppressWarnings(PHPMD.NumberOfChildren)
@@ -31,15 +31,24 @@ class Component extends Collection implements IComponent
      *
      * @param INode[]|INode|string|null $content
      * @param string[]                  $intents
-     * @param array                     $attributes
+     * @param Attributes|null           $attributes
      * @param string|null               $tag
      */
-    public function __construct($content = null, array $intents = [], array $attributes = [], ?string $tag = null)
-    {
+    public function __construct(
+        $content = null,
+        array $intents = [],
+        ?Attributes $attributes = null,
+        ?string $tag = null
+    ) {
         parent::__construct($content, $intents);
 
-        $this->appendToAttributes($attributes);
-        $this->setTag($tag);
+        $this->attributes = $attributes ?? new Attributes();
+
+        if ($tag) {
+            $this->setTag($tag);
+        } else {
+            $this->resetTag();
+        }
     }
 
     /**
@@ -106,8 +115,6 @@ class Component extends Collection implements IComponent
     {
         $content = parent::__toString();
 
-        $content = StringHelper::wrapInTag($content, $this->tag, $this->attributes);
-
-        return $content;
+        return TagHelper::toString($this->tag, $content, $this->attributes);
     }
 }

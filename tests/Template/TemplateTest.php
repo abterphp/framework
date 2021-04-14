@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Template;
 
+use AbterPhp\Framework\Html\Attributes;
 use PHPUnit\Framework\TestCase;
 
 class TemplateTest extends TestCase
@@ -24,57 +25,58 @@ class TemplateTest extends TestCase
     public function parsingSuccessProvider(): array
     {
         return [
-            'empty'          => [
+            'empty'                 => [
                 '',
                 [],
             ],
-            'fail'           => [
+            'fail'                  => [
                 '',
                 [],
             ],
-            'content-only-1' => [
+            'templates-only-1'        => [
                 '{{block/content-one-1}}',
                 [
                     'block' =>
                         [
                             'content-one-1' => [
-                                new ParsedTemplate('block', 'content-one-1', [], ['{{block/content-one-1}}']), // phpcs:ignore
+                                new ParsedTemplate('block', 'content-one-1', null, ['{{block/content-one-1}}']), // phpcs:ignore
                             ],
                         ],
                 ],
             ],
-            'content-only-2' => [
+            'templates-only-2'        => [
                 '{{block/content-one-1}} {{  block/content-2-two   }}',
                 [
                     'block' => [
                         'content-2-two' => [
-                            new ParsedTemplate('block', 'content-2-two', [], ['{{  block/content-2-two   }}']), // phpcs:ignore
+                            new ParsedTemplate('block', 'content-2-two', null, ['{{  block/content-2-two   }}']),
+                            // phpcs:ignore
                         ],
                         'content-one-1' => [
-                            new ParsedTemplate('block', 'content-one-1', [], ['{{block/content-one-1}}']),
+                            new ParsedTemplate('block', 'content-one-1', null, ['{{block/content-one-1}}']),
                         ],
                     ],
                 ],
             ],
-            'layout-only-3'  => [
+            'templates-only-3'         => [
                 '{{block/layout-one-1}} {{  block/layout-2-two   }} {{block/layout-one-1 }}',
                 [
                     'block' => [
                         'layout-2-two' => [
-                            new ParsedTemplate('block', 'layout-2-two', [], ['{{  block/layout-2-two   }}']), // phpcs:ignore
+                            new ParsedTemplate('block', 'layout-2-two', null, ['{{  block/layout-2-two   }}']), // phpcs:ignore
                         ],
                         'layout-one-1' => [
                             new ParsedTemplate(
                                 'block',
                                 'layout-one-1',
-                                [],
+                                null,
                                 ['{{block/layout-one-1}}', '{{block/layout-one-1 }}']
                             ),
                         ],
                     ],
                 ],
             ],
-            'layout-with-attribute'  => [
+            'template-with-attribute' => [
                 '{{block/layout-one-1 a="value is a" a-2="value is a-2"}}',
                 [
                     'block' => [
@@ -82,8 +84,33 @@ class TemplateTest extends TestCase
                             new ParsedTemplate(
                                 'block',
                                 'layout-one-1',
-                                ['a' => 'value is a', 'a-2' => 'value is a-2'],
+                                new Attributes(['a' => 'value is a', 'a-2' => 'value is a-2']),
                                 ['{{block/layout-one-1 a="value is a" a-2="value is a-2"}}']
+                            ),
+                        ],
+                    ],
+                ],
+            ],
+            'templates-with-attributes' => [
+                '{{block/layout-one-1 a="value is a" a-2="value is a-2"}} {{block/layout-one-1 a-2="value is a-2" a="value is a"}}', // phpcs:ignore
+                [
+                    'block' => [
+                        'layout-one-1' => [
+                            new ParsedTemplate(
+                                'block',
+                                'layout-one-1',
+                                new Attributes(['a' => 'value is a', 'a-2' => 'value is a-2']),
+                                [
+                                    '{{block/layout-one-1 a="value is a" a-2="value is a-2"}}',
+                                ]
+                            ),
+                            new ParsedTemplate(
+                                'block',
+                                'layout-one-1',
+                                new Attributes(['a-2' => 'value is a-2', 'a' => 'value is a']),
+                                [
+                                    '{{block/layout-one-1 a-2="value is a-2" a="value is a"}}',
+                                ]
                             ),
                         ],
                     ],

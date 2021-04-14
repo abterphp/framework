@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Navigation;
 
 use AbterPhp\Framework\Constant\Html5;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Collection;
 use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Helper\TagHelper;
 use AbterPhp\Framework\Html\ICollection;
 use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\INode;
@@ -32,14 +33,18 @@ class Dropdown extends Component
      *
      * @param INode[]|INode|string|null $content
      * @param string[]                  $intents
-     * @param array                     $attributes
+     * @param Attributes|null           $attributes
      * @param string|null               $tag
      */
-    public function __construct($content = null, array $intents = [], array $attributes = [], ?string $tag = null)
-    {
-        $this->wrapper = new Component(null, [static::WRAPPER_INTENT], [], Html5::TAG_DIV);
+    public function __construct(
+        $content = null,
+        array $intents = [],
+        ?Attributes $attributes = null,
+        ?string $tag = null
+    ) {
+        $this->wrapper = new Component(null, [static::WRAPPER_INTENT], null, Html5::TAG_DIV);
 
-        $this->prefix  = new Collection();
+        $this->prefix = new Collection();
         $this->postfix = new Collection();
 
         parent::__construct($content, $intents, $attributes, $tag);
@@ -124,8 +129,7 @@ class Dropdown extends Component
      */
     public function __toString(): string
     {
-        $content = Collection::__toString();
-        $content = StringHelper::wrapInTag($content, $this->tag, $this->attributes);
+        $content = TagHelper::toString($this->tag, Collection::__toString(), $this->attributes);
         $content = (string)$this->prefix . $content . (string)$this->postfix;
 
         if ($this->wrapper) {

@@ -6,7 +6,7 @@ namespace AbterPhp\Framework\Form\Element;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Form\Component\Option;
-use AbterPhp\Framework\Html\Helper\ArrayHelper;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use InvalidArgumentException;
@@ -21,7 +21,6 @@ class SelectTest extends TestCase
     public function renderProvider(): array
     {
         $attribs = StubAttributeFactory::createAttributes();
-        $str     = ArrayHelper::toAttributes($attribs);
 
         return [
             'simple'               => [
@@ -29,7 +28,7 @@ class SelectTest extends TestCase
                 'bcd',
                 'val',
                 [],
-                [],
+                null,
                 null,
                 null,
                 '<select id="abc" name="bcd"></select>',
@@ -39,7 +38,7 @@ class SelectTest extends TestCase
                 'bcd',
                 'val',
                 [],
-                [],
+                null,
                 [],
                 null,
                 '<select id="abc" name="bcd"></select>',
@@ -52,7 +51,7 @@ class SelectTest extends TestCase
                 $attribs,
                 [],
                 null,
-                "<select$str id=\"abc\" name=\"bcd\"></select>",
+                "<select$attribs id=\"abc\" name=\"bcd\"></select>",
             ],
             'options'              => [
                 'abc',
@@ -62,7 +61,7 @@ class SelectTest extends TestCase
                 $attribs,
                 [],
                 null,
-                "<select$str id=\"abc\" name=\"bcd\"><option value=\"bde\">BDE</option>\n<option value=\"cef\">CEF</option></select>", // phpcs:ignore
+                "<select$attribs id=\"abc\" name=\"bcd\"><option value=\"bde\">BDE</option>\n<option value=\"cef\">CEF</option></select>", // phpcs:ignore
             ],
             'option selected'      => [
                 'abc',
@@ -72,7 +71,7 @@ class SelectTest extends TestCase
                 $attribs,
                 [],
                 null,
-                "<select$str id=\"abc\" name=\"bcd\"><option value=\"bde\">BDE</option>\n<option value=\"cef\" selected>CEF</option></select>", // phpcs:ignore
+                "<select$attribs id=\"abc\" name=\"bcd\"><option value=\"bde\">BDE</option>\n<option value=\"cef\" selected>CEF</option></select>", // phpcs:ignore
             ],
         ];
     }
@@ -80,21 +79,21 @@ class SelectTest extends TestCase
     /**
      * @dataProvider renderProvider
      *
-     * @param string        $inputId
-     * @param string        $name
-     * @param string        $value
-     * @param string[]      $options
-     * @param array         $attributes
-     * @param string[]|null $translations
-     * @param string|null   $tag
-     * @param string        $expectedResult
+     * @param string          $inputId
+     * @param string          $name
+     * @param string          $value
+     * @param string[]        $options
+     * @param Attributes|null $attributes
+     * @param string[]|null   $translations
+     * @param string|null     $tag
+     * @param string          $expectedResult
      */
     public function testRender(
         string $inputId,
         string $name,
         string $value,
         array $options,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag,
         string $expectedResult
@@ -109,13 +108,13 @@ class SelectTest extends TestCase
     }
 
     /**
-     * @param string        $inputId
-     * @param string        $name
-     * @param string        $value
-     * @param string[]      $options
-     * @param array         $attributes
-     * @param string[]|null $translations
-     * @param string|null   $tag
+     * @param string          $inputId
+     * @param string          $name
+     * @param string          $value
+     * @param string[]        $options
+     * @param Attributes|null $attributes
+     * @param string[]|null   $translations
+     * @param string|null     $tag
      *
      * @return Select
      */
@@ -124,7 +123,7 @@ class SelectTest extends TestCase
         string $name,
         string $value,
         array $options,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag
     ): Select {
@@ -189,7 +188,7 @@ class SelectTest extends TestCase
     {
         $sut = new Select('id', 'name');
 
-        $sut->unsetAttribute(Html5::ATTR_NAME);
+        $sut->getAttributes()->remove(Html5::ATTR_NAME);
 
         $actualResult = $sut->getName();
 
@@ -213,7 +212,7 @@ class SelectTest extends TestCase
 
         $sut = new Select('id', $expectedResult);
 
-        $sut->setAttribute(Html5::ATTR_NAME, null);
+        $sut->getAttribute(Html5::ATTR_NAME)->reset();
 
         $actualResult = $sut->getName();
 

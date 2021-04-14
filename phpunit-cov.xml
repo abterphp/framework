@@ -16,4 +16,21 @@
         <log type="coverage-html" target="./tmp/report" lowUpperBound="35" highLowerBound="70"/>
         <log type="coverage-clover" target="./tmp/report/clover.xml"/>
     </logging>
+    <php>
+        <env name="CACHE_BASE_PATH" value="/cache" force="true" />
+        <env name="DB_HOST" value="?" force="true" />
+        <env name="DB_NAME" value="?" force="true" />
+        <env name="DB_PASSWORD" value="?" force="true" />
+        <env name="DB_PORT" value="12345" force="true" />
+        <env name="DB_USER" value="?" force="true" />
+        <env name="DIR_MEDIA" value="/media" force="true" />
+        <env name="EMAIL_SMTP_ENCRYPTION" value="?" force="true" />
+        <env name="EMAIL_SMTP_HOST" value="?" force="true" />
+        <env name="EMAIL_SMTP_USERNAME" value="?" force="true" />
+        <env name="EMAIL_SMTP_PASSWORD" value="?" force="true" />
+        <env name="ENV_NAME" value="testing" force="true" />
+        <env name="MEDIA_BASE_URL" value="?" force="true" />
+        <env name="PAGINATION_SIZE_DEFAULT" value="5" force="true" />
+        <env name="PAGINATION_NUMBER_COUNT" value="2" force="true" />
+    </php>
 </phpunit>

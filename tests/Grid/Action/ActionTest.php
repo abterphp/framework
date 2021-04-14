@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Action;
 
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Collection;
 use AbterPhp\Framework\Html\Helper\ArrayHelper;
 use AbterPhp\Framework\Html\INode;
@@ -22,23 +23,22 @@ class ActionTest extends TestCase
     public function renderProvider(): array
     {
         $attributes = StubAttributeFactory::createAttributes();
-        $str        = ArrayHelper::toAttributes($attributes);
 
         $callbacks = [
-            StubAttributeFactory::ATTRIBUTE_FOO => fn() => [
+            StubAttributeFactory::ATTRIBUTE_FOO => fn () => [
                 StubAttributeFactory::VALUE_FOO,
                 StubAttributeFactory::VALUE_BAZ,
             ],
-            StubAttributeFactory::ATTRIBUTE_BAR => fn() => StubAttributeFactory::VALUE_BAR_BAZ,
+            StubAttributeFactory::ATTRIBUTE_BAR => fn () => StubAttributeFactory::VALUE_BAR_BAZ,
         ];
 
         return [
-            'simple'               => ['Button', [], [], null, null, "<button>Button</button>"],
-            'with attributes'      => ['Button', $attributes, [], null, null, "<button$str>Button</button>"],
-            'missing translations' => ['Button', [], [], [], null, "<button>Button</button>"],
-            'custom tag'           => ['Button', [], [], null, 'mybutton', "<mybutton>Button</mybutton>"],
-            'with translations'    => ['Button', [], [], ['Button' => 'Gomb'], null, "<button>Gomb</button>"],
-            'with callbacks'       => ['Button', [], $callbacks, null, null, "<button$str>Button</button>"],
+            'simple'               => ['Button', null, [], null, null, "<button>Button</button>"],
+            'with attributes'      => ['Button', $attributes, [], null, null, "<button$attributes>Button</button>"],
+            'missing translations' => ['Button', null, [], [], null, "<button>Button</button>"],
+            'custom tag'           => ['Button', null, [], null, 'mybutton', "<mybutton>Button</mybutton>"],
+            'with translations'    => ['Button', null, [], ['Button' => 'Gomb'], null, "<button>Gomb</button>"],
+            'with callbacks'       => ['Button', null, $callbacks, null, null, "<button$attributes>Button</button>"],
         ];
     }
 
@@ -46,7 +46,7 @@ class ActionTest extends TestCase
      * @dataProvider renderProvider
      *
      * @param INode[]|INode|string|null $content
-     * @param array                     $attributes
+     * @param Attributes|null $attributes
      * @param array                     $attributeCallbacks
      * @param string[]|null             $translations
      * @param string|null               $tag
@@ -54,7 +54,7 @@ class ActionTest extends TestCase
      */
     public function testRender(
         $content,
-        array $attributes,
+        ?Attributes $attributes,
         array $attributeCallbacks,
         ?array $translations,
         ?string $tag,
@@ -78,9 +78,9 @@ class ActionTest extends TestCase
         $entityMock->expects($this->atLeastOnce())->method('getId')->willReturn('bar');
 
         $content            = 'Button';
-        $attributes         = [];
+        $attributes         = null;
         $attributeCallbacks = [
-            StubAttributeFactory::ATTRIBUTE_FOO => fn($value, IEntity $entity) => [$entity->getId()],
+            StubAttributeFactory::ATTRIBUTE_FOO => fn ($value, IEntity $entity) => [$entity->getId()],
         ];
 
         $sut = $this->createElement($content, $attributes, $attributeCallbacks, null, null);
@@ -106,7 +106,7 @@ class ActionTest extends TestCase
 
     /**
      * @param INode[]|INode|string|null $content
-     * @param array                     $attributes
+     * @param Attributes|null $attributes
      * @param array                     $attributeCallbacks
      * @param array|null                $translations
      * @param string|null               $tag
@@ -115,7 +115,7 @@ class ActionTest extends TestCase
      */
     private function createElement(
         $content,
-        array $attributes,
+        ?Attributes $attributes,
         array $attributeCallbacks,
         ?array $translations,
         ?string $tag

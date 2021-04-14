@@ -20,17 +20,14 @@ class TransportBootstrapperTest extends TestCase
 
     public function setUp(): void
     {
-        $this->sut = new TransportBootstrapper();
-    }
-
-    public function tearDown(): void
-    {
         Environment::unsetVar(Env::EMAIL_SMTP_HOST);
         Environment::unsetVar(Env::EMAIL_SMTP_PORT);
         Environment::unsetVar(Env::EMAIL_SMTP_ENCRYPTION);
         Environment::unsetVar(Env::EMAIL_SMTP_USERNAME);
         Environment::unsetVar(Env::EMAIL_SMTP_PASSWORD);
         Environment::unsetVar(Env::EMAIL_SENDMAIL_COMMAND);
+
+        $this->sut = new TransportBootstrapper();
     }
 
     public function testRegisterBindingsSmtp(): void

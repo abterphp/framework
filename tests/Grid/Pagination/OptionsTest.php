@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Pagination;
 
+use AbterPhp\Framework\Html\Attributes;
 use PHPUnit\Framework\TestCase;
 
 class OptionsTest extends TestCase
 {
     protected const DEFAULT_PAGE_SIZE = 5;
     protected const PAGE_SIZE_OPTIONS = [5, 10, 25];
-    protected const NUMBER_COUNT = 33;
+    protected const NUMBER_COUNT      = 33;
 
     /** @var Options - System Under Test */
     protected Options $sut;
@@ -19,7 +20,7 @@ class OptionsTest extends TestCase
     {
         parent::setUp();
 
-        $this->sut = new Options(static::DEFAULT_PAGE_SIZE, static::PAGE_SIZE_OPTIONS, static::NUMBER_COUNT);
+        $this->sut = new Options(static::DEFAULT_PAGE_SIZE, static::PAGE_SIZE_OPTIONS, static::NUMBER_COUNT); //
     }
 
     public function testGetDefaultPageSize(): void
@@ -47,12 +48,12 @@ class OptionsTest extends TestCase
     {
         $actualResult = $this->sut->getAttributes();
 
-        $this->assertSame([], $actualResult);
+        $this->assertSame("", (string)$actualResult);
     }
 
     public function testGetAttributes(): void
     {
-        $attributes = ['foo' => 'bar'];
+        $attributes = new Attributes(['foo' => 'bar']);
 
         $this->sut->setAttributes($attributes);
 

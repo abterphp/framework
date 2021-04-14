@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Html\Component;
 
 use AbterPhp\Framework\Constant\Html5;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\Helper\ArrayHelper;
 use Opulence\Routing\Urls\UrlException;
 use Opulence\Routing\Urls\UrlGenerator;
 
@@ -15,56 +16,48 @@ class ButtonFactory
     /** @var UrlGenerator */
     protected UrlGenerator $urlGenerator;
 
-    /** @var array */
-    protected array $iconAttributes = [];
+    protected Attributes $iconAttributes;
+    protected Attributes $textAttributes;
+    protected Attributes $attributes;
 
-    /** @var array */
-    protected array $textAttributes = [];
-
-    /** @var array */
-    protected array $attributes = [];
-
-    /** @var string */
     protected string $iconTag = Html5::TAG_I;
-
-    /** @var string */
     protected string $textTag = Html5::TAG_SPAN;
 
     /**
      * ButtonFactory constructor.
      *
-     * @param UrlGenerator $urlGenerator
-     * @param array        $textAttributes
-     * @param array        $iconAttributes
-     * @param array        $attributes
-     * @param string       $textTag
-     * @param string       $iconTag
+     * @param UrlGenerator    $urlGenerator
+     * @param Attributes|null $textAttributes
+     * @param Attributes|null $iconAttributes
+     * @param Attributes|null $attributes
+     * @param string          $textTag
+     * @param string          $iconTag
      */
     public function __construct(
         UrlGenerator $urlGenerator,
-        array $textAttributes = [],
-        array $iconAttributes = [],
-        array $attributes = [],
+        ?Attributes $textAttributes = null,
+        ?Attributes $iconAttributes = null,
+        ?Attributes $attributes = null,
         string $textTag = Html5::TAG_SPAN,
         string $iconTag = Html5::TAG_I
     ) {
         $this->urlGenerator   = $urlGenerator;
-        $this->textAttributes = $textAttributes;
-        $this->iconAttributes = $iconAttributes;
-        $this->attributes     = $attributes;
+        $this->textAttributes = $textAttributes ?? new Attributes();
+        $this->iconAttributes = $iconAttributes ?? new Attributes();
+        $this->attributes     = $attributes ?? new Attributes();
         $this->iconTag        = $iconTag;
         $this->textTag        = $textTag;
     }
 
     /**
-     * @param string      $text
-     * @param string      $url
-     * @param string      $icon
-     * @param string[][]  $textAttribs
-     * @param string[][]  $iconAttribs
-     * @param string[]    $intents
-     * @param string[][]  $attribs
-     * @param string|null $tag
+     * @param string          $text
+     * @param string          $url
+     * @param string          $icon
+     * @param Attributes|null $textAttributes
+     * @param Attributes|null $iconAttributes
+     * @param string[]        $intents
+     * @param Attributes|null $attributes
+     * @param string|null     $tag
      *
      * @return Button
      */
@@ -72,34 +65,36 @@ class ButtonFactory
         string $text,
         string $url,
         string $icon = '',
-        array $textAttribs = [],
-        array $iconAttribs = [],
+        ?Attributes $textAttributes = null,
+        ?Attributes $iconAttributes = null,
         $intents = [],
-        $attribs = [],
+        ?Attributes $attributes = null,
         ?string $tag = Html5::TAG_A
     ): Button {
-        $attribs[Html5::ATTR_HREF] = [$url];
+        $attributes ??= new Attributes();
+        $attributes->replaceItem(new Attribute(Html5::ATTR_HREF, $url));
 
         if ($icon) {
-            return $this->createWithIcon($text, $icon, $textAttribs, $iconAttribs, $intents, $attribs, $tag);
+            return $this->createWithIcon($text, $icon, $textAttributes, $iconAttributes, $intents, $attributes, $tag);
         }
 
-        return $this->createSimple($text, $intents, $attribs, $tag);
+        return $this->createSimple($text, $intents, $attributes, $tag);
     }
 
     /**
      * // TODO: Create Opulence issue
+     *
      * @suppress PhanTypeMismatchArgument issue with Opulence\Routing\Urls\UrlGenerator::createFromName
      *
-     * @param string      $text
-     * @param string      $urlName
-     * @param string[]    $urlArgs
-     * @param string      $icon
-     * @param string[][]  $textAttribs
-     * @param string[][]  $iconAttribs
-     * @param string[]    $intents
-     * @param string[][]  $attribs
-     * @param string|null $tag
+     * @param string          $text
+     * @param string          $urlName
+     * @param string[]        $urlArgs
+     * @param string          $icon
+     * @param Attributes|null $textAttributes
+     * @param Attributes|null $iconAttributes
+     * @param string[]        $intents
+     * @param Attributes|null $attributes
+     * @param string|null     $tag
      *
      * @return Button
      * @throws URLException
@@ -109,70 +104,75 @@ class ButtonFactory
         string $urlName,
         array $urlArgs,
         string $icon = '',
-        array $textAttribs = [],
-        array $iconAttribs = [],
+        ?Attributes $textAttributes = null,
+        ?Attributes $iconAttributes = null,
         $intents = [],
-        $attribs = [],
+        ?Attributes $attributes = null,
         ?string $tag = Html5::TAG_A
     ): Button {
         $url = $this->urlGenerator->createFromName($urlName, ...$urlArgs);
 
-        $attribs[Html5::ATTR_HREF] = [$url];
+        $attributes ??= new Attributes();
+        $attributes->replaceItem(new Attribute(Html5::ATTR_HREF, $url));
 
         if ($icon) {
-            return $this->createWithIcon($text, $icon, $textAttribs, $iconAttribs, $intents, $attribs, $tag);
+            return $this->createWithIcon($text, $icon, $textAttributes, $iconAttributes, $intents, $attributes, $tag);
         }
 
-        return $this->createSimple($text, $intents, $attribs, $tag);
+        return $this->createSimple($text, $intents, $attributes, $tag);
     }
 
     /**
-     * @param string      $text
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param string          $text
+     * @param string[]        $intents
+     * @param Attributes|null $attributes
+     * @param string|null     $tag
      *
      * @return Button
      */
-    public function createSimple(string $text, array $intents, array $attributes, ?string $tag): Button
+    public function createSimple(string $text, array $intents, ?Attributes $attributes, ?string $tag): Button
     {
-        $attributes = ArrayHelper::unsafeMergeAttributes($this->attributes, $attributes);
+        $attributes = clone $attributes;
+        $attributes->merge($this->attributes);
 
-        $linkComponent = new Button($text, $intents, $attributes, $tag);
-
-        return $linkComponent;
+        return new Button($text, $intents, $attributes, $tag);
     }
 
     /**
-     * @param string      $text
-     * @param string      $icon
-     * @param string[][]  $textAttribs
-     * @param string[][]  $iconAttribs
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param string          $text
+     * @param string          $icon
+     * @param Attributes|null $textAttributes
+     * @param Attributes|null $iconAttributes
+     * @param string[]        $intents
+     * @param Attributes|null $attributes
+     * @param string|null     $tag
      *
      * @return ButtonWithIcon
      */
     public function createWithIcon(
         string $text,
         string $icon,
-        array $textAttribs,
-        array $iconAttribs,
-        array $intents,
-        $attributes,
-        ?string $tag
+        ?Attributes $textAttributes = null,
+        ?Attributes $iconAttributes = null,
+        array $intents = [],
+        ?Attributes $attributes = null,
+        ?string $tag = null
     ): ButtonWithIcon {
-        $iconAttribs = ArrayHelper::unsafeMergeAttributes($this->iconAttributes, $iconAttribs);
-        $textAttribs = ArrayHelper::unsafeMergeAttributes($this->textAttributes, $textAttribs);
+        $iconAttributes ??= new Attributes();
+        $iconAttributes = clone $iconAttributes;
+        $iconAttributes->merge($this->iconAttributes);
 
-        $textComponent = new Component($text, [], $textAttribs, $this->textTag);
-        $iconComponent = new Component($icon, [], $iconAttribs, $this->iconTag);
+        $textAttributes ??= new Attributes();
+        $textAttributes = clone $textAttributes;
+        $textAttributes->merge($this->textAttributes);
 
-        $attributes = ArrayHelper::unsafeMergeAttributes($this->attributes, $attributes);
+        $textComponent = new Component($text, [], $textAttributes, $this->textTag);
+        $iconComponent = new Component($icon, [], $iconAttributes, $this->iconTag);
 
-        $linkComponent = new ButtonWithIcon($textComponent, $iconComponent, $intents, $attributes, $tag);
+        $attributes ??= new Attributes();
+        $attributes = clone $attributes;
+        $attributes = $attributes->merge($this->attributes);
 
-        return $linkComponent;
+        return new ButtonWithIcon($textComponent, $iconComponent, $intents, $attributes, $tag);
     }
 }

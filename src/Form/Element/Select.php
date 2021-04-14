@@ -6,6 +6,8 @@ namespace AbterPhp\Framework\Form\Element;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Form\Component\Option;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Component;
 
 class Select extends Component implements IElement
@@ -20,23 +22,24 @@ class Select extends Component implements IElement
     /**
      * Select constructor.
      *
-     * @param string      $inputId
-     * @param string      $name
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param string          $inputId
+     * @param string          $name
+     * @param string[]        $intents
+     * @param Attributes|null $attributes
+     * @param string|null     $tag
      */
     public function __construct(
         string $inputId,
         string $name,
         array $intents = [],
-        array $attributes = [],
+        ?Attributes $attributes = null,
         ?string $tag = null
     ) {
+        $attributes ??= new Attributes();
         if ($inputId) {
-            $attributes[Html5::ATTR_ID] = $inputId;
+            $attributes->replaceItem(new Attribute(Html5::ATTR_ID, $inputId));
         }
-        $attributes[Html5::ATTR_NAME] = $name;
+        $attributes->replaceItem(new Attribute(Html5::ATTR_NAME, $name));
 
         parent::__construct(null, $intents, $attributes, $tag);
     }
@@ -56,17 +59,25 @@ class Select extends Component implements IElement
     }
 
     /**
+     * @return string[]|null
+     */
+    public function getValue()
+    {
+        return $this->getAttribute(Html5::ATTR_VALUE)->getValues();
+    }
+
+    /**
      * @param string[] $values
      *
      * @return $this
      */
-    public function setValueInner(array $values): IElement
+    protected function setValueInner(array $values): IElement
     {
         foreach ($this->nodes as $option) {
             if (in_array($option->getValue(), $values, true)) {
-                $option->setAttribute(Html5::ATTR_SELECTED, null);
-            } elseif ($option->hasAttribute(Html5::ATTR_SELECTED)) {
-                $option->unsetAttribute(Html5::ATTR_SELECTED);
+                $option->getAttributes()->replaceItem(new Attribute(Html5::ATTR_SELECTED));
+            } elseif ($option->getAttributes()->hasItem(Html5::ATTR_SELECTED)) {
+                $option->getAttributes()->remove(Html5::ATTR_SELECTED);
             }
         }
 
@@ -76,17 +87,12 @@ class Select extends Component implements IElement
     /**
      * @return string
      */
+
+    /**
+     * @return string
+     */
     public function getName(): string
     {
-        if (!$this->hasAttribute(Html5::ATTR_NAME)) {
-            return '';
-        }
-
-        $value = $this->getAttribute(Html5::ATTR_NAME);
-        if (null === $value) {
-            return '';
-        }
-
-        return $value;
+        return $this->forceGetAttribute(Html5::ATTR_NAME)->getValue();
     }
 }

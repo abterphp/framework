@@ -112,7 +112,7 @@ class BodyTest extends TestCase
      *
      * @return FooBarStub|MockObject
      */
-    private function createEntity(string $string, int $entityId, string $foo = '', string $bar = ''): IStringerEntity
+    private function createEntity(string $string, int $entityId, string $foo = '', string $bar = '')
     {
         /** @var FooBarStub|MockObject $entity */
         $entity = $this->createMock(FooBarStub::class);

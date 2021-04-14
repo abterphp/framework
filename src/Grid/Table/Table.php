@@ -7,13 +7,16 @@ namespace AbterPhp\Framework\Grid\Table;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Grid\Component\Body;
 use AbterPhp\Framework\Grid\Component\Header;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Helper\TagHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\ITemplater;
 
 class Table extends Component implements ITable, ITemplater
 {
+    public const TAG_TABLE = 'table';
+
     /**
      *   %1$s - thead
      *   %2$s - tbody
@@ -22,15 +25,10 @@ class Table extends Component implements ITable, ITemplater
 
     protected const DEFAULT_TAG = self::TAG_TABLE;
 
-    public const TAG_TABLE = 'table';
-
-    /** @var Header */
     protected Header $header;
 
-    /** @var Body */
     protected Body $body;
 
-    /** @var string */
     protected string $template = self::DEFAULT_TEMPLATE;
 
     /**
@@ -39,9 +37,9 @@ class Table extends Component implements ITable, ITemplater
      * @param Body     $body
      * @param Header   $header
      * @param string[] $intents
-     * @param array    $attributes
+     * @param Attributes|null $attributes
      */
-    public function __construct(Body $body, Header $header, array $intents = [], array $attributes = [])
+    public function __construct(Body $body, Header $header, array $intents = [], ?Attributes $attributes = null)
     {
         $this->body   = $body;
         $this->header = $header;
@@ -68,7 +66,7 @@ class Table extends Component implements ITable, ITemplater
     }
 
     /**
-     * @return array
+     * @return array<string,string>
      */
     public function getSqlParams(): array
     {
@@ -121,8 +119,6 @@ class Table extends Component implements ITable, ITemplater
             $tbody
         );
 
-        $content = StringHelper::wrapInTag($content, $this->tag, $this->attributes);
-
-        return $content;
+        return TagHelper::toString($this->tag, $content, $this->attributes);
     }
 }

@@ -9,6 +9,7 @@ use AbterPhp\Framework\Form\Element\IElement;
 use AbterPhp\Framework\Form\Element\Input;
 use AbterPhp\Framework\Form\Extra\Help;
 use AbterPhp\Framework\Form\Label\Label;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -22,26 +23,26 @@ class FormGroupTest extends TestCase
     public function renderProvider(): array
     {
         return [
-            'simple' => ['<foo>', '<bar>', '<baz>', [], null, null, '<div><bar><foo><baz></div>'],
+            'simple' => ['<foo>', '<bar>', '<baz>', null, null, null, '<div><bar><foo><baz></div>'],
         ];
     }
 
     /**
      * @dataProvider renderProvider
      *
-     * @param string      $inputOutput
-     * @param string      $labelOutput
-     * @param string      $helpOutput
-     * @param array       $attributes
-     * @param array|null  $translations
-     * @param string|null $tag
-     * @param string      $expectedResult
+     * @param string          $inputOutput
+     * @param string          $labelOutput
+     * @param string          $helpOutput
+     * @param Attributes|null $attributes
+     * @param array|null      $translations
+     * @param string|null     $tag
+     * @param string          $expectedResult
      */
     public function testRender(
         string $inputOutput,
         string $labelOutput,
         string $helpOutput,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag,
         string $expectedResult
@@ -56,13 +57,13 @@ class FormGroupTest extends TestCase
     }
 
     /**
-     * @param string      $inputOutput
-     * @param string      $labelOutput
-     * @param string      $helpOutput
-     * @param array       $attributes
-     * @param array|null  $translations
+     * @param string          $inputOutput
+     * @param string          $labelOutput
+     * @param string          $helpOutput
+     * @param Attributes|null $attributes
+     * @param array|null      $translations
      *
-     * @param string|null $tag
+     * @param string|null     $tag
      *
      * @return FormGroup
      */
@@ -70,7 +71,7 @@ class FormGroupTest extends TestCase
         string $inputOutput,
         string $labelOutput,
         string $helpOutput,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag
     ): FormGroup {
@@ -135,9 +136,7 @@ class FormGroupTest extends TestCase
 
         $sut->setValue($expectedResult);
 
-        $actualResult = $input->getAttribute(Html5::ATTR_VALUE);
-
-        $this->assertStringContainsString($expectedResult, $actualResult);
+        $this->assertEquals($expectedResult, $input->getAttribute(Html5::ATTR_VALUE)->getValue());
     }
 
     public function testSetTemplateChangesRender(): void

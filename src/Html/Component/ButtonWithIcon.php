@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Html\Component;
 
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Attributes;
+use AbterPhp\Framework\Html\Helper\TagHelper;
 use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\ITemplater;
@@ -29,17 +30,17 @@ class ButtonWithIcon extends Button implements ITemplater
     /**
      * ButtonWithIcon constructor.
      *
-     * @param IComponent  $text
-     * @param IComponent  $icon
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param IComponent      $text
+     * @param IComponent      $icon
+     * @param string[]        $intents
+     * @param Attributes|null $attributes
+     * @param string|null     $tag
      */
     public function __construct(
         IComponent $text,
         IComponent $icon,
         array $intents = [],
-        array $attributes = [],
+        ?Attributes $attributes = null,
         ?string $tag = null
     ) {
         parent::__construct(null, $intents, $attributes, $tag);
@@ -89,8 +90,6 @@ class ButtonWithIcon extends Button implements ITemplater
             (string)$this->icon
         );
 
-        $content = StringHelper::wrapInTag($content, $this->tag, $this->attributes);
-
-        return $content;
+        return TagHelper::toString($this->tag, $content, $this->attributes);
     }
 }

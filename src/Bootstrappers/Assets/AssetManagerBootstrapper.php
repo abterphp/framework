@@ -10,13 +10,14 @@ use AbterPhp\Framework\Assets\Factory\Minifier as MinifierFactory;
 use AbterPhp\Framework\Assets\UrlFixer;
 use AbterPhp\Framework\Config\Routes;
 use AbterPhp\Framework\Constant\Env;
+use AbterPhp\Framework\Environments\Environment;
 use AbterPhp\Framework\Filesystem\FileFinder;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
-use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
+use Opulence\Ioc\IocException;
 use Opulence\Views\Compilers\Fortune\ITranspiler;
 
 class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
@@ -33,6 +34,8 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
     /**
      * @param IContainer $container
+     *
+     * @throws IocException
      */
     public function registerBindings(IContainer $container): void
     {
@@ -42,6 +45,8 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
     /**
      * @param IContainer $container
+     *
+     * @throws IocException
      */
     private function registerAssets(IContainer $container): void
     {
@@ -68,9 +73,9 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
     {
         $cacheDir = sprintf(
             '%s%s%s',
-            rtrim(Environment::getVar(Env::DIR_MEDIA), DIRECTORY_SEPARATOR),
+            rtrim(Environment::mustGetVar(Env::DIR_MEDIA), DIRECTORY_SEPARATOR),
             DIRECTORY_SEPARATOR,
-            rtrim(Environment::getVar(Env::CACHE_BASE_PATH), DIRECTORY_SEPARATOR)
+            ltrim(Environment::mustGetVar(Env::CACHE_BASE_PATH), DIRECTORY_SEPARATOR)
         );
 
         $cacheManager->registerFilesystem(new Filesystem(new LocalFilesystemAdapter($cacheDir)));

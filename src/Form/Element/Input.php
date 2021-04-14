@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Form\Element;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Attributes;
+use AbterPhp\Framework\Html\Helper\TagHelper;
 use AbterPhp\Framework\Html\Tag;
 
 class Input extends Tag implements IElement
@@ -44,29 +46,30 @@ class Input extends Tag implements IElement
     /**
      * Input constructor.
      *
-     * @param string      $inputId
-     * @param string      $name
-     * @param string      $value
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param string          $inputId
+     * @param string          $name
+     * @param string          $value
+     * @param string[]        $intents
+     * @param Attributes|null $attributes
+     * @param string|null     $tag
      */
     public function __construct(
         string $inputId,
         string $name,
         string $value = '',
         array $intents = [],
-        array $attributes = [],
+        ?Attributes $attributes = null,
         ?string $tag = null
     ) {
+        $attributes ??= new Attributes();
         if ($inputId) {
-            $attributes[Html5::ATTR_ID] = $inputId;
+            $attributes->replaceItem(new Attribute(Html5::ATTR_ID, $inputId));
         }
-        if (!array_key_exists(Html5::ATTR_TYPE, $attributes)) {
-            $attributes[Html5::ATTR_TYPE] = static::DEFAULT_TYPE;
+        if (!$attributes->hasItem(Html5::ATTR_TYPE)) {
+            $attributes->replaceItem(new Attribute(Html5::ATTR_TYPE, static::DEFAULT_TYPE));
         }
 
-        $attributes[Html5::ATTR_NAME] = $name;
+        $attributes->replaceItem(new Attribute(Html5::ATTR_NAME, $name));
 
         parent::__construct(null, $intents, $attributes, $tag);
 
@@ -78,16 +81,7 @@ class Input extends Tag implements IElement
      */
     public function getName(): string
     {
-        if (!$this->hasAttribute(Html5::ATTR_NAME)) {
-            return '';
-        }
-
-        $value = $this->getAttribute(Html5::ATTR_NAME);
-        if (null === $value) {
-            return '';
-        }
-
-        return $value;
+        return $this->forceGetAttribute(Html5::ATTR_NAME)->getValue();
     }
 
     /**
@@ -101,7 +95,17 @@ class Input extends Tag implements IElement
             throw new \InvalidArgumentException();
         }
 
-        return $this->setAttribute(Html5::ATTR_VALUE, $value);
+        $this->forceGetAttribute(Html5::ATTR_VALUE)->set(htmlspecialchars($value));
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->getAttribute(Html5::ATTR_VALUE)->getValue();
     }
 
     /**
@@ -109,6 +113,6 @@ class Input extends Tag implements IElement
      */
     public function __toString(): string
     {
-        return StringHelper::createTag($this->tag, $this->attributes);
+        return TagHelper::toString($this->tag, '', $this->getAttributes());
     }
 }

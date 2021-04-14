@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Form\Extra;
 
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use PHPUnit\Framework\TestCase;
 
@@ -15,7 +16,7 @@ class DefaultButtonsTest extends TestCase
     public function renderProvider(): array
     {
         $simpleExpected = [
-            "<div><button name=\"next\" type=\"submit\" value>framework:save</button>",
+            "<div><button name=\"next\" type=\"submit\" value=\"\">framework:save</button>",
             "<button name=\"next\" type=\"submit\" value=\"back\">framework:saveAndBack</button>",
             "<button name=\"next\" type=\"submit\" value=\"edit\">framework:saveAndEdit</button>",
             "<button name=\"next\" type=\"submit\" value=\"create\">framework:saveAndCreate</button>",
@@ -23,22 +24,22 @@ class DefaultButtonsTest extends TestCase
         ];
 
         return [
-            'simple' => ['/url', [], [], null, implode("\n", $simpleExpected)],
+            'simple' => ['/url', null, [], null, implode("\n", $simpleExpected)],
         ];
     }
 
     /**
      * @dataProvider renderProvider
      *
-     * @param string      $showUrl
-     * @param array       $attributes
-     * @param string[]    $translations
-     * @param string|null $tag
-     * @param string      $expected
+     * @param string          $showUrl
+     * @param Attributes|null $attributes
+     * @param string[]        $translations
+     * @param string|null     $tag
+     * @param string          $expected
      */
     public function testRender(
         string $showUrl,
-        array $attributes,
+        ?Attributes $attributes,
         array $translations,
         ?string $tag,
         string $expected
@@ -53,16 +54,16 @@ class DefaultButtonsTest extends TestCase
     }
 
     /**
-     * @param string      $showUrl
-     * @param array       $attributes
-     * @param string[]    $translations
-     * @param string|null $tag
+     * @param string          $showUrl
+     * @param Attributes|null $attributes
+     * @param string[]        $translations
+     * @param string|null     $tag
      *
      * @return DefaultButtons
      */
     private function createElement(
         string $showUrl,
-        array $attributes,
+        ?Attributes $attributes,
         array $translations,
         ?string $tag
     ): DefaultButtons {
@@ -70,8 +71,8 @@ class DefaultButtonsTest extends TestCase
 
         $defaultButtons = new DefaultButtons(null, [], $attributes, $tag);
 
+        $defaultButtons->setTranslator($translatorMock);
         $defaultButtons
-            ->setTranslator($translatorMock)
             ->addSave()
             ->addSaveAndBack()
             ->addSaveAndEdit()

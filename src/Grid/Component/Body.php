@@ -37,8 +37,8 @@ class Body extends Component
     {
         parent::__construct();
 
-        $this->getters      = $getters;
-        $this->actions      = $actions;
+        $this->getters = $getters;
+        $this->actions = $actions;
     }
 
     /**

@@ -17,14 +17,11 @@ class CacheManagerBootstrapperTest extends TestCase
 
     public function setUp(): void
     {
-        $this->sut = new CacheManagerBootstrapper();
-    }
-
-    protected function tearDown(): void
-    {
         Environment::unsetVar(Env::ENV_NAME);
         Environment::unsetVar(Env::DIR_MEDIA);
         Environment::unsetVar(Env::CACHE_BASE_PATH);
+
+        $this->sut = new CacheManagerBootstrapper();
     }
 
     public function testRegisterBindingsDevelopment(): void

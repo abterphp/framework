@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Form\Extra;
 
 use AbterPhp\Framework\Constant\Html5;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\Component\Button;
+use AbterPhp\Framework\Html\INode;
 
 class DefaultButtons extends Component
 {
@@ -28,22 +31,45 @@ class DefaultButtons extends Component
     /** @var Button[] */
     protected array $components;
 
-    /** @var array<string,null|string[]> */
-    protected array $btnAttributes = [
-        Html5::ATTR_NAME  => [self::BTN_NAME_NEXT],
-        Html5::ATTR_TYPE  => [Button::TYPE_SUBMIT],
-        Html5::ATTR_VALUE => [self::BTN_VALUE_NEXT_NONE],
-    ];
+    /** @var Attributes */
+    protected Attributes $btnAttributes;
+
+    /**
+     * DefaultButtons constructor.
+     *
+     * @param INode[]|INode|string|null $content
+     * @param array                     $intents
+     * @param Attributes|null           $attributes
+     * @param string|null               $tag
+     */
+    public function __construct(
+        $content = null,
+        array $intents = [],
+        ?Attributes $attributes = null,
+        ?string $tag = null
+    ) {
+        $this->btnAttributes = new Attributes(
+            [
+                Html5::ATTR_NAME  => [self::BTN_NAME_NEXT],
+                Html5::ATTR_TYPE  => [Button::TYPE_SUBMIT],
+                Html5::ATTR_VALUE => [self::BTN_VALUE_NEXT_NONE],
+            ]
+        );
+
+        parent::__construct($content, $intents, $attributes, $tag);
+    }
 
     /**
      * @return $this
      */
     public function addSave(): DefaultButtons
     {
+        $attributes = clone $this->btnAttributes;
+
         $this->nodes[] = new Button(
             static::BTN_CONTENT_SAVE,
             [Button::INTENT_PRIMARY, Button::INTENT_FORM],
-            $this->btnAttributes
+            $attributes
         );
 
         return $this;
@@ -58,9 +84,9 @@ class DefaultButtons extends Component
     {
         $intents = $intents ?: [Button::INTENT_PRIMARY, Button::INTENT_FORM];
 
-        $attributes = $this->btnAttributes;
+        $attributes = clone $this->btnAttributes;
 
-        $attributes[Html5::ATTR_VALUE] = [static::BTN_VALUE_NEXT_BACK];
+        $attributes->replaceItem(new Attribute(Html5::ATTR_VALUE, static::BTN_VALUE_NEXT_BACK));
 
         $this->nodes[] = new Button(
             static::BTN_CONTENT_SAVE_AND_BACK,
@@ -80,9 +106,9 @@ class DefaultButtons extends Component
     {
         $intents = $intents ?: [Button::INTENT_DEFAULT, Button::INTENT_FORM];
 
-        $attributes = $this->btnAttributes;
+        $attributes = clone $this->btnAttributes;
 
-        $attributes[Html5::ATTR_VALUE] = [static::BTN_VALUE_NEXT_EDIT];
+        $attributes->replaceItem(new Attribute(Html5::ATTR_VALUE, static::BTN_VALUE_NEXT_EDIT));
 
         $this->nodes[] = new Button(
             static::BTN_CONTENT_SAVE_AND_EDIT,
@@ -104,7 +130,7 @@ class DefaultButtons extends Component
 
         $attributes = $this->btnAttributes;
 
-        $attributes[Html5::ATTR_VALUE] = [static::BTN_VALUE_NEXT_CREATE];
+        $attributes->replaceItem(new Attribute(Html5::ATTR_VALUE, static::BTN_VALUE_NEXT_CREATE));
 
         $this->nodes[] = new Button(
             static::BTN_CONTENT_SAVE_AND_CREATE,
@@ -125,9 +151,7 @@ class DefaultButtons extends Component
     {
         $intents = $intents ?: [Button::INTENT_DANGER, Button::INTENT_FORM];
 
-        $attributes = [
-            Html5::ATTR_HREF => [$showUrl],
-        ];
+        $attributes = new Attributes([Html5::ATTR_HREF => [$showUrl]]);
 
         $this->nodes[] = new Button(
             static::BTN_CONTENT_BACK_TO_GRID,

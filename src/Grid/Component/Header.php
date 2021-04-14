@@ -7,6 +7,7 @@ namespace AbterPhp\Framework\Grid\Component;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Grid\Cell\Sortable;
 use AbterPhp\Framework\Grid\Row\IRow;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Component;
 
 class Header extends Component
@@ -16,16 +17,15 @@ class Header extends Component
     /** @var IRow[] */
     protected array $nodes = [];
 
-    /** @var string */
     protected string $nodeClass = IRow::class;
 
     /**
      * Header constructor.
      *
      * @param string[] $intents
-     * @param array    $attributes
+     * @param Attributes|null $attributes
      */
-    public function __construct(array $intents = [], array $attributes = [])
+    public function __construct(array $intents = [], ?Attributes $attributes = null)
     {
         parent::__construct(null, $intents, $attributes);
     }
@@ -116,7 +116,7 @@ class Header extends Component
     }
 
     /**
-     * @return array
+     * @return array<string,string>
      */
     public function getQueryParams(): array
     {

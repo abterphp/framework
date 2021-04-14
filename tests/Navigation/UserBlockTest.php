@@ -75,7 +75,7 @@ class UserBlockTest extends TagTest
         $rendered = (string)$sut;
 
         $this->assertStringContainsString(
-            '<a><div><span src="https://via.placeholder.com/40/09f/fff.png" alt="Mr. Wolf"></div>',
+            '<a><div><span src="https://via.placeholder.com/40/09f/fff.png" alt="Mr. Wolf"></span></div>',
             $rendered
         ); // nolint
         $this->assertStringContainsString('<div>Mr. Wolf</div>', $rendered);

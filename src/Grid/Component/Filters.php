@@ -7,9 +7,10 @@ namespace AbterPhp\Framework\Grid\Component;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Grid\Action\Action;
 use AbterPhp\Framework\Grid\Filter\IFilter;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Collection;
 use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Helper\TagHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\ITemplater;
 
@@ -52,25 +53,31 @@ class Filters extends Component implements ITemplater
     protected string $nodeClass = IFilter::class;
 
     protected Action $hiderBtn;
-
     protected Action $filterBtn;
-
     protected Action $resetBtn;
+
+    protected Attributes $formAttributes;
+    protected Attributes $searchAttributes;
+    protected Attributes $resetAttributes;
 
     /**
      * Filters constructor.
      *
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param string[]        $intents
+     * @param Attributes|null $attributes
+     * @param string|null     $tag
      */
-    public function __construct(array $intents = [], array $attributes = [], ?string $tag = null)
+    public function __construct(array $intents = [], ?Attributes $attributes = null, ?string $tag = null)
     {
         parent::__construct(null, $intents, $attributes, $tag);
 
+        $this->formAttributes = new Attributes(static::ATTRIBUTES_FORM);
+        $this->searchAttributes = new Attributes(static::ATTRIBUTES_SEARCH);
+        $this->resetAttributes = new Attributes(static::ATTRIBUTES_RESET);
+
         $this->hiderBtn  = new Action(static::BTN_CONTENT_FILTERS, [Action::INTENT_INFO]);
-        $this->filterBtn = new Action(static::BTN_CONTENT_FILTER, [Action::INTENT_PRIMARY], static::ATTRIBUTES_SEARCH);
-        $this->resetBtn  = new Action(static::BTN_CONTENT_RESET, [Action::INTENT_SECONDARY], static::ATTRIBUTES_RESET);
+        $this->filterBtn = new Action(static::BTN_CONTENT_FILTER, [Action::INTENT_PRIMARY], $this->searchAttributes);
+        $this->resetBtn  = new Action(static::BTN_CONTENT_RESET, [Action::INTENT_SECONDARY], $this->resetAttributes);
     }
 
     /**
@@ -125,7 +132,7 @@ class Filters extends Component implements ITemplater
     }
 
     /**
-     * @return array
+     * @return array<string,string>
      */
     public function getSqlParams(): array
     {
@@ -164,11 +171,7 @@ class Filters extends Component implements ITemplater
     {
         $nodes = Collection::__toString();
 
-        $form = StringHelper::wrapInTag(
-            $nodes,
-            $this->tag,
-            static::ATTRIBUTES_FORM
-        );
+        $form = TagHelper::toString($this->tag, $nodes, $this->formAttributes);
 
         return sprintf(
             $this->template,

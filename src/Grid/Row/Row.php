@@ -9,7 +9,8 @@ use AbterPhp\Framework\Grid\Action\IAction;  // @phan-suppress-current-line Phan
 use AbterPhp\Framework\Grid\Cell\Cell;
 use AbterPhp\Framework\Grid\Collection\Cells;
 use AbterPhp\Framework\Grid\Component\Actions;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Attributes;
+use AbterPhp\Framework\Html\Helper\TagHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\NodeContainerTrait;
 use AbterPhp\Framework\Html\Tag;
@@ -24,8 +25,8 @@ class Row extends Tag implements IRow
     /** @var Cells */
     protected Cells $cells;
 
-    /** @var Actions|null */
-    protected ?Actions $actions;
+    /** @var Actions */
+    protected Actions $actions;
 
     /** @var Cell */
     protected Cell $actionCell;
@@ -39,20 +40,20 @@ class Row extends Tag implements IRow
      * @param Cells        $cells
      * @param Actions|null $actions
      * @param string[]     $intents
-     * @param array        $attributes
+     * @param Attributes|null $attributes
      * @param string|null  $tag
      */
     public function __construct(
         Cells $cells,
         ?Actions $actions = null,
         array $intents = [],
-        array $attributes = [],
+        ?Attributes $attributes = null,
         ?string $tag = null
     ) {
         parent::__construct(null, $intents, $attributes, $tag);
 
         $this->cells   = $cells;
-        $this->actions = $actions;
+        $this->actions = $actions ?? new Actions();
 
         if ($actions) {
             $this->actionCell = new Cell($this->actions, Cell::GROUP_ACTIONS, [Cell::INTENT_ACTIONS]);
@@ -86,9 +87,10 @@ class Row extends Tag implements IRow
             return;
         }
 
-        /** @var IAction $action */
         foreach ($this->actions as $action) {
-            $action->setEntity($entity); // @phan-suppress-current-line PhanUndeclaredMethod
+            if ($action instanceof IAction) {
+                $action->setEntity($entity);
+            }
         }
     }
 
@@ -121,11 +123,9 @@ class Row extends Tag implements IRow
         $content = (string)$this->cells;
 
         if ($this->actionCell) {
-            $content .= (string)$this->actionCell;
+            $content .= $this->actionCell;
         }
 
-        $content = StringHelper::wrapInTag($content, $this->tag, $this->attributes);
-
-        return $content;
+        return TagHelper::toString($this->tag, $content, $this->attributes);
     }
 }

@@ -68,9 +68,9 @@ class TagTest extends NodeTestCase
 
         $sut = $this->createNode();
 
-        $sut->setAttribute($key, $value);
+        $sut->setAttribute(new Attribute($key, $value));
 
-        $sut->unsetAttribute($key);
+        $sut->getAttributes()->remove($key);
 
         $actualResult = $sut->getAttribute($key);
 
@@ -80,11 +80,10 @@ class TagTest extends NodeTestCase
     public function testUnsetAttributeValueWorksIfAttributeIsNotSet(): void
     {
         $key   = 'foo';
-        $value = 'bar';
 
         $sut = $this->createNode();
 
-        $sut->unsetAttributeValue($key, $value);
+        $sut->getAttributes()->remove($key);
 
         $actualResult = $sut->getAttribute($key);
 
@@ -93,18 +92,20 @@ class TagTest extends NodeTestCase
 
     public function testUnsetAttributeValueWorksIfAttributeIsSet(): void
     {
+        $expectedResult = 'foo=""';
+
         $key   = 'foo';
         $value = 'bar';
 
         $sut = $this->createNode();
 
-        $sut->setAttribute($key, $value);
+        $sut->setAttribute(new Attribute($key, $value));
 
-        $sut->unsetAttributeValue($key, $value);
+        $sut->getAttribute($key)->remove($value);
 
-        $actualResult = $sut->getAttribute($key);
+        $actualResult = (string)$sut->getAttribute($key);
 
-        $this->assertNull($actualResult);
+        $this->assertEquals($expectedResult, $actualResult);
     }
 
     public function testUnsetAttributeValueWorksIfAttributeIsSetButValueIsNot(): void
@@ -115,13 +116,13 @@ class TagTest extends NodeTestCase
 
         $sut = $this->createNode();
 
-        $sut->setAttribute($key, $value1);
+        $sut->setAttribute(new Attribute($key, $value1));
 
-        $sut->unsetAttributeValue($key, $value2);
+        $sut->getAttribute($key)->remove($value2);
 
-        $actualResult = $sut->getAttribute($key);
+        $actualResult = $sut->getAttribute($key)->getValues();
 
-        $this->assertSame($value1, $actualResult);
+        $this->assertSame([$value1], $actualResult);
     }
 
     /**

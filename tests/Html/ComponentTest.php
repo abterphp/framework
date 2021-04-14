@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Html;
 
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
+use stdClass;
 
 class ComponentTest extends CollectionTest
 {
@@ -92,11 +93,11 @@ class ComponentTest extends CollectionTest
     {
         $sut = $this->createNode();
 
-        $this->assertFalse($sut->hasAttribute('foo'));
+        $this->assertFalse($sut->getAttributes()->hasItem('foo'));
 
-        $sut->setAttribute('foo', 'bar');
+        $sut->setAttribute(new Attribute('foo', 'bar'));
 
-        $this->assertTrue($sut->hasAttribute('foo'));
+        $this->assertTrue($sut->getAttributes()->hasItem('foo'));
     }
 
     /**
@@ -105,55 +106,52 @@ class ComponentTest extends CollectionTest
     public function getAttributeProvider(): array
     {
         return [
-            [null, null],
-            ['bar', 'bar'],
-            [['bar'], 'bar'],
-            ['foo bar', 'foo bar'],
-            ['foo foo bar', 'foo bar'],
-            [['foo', 'foo', 'bar', 'foo bar', 'bar'], 'foo bar'],
+            ['bar', 'foo="bar"'],
+            [['bar'], 'foo="bar"'],
+            ['foo bar', 'foo="foo bar"'],
+            ['foo foo bar', 'foo="foo foo bar"'],
+            [['foo', 'foo', 'bar', 'foo bar', 'bar'], 'foo="foo bar foo bar"'],
         ];
     }
 
     /**
      * @dataProvider getAttributeProvider
      *
-     * @param             $value
-     * @param string|null $expectedResult
+     * @param        $value
+     * @param string $expectedResult
      */
-    public function testGetAttributes($value, ?string $expectedResult): void
+    public function testGetAttributes($value, string $expectedResult): void
     {
         $key = 'foo';
 
         $sut = $this->createNode();
 
         $values = (array)$value;
-        $sut->setAttribute($key, ...$values);
+        $sut->setAttribute(new Attribute($key, ...$values));
 
-        $actualResult = $sut->getAttributes();
-
-        $this->assertEquals([$key => $expectedResult], $actualResult);
+        $this->assertEquals(" $expectedResult", (string)$sut->getAttributes());
     }
 
     public function testHasAttributeWithEmptyAttribute(): void
     {
         $sut = $this->createNode();
 
-        $this->assertFalse($sut->hasAttribute('foo'));
+        $this->assertFalse($sut->getAttributes()->hasItem('foo'));
 
-        $sut->setAttribute('foo', null);
+        $sut->getAttributes()->replaceItem(new Attribute('foo'));
 
-        $this->assertTrue($sut->hasAttribute('foo'));
+        $this->assertTrue($sut->getAttributes()->hasItem('foo'));
     }
 
     public function testHasAttributeWithMissingAttributeSet(): void
     {
         $sut = $this->createNode();
 
-        $this->assertFalse($sut->hasAttribute('foo'));
+        $this->assertFalse($sut->getAttributes()->hasItem('foo'));
 
-        $sut->setAttribute('foo');
+        $sut->getAttributes()->replaceItem(new Attribute('foo'));
 
-        $this->assertTrue($sut->hasAttribute('foo'));
+        $this->assertTrue($sut->getAttributes()->hasItem('foo'));
     }
 
     /**
@@ -169,11 +167,9 @@ class ComponentTest extends CollectionTest
         $sut = $this->createNode();
 
         $values = (array)$value;
-        $sut->setAttribute($key, ...$values);
+        $sut->getAttributes()->replaceItem(new Attribute($key, ...$values));
 
-        $actualResult = $sut->getAttribute($key);
-
-        $this->assertEquals($expectedResult, $actualResult);
+        $this->assertEquals($expectedResult, (string)$sut->getAttribute($key));
     }
 
     /**
@@ -189,12 +185,12 @@ class ComponentTest extends CollectionTest
         $sut = $this->createNode();
 
         $values = (array)$value;
-        $sut->setAttribute($key, ...$values);
+        $sut->setAttribute(new Attribute($key, ...$values));
 
         $actualResult = $sut->getAttribute($key);
         $this->assertEquals($expectedResult, $actualResult);
 
-        $sut->unsetAttribute($key);
+        $sut->getAttributes()->remove($key);
 
         $repeatedResult = $sut->getAttribute($key);
 
@@ -207,7 +203,7 @@ class ComponentTest extends CollectionTest
 
         $sut = $this->createNode();
 
-        $sut->unsetAttribute($key);
+        $sut->getAttributes()->remove($key);
 
         $result = $sut->getAttribute($key);
 
@@ -216,8 +212,8 @@ class ComponentTest extends CollectionTest
 
     public function testSetAttributesOverridesExistingAttributesSet(): void
     {
-        $originalAttributes = ['foo' => 'bar'];
-        $newAttributes      = ['bar' => 'baz'];
+        $originalAttributes = new Attributes(['foo' => 'bar']);
+        $newAttributes      = new Attributes(['bar' => 'baz']);
         $expectedResult     = $newAttributes;
 
         $sut = $this->createNode();
@@ -231,14 +227,14 @@ class ComponentTest extends CollectionTest
 
     public function testAddAttributesOverridesExistingAttributesSet(): void
     {
-        $originalAttributes = ['foo' => 'bar', 'bar' => 'foo'];
-        $newAttributes      = ['bar' => 'baz'];
-        $expectedResult     = ['foo' => 'bar', 'bar' => 'baz'];
+        $originalAttributes = new Attributes(['foo' => 'bar', 'bar' => 'foo']);
+        $newAttributes      = new Attributes(['bar' => 'baz']);
+        $expectedResult     = new Attributes(['foo' => 'bar', 'bar' => 'baz']);
 
         $sut = $this->createNode();
         $sut->setAttributes($originalAttributes);
 
-        $sut->addAttributes($newAttributes);
+        $sut->replaceAttributes($newAttributes);
 
         $actualResult = $sut->getAttributes();
         $this->assertEquals($expectedResult, $actualResult);
@@ -246,15 +242,14 @@ class ComponentTest extends CollectionTest
 
     public function testSetAttributeOverridesExistingAttributeSet(): void
     {
-        $key                = 'bar';
-        $originalAttributes = ['foo' => 'bar', 'bar' => 'foo'];
-        $newAttributes      = ['bar' => 'baz'];
-        $expectedResult     = ['foo' => 'bar', 'bar' => 'baz'];
+        $originalAttributes = new Attributes(['foo' => 'bar', 'bar' => 'foo']);
+        $newAttribute       = new Attribute('bar', 'baz');
+        $expectedResult     = new Attributes(['foo' => 'bar', 'bar' => 'baz']);
 
         $sut = $this->createNode();
         $sut->setAttributes($originalAttributes);
 
-        $sut->setAttribute($key, $newAttributes[$key]);
+        $sut->setAttribute($newAttribute);
 
         $actualResult = $sut->getAttributes();
         $this->assertEquals($expectedResult, $actualResult);
@@ -263,32 +258,30 @@ class ComponentTest extends CollectionTest
     public function testAppendToAttributeKeepsExistingAttributeSet(): void
     {
         $key                = 'bar';
-        $originalAttributes = ['foo' => 'bar', 'bar' => 'foo'];
-        $newAttributes      = ['bar' => 'baz'];
-        $expectedResult     = ['foo' => 'bar', 'bar' => 'foo baz'];
+        $values             = ['baz'];
+        $originalAttributes = new Attributes(['foo' => 'bar', 'bar' => 'foo']);
+        $expectedResult     = ' foo="bar" bar="foo baz"';
 
         $sut = $this->createNode();
         $sut->setAttributes($originalAttributes);
 
-        $sut->appendToAttribute($key, $newAttributes[$key]);
+        $sut->appendToAttribute($key, ...$values);
 
-        $actualResult = $sut->getAttributes();
-        $this->assertEquals($expectedResult, $actualResult);
+        $this->assertEquals($expectedResult, (string)$sut->getAttributes());
     }
 
     public function testAppendToClassKeepsExistingAttributeSet(): void
     {
-        $originalAttributes = ['foo' => 'bar', 'class' => 'foo'];
+        $originalAttributes = new Attributes(['foo' => 'bar', 'class' => 'foo']);
         $newClasses         = ['class1', 'class2'];
-        $expectedResult     = ['foo' => 'bar', 'class' => 'foo class1 class2'];
+        $expectedResult     = ' foo="bar" class="foo class1 class2"';
 
         $sut = $this->createNode();
         $sut->setAttributes($originalAttributes);
 
         $sut->appendToClass(...$newClasses);
 
-        $actualResult = $sut->getAttributes();
-        $this->assertEquals($expectedResult, $actualResult);
+        $this->assertEquals($expectedResult, (string)$sut->getAttributes());
     }
 
     /**
@@ -407,7 +400,7 @@ class ComponentTest extends CollectionTest
             '1-depth'       => [$content, null, 1, [], $level1Expected],
             'default'       => [$content, null, -1, [], $defaultExpected],
             'inode-only'    => [$content, INode::class, -1, [], $defaultExpected],
-            'stdclass-only' => [$content, \stdClass::class, -1, [], []],
+            'stdclass-only' => [$content, stdClass::class, -1, [], []],
             'foo-only'      => [$content, null, -1, ['foo'], $fooOnlyExpected],
             'foo-bar-only'  => [$content, null, -1, ['foo', 'bar'], $fooBarOnlyExpected],
         ];

@@ -23,9 +23,12 @@ class HeaderTest extends TestCase
 
         /** @var IRow $row */
         foreach ($sut as $row) {
-            /** @var Sortable $cell */
             foreach ($row->getCells() as $cell) {
-                $this->assertSame($expectedResult, $cell->getBaseUrl());
+                if ($cell instanceof Sortable) {
+                    $this->assertSame($expectedResult, $cell->getBaseUrl());
+                } else {
+                    $this->fail('$cell is not Sortable');
+                }
             }
         }
     }

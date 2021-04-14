@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Action;
 
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Component\Button;
 use AbterPhp\Framework\Html\INode;
 use Opulence\Orm\IEntity;
@@ -18,16 +20,16 @@ class Action extends Button implements IAction
     /**
      * Action constructor.
      *
-     * @param INode[]|INode|string|null          $content
-     * @param string[]                           $intents
-     * @param array<string,null|string|string[]> $attributes
-     * @param array<string,callable>             $attributeCallbacks
-     * @param string|null                        $tag
+     * @param INode[]|INode|string|null $content
+     * @param string[]                  $intents
+     * @param Attributes|null           $attributes
+     * @param array<string,callable>    $attributeCallbacks
+     * @param string|null               $tag
      */
     public function __construct(
         $content,
         array $intents = [],
-        array $attributes = [],
+        ?Attributes $attributes = null,
         array $attributeCallbacks = [],
         ?string $tag = null
     ) {
@@ -50,10 +52,10 @@ class Action extends Button implements IAction
     public function __toString(): string
     {
         foreach ($this->attributeCallbacks as $key => $callback) {
-            $value  = $this->hasAttribute($key) ? $this->getAttribute($key) : null;
+            $value  = $this->forceGetAttribute($key)->getValue();
             $result = (array)$callback($value, $this->entity);
 
-            $this->setAttribute($key, ...$result);
+            $this->setAttribute(new Attribute($key, ...$result));
         }
 
         return parent::__toString();

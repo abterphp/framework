@@ -18,12 +18,9 @@ class SecurityBootstrapperTest extends TestCase
 
     public function setUp(): void
     {
-        $this->sut = new SecurityBootstrapper();
-    }
-
-    protected function tearDown(): void
-    {
         Environment::unsetVar(Env::ENV_NAME);
+
+        $this->sut = new SecurityBootstrapper();
     }
 
     public function testRegisterBindings(): void

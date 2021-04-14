@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Html;
 
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Helper\TagHelper;
+use LogicException;
 
 final class Contentless extends Component
 {
@@ -13,11 +14,11 @@ final class Contentless extends Component
     /**
      * Contentless constructor.
      *
-     * @param array       $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param array           $intents
+     * @param Attributes|null $attributes
+     * @param string|null     $tag
      */
-    public function __construct(array $intents = [], array $attributes = [], ?string $tag = null)
+    public function __construct(array $intents = [], ?Attributes $attributes = null, ?string $tag = null)
     {
         parent::__construct(null, $intents, $attributes, $tag);
     }
@@ -29,7 +30,7 @@ final class Contentless extends Component
      */
     public function find(INode $node): ?int
     {
-        throw new \LogicException(static::ERROR_NO_CONTENT);
+        throw new LogicException(self::ERROR_NO_CONTENT);
     }
 
     /**
@@ -43,7 +44,7 @@ final class Contentless extends Component
      */
     public function collect(?string $className = null, array $intents = [], int $depth = -1): array
     {
-        throw new \LogicException(static::ERROR_NO_CONTENT);
+        throw new LogicException(self::ERROR_NO_CONTENT);
     }
 
     /**
@@ -56,7 +57,7 @@ final class Contentless extends Component
      */
     public function findFirstChild(?string $className = null, string ...$intents): ?IComponent
     {
-        throw new \LogicException(static::ERROR_NO_CONTENT);
+        throw new LogicException(self::ERROR_NO_CONTENT);
     }
 
     /**
@@ -70,7 +71,7 @@ final class Contentless extends Component
             return $this;
         }
 
-        throw new \LogicException(static::ERROR_NO_CONTENT);
+        throw new LogicException(self::ERROR_NO_CONTENT);
     }
 
     /**
@@ -78,8 +79,6 @@ final class Contentless extends Component
      */
     public function __toString(): string
     {
-        $content = StringHelper::createTag($this->tag, $this->attributes);
-
-        return $content;
+        return TagHelper::toString($this->tag, '', $this->attributes);
     }
 }

@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Form\Container;
 
 use AbterPhp\Framework\Constant\Html5;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Collection;
 use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\Component\Button;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Helper\TagHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\ITemplater;
 
@@ -34,33 +36,31 @@ class Hideable extends Component implements ITemplater
     /** @var string */
     protected string $template = self::DEFAULT_TEMPLATE;
 
-    /** @var array<string,null|string[]> */
-    protected array $attributes = [
-        Html5::ATTR_CLASS => [self::CLASS_HIDABLE],
-    ];
-
     protected Button $hiderBtn;
 
     /**
      * Hideable constructor.
      *
-     * @param string $hiderBtnLabel
-     * @param array $intent
-     * @param array $attributes
-     * @param string|null $tag
+     * @param string          $hiderBtnLabel
+     * @param array           $intent
+     * @param Attributes|null $attributes
+     * @param string|null     $tag
      */
     public function __construct(
         string $hiderBtnLabel,
         array $intent = [],
-        array $attributes = [],
+        ?Attributes $attributes = null,
         ?string $tag = null
     ) {
+        $attributes ??= new Attributes();
+        $attributes->mergeItem(new Attribute(Html5::ATTR_CLASS, self::CLASS_HIDABLE));
+
         parent::__construct(null, $intent, $attributes, $tag);
 
         $this->hiderBtn = new Button(
             $hiderBtnLabel,
             [Button::INTENT_INFO],
-            [Html5::ATTR_TYPE => [Button::TYPE_BUTTON]]
+            new Attributes([Html5::ATTR_TYPE => [Button::TYPE_BUTTON]])
         );
     }
 
@@ -103,8 +103,6 @@ class Hideable extends Component implements ITemplater
             Collection::__toString()
         );
 
-        $content = StringHelper::wrapInTag($content, $this->tag, $this->attributes);
-
-        return $content;
+        return TagHelper::toString($this->tag, $content, $this->attributes);
     }
 }

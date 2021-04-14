@@ -32,7 +32,9 @@ class Node implements INode
      */
     public function __construct($content = null, array $intents = [])
     {
-        $this->setContent($content);
+        if ($content !== null) {
+            $this->setContent($content);
+        }
         $this->setIntent(...$intents);
     }
 

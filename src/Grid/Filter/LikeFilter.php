@@ -11,7 +11,7 @@ class LikeFilter extends Filter
     protected const QUERY_TEMPLATE = '%s LIKE ?';
 
     /**
-     * @param array $params
+     * @param array<string,string> $params
      *
      * @return IFilter
      */

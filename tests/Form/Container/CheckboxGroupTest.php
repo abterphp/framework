@@ -7,6 +7,7 @@ namespace AbterPhp\Framework\Form\Container;
 use AbterPhp\Framework\Form\Element\Input;
 use AbterPhp\Framework\Form\Extra\Help;
 use AbterPhp\Framework\Form\Label\Label;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -20,26 +21,26 @@ class CheckboxGroupTest extends TestCase
     public function renderProvider(): array
     {
         return [
-            'simple' => ['<foo>', '<bar>', '<baz>', [], null, null, '<div><bar></div>'],
+            'simple' => ['<foo>', '<bar>', '<baz>', null, null, null, '<div><bar></div>'],
         ];
     }
 
     /**
      * @dataProvider renderProvider
      *
-     * @param string        $inputOutput
-     * @param string        $labelOutput
-     * @param string        $helpOutput
-     * @param array         $attributes
-     * @param string[]|null $translations
-     * @param string|null   $tag
-     * @param string        $expectedResult
+     * @param string          $inputOutput
+     * @param string          $labelOutput
+     * @param string          $helpOutput
+     * @param Attributes|null $attributes
+     * @param string[]|null   $translations
+     * @param string|null     $tag
+     * @param string          $expectedResult
      */
     public function testRenderWillMoveHelpIntoLabel(
         string $inputOutput,
         string $labelOutput,
         string $helpOutput,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag,
         string $expectedResult
@@ -54,12 +55,12 @@ class CheckboxGroupTest extends TestCase
     }
 
     /**
-     * @param string        $inputOutput
-     * @param string        $labelOutput
-     * @param string        $helpOutput
-     * @param array         $attributes
-     * @param string[]|null $translations
-     * @param string|null   $tag
+     * @param string          $inputOutput
+     * @param string          $labelOutput
+     * @param string          $helpOutput
+     * @param Attributes|null $attributes
+     * @param string[]|null   $translations
+     * @param string|null     $tag
      *
      * @return CheckboxGroup
      */
@@ -67,7 +68,7 @@ class CheckboxGroupTest extends TestCase
         string $inputOutput,
         string $labelOutput,
         string $helpOutput,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag
     ): CheckboxGroup {

@@ -7,7 +7,8 @@ namespace AbterPhp\Framework\Grid\Pagination;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Form\Component\Option;
 use AbterPhp\Framework\Form\Element\Select;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Attributes;
+use AbterPhp\Framework\Html\Helper\TagHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\ITemplater;
 use AbterPhp\Framework\Html\NodeContainerTrait;
@@ -35,47 +36,36 @@ class Pagination extends Tag implements IPagination, ITemplater
 
     public const LABEL_CONTENT = 'framework:pageSize';
 
-    /** @var array */
-    protected array $params = [];
-
-    /** @var int */
-    protected int $rangeStart = 0;
-
-    /** @var int */
-    protected int $rangeEnd = 0;
-
-    /** @var int */
-    protected int $pageSize = 0;
-
-    /** @var int */
-    protected int $totalCount = 0;
-
-    /** @var int */
-    protected int $numberCount = 5;
-
-    /** @var array */
-    protected array $attributes = [];
-
-    /** @var Numbers */
     protected Numbers $numbers;
 
-    /** @var Select */
     protected Select $sizeOptions;
 
-    /** @var string */
+    /** @var array<string,string> */
+    protected array $params = [];
+
+    protected int $rangeStart = 0;
+
+    protected int $rangeEnd = 0;
+
+    protected int $pageSize = 0;
+
+    protected int $totalCount = 0;
+
+    protected int $numberCount = 5;
+
     protected string $template = self::DEFAULT_TEMPLATE;
 
     /**
      * Pagination constructor.
      *
-     * @param array       $params
-     * @param string      $baseUrl
-     * @param int         $numberCount
-     * @param int         $pageSize
-     * @param array       $pageSizes
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param array<string,string> $params
+     * @param string               $baseUrl
+     * @param int                  $numberCount
+     * @param int                  $pageSize
+     * @param array                $pageSizes
+     * @param string[]             $intents
+     * @param Attributes|null      $attributes
+     * @param string|null          $tag
      */
     public function __construct(
         array $params,
@@ -84,7 +74,7 @@ class Pagination extends Tag implements IPagination, ITemplater
         int $pageSize,
         array $pageSizes,
         array $intents = [],
-        array $attributes = [],
+        ?Attributes $attributes = null,
         ?string $tag = null
     ) {
         $this->params      = $params;
@@ -139,9 +129,7 @@ class Pagination extends Tag implements IPagination, ITemplater
     protected function buildComponents(string $baseUrl, array $pageSizes): void
     {
         $baseUrl    = $this->getPageSizeUrl($baseUrl);
-        $attributes = [
-            Html5::ATTR_CLASS => ['pagination-sizes'],
-        ];
+        $attributes = new Attributes([Html5::ATTR_CLASS => ['pagination-sizes']]);
 
         $this->numbers     = new Numbers($baseUrl);
         $this->sizeOptions = new Select(
@@ -226,6 +214,8 @@ class Pagination extends Tag implements IPagination, ITemplater
     }
 
     /**
+     * @param int $currentPage
+     *
      * @return int
      */
     protected function getMinPageNumber(int $currentPage): int
@@ -237,6 +227,8 @@ class Pagination extends Tag implements IPagination, ITemplater
     }
 
     /**
+     * @param int $currentPage
+     *
      * @return int
      */
     protected function getMaxPageNumber(int $currentPage): int
@@ -304,6 +296,6 @@ class Pagination extends Tag implements IPagination, ITemplater
 
         $content = sprintf($this->template, $numbers, $sizeLabel, $sizeOptions);
 
-        return StringHelper::wrapInTag($content, $this->tag, $this->attributes);
+        return TagHelper::toString($this->tag, $content, $this->attributes);
     }
 }

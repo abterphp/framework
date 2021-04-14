@@ -18,13 +18,10 @@ class GridBootstrapperTest extends TestCase
 
     public function setUp(): void
     {
-        $this->sut = new GridBootstrapper();
-    }
-
-    protected function tearDown(): void
-    {
         Environment::unsetVar(Env::PAGINATION_SIZE_OPTIONS);
         Environment::unsetVar(Env::ENV_NAME);
+
+        $this->sut = new GridBootstrapper();
     }
 
     public function testRegisterBindings(): void

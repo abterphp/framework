@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Form\Component;
 
 use AbterPhp\Framework\Constant\Html5;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\INode;
 
@@ -19,7 +21,7 @@ class Option extends Component
      * @param INode[]|INode|string|null $content
      * @param bool                      $isSelected
      * @param string[]                  $intents
-     * @param array                     $attributes
+     * @param Attributes|null           $counterAttributes
      * @param string|null               $tag
      */
     public function __construct(
@@ -27,16 +29,17 @@ class Option extends Component
         $content,
         bool $isSelected = false,
         array $intents = [],
-        array $attributes = [],
+        ?Attributes $counterAttributes = null,
         ?string $tag = null
     ) {
-        $attributes[Html5::ATTR_VALUE] = $value;
+        $counterAttributes ??= new Attributes();
+        $counterAttributes->replaceItem(new Attribute(Html5::ATTR_VALUE, $value));
 
         if ($isSelected) {
-            $attributes[Html5::ATTR_SELECTED] = null;
+            $counterAttributes->replaceItem(new Attribute(Html5::ATTR_SELECTED));
         }
 
-        parent::__construct($content, $intents, $attributes, $tag);
+        parent::__construct($content, $intents, $counterAttributes, $tag);
     }
 
     /**
@@ -44,15 +47,10 @@ class Option extends Component
      */
     public function getValue(): string
     {
-        if (!$this->hasAttribute(Html5::ATTR_VALUE)) {
+        if (!$this->getAttributes()->hasItem(Html5::ATTR_VALUE)) {
             return '';
         }
 
-        $value = $this->getAttribute(Html5::ATTR_VALUE);
-        if (null === $value) {
-            return '';
-        }
-
-        return (string)$value;
+        return $this->getAttribute(Html5::ATTR_VALUE)->getValue();
     }
 }

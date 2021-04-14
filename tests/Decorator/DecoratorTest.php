@@ -8,13 +8,14 @@ use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\Node;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 class DecoratorTest extends TestCase
 {
-    /** @var Decorator - System Under Test */
-    protected Decorator $sut;
+    /** @var Decorator|MockObject - System Under Test */
+    protected $sut;
 
     public function setUp(): void
     {
@@ -70,7 +71,7 @@ class DecoratorTest extends TestCase
 
         $this->assertFalse($nonMatchingComponent->hasAttribute(Html5::ATTR_CLASS));
         $this->assertTrue($matchingComponent->hasAttribute(Html5::ATTR_CLASS));
-        $this->assertStringContainsString($newClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
+        $this->assertContains($newClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS)->getValues());
     }
 
     public function testDecorateWithIntentClassMap(): void
@@ -87,7 +88,7 @@ class DecoratorTest extends TestCase
 
         $this->assertFalse($nonMatchingComponent->hasAttribute(Html5::ATTR_CLASS));
         $this->assertTrue($matchingComponent->hasAttribute(Html5::ATTR_CLASS));
-        $this->assertStringContainsString($newClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
+        $this->assertContains($newClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS)->getValues());
     }
 
     public function testDecorateWithCallback(): void
@@ -107,7 +108,8 @@ class DecoratorTest extends TestCase
 
         $this->assertFalse($nonMatchingComponent->hasAttribute(Html5::ATTR_CLASS));
         $this->assertTrue($matchingComponent->hasAttribute(Html5::ATTR_CLASS));
-        $this->assertStringContainsString($newClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
+
+        $this->assertEquals($newClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS)->getValue());
     }
 
     public function testDecorateWithCombined(): void
@@ -128,9 +130,9 @@ class DecoratorTest extends TestCase
         $this->sut->decorate([$nonMatchingComponent, $matchingComponent]);
 
         $this->assertFalse($nonMatchingComponent->hasAttribute(Html5::ATTR_CLASS));
-        $this->assertStringContainsString($defaultClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
-        $this->assertStringContainsString($mapClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
-        $this->assertStringContainsString($callbackClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
+        $this->assertContains($defaultClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS)->getValues());
+        $this->assertContains($mapClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS)->getValues());
+        $this->assertContains($callbackClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS)->getValues());
     }
 
     public function testDecorateMatchingNonTagNodeWorks(): void

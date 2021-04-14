@@ -11,7 +11,7 @@ class RegexpFilter extends Filter
     protected const QUERY_TEMPLATE = '%s REGEXP ?';
 
     /**
-     * @param array $params
+     * @param array<string,string> $params
      *
      * @return $this
      */

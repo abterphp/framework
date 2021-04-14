@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Form\Extra;
 
 use AbterPhp\Framework\Constant\Html5;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Helper\ArrayHelper;
 use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
@@ -18,15 +19,13 @@ class HelpTest extends TestCase
     public function renderProvider(): array
     {
         $attributes = StubAttributeFactory::createAttributes();
-
-        $finalAttribs = ArrayHelper::mergeAttributes([Html5::ATTR_CLASS => [Help::CLASS_HELP_BLOCK]], $attributes);
-        $str          = ArrayHelper::toAttributes($finalAttribs);
+        $attributes->merge(new Attributes([Html5::ATTR_CLASS => [Help::CLASS_HELP_BLOCK]]));
 
         return [
-            'simple'               => ['ABC', [], null, null, '<div class="help-block">ABC</div>'],
-            'attributes'           => ['ABC', $attributes, [], null, "<div$str>ABC</div>"],
-            'missing translations' => ['ABC', [], [], null, '<div class="help-block">ABC</div>'],
-            'found translations'   => ['ABC', [], ['ABC' => 'CBA'], null, '<div class="help-block">CBA</div>'],
+            'simple'               => ['ABC', null, null, null, '<div class="help-block">ABC</div>'],
+            'attributes'           => ['ABC', $attributes, [], null, "<div$attributes>ABC</div>"],
+            'missing translations' => ['ABC', null, [], null, '<div class="help-block">ABC</div>'],
+            'found translations'   => ['ABC', null, ['ABC' => 'CBA'], null, '<div class="help-block">CBA</div>'],
         ];
     }
 
@@ -34,14 +33,14 @@ class HelpTest extends TestCase
      * @dataProvider renderProvider
      *
      * @param string        $content
-     * @param array         $attributes
+     * @param Attributes|null $attributes
      * @param string[]|null $translations
      * @param string|null   $tag
      * @param string        $expectedResult
      */
     public function testRender(
         string $content,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag,
         string $expectedResult
@@ -57,7 +56,7 @@ class HelpTest extends TestCase
 
     /**
      * @param string        $content
-     * @param array         $attributes
+     * @param Attributes|null $attributes
      * @param string[]|null $translations
      * @param string|null   $tag
      *
@@ -65,7 +64,7 @@ class HelpTest extends TestCase
      */
     private function createElement(
         string $content,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag
     ): Help {

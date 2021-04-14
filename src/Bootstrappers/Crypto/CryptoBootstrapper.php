@@ -6,10 +6,10 @@ namespace AbterPhp\Framework\Bootstrappers\Crypto;
 
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Crypto\Crypto;
+use AbterPhp\Framework\Environments\Environment;
 use Opulence\Cryptography\Encryption\IEncrypter;
 use Opulence\Cryptography\Hashing\BcryptHasher;
 use Opulence\Cryptography\Hashing\IHasher;
-use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -51,7 +51,7 @@ class CryptoBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     private function getPepper(): string
     {
-        return Environment::getVar(Env::CRYPTO_ENCRYPTION_PEPPER);
+        return Environment::mustGetVar(Env::CRYPTO_ENCRYPTION_PEPPER);
     }
 
     /**
@@ -59,7 +59,7 @@ class CryptoBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     private function getSalt(): string
     {
-        return Environment::getVar(Env::CRYPTO_FRONTEND_SALT);
+        return Environment::mustGetVar(Env::CRYPTO_FRONTEND_SALT);
     }
 
     /**

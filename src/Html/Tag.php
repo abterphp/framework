@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Html;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Helper\TagHelper;
 
 class Tag extends Node implements ITag
 {
@@ -16,21 +16,26 @@ class Tag extends Node implements ITag
     /**
      * Row constructor.
      *
-     * @param mixed       $content
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param INode[]|INode|string|null $content
+     * @param string[]                  $intents
+     * @param Attributes|null           $attributes
+     * @param string|null               $tag
      */
     public function __construct(
         $content = null,
         array $intents = [],
-        array $attributes = [],
+        ?Attributes $attributes = null,
         ?string $tag = null
     ) {
         parent::__construct($content, $intents);
 
-        $this->setAttributes($attributes);
-        $this->setTag($tag);
+        $this->attributes = $attributes ?? new Attributes();
+
+        if ($tag) {
+            $this->setTag($tag);
+        } else {
+            $this->resetTag();
+        }
     }
 
     /**
@@ -40,6 +45,6 @@ class Tag extends Node implements ITag
     {
         $content = $this->translate($this->content);
 
-        return StringHelper::wrapInTag($content, $this->tag, $this->attributes);
+        return TagHelper::toString($this->tag, $content, $this->attributes);
     }
 }

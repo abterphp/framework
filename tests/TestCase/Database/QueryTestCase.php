@@ -5,13 +5,8 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\TestCase\Database;
 
 use Opulence\Databases\Adapters\Pdo\Connection;
-use Opulence\Databases\Adapters\Pdo\Statement;
 use Opulence\Databases\ConnectionPools\ConnectionPool;
 use Opulence\Databases\IConnection;
-use Opulence\Databases\IStatement;
-use PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
-use PHPUnit\Framework\MockObject\Matcher\InvokedAtIndex;
-use PHPUnit\Framework\MockObject\Matcher\InvokedCount;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 

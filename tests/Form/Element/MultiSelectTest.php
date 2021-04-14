@@ -6,11 +6,12 @@ namespace AbterPhp\Framework\Form\Element;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Form\Component\Option;
-use AbterPhp\Framework\Html\Helper\ArrayHelper;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class MultiSelectTest extends TestCase
 {
@@ -20,7 +21,6 @@ class MultiSelectTest extends TestCase
     public function renderProvider(): array
     {
         $attribs = StubAttributeFactory::createAttributes();
-        $str     = ArrayHelper::toAttributes($attribs);
 
         return [
             'simple'               => [
@@ -28,7 +28,7 @@ class MultiSelectTest extends TestCase
                 'bcd',
                 ['val'],
                 [],
-                [],
+                null,
                 null,
                 null,
                 '<select multiple id="abc" name="bcd"></select>',
@@ -38,7 +38,7 @@ class MultiSelectTest extends TestCase
                 'bcd',
                 ['val'],
                 [],
-                [],
+                null,
                 [],
                 null,
                 '<select multiple id="abc" name="bcd"></select>',
@@ -51,7 +51,7 @@ class MultiSelectTest extends TestCase
                 $attribs,
                 [],
                 null,
-                "<select$str multiple id=\"abc\" name=\"bcd\"></select>",
+                "<select$attribs multiple id=\"abc\" name=\"bcd\"></select>",
             ],
             'options'              => [
                 'abc',
@@ -61,7 +61,7 @@ class MultiSelectTest extends TestCase
                 $attribs,
                 [],
                 null,
-                "<select$str multiple id=\"abc\" name=\"bcd\"><option value=\"bde\">BDE</option>\n<option value=\"cef\">CEF</option></select>", // phpcs:ignore
+                "<select$attribs multiple id=\"abc\" name=\"bcd\"><option value=\"bde\">BDE</option>\n<option value=\"cef\">CEF</option></select>", // phpcs:ignore
             ],
             'option selected'      => [
                 'abc',
@@ -71,7 +71,7 @@ class MultiSelectTest extends TestCase
                 $attribs,
                 [],
                 null,
-                "<select$str multiple id=\"abc\" name=\"bcd\"><option value=\"bde\">BDE</option>\n<option value=\"cef\" selected>CEF</option></select>", // phpcs:ignore
+                "<select$attribs multiple id=\"abc\" name=\"bcd\"><option value=\"bde\">BDE</option>\n<option value=\"cef\" selected>CEF</option></select>", // phpcs:ignore
             ],
         ];
     }
@@ -79,21 +79,21 @@ class MultiSelectTest extends TestCase
     /**
      * @dataProvider renderProvider
      *
-     * @param string        $inputId
-     * @param string        $name
-     * @param string[]      $value
-     * @param string[]      $options
-     * @param array         $attributes
-     * @param string[]|null $translations
-     * @param string|null   $tag
-     * @param string        $expectedResult
+     * @param string          $inputId
+     * @param string          $name
+     * @param string[]        $value
+     * @param string[]        $options
+     * @param Attributes|null $attributes
+     * @param string[]|null   $translations
+     * @param string|null     $tag
+     * @param string          $expectedResult
      */
     public function testRender(
         string $inputId,
         string $name,
         array $value,
         array $options,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag,
         string $expectedResult
@@ -108,13 +108,13 @@ class MultiSelectTest extends TestCase
     }
 
     /**
-     * @param string        $inputId
-     * @param string        $name
-     * @param string[]      $value
-     * @param string[]      $options
-     * @param array         $attributes
-     * @param string[]|null $translations
-     * @param string|null   $tag
+     * @param string          $inputId
+     * @param string          $name
+     * @param string[]        $value
+     * @param string[]        $options
+     * @param Attributes|null $attributes
+     * @param string[]|null   $translations
+     * @param string|null     $tag
      *
      * @return MultiSelect
      */
@@ -123,7 +123,7 @@ class MultiSelectTest extends TestCase
         string $name,
         array $value,
         array $options,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag
     ): MultiSelect {
@@ -166,7 +166,7 @@ class MultiSelectTest extends TestCase
     {
         return [
             'string'   => [''],
-            'stdclass' => [new \stdClass()],
+            'stdclass' => [new stdClass()],
             'int'      => [123],
             'bool'     => [false],
             'float'    => [123.53],
@@ -192,7 +192,7 @@ class MultiSelectTest extends TestCase
     {
         $sut = new MultiSelect('id', 'name');
 
-        $sut->unsetAttribute(Html5::ATTR_NAME);
+        $sut->getAttributes()->remove(Html5::ATTR_NAME);
 
         $actualResult = $sut->getName();
 

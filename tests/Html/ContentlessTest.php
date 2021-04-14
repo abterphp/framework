@@ -41,7 +41,7 @@ class ContentlessTest extends TestCase
 
         $this->assertFalse($sut->hasAttribute('foo'));
 
-        $sut->setAttribute('foo', 'bar');
+        $sut->setAttribute(new Attribute('foo', 'bar'));
 
         $this->assertTrue($sut->hasAttribute('foo'));
     }
@@ -52,33 +52,28 @@ class ContentlessTest extends TestCase
     public function getAttributeProvider(): array
     {
         return [
-            [null, null],
-            ['bar', 'bar'],
-            [['bar'], 'bar'],
-            ['foo bar', 'foo bar'],
-            ['foo foo bar', 'foo bar'],
-            [['foo', 'foo', 'bar', 'foo bar', 'bar'], 'foo bar'],
+            'empty'    => [[], ''],
+            'simple'   => [['bar'], 'bar'],
+            'repeated' => [['bar', 'bar'], 'bar'],
+            'complex'  => [['foo', 'foo', 'bar', 'foo bar', 'bar'], 'foo bar foo bar'],
         ];
     }
 
     /**
      * @dataProvider getAttributeProvider
      *
-     * @param             $value
-     * @param string|null $expectedResult
+     * @param array  $values
+     * @param string $expectedResult
      */
-    public function testGetAttributes($value, ?string $expectedResult): void
+    public function testGetAttributes(array $values, string $expectedResult): void
     {
         $key = 'foo';
 
         $sut = $this->createNode();
 
-        $values = (array)$value;
-        $sut->setAttribute($key, ...$values);
+        $sut->setAttribute(new Attribute($key, ...$values));
 
-        $actualResult = $sut->getAttributes();
-
-        $this->assertEquals([$key => $expectedResult], $actualResult);
+        $this->assertEquals($expectedResult, $sut->getAttribute($key)->getValue());
     }
 
     public function testHasAttributeWithEmptyAttribute(): void
@@ -87,7 +82,7 @@ class ContentlessTest extends TestCase
 
         $this->assertFalse($sut->hasAttribute('foo'));
 
-        $sut->setAttribute('foo', null);
+        $sut->setAttribute(new Attribute('foo', null));
 
         $this->assertTrue($sut->hasAttribute('foo'));
     }
@@ -98,7 +93,7 @@ class ContentlessTest extends TestCase
 
         $this->assertFalse($sut->hasAttribute('foo'));
 
-        $sut->setAttribute('foo');
+        $sut->setAttribute(new Attribute('foo'));
 
         $this->assertTrue($sut->hasAttribute('foo'));
     }
@@ -106,42 +101,31 @@ class ContentlessTest extends TestCase
     /**
      * @dataProvider getAttributeProvider
      *
-     * @param             $value
+     * @param array       $values
      * @param string|null $expectedResult
      */
-    public function testGetAttribute($value, ?string $expectedResult): void
+    public function testGetAttribute(array $values, ?string $expectedResult): void
     {
         $key = 'foo';
 
         $sut = $this->createNode();
 
-        $values = (array)$value;
-        $sut->setAttribute($key, ...$values);
+        $sut->setAttribute(new Attribute($key, ...$values));
 
-        $actualResult = $sut->getAttribute($key);
+        $actualResult = $sut->getAttribute($key)->getValue();
 
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @dataProvider getAttributeProvider
-     *
-     * @param             $value
-     * @param string|null $expectedResult
-     */
-    public function testUnsetAttribute($value, ?string $expectedResult): void
+    public function testUnsetAttribute(): void
     {
         $key = 'foo';
 
         $sut = $this->createNode();
 
-        $values = (array)$value;
-        $sut->setAttribute($key, ...$values);
+        $sut->setAttribute(new Attribute($key));
 
-        $actualResult = $sut->getAttribute($key);
-        $this->assertEquals($expectedResult, $actualResult);
-
-        $sut->unsetAttribute($key);
+        $sut->getAttributes()->remove($key);
 
         $repeatedResult = $sut->getAttribute($key);
 
@@ -150,9 +134,9 @@ class ContentlessTest extends TestCase
 
     public function testSetAttributesOverridesExistingAttributesSet(): void
     {
-        $originalAttributes = ['foo' => 'bar'];
-        $newAttributes      = ['bar' => 'baz'];
-        $expectedResult     = $newAttributes;
+        $originalAttributes = new Attributes(['foo' => 'bar']);
+        $newAttributes      = new Attributes(['bar' => 'baz']);
+        $expectedResult     = clone $newAttributes;
 
         $sut = $this->createNode();
         $sut->setAttributes($originalAttributes);
@@ -165,14 +149,14 @@ class ContentlessTest extends TestCase
 
     public function testAddAttributesOverridesExistingAttributesSet(): void
     {
-        $originalAttributes = ['foo' => 'bar', 'bar' => 'foo'];
-        $newAttributes      = ['bar' => 'baz'];
-        $expectedResult     = ['foo' => 'bar', 'bar' => 'baz'];
+        $originalAttributes = new Attributes(['foo' => 'bar', 'bar' => 'foo']);
+        $newAttributes      = new Attributes(['bar' => 'baz']);
+        $expectedResult     = new Attributes(['foo' => 'bar', 'bar' => 'baz']);
 
         $sut = $this->createNode();
         $sut->setAttributes($originalAttributes);
 
-        $sut->addAttributes($newAttributes);
+        $sut->getAttributes()->replace($newAttributes);
 
         $actualResult = $sut->getAttributes();
         $this->assertEquals($expectedResult, $actualResult);
@@ -181,14 +165,14 @@ class ContentlessTest extends TestCase
     public function testSetAttributeOverridesExistingAttributeSet(): void
     {
         $key                = 'bar';
-        $originalAttributes = ['foo' => 'bar', 'bar' => 'foo'];
-        $newAttributes      = ['bar' => 'baz'];
-        $expectedResult     = ['foo' => 'bar', 'bar' => 'baz'];
+        $originalAttributes = new Attributes(['foo' => 'bar', 'bar' => 'foo']);
+        $newAttributes      = new Attributes(['bar' => 'baz']);
+        $expectedResult     = new Attributes(['foo' => 'bar', 'bar' => 'baz']);
 
         $sut = $this->createNode();
         $sut->setAttributes($originalAttributes);
 
-        $sut->setAttribute($key, $newAttributes[$key]);
+        $sut->getAttributes()->replaceItem($newAttributes->getItem($key));
 
         $actualResult = $sut->getAttributes();
         $this->assertEquals($expectedResult, $actualResult);
@@ -197,24 +181,23 @@ class ContentlessTest extends TestCase
     public function testAppendToAttributeKeepsExistingAttributeSet(): void
     {
         $key                = 'bar';
-        $originalAttributes = ['foo' => 'bar', 'bar' => 'foo'];
-        $newAttributes      = ['bar' => 'baz'];
-        $expectedResult     = ['foo' => 'bar', 'bar' => 'foo baz'];
+        $newAttributeValue  = 'baz';
+        $originalAttributes = new Attributes(['foo' => 'bar', 'bar' => 'foo']);
+        $expectedResult     = 'foo baz';
 
         $sut = $this->createNode();
         $sut->setAttributes($originalAttributes);
 
-        $sut->appendToAttribute($key, $newAttributes[$key]);
+        $sut->appendToAttribute($key, $newAttributeValue);
 
-        $actualResult = $sut->getAttributes();
-        $this->assertEquals($expectedResult, $actualResult);
+        $this->assertEquals($expectedResult, $sut->getAttribute($key)->getValue());
     }
 
     public function testAppendToClassKeepsExistingAttributeSet(): void
     {
-        $originalAttributes = ['foo' => 'bar', 'class' => 'foo'];
+        $originalAttributes = new Attributes(['foo' => 'bar', 'class' => 'foo']);
         $newClasses         = ['class1', 'class2'];
-        $expectedResult     = ['foo' => 'bar', 'class' => 'foo class1 class2'];
+        $expectedResult     = new Attributes(['foo' => 'bar', 'class' => ['foo', 'class1', 'class2']]);
 
         $sut = $this->createNode();
         $sut->setAttributes($originalAttributes);
@@ -237,7 +220,7 @@ class ContentlessTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<string,array>
      */
     public function isMatchProvider(): array
     {

@@ -77,7 +77,7 @@ class RowTest extends TestCase
 
     public function testGetNodes(): void
     {
-        $cells   = new Cells(new Cell(new Component('abc', [], [], Html5::TAG_I), 'foo-group'));
+        $cells   = new Cells(new Cell(new Component('abc', [], null, Html5::TAG_I), 'foo-group'));
         $actions = new Actions();
 
         $sut = new Row($cells, $actions);
@@ -89,7 +89,7 @@ class RowTest extends TestCase
 
     public function testGetExtendedNodes(): void
     {
-        $cells   = new Cells(new Cell(new Component('abc', [], [], Html5::TAG_I), 'foo-group'));
+        $cells   = new Cells(new Cell(new Component('abc', [], null, Html5::TAG_I), 'foo-group'));
         $actions = new Actions();
 
         $sut = new Row($cells, $actions);
@@ -103,7 +103,7 @@ class RowTest extends TestCase
 
     public function testGetDescendantNodes(): void
     {
-        $cells   = new Cells(new Cell(new Component('abc', [], [], Html5::TAG_I), 'foo-group'));
+        $cells   = new Cells(new Cell(new Component('abc', [], null, Html5::TAG_I), 'foo-group'));
         $actions = new Actions();
 
         $sut = new Row($cells, $actions);
@@ -116,7 +116,7 @@ class RowTest extends TestCase
     public function testGetExtendedDescendantNodes(): void
     {
         $node      = new Node('abc');
-        $component = new Component($node, [], [], Html5::TAG_I);
+        $component = new Component($node, [], null, Html5::TAG_I);
         $cell      = new Cell($component, 'foo-group');
         $cells     = new Cells($cell);
         $actions   = new Actions();

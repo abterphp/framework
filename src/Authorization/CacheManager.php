@@ -23,7 +23,7 @@ class CacheManager
     }
 
     /**
-     * @param array $data
+     * @param array<string,string[][]> $data
      *
      * @return bool
      */

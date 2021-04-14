@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Navigation;
 
 use AbterPhp\Framework\Constant\Html5;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Collection;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Helper\TagHelper;
 use AbterPhp\Framework\Html\ICollection;
 use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\INodeContainer;
 use AbterPhp\Framework\Html\Tag;
 use AbterPhp\Framework\I18n\ITranslator;
+use LogicException;
 
 class Navigation extends Tag implements INodeContainer
 {
@@ -41,11 +43,11 @@ class Navigation extends Tag implements INodeContainer
     /**
      * Navigation constructor.
      *
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param string[]        $intents
+     * @param Attributes|null $attributes
+     * @param string|null     $tag
      */
-    public function __construct(array $intents = [], array $attributes = [], ?string $tag = null)
+    public function __construct(array $intents = [], ?Attributes $attributes = null, ?string $tag = null)
     {
         parent::__construct(null, $intents, $attributes, $tag);
 
@@ -225,11 +227,7 @@ class Navigation extends Tag implements INodeContainer
      */
     public function setContent($content): INode
     {
-        if ($content !== null) {
-            throw new \LogicException('Navigation::setContent must not be called');
-        }
-
-        return $this;
+        throw new LogicException('Navigation::setContent must not be called');
     }
 
     /**
@@ -245,7 +243,7 @@ class Navigation extends Tag implements INodeContainer
         }
         $content = implode("\n", $itemContentList);
 
-        $content = StringHelper::wrapInTag($content, $this->tag, $this->attributes);
+        $content = TagHelper::toString($this->tag, $content, $this->attributes);
         if ($this->wrapper) {
             $content = (string)$this->wrapper->setContent($content);
         }

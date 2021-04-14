@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Bootstrappers\Cache;
 
+use AbterPhp\Framework\Config\Config;
 use Opulence\Cache\ArrayBridge;
 use Opulence\Cache\FileBridge;
 use Opulence\Cache\ICacheBridge;
 use Opulence\Cache\MemcachedBridge;
 use Opulence\Cache\RedisBridge;
-use Opulence\Framework\Configuration\Config;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -55,19 +55,25 @@ class CacheBootstrapper extends Bootstrapper implements ILazyBootstrapper
             case ArrayBridge::class:
                 return new ArrayBridge();
             case MemcachedBridge::class:
-                return new MemcachedBridge(
-                    $container->resolve(Memcached::class),
-                    Config::get('cache', 'cache.clientName'),
-                    Config::get('cache', 'cache.keyPrefix')
-                );
+                /** @var Memcached $memcached */
+                $memcached = $container->resolve(Memcached::class);
+
+                $clientName = Config::mustGetString('cache', 'cache.clientName');
+                $keyPrefix = Config::mustGetString('cache', 'cache.keyPrefix');
+
+                return new MemcachedBridge($memcached, $clientName, $keyPrefix);
             case RedisBridge::class:
-                return new RedisBridge(
-                    $container->resolve(Redis::class),
-                    Config::get('cache', 'cache.clientName'),
-                    Config::get('cache', 'cache.keyPrefix')
-                );
-            default: // FileBridge
-                return new FileBridge(Config::get('cache', 'file.path'));
+                /** @var Redis $redis */
+                $redis = $container->resolve(Redis::class);
+
+                $clientName = Config::mustGetString('cache', 'cache.clientName');
+                $keyPrefix = Config::mustGetString('cache', 'cache.keyPrefix');
+
+                return new RedisBridge($redis, $clientName, $keyPrefix);
+            default:
+                $filePath = Config::mustGetString('authorization', 'file.path');
+
+                return new FileBridge($filePath);
         }
     }
 }

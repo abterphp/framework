@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Cell;
 
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\ComponentTest;
 use AbterPhp\Framework\Html\Helper\ArrayHelper;
 use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
@@ -17,35 +18,34 @@ class SortableTest extends ComponentTest
     public function renderProvider(): array
     {
         $attribs = StubAttributeFactory::createAttributes();
-        $str     = ArrayHelper::toAttributes($attribs);
 
         return [
-            'simple'               => ['ABC', 'a', '', '', [], null, null, "<th>ABC <a></a></th>"],
-            'with attributes'      => ['ABC', 'a', '', '', $attribs, null, null, "<th$str>ABC <a></a></th>"],
-            'missing translations' => ['ABC', 'a', '', '', [], [], null, "<th>ABC <a></a></th>"],
-            'custom tag'           => ['ABC', 'a', '', '', [], null, 'myth', "<myth>ABC <a></a></myth>"],
-            'with translations'    => ['ABC', 'a', '', '', [], ['ABC' => 'CBA'], null, "<th>CBA <a></a></th>"],
+            'simple'               => ['ABC', 'a', '', '', null, null, null, "<th>ABC <a></a></th>"],
+            'with attributes'      => ['ABC', 'a', '', '', $attribs, null, null, "<th$attribs>ABC <a></a></th>"],
+            'missing translations' => ['ABC', 'a', '', '', null, [], null, "<th>ABC <a></a></th>"],
+            'custom tag'           => ['ABC', 'a', '', '', null, null, 'myth', "<myth>ABC <a></a></myth>"],
+            'with translations'    => ['ABC', 'a', '', '', null, ['ABC' => 'CBA'], null, "<th>CBA <a></a></th>"],
         ];
     }
 
     /**
      * @dataProvider renderProvider
      *
-     * @param string      $content
-     * @param string      $group
-     * @param string      $inputName
-     * @param string      $fieldName
-     * @param array       $attributes
-     * @param array|null  $translations
-     * @param string|null $tag
-     * @param string      $expectedResult
+     * @param string          $content
+     * @param string          $group
+     * @param string          $inputName
+     * @param string          $fieldName
+     * @param Attributes|null $attributes
+     * @param array|null      $translations
+     * @param string|null     $tag
+     * @param string          $expectedResult
      */
     public function testRender(
         string $content,
         string $group,
         string $inputName,
         string $fieldName,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag,
         string $expectedResult
@@ -75,8 +75,8 @@ class SortableTest extends ComponentTest
     /**
      * @dataProvider queryParamProvider
      *
-     * @param array          $params
-     * @param        ?string $expectedResult
+     * @param array       $params
+     * @param string|null $expectedResult
      */
     public function testQueryParam(array $params, ?string $expectedResult): void
     {
@@ -261,7 +261,7 @@ class SortableTest extends ComponentTest
      */
     public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult): void
     {
-        $sut = $this->createNode($rawContent, 'g', 'i', 'f', [], null, null);
+        $sut = $this->createNode($rawContent, 'g', 'i', 'f', null, null, null);
 
         $this->assertStringContainsString($expectedResult, (string)$sut);
     }
@@ -292,7 +292,7 @@ class SortableTest extends ComponentTest
     ): void {
         $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
 
-        $sut = $this->createNode($rawContent, 'g', 'i', 'f', [], null, null);
+        $sut = $this->createNode($rawContent, 'g', 'i', 'f', null, null, null);
 
         $sut->setTranslator($translatorMock);
 
@@ -308,7 +308,7 @@ class SortableTest extends ComponentTest
      */
     public function testIsMatch(?string $className, array $intents, bool $expectedResult): void
     {
-        $sut = $this->createNode(null, 'g', 'i', 'f', [], null, null);
+        $sut = $this->createNode(null, 'g', 'i', 'f', null, null, null);
         $sut->setIntent('foo', 'bar');
 
         $actualResult = $sut->isMatch($className, ...$intents);
@@ -317,13 +317,13 @@ class SortableTest extends ComponentTest
     }
 
     /**
-     * @param string|null $content
-     * @param string      $group
-     * @param string      $inputName
-     * @param string      $fieldName
-     * @param array       $attributes
-     * @param array|null  $translations
-     * @param string|null $tag
+     * @param string|null     $content
+     * @param string          $group
+     * @param string          $inputName
+     * @param string          $fieldName
+     * @param Attributes|null $attributes
+     * @param array|null      $translations
+     * @param string|null     $tag
      *
      * @return Sortable
      */
@@ -332,7 +332,7 @@ class SortableTest extends ComponentTest
         string $group,
         string $inputName,
         string $fieldName,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag
     ): Sortable {

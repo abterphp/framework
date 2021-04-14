@@ -6,6 +6,8 @@ namespace AbterPhp\Framework\Grid\Filter;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Form\Label\Label;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\INode;
@@ -30,69 +32,63 @@ abstract class Filter extends Component implements IFilter, ITemplater
 
     public const INTENT_HELP_BLOCK = 'help-block';
 
-    /** @var string */
-    protected $fieldName = '';
+    protected IComponent $wrapper;
 
-    /** @var string */
-    protected $inputName = '';
+    protected Label $label;
 
-    /** @var array */
-    protected $conditions = [];
+    protected IComponent $helpBlock;
 
-    /** @var array */
-    protected $queryParams = [];
+    protected string $fieldName = '';
 
-    /** @var string */
-    protected $value = '';
+    protected string $inputName = '';
 
-    /** @var string */
-    protected $template = self::DEFAULT_TEMPLATE;
+    /** @var string[] */
+    protected array $conditions = [];
 
-    /** @var IComponent */
-    protected $wrapper;
+    /** @var string[] */
+    protected array $queryParams = [];
 
-    /** @var Label */
-    protected $label;
+    protected string $value = '';
 
-    /** @var IComponent */
-    protected $helpBlock;
+    protected string $template = self::DEFAULT_TEMPLATE;
 
     /**
      * Input constructor.
      *
-     * @param string      $inputName
-     * @param string      $fieldName
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param string          $inputName
+     * @param string          $fieldName
+     * @param string[]        $intents
+     * @param Attributes|null $attributes
+     * @param string|null     $tag
      */
     public function __construct(
         string $inputName = '',
         string $fieldName = '',
         array $intents = [],
-        array $attributes = [],
+        ?Attributes $attributes = null,
         ?string $tag = null
     ) {
         $this->fieldName = $fieldName;
         $this->inputName = static::NAME_PREFIX . $inputName;
 
-        $attributes[Html5::ATTR_ID]    = $this->inputName;
-        $attributes[Html5::ATTR_NAME]  = $this->inputName;
-        $attributes[Html5::ATTR_TITLE] = '';
-        $attributes[Html5::ATTR_VALUE] = '';
+        $attributes ??= new Attributes();
+        $attributes->replaceItem(new Attribute(Html5::ATTR_ID, $this->inputName));
+        $attributes->replaceItem(new Attribute(Html5::ATTR_NAME, $this->inputName));
+        $attributes->replaceItem(new Attribute(Html5::ATTR_TITLE, ''));
+        $attributes->replaceItem(new Attribute(Html5::ATTR_VALUE, ''));
 
         parent::__construct(null, $intents, $attributes, $tag);
 
-        $this->wrapper = new Component(null, [], [], Html5::TAG_DIV);
+        $this->wrapper = new Component(null, [], null, Html5::TAG_DIV);
 
         $this->label = new Label($this->inputName);
         $this->label->setContent($fieldName);
 
-        $this->helpBlock = new Component(static::HELP_CONTENT, [static::INTENT_HELP_BLOCK], [], Html5::TAG_P);
+        $this->helpBlock = new Component(static::HELP_CONTENT, [static::INTENT_HELP_BLOCK], null, Html5::TAG_P);
     }
 
     /**
-     * @param array $params
+     * @param array<string,string> $params
      *
      * @return IFilter
      */
@@ -104,7 +100,7 @@ abstract class Filter extends Component implements IFilter, ITemplater
 
         $this->value = $params[$this->inputName];
 
-        $this->attributes[Html5::ATTR_VALUE] = $this->value;
+        $this->getAttribute(Html5::ATTR_VALUE)->set($this->value);
 
         $this->conditions = [sprintf(static::QUERY_TEMPLATE, $this->fieldName)];
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Cell;
 
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\ComponentTest;
-use AbterPhp\Framework\Html\Helper\ArrayHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Node;
 use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
@@ -22,14 +22,13 @@ class CellTest extends ComponentTest
     public function renderProvider(): array
     {
         $attribs = StubAttributeFactory::createAttributes();
-        $str     = ArrayHelper::toAttributes($attribs);
 
         return [
-            'simple'               => ['ABC', 'a', [], null, null, "<td>ABC</td>"],
-            'with attributes'      => ['ABC', 'a', $attribs, null, null, "<td$str>ABC</td>"],
-            'missing translations' => ['ABC', 'a', [], [], null, "<td>ABC</td>"],
-            'custom tag'           => ['ABC', 'a', [], null, 'mytd', "<mytd>ABC</mytd>"],
-            'with translations'    => ['ABC', 'a', [], ['ABC' => 'CBA'], null, "<td>CBA</td>"],
+            'simple'               => ['ABC', 'a', null, null, null, "<td>ABC</td>"],
+            'with attributes'      => ['ABC', 'a', $attribs, null, null, "<td$attribs>ABC</td>"],
+            'missing translations' => ['ABC', 'a', null, [], null, "<td>ABC</td>"],
+            'custom tag'           => ['ABC', 'a', null, null, 'mytd', "<mytd>ABC</mytd>"],
+            'with translations'    => ['ABC', 'a', null, ['ABC' => 'CBA'], null, "<td>CBA</td>"],
         ];
     }
 
@@ -38,7 +37,7 @@ class CellTest extends ComponentTest
      *
      * @param INode[]|INode|string|null $content
      * @param string                    $group
-     * @param array                     $attributes
+     * @param Attributes|null           $attributes
      * @param array|null                $translations
      * @param string|null               $tag
      * @param string                    $expectedResult
@@ -46,7 +45,7 @@ class CellTest extends ComponentTest
     public function testRender(
         $content,
         string $group,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag,
         string $expectedResult
@@ -250,7 +249,7 @@ class CellTest extends ComponentTest
     /**
      * @param INode[]|INode|string|null $content
      * @param string                    $group
-     * @param array                     $attributes
+     * @param Attributes|null           $attributes
      * @param array|null                $translations
      * @param string|null               $tag
      *
@@ -259,7 +258,7 @@ class CellTest extends ComponentTest
     protected function createElement(
         $content,
         string $group,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag
     ): Cell {
@@ -279,6 +278,6 @@ class CellTest extends ComponentTest
     {
         $content = $content ?: static::CONTENT;
 
-        return $this->createElement($content, static::GROUP, [], null, null);
+        return $this->createElement($content, static::GROUP, null, null, null);
     }
 }

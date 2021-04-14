@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Form\Component;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Helper\ArrayHelper;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
@@ -19,14 +19,21 @@ class OptionTest extends TestCase
     public function renderProvider(): array
     {
         $attribs = StubAttributeFactory::createAttributes();
-        $str     = ArrayHelper::toAttributes($attribs);
 
         return [
-            'simple'           => ['abc', 'ABC', false, [], null, null, "<option value=\"abc\">ABC</option>"],
-            'attributes'       => ['abc', 'ABC', false, $attribs, null, null, "<option$str value=\"abc\">ABC</option>"],
-            'w/o translations' => ['abc', 'ABC', false, [], [], null, "<option value=\"abc\">ABC</option>"],
-            'custom tag'       => ['abc', 'ABC', false, [], null, 'foo', "<foo value=\"abc\">ABC</foo>"],
-            'w translations'   => ['abc', 'ABC', false, [], ['ABC' => '+'], null, "<option value=\"abc\">+</option>"],
+            'simple'           => ['abc', 'ABC', false, null, null, null, "<option value=\"abc\">ABC</option>"],
+            'attributes'       => [
+                'abc',
+                'ABC',
+                false,
+                $attribs,
+                null,
+                null,
+                "<option$attribs value=\"abc\">ABC</option>",
+            ],
+            'w/o translations' => ['abc', 'ABC', false, null, [], null, "<option value=\"abc\">ABC</option>"],
+            'custom tag'       => ['abc', 'ABC', false, null, null, 'foo', "<foo value=\"abc\">ABC</foo>"],
+            'w translations'   => ['abc', 'ABC', false, null, ['ABC' => '+'], null, "<option value=\"abc\">+</option>"],
         ];
     }
 
@@ -36,7 +43,7 @@ class OptionTest extends TestCase
      * @param string                    $value
      * @param INode[]|INode|string|null $content
      * @param bool                      $isSelected
-     * @param string[][]                $attributes
+     * @param Attributes|null           $attributes
      * @param string[]|null             $translations
      * @param string|null               $tag
      * @param string                    $expectedResult
@@ -45,7 +52,7 @@ class OptionTest extends TestCase
         string $value,
         $content,
         bool $isSelected,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag,
         string $expectedResult
@@ -63,7 +70,7 @@ class OptionTest extends TestCase
      * @param string                    $value
      * @param INode[]|INode|string|null $content
      * @param bool                      $isSelected
-     * @param string[][]                $attributes
+     * @param Attributes|null           $attributes
      * @param string[]|null             $translations
      * @param string|null               $tag
      *
@@ -73,7 +80,7 @@ class OptionTest extends TestCase
         string $value,
         $content,
         bool $isSelected,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag
     ): Option {
@@ -90,7 +97,7 @@ class OptionTest extends TestCase
     {
         $sut = new Option('foo', 'Foo');
 
-        $sut->unsetAttribute(Html5::ATTR_VALUE);
+        $sut->getAttributes()->remove(Html5::ATTR_VALUE);
 
         $actualResult = $sut->getValue();
 
@@ -101,7 +108,7 @@ class OptionTest extends TestCase
     {
         $sut = new Option('foo', 'Foo');
 
-        $sut->setAttribute(Html5::ATTR_VALUE, null);
+        $sut->getAttribute(Html5::ATTR_VALUE)->reset();
 
         $actualResult = $sut->getValue();
 

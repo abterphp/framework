@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Form\Element;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Helper\ArrayHelper;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use InvalidArgumentException;
@@ -21,14 +22,12 @@ class InputTest extends TestCase
     {
         $attributes = StubAttributeFactory::createAttributes();
 
-        $str = ArrayHelper::toAttributes($attributes);
-
         return [
             'simple'               => [
                 'abc',
                 'bcd',
                 'val',
-                [],
+                null,
                 null,
                 null,
                 '<input id="abc" type="text" name="bcd" value="val">',
@@ -37,7 +36,7 @@ class InputTest extends TestCase
                 'abc',
                 'bcd',
                 'val',
-                [],
+                null,
                 [],
                 null,
                 '<input id="abc" type="text" name="bcd" value="val">',
@@ -49,7 +48,7 @@ class InputTest extends TestCase
                 $attributes,
                 [],
                 null,
-                "<input$str id=\"abc\" type=\"text\" name=\"bcd\" value=\"val\">",
+                "<input$attributes id=\"abc\" type=\"text\" name=\"bcd\" value=\"val\">",
             ],
         ];
     }
@@ -57,19 +56,19 @@ class InputTest extends TestCase
     /**
      * @dataProvider renderProvider
      *
-     * @param string        $inputId
-     * @param string        $name
-     * @param string        $value
-     * @param string[][]    $attributes
-     * @param string[]|null $translations
-     * @param string|null   $tag
-     * @param string        $expectedResult
+     * @param string          $inputId
+     * @param string          $name
+     * @param string          $value
+     * @param Attributes|null $attributes
+     * @param string[]|null   $translations
+     * @param string|null     $tag
+     * @param string          $expectedResult
      */
     public function testRender(
         string $inputId,
         string $name,
         string $value,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag,
         string $expectedResult
@@ -84,12 +83,12 @@ class InputTest extends TestCase
     }
 
     /**
-     * @param string        $inputId
-     * @param string        $name
-     * @param string        $value
-     * @param string[][]    $attributes
-     * @param string[]|null $translations
-     * @param string|null   $tag
+     * @param string          $inputId
+     * @param string          $name
+     * @param string          $value
+     * @param Attributes|null $attributes
+     * @param string[]|null   $translations
+     * @param string|null     $tag
      *
      * @return Input
      */
@@ -97,7 +96,7 @@ class InputTest extends TestCase
         string $inputId,
         string $name,
         string $value,
-        array $attributes,
+        ?Attributes $attributes,
         ?array $translations,
         ?string $tag
     ): Input {
@@ -118,7 +117,7 @@ class InputTest extends TestCase
 
         $sut->setValue($expectedResult);
 
-        $this->assertEquals($sut->getAttribute(Html5::ATTR_VALUE), $expectedResult);
+        $this->assertEquals($expectedResult, $sut->getValue());
     }
 
     /**
@@ -153,7 +152,7 @@ class InputTest extends TestCase
     {
         $sut = new Input('id', 'name');
 
-        $sut->unsetAttribute(Html5::ATTR_NAME);
+        $sut->getAttributes()->remove(Html5::ATTR_NAME);
 
         $actualResult = $sut->getName();
 
@@ -177,7 +176,7 @@ class InputTest extends TestCase
 
         $sut = new Input('id', $expectedResult);
 
-        $sut->setAttribute(Html5::ATTR_NAME, null);
+        $sut->setAttribute(new Attribute(Html5::ATTR_NAME));
 
         $actualResult = $sut->getName();
 

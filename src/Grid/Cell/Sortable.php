@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Grid\Cell;
 
 use AbterPhp\Framework\Constant\Html5;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Collection;
 use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\Component\Button;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Helper\TagHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\ITemplater;
 
@@ -55,7 +57,7 @@ class Sortable extends Cell implements ICell, ITemplater
      * @param string                    $inputName
      * @param string                    $fieldName
      * @param string[]                  $intents
-     * @param array                     $attributes
+     * @param Attributes|null           $attributes
      * @param string|null               $tag
      */
     public function __construct(
@@ -64,7 +66,7 @@ class Sortable extends Cell implements ICell, ITemplater
         string $inputName,
         string $fieldName,
         array $intents = [],
-        array $attributes = [],
+        ?Attributes $attributes = null,
         ?string $tag = null
     ) {
         parent::__construct($content, $group, $intents, $attributes, $tag);
@@ -72,7 +74,7 @@ class Sortable extends Cell implements ICell, ITemplater
         $this->fieldName = $fieldName;
         $this->inputName = static::NAME_PREFIX . $inputName;
 
-        $this->sortBtn = new Button(null, [static::BTN_INTENT_SHOARTING], [], Html5::TAG_A);
+        $this->sortBtn = new Button(null, [static::BTN_INTENT_SHOARTING], null, Html5::TAG_A);
     }
 
     /**
@@ -150,7 +152,7 @@ class Sortable extends Cell implements ICell, ITemplater
         }
 
         $href = sprintf('%s%s=%s', $this->baseUrl, $this->inputName, $dir);
-        $this->sortBtn->setAttribute(Html5::ATTR_HREF, $href);
+        $this->sortBtn->setAttribute(new Attribute(Html5::ATTR_HREF, $href));
 
         return $this;
     }
@@ -216,8 +218,6 @@ class Sortable extends Cell implements ICell, ITemplater
             (string)$this->sortBtn
         );
 
-        $content = StringHelper::wrapInTag($content, $this->tag, $this->attributes);
-
-        return $content;
+        return TagHelper::toString($this->tag, $content, (string)$this->attributes);
     }
 }

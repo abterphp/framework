@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Http\Middleware;
 
+use AbterPhp\Framework\Config\Config;
 use Exception;
-use Opulence\Framework\Configuration\Config;
 use Opulence\Framework\Sessions\Http\Middleware\Session as BaseSession;
 use Opulence\Http\Responses\Cookie;
 use Opulence\Http\Responses\Response;
@@ -24,8 +24,10 @@ class Session extends BaseSession
      */
     protected function gc(): void
     {
-        if (random_int(1, Config::get('sessions', 'gc.divisor')) <= Config::get('sessions', 'gc.chance')) {
-            $this->sessionHandler->gc(Config::get('sessions', 'lifetime'));
+        $rand   = random_int(1, Config::mustGetInt('sessions', 'gc.divisor'));
+        $chance = Config::mustGetInt('sessions', 'gc.chance');
+        if ($rand <= $chance) {
+            $this->sessionHandler->gc(Config::mustGetInt('sessions', 'lifetime'));
         }
     }
 
@@ -44,11 +46,11 @@ class Session extends BaseSession
             new Cookie(
                 $this->session->getName(),
                 $this->session->getId(),
-                time() + Config::get('sessions', 'lifetime'),
-                Config::get('sessions', 'cookie.path'),
-                Config::get('sessions', 'cookie.domain'),
-                Config::get('sessions', 'cookie.isSecure'),
-                Config::get('sessions', 'cookie.isHttpOnly')
+                time() + Config::mustGetInt('sessions', 'lifetime'),
+                Config::mustGetString('sessions', 'cookie.path'),
+                Config::mustGetString('sessions', 'cookie.domain'),
+                Config::mustGetBool('sessions', 'cookie.isSecure'),
+                Config::mustGetBool('sessions', 'cookie.isHttpOnly')
             )
         );
 

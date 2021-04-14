@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Template;
 
+use AbterPhp\Framework\Html\Attributes;
 use PHPUnit\Framework\TestCase;
 
 class ParsedTemplateTest extends TestCase
 {
-    protected const TYPE = 'foo';
-    protected const IDENTIFIER = 'bar';
-    protected const ATTRIBUTES  = ['body' => 'baz'];
+    protected const TYPE        = 'foo';
+    protected const IDENTIFIER  = 'bar';
+    protected const ATTRIBUTES  = ['body' => ['baz']];
     protected const OCCURRENCES = ['one', 'two', 'three'];
 
     /** @var ParsedTemplate - System Under Test */
@@ -20,7 +21,12 @@ class ParsedTemplateTest extends TestCase
     {
         parent::setUp();
 
-        $this->sut = new ParsedTemplate(static::TYPE, static::IDENTIFIER, static::ATTRIBUTES, static::OCCURRENCES);
+        $this->sut = new ParsedTemplate(
+            static::TYPE,
+            static::IDENTIFIER,
+            new Attributes(static::ATTRIBUTES),
+            static::OCCURRENCES
+        );
     }
 
     public function testGetIdentifierRetrievesOriginallyProvidedType(): void
@@ -41,23 +47,23 @@ class ParsedTemplateTest extends TestCase
     {
         $actualResult = $this->sut->getAttributes();
 
-        $this->assertSame(static::ATTRIBUTES, $actualResult);
+        $this->assertEquals(new Attributes(static::ATTRIBUTES), $actualResult);
     }
 
     public function testGetAttributeFindsAndRetrievesOriginallyProvidedAttributes(): void
     {
         $key = 'body';
 
-        $actualResult = $this->sut->getAttribute($key);
+        $actualResult = $this->sut->getAttributeValue($key);
 
-        $this->assertSame(static::ATTRIBUTES['body'], $actualResult);
+        $this->assertSame(implode(' ', static::ATTRIBUTES['body']), $actualResult);
     }
 
     public function testGetAttributeFindsAndRetrievesNullIfAttributeIsNotSet(): void
     {
         $key = 'something';
 
-        $actualResult = $this->sut->getAttribute($key);
+        $actualResult = $this->sut->getAttributeValue($key);
 
         $this->assertNull($actualResult);
     }

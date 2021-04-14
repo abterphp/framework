@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Navigation;
 
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Collection;
 use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\IComponent;
@@ -16,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 class NavigationTest extends TestCase
 {
     protected const INTENTS    = ['bar', 'baz'];
-    protected const ATTRIBUTES = ['data-quix' => 'quix'];
+    protected const ATTRIBUTES = ['data-quix' => ['quix']];
     protected const RESOURCE   = 'quint';
 
     /** @var Enforcer|MockObject */
@@ -42,9 +43,9 @@ class NavigationTest extends TestCase
 
     public function testGetExtendedWithOptionalsReplaced(): void
     {
-        $wrapper = new Component('YYY', [], [], 'foo');
-        $prefix  = new Component('XXX', [], [], 'bar');
-        $postfix = new Component('ZZZ', [], [], 'baz');
+        $wrapper = new Component('YYY', [], null, 'foo');
+        $prefix  = new Component('XXX', [], null, 'bar');
+        $postfix = new Component('ZZZ', [], null, 'baz');
 
         $sut = new Navigation();
 
@@ -61,9 +62,9 @@ class NavigationTest extends TestCase
 
     public function testGetDescendantNodesIgnoresOptionals(): void
     {
-        $wrapper = new Component('YYY', [], [], 'foo');
-        $prefix  = new Component('XXX', [], [], 'bar');
-        $postfix = new Component('ZZZ', [], [], 'baz');
+        $wrapper = new Component('YYY', [], null, 'foo');
+        $prefix  = new Component('XXX', [], null, 'bar');
+        $postfix = new Component('ZZZ', [], null, 'baz');
 
         $sut = new Navigation();
 
@@ -116,9 +117,9 @@ class NavigationTest extends TestCase
 
     public function testGetExtendedDescendantNodesIgnoresOptionals(): void
     {
-        $wrapper = new Component(null, [], [], 'foo');
-        $prefix  = new Component(null, [], [], 'bar');
-        $postfix = new Component(null, [], [], 'baz');
+        $wrapper = new Component(null, [], null, 'foo');
+        $prefix  = new Component(null, [], null, 'bar');
+        $postfix = new Component(null, [], null, 'baz');
 
         $sut = new Navigation();
 
@@ -137,7 +138,7 @@ class NavigationTest extends TestCase
 
         $sut = new Navigation();
 
-        $sut->setContent('');
+        /** @scrutinizer ignore-deprecated */ $sut->setContent('');
     }
 
     public function testDefaultToString(): void
@@ -151,9 +152,9 @@ class NavigationTest extends TestCase
     {
         $sut = new Navigation();
 
-        $sut->setWrapper(new Component('YYY', [], [], 'foo'));
-        $sut->getPrefix()->setContent(new Component('XXX', [], [], 'bar'));
-        $sut->getPostfix()->setContent(new Component('ZZZ', [], [], 'baz'));
+        $sut->setWrapper(new Component('YYY', [], null, 'foo'));
+        $sut->getPrefix()->setContent(new Component('XXX', [], null, 'bar'));
+        $sut->getPostfix()->setContent(new Component('ZZZ', [], null, 'baz'));
 
         $this->assertSame('<bar>XXX</bar><foo><ul></ul></foo><baz>ZZZ</baz>', (string)$sut);
     }
@@ -167,7 +168,7 @@ class NavigationTest extends TestCase
             75  => [$rawItems[3]],
         ];
 
-        $sut = new Navigation(static::INTENTS, static::ATTRIBUTES);
+        $sut = new Navigation(static::INTENTS, new Attributes(static::ATTRIBUTES));
 
         foreach ($items as $weight => $itemsByWeight) {
             foreach ($itemsByWeight as $item) {

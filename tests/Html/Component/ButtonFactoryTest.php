@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Html\Component;
 
 use AbterPhp\Framework\Constant\Html5;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
 use Opulence\Routing\Urls\UrlGenerator;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -18,11 +19,8 @@ class ButtonFactoryTest extends TestCase
     /** @var UrlGenerator|MockObject */
     protected $urlGeneratorMock;
 
-    /** @var string[][] */
-    protected array $iconAttributes = [];
-
-    /** @var string[][] */
-    protected array $textAttributes = [];
+    protected Attributes $iconAttributes;
+    protected Attributes $textAttributes;
 
     public function setUp(): void
     {
@@ -72,14 +70,14 @@ class ButtonFactoryTest extends TestCase
             $text,
             $url,
             $icon,
-            $textAttribs,
-            $iconAttribs,
+            new Attributes($textAttribs),
+            new Attributes($iconAttribs),
             [],
-            $attribs,
+            new Attributes($attribs),
             Html5::TAG_STRONG
         );
 
-        $expectedResult = '<strong attr1="val1 val2" attr2="val3" href="/best/url/ever"><i foo="foo baz" bar="bar baz" icon="asd" attr3="val4 val5" attr4="val6">hello</i> <span foo="foo baz" bar="bar baz" text="qwe" attr5="val7 val8" attr6="val9">button text</span></strong>'; // phpcs:ignore
+        $expectedResult = '<strong attr1="val1 val2" attr2="val3" href="/best/url/ever"><i attr3="val4 val5" attr4="val6" foo="foo baz" bar="bar baz" icon="asd">hello</i> <span attr5="val7 val8" attr6="val9" foo="foo baz" bar="bar baz" text="qwe">button text</span></strong>'; // phpcs:ignore
 
         $this->assertSame($expectedResult, (string)$actualResult);
     }
@@ -122,9 +120,9 @@ class ButtonFactoryTest extends TestCase
         $name        = 'best-route-ever';
         $text        = 'button text';
         $icon        = 'hello';
-        $textAttribs = ['attr5' => ['val7', 'val8'], 'attr6' => ['val9']];
-        $iconAttribs = ['attr3' => ['val4', 'val5'], 'attr4' => ['val6']];
-        $attribs     = ['attr1' => ['val1', 'val2'], 'attr2' => ['val3']];
+        $textAttribs = new Attributes(['attr5' => ['val7', 'val8'], 'attr6' => ['val9']]);
+        $iconAttribs = new Attributes(['attr3' => ['val4', 'val5'], 'attr4' => ['val6']]);
+        $attribs     = new Attributes(['attr1' => ['val1', 'val2'], 'attr2' => ['val3']]);
 
         $this->urlGeneratorMock
             ->expects($this->atLeastOnce())
@@ -143,7 +141,7 @@ class ButtonFactoryTest extends TestCase
             Html5::TAG_STRONG
         );
 
-        $expectedResult = '<strong attr1="val1 val2" attr2="val3" href="/best/url/ever"><i foo="foo baz" bar="bar baz" icon="asd" attr3="val4 val5" attr4="val6">hello</i> <span foo="foo baz" bar="bar baz" text="qwe" attr5="val7 val8" attr6="val9">button text</span></strong>'; // phpcs:ignore
+        $expectedResult = '<strong attr1="val1 val2" attr2="val3" href="/best/url/ever"><i attr3="val4 val5" attr4="val6" foo="foo baz" bar="bar baz" icon="asd">hello</i> <span attr5="val7 val8" attr6="val9" foo="foo baz" bar="bar baz" text="qwe">button text</span></strong>'; // phpcs:ignore
 
         $this->assertSame($expectedResult, (string)$actualResult);
     }

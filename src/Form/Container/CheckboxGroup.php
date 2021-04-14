@@ -7,8 +7,10 @@ namespace AbterPhp\Framework\Form\Container;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Form\Element\Input;
 use AbterPhp\Framework\Form\Label\Label;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Helper\TagHelper;
 use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\INode;
 
@@ -22,26 +24,28 @@ class CheckboxGroup extends FormGroup
     /**
      * ToggleGroup constructor.
      *
-     * @param Input       $input
-     * @param Label       $label
-     * @param INode|null  $help
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param Input           $input
+     * @param Label           $label
+     * @param INode|null      $help
+     * @param string[]        $intents
+     * @param Attributes|null $attributes
+     * @param string|null     $tag
      */
     public function __construct(
         Input $input,
         Label $label,
         ?INode $help = null,
         array $intents = [],
-        array $attributes = [],
+        ?Attributes $attributes = null,
         ?string $tag = null
     ) {
-        $input->setAttribute(Html5::ATTR_TYPE, Input::TYPE_CHECKBOX);
+        $attributes ??= new Attributes();
+
+        $input->setAttribute(new Attribute(Html5::ATTR_TYPE, Input::TYPE_CHECKBOX));
 
         parent::__construct($input, $label, $help, $intents, $attributes, $tag);
 
-        $this->checkboxSpan = new Component(null, [static::SPAN_INTENT], [], Html5::TAG_SPAN);
+        $this->checkboxSpan = new Component(null, [static::SPAN_INTENT], null, Html5::TAG_SPAN);
     }
 
     /**
@@ -75,8 +79,6 @@ class CheckboxGroup extends FormGroup
 
         $this->label->setContent([$this->input, $this->checkboxSpan, $help]);
 
-        $content = StringHelper::wrapInTag((string)$this->label, $this->tag, $this->attributes);
-
-        return $content;
+        return TagHelper::toString($this->tag, (string)$this->label, $this->attributes);
     }
 }

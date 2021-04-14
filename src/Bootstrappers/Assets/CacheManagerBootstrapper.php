@@ -8,9 +8,9 @@ use AbterPhp\Framework\Assets\CacheManager\Dummy as DummyCacheManager;
 use AbterPhp\Framework\Assets\CacheManager\Flysystem as FlysystemCacheManager;
 use AbterPhp\Framework\Assets\CacheManager\ICacheManager;
 use AbterPhp\Framework\Constant\Env;
+use AbterPhp\Framework\Environments\Environment;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
-use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -32,7 +32,7 @@ class CacheManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     public function registerBindings(IContainer $container): void
     {
-        if (Environment::getVar(Env::ENV_NAME) === Environment::DEVELOPMENT) {
+        if (Environment::mustGetVar(Env::ENV_NAME) === Environment::DEVELOPMENT) {
             $cacheManager = new DummyCacheManager();
         } else {
             $cacheManager = new FlysystemCacheManager();
@@ -48,11 +48,14 @@ class CacheManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     private function registerCachePaths(ICacheManager $cacheManager): void
     {
+        $mediaDir = Environment::mustGetVar(Env::DIR_MEDIA, "");
+        $cacheBasePath = Environment::mustGetVar(Env::CACHE_BASE_PATH, "");
+
         $cacheDir = sprintf(
             '%s%s%s',
-            rtrim(Environment::getVar(Env::DIR_MEDIA), DIRECTORY_SEPARATOR),
+            rtrim($mediaDir, DIRECTORY_SEPARATOR),
             DIRECTORY_SEPARATOR,
-            rtrim(Environment::getVar(Env::CACHE_BASE_PATH), DIRECTORY_SEPARATOR)
+            rtrim($cacheBasePath, DIRECTORY_SEPARATOR)
         );
 
         $cacheManager->registerFilesystem(new Filesystem(new LocalFilesystemAdapter($cacheDir)));

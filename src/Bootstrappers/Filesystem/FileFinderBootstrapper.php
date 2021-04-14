@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Bootstrappers\Filesystem;
 
 use AbterPhp\Framework\Constant\Env;
+use AbterPhp\Framework\Environments\Environment;
 use AbterPhp\Framework\Filesystem\FileFinder;
 use AbterPhp\Framework\Filesystem\IFileFinder;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
-use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -29,9 +29,11 @@ class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
             return $this->assetPaths;
         }
 
-        $this->assetPaths = $abterModuleManager->getAssetsPaths() ?: [];
+        $paths = $abterModuleManager->getAssetsPaths() ?: [];
 
-        return $this->assetPaths;
+        $this->assetPaths = $paths;
+
+        return $paths;
     }
 
     /**
@@ -84,7 +86,7 @@ class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
             }
         }
 
-        $dirPublic = rtrim(Environment::getVar(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
+        $dirPublic = rtrim(Environment::mustGetVar(Env::DIR_PUBLIC), DIRECTORY_SEPARATOR);
 
         $fileFinder->registerFilesystem(new Filesystem(new LocalFilesystemAdapter($dirPublic)));
     }

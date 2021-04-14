@@ -22,7 +22,7 @@ interface ITable extends IComponent
     public function getSortConditions(): array;
 
     /**
-     * @return array
+     * @return array<string,string>
      */
     public function getSqlParams(): array;
 

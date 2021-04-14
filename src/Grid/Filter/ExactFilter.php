@@ -9,7 +9,7 @@ class ExactFilter extends Filter
     public const HELP_CONTENT = 'framework:helpExact';
 
     /**
-     * @param array $params
+     * @param array<string,string> $params
      *
      * @return $this
      */

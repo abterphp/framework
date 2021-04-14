@@ -6,9 +6,10 @@ namespace AbterPhp\Framework\Navigation;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Constant\Session;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\Contentless;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Helper\TagHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\INodeContainer;
 use AbterPhp\Framework\Html\NodeContainerTrait;
@@ -32,18 +33,18 @@ class UserBlock extends Tag implements INodeContainer
     /**
      * UserBlock constructor.
      *
-     * @param ISession     $session
-     * @param string[]     $intents
-     * @param array        $attributes
-     * @param string|null  $tag
+     * @param ISession        $session
+     * @param string[]        $intents
+     * @param Attributes|null $attributes
+     * @param string|null     $tag
      */
     public function __construct(
         ISession $session,
         array $intents = [],
-        array $attributes = [],
+        ?Attributes $attributes = null,
         ?string $tag = null
     ) {
-        $this->session      = $session;
+        $this->session = $session;
 
         if (!$this->session->has(Session::USERNAME)) {
             throw new \LogicException('session must be set');
@@ -51,9 +52,9 @@ class UserBlock extends Tag implements INodeContainer
 
         $username = (string)$this->session->get(Session::USERNAME, '');
 
-        $this->mediaLeft  = new Component($this->getUserImage($username), [], [], Html5::TAG_DIV);
-        $this->mediaBody  = new Component($username, [], [], Html5::TAG_DIV);
-        $this->mediaRight = new Component(null, [], [], Html5::TAG_DIV);
+        $this->mediaLeft  = new Component($this->getUserImage($username), [], null, Html5::TAG_DIV);
+        $this->mediaBody  = new Component($username, [], null, Html5::TAG_DIV);
+        $this->mediaRight = new Component(null, [], null, Html5::TAG_DIV);
 
         parent::__construct(null, $intents, $attributes, $tag);
     }
@@ -72,9 +73,9 @@ class UserBlock extends Tag implements INodeContainer
         $emailHash = md5((string)$this->session->get(Session::EMAIL));
         $url       = sprintf(static::AVATAR_BASE_URL, $emailHash);
 
-        $img     = new Contentless([], [Html5::ATTR_SRC => $url, Html5::ATTR_ALT => $username], Html5::TAG_IMG);
+        $img     = new Contentless([], new Attributes([Html5::ATTR_SRC => $url, Html5::ATTR_ALT => $username]), Html5::TAG_IMG);
         $style   = sprintf('background: url(%1$s) no-repeat;', $url);
-        $attribs = [Html5::ATTR_CLASS => 'user-img', Html5::ATTR_STYLE => $style];
+        $attribs = new Attributes([Html5::ATTR_CLASS => 'user-img', Html5::ATTR_STYLE => $style]);
 
         return new Component($img, [], $attribs, Html5::TAG_DIV);
     }
@@ -88,7 +89,7 @@ class UserBlock extends Tag implements INodeContainer
     {
         $url = 'https://via.placeholder.com/40/09f/fff.png';
 
-        return new Contentless([], [Html5::ATTR_SRC => $url, Html5::ATTR_ALT => $username]);
+        return new Contentless([], new Attributes([Html5::ATTR_SRC => $url, Html5::ATTR_ALT => $username]));
     }
 
     /**
@@ -165,6 +166,6 @@ class UserBlock extends Tag implements INodeContainer
         $content[] = (string)$this->mediaBody;
         $content[] = (string)$this->mediaRight;
 
-        return StringHelper::wrapInTag(implode("\n", $content), $this->tag, $this->attributes);
+        return TagHelper::toString($this->tag, implode("\n", $content), $this->attributes);
     }
 }

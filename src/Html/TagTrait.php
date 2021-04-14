@@ -5,30 +5,37 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Html;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Helper\ArrayHelper;
 
 // TODO: See if refactoring can help with removing suppressed issues
 trait TagTrait
 {
-    /** @var array<string,null|string|string[]|array<string,string>> */
-    protected array $attributes = [];
+    protected Attributes $attributes;
 
-    /** @var string|null */
-    protected ?string $tag = null;
+    protected string $tag = Html5::TAG_SPAN;
 
     /**
-     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn, PhanUndeclaredConstant, PhanUndeclaredConstantOfClass
-     *
-     * @param string|null $tag
+     * @param string $tag
      *
      * @return INode
      */
-    public function setTag(?string $tag = null): INode
+    public function setTag(string $tag): INode
     {
         $this->tag = $tag;
 
-        if (!$tag && defined(__CLASS__ . '::DEFAULT_TAG')) {
-            $this->tag = static::DEFAULT_TAG;
+        if ($this instanceof INode) {
+            return $this;
+        }
+
+        return new Node();
+    }
+
+    /**
+     * @return INode
+     */
+    public function resetTag(): INode
+    {
+        if (defined(__CLASS__ . '::DEFAULT_TAG')) {
+            $this->tag = static::DEFAULT_TAG; // @phan-suppress-current-line PhanUndeclaredConstantOfClass
         }
 
         if ($this instanceof INode) {
@@ -39,26 +46,83 @@ trait TagTrait
     }
 
     /**
-     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
-     *
-     * Retrieves all set attributes
-     *
-     * @return array of strings and nulls
+     * @return Attributes
      */
-    public function getAttributes(): array
+    public function getAttributes(): Attributes
     {
-        $result = [];
-        foreach (array_keys($this->attributes) as $key) {
-            $result[$key] = $this->getAttribute($key);
-        }
-
-        return $result;
+        return $this->attributes;
     }
 
     /**
      * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
      *
-     * Checks if an attribute is set
+     * @param Attributes $attributes
+     *
+     * @return INode
+     */
+    public function setAttributes(Attributes $attributes): INode
+    {
+        $this->attributes = $attributes;
+
+        return $this;
+    }
+
+    /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     *
+     * @param Attributes $attributes
+     *
+     * @return INode
+     */
+    public function replaceAttributes(Attributes $attributes): INode
+    {
+        $this->attributes->replace($attributes);
+
+        return $this;
+    }
+
+    /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     *
+     * @param Attributes $attributes
+     *
+     * @return INode
+     */
+    public function mergeAttributes(Attributes $attributes): INode
+    {
+        $this->attributes->merge($attributes);
+
+        return $this;
+    }
+
+    /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     *
+     * @param Attribute $attribute
+     *
+     * @return INode
+     */
+    public function setAttribute(Attribute $attribute): INode
+    {
+        $this->attributes->replaceItem($attribute);
+
+        return $this;
+    }
+
+    /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
+     *
+     * @param string $key
+     *
+     * @return Attribute|null
+     */
+    public function getAttribute(string $key): ?Attribute
+    {
+        return $this->attributes->getItem($key);
+    }
+
+    /**
+     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
      *
      * @param string $key
      *
@@ -66,166 +130,27 @@ trait TagTrait
      */
     public function hasAttribute(string $key): bool
     {
-        if (!array_key_exists($key, $this->attributes)) {
-            return false;
-        }
-
-        return true;
+        return $this->attributes->hasItem($key);
     }
 
     /**
      * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
-     *
-     * Retrieves a single attribute
      *
      * @param string $key
      *
-     * @return string|null
+     * @return Attribute
      */
-    public function getAttribute(string $key): ?string
+    public function forceGetAttribute(string $key): Attribute
     {
-        if (!array_key_exists($key, $this->attributes)) {
-            return null;
+        if ($this->attributes->hasItem($key)) {
+            return $this->attributes->getItem($key);
         }
 
-        $attr = $this->attributes[$key];
+        $attr = new Attribute($key);
 
-        if (null === $attr) {
-            return null;
-        }
+        $this->attributes->replaceItem($attr);
 
-        $attr = (array)$attr;
-
-        return implode(' ', $attr);
-    }
-
-    /**
-     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
-     *
-     * Unsets a single attribute
-     *
-     * @param string $key
-     *
-     * @return INode
-     */
-    public function unsetAttribute(string $key): INode
-    {
-        if (!array_key_exists($key, $this->attributes)) {
-            return $this;
-        }
-
-        unset($this->attributes[$key]);
-
-        return $this;
-    }
-
-    /**
-     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn, PhanTypeMismatchArgumentNullableInternal
-     *
-     * Removes a single attribute value
-     *
-     * @param string $key
-     * @param string $value
-     *
-     * @return INode
-     */
-    public function unsetAttributeValue(string $key, string $value): INode
-    {
-        if (!array_key_exists($key, $this->attributes)) {
-            return $this;
-        }
-
-        if (!is_array($this->attributes[$key]) || !array_key_exists($value, $this->attributes[$key])) {
-            return $this;
-        }
-
-        unset($this->attributes[$key][$value]);
-
-        if (empty($this->attributes[$key])) {
-            unset($this->attributes[$key]);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
-     *
-     * Unsets all existing attributes and replaces them with the newly provided attributes
-     * Use addAttributes if you want to keep all existing attributes but the ones provided
-     *
-     * @param array $attributes
-     *
-     * @return INode
-     */
-    public function setAttributes(array $attributes): INode
-    {
-        $this->attributes = [];
-        foreach ($attributes as $key => $value) {
-            $this->attributes[$key] = ArrayHelper::formatAttribute($value);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
-     *
-     * Replaces all set provided attributes with new ones
-     * Existing ones will be kept if not provided
-     *
-     * @param array $attributes
-     *
-     * @return INode
-     */
-    public function addAttributes(array $attributes): INode
-    {
-        foreach ($attributes as $key => $value) {
-            $this->attributes[$key] = ArrayHelper::formatAttribute($value);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn
-     *
-     * @param string      $key
-     * @param string|null ...$values
-     *
-     * @return INode
-     */
-    public function setAttribute(string $key, ?string ...$values): INode
-    {
-        $this->attributes[$key] = ArrayHelper::formatAttribute($values);
-
-        return $this;
-    }
-
-    /**
-     * @suppress PhanTypeMismatchDeclaredReturn, PhanTypeMismatchReturn, PhanTypeMismatchArgumentNullableInternal
-     *
-     * @param array $attributes
-     *
-     * @return INode
-     */
-    public function appendToAttributes(array $attributes): INode
-    {
-        foreach ($attributes as $key => $values) {
-            if (!isset($this->attributes[$key])) {
-                $this->attributes[$key] = [];
-            }
-
-            $newValues = ArrayHelper::formatAttribute($values);
-            if ($newValues === null) {
-                $this->attributes[$key] = null;
-                continue;
-            }
-
-            $this->attributes[$key] = array_merge($this->attributes[$key], $newValues);
-        }
-
-        return $this;
+        return $attr;
     }
 
     /**
@@ -238,7 +163,9 @@ trait TagTrait
      */
     public function appendToAttribute(string $key, string ...$values): INode
     {
-        return $this->appendToAttributes([$key => $values]);
+        $this->attributes->mergeItem(new Attribute($key, ...$values));
+
+        return $this;
     }
 
     /**
@@ -250,10 +177,8 @@ trait TagTrait
      */
     public function appendToClass(string ...$values): INode
     {
-        if (empty($values)) {
-            return $this;
-        }
+        $this->attributes->mergeItem(new Attribute(Html5::ATTR_CLASS, ...$values));
 
-        return $this->appendToAttribute(Html5::ATTR_CLASS, ...$values);
+        return $this;
     }
 }

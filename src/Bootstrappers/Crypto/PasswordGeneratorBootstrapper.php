@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Bootstrappers\Crypto;
 
 use AbterPhp\Framework\Constant\Env;
+use AbterPhp\Framework\Environments\Environment;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
-use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -47,6 +47,6 @@ class PasswordGeneratorBootstrapper extends Bootstrapper implements ILazyBootstr
      */
     private function getSecretLength(): int
     {
-        return (int)Environment::getVar(Env::OAUTH2_SECRET_LENGTH);
+        return (int)Environment::mustGetVar(Env::OAUTH2_SECRET_LENGTH);
     }
 }

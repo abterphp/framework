@@ -11,6 +11,7 @@ use AbterPhp\Framework\Filesystem\IFileFinder;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\UnableToReadFile;
 use League\Flysystem\UnableToWriteFile;
+use League\Flysystem\UnreadableFileEncountered;
 use MatthiasMullie\Minify\CSS as CssMinifier;
 use MatthiasMullie\Minify\JS as JsMinifier;
 
@@ -75,6 +76,9 @@ class AssetManager
         }
 
         $content = $this->fileFinder->read($fixedPath, $groupName);
+        if (null === $content) {
+            throw new UnreadableFileEncountered("not found: " . $fixedPath);
+        }
 
         $fixedContent = $this->urlFixer->fixCss($content, $fixedPath);
 
@@ -95,6 +99,9 @@ class AssetManager
         }
 
         $content = $this->fileFinder->read($fixedPath, $groupName);
+        if (null === $content) {
+            throw new UnreadableFileEncountered("not found: " . $fixedPath);
+        }
 
         $this->getJsMinifier($groupName)->add($content);
     }

@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Form\Label;
 
 use AbterPhp\Framework\Constant\Html5;
+use AbterPhp\Framework\Html\Attributes;
 use AbterPhp\Framework\Html\Collection;
 use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Helper\TagHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\ITemplater;
 
@@ -25,11 +26,9 @@ class Countable extends Label implements ITemplater
 
     protected const CLASS_COUNT = 'count';
 
-    /** @var string */
     protected string $template = self::DEFAULT_TEMPLATE;
 
-    /** @var Component */
-    protected $counter;
+    protected Component $counter;
 
     /**
      * Countable constructor.
@@ -38,7 +37,7 @@ class Countable extends Label implements ITemplater
      * @param INode[]|INode|string|null $content
      * @param int                       $size
      * @param string[]                  $intents
-     * @param array                     $attributes
+     * @param Attributes|null           $attributes
      * @param string|null               $tag
      */
     public function __construct(
@@ -46,16 +45,18 @@ class Countable extends Label implements ITemplater
         $content = null,
         int $size = 160,
         array $intents = [],
-        array $attributes = [],
+        ?Attributes $attributes = null,
         ?string $tag = null
     ) {
         parent::__construct($inputId, $content, $intents, $attributes, $tag);
 
-        $attributes    = [
-            static::ATTR_DATA_COUNT => $size,
-            Html5::ATTR_CLASS       => static::CLASS_COUNT,
-        ];
-        $this->counter = new Component(null, [], $attributes);
+        $counterAttributes = new Attributes(
+            [
+                static::ATTR_DATA_COUNT => [$size],
+                Html5::ATTR_CLASS       => [static::CLASS_COUNT],
+            ]
+        );
+        $this->counter     = new Component(null, [], $counterAttributes);
     }
 
     /**
@@ -91,8 +92,6 @@ class Countable extends Label implements ITemplater
             (string)$this->counter
         );
 
-        $content = StringHelper::wrapInTag($content, $this->tag, $this->attributes);
-
-        return $content;
+        return TagHelper::toString($this->tag, $content, $this->attributes);
     }
 }

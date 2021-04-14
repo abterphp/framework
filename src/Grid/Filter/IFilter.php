@@ -10,19 +10,19 @@ use AbterPhp\Framework\Html\IComponent;
 interface IFilter extends IComponent
 {
     /**
-     * @param array $params
+     * @param array<string,string> $params
      *
      * @return IFilter
      */
     public function setParams(array $params): IFilter;
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getWhereConditions(): array;
 
     /**
-     * @return array
+     * @return array<string,string>
      */
     public function getQueryParams(): array;
 

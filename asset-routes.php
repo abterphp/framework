@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 use AbterPhp\Framework\Config\Routes;
 use AbterPhp\Framework\Constant\Route;
+use Opulence\Ioc\IContainer;
 use Opulence\Routing\Router;
+
+/** @var IContainer $container */
 
 /**
  * ----------------------------------------------------------
@@ -15,11 +18,13 @@ use Opulence\Routing\Router;
  */
 $router->group(
     ['controllerNamespace' => 'AbterPhp\Framework\Http\Controllers'],
-    function (Router $router) {
+    function (Router $router) use ($container) {
+        /** @var Routes $routes */
+        $routes = $container->resolve(Routes::class);
 
         /** @see \AbterPhp\Framework\Http\Controllers\Website\Assets::asset() */
         $router->get(
-            Routes::getAssetsPath(),
+            $routes->getAssetsPath(),
             'Website\Assets@asset',
             [
                 Route::OPTION_NAME => Route::ASSET_CACHE,

@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Pagination;
 
+use AbterPhp\Framework\Html\Attributes;
+
 class Options
 {
-    /** @var int */
-    protected $defaultPageSize;
+    protected int $defaultPageSize;
 
     /** @var int[] */
-    protected $pageSizeOptions;
+    protected array $pageSizeOptions;
 
-    /** @var int */
-    protected $numberCount;
+    protected int $numberCount;
 
-    /** @var array */
-    protected $attributes = [];
+    protected Attributes $attributes;
 
     /**
      * Options constructor.
@@ -30,6 +29,8 @@ class Options
         $this->defaultPageSize = $defaultPageSize;
         $this->pageSizeOptions = $pageSizeOptions;
         $this->numberCount     = $numberCount;
+
+        $this->attributes = new Attributes();
     }
 
     /**
@@ -57,19 +58,19 @@ class Options
     }
 
     /**
-     * @return array
+     * @return Attributes
      */
-    public function getAttributes(): array
+    public function getAttributes(): Attributes
     {
         return $this->attributes;
     }
 
     /**
-     * @param array $attributes
+     * @param Attributes $attributes
      *
      * @return $this
      */
-    public function setAttributes(array $attributes): Options
+    public function setAttributes(Attributes $attributes): Options
     {
         $this->attributes = $attributes;
 

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Bootstrappers\Filesystem;
 
 use AbterPhp\Framework\Constant\Env;
+use AbterPhp\Framework\Environments\Environment;
 use AbterPhp\Framework\Filesystem\Uploader;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
-use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -31,7 +31,7 @@ class FilesystemBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     public function registerBindings(IContainer $container): void
     {
-        $dirPrivate        = Environment::getVar(Env::DIR_PRIVATE);
+        $dirPrivate        = Environment::mustGetVar(Env::DIR_PRIVATE);
         $adapter           = new LocalFilesystemAdapter($dirPrivate);
         $storedFileManager = new Filesystem($adapter);
         $container->bindInstance(Filesystem::class, $storedFileManager);

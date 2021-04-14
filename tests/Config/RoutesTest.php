@@ -10,6 +10,8 @@ use PHPUnit\Framework\TestCase;
 
 class RoutesTest extends TestCase
 {
+    private const MEDIA_BASE_URL = "/media";
+
     /** @var Routes - System Under Test */
     protected Routes $sut;
 
@@ -17,13 +19,10 @@ class RoutesTest extends TestCase
     {
         $this->sut = new Routes();
 
-        parent::setUp();
-    }
-
-    public function tearDown(): void
-    {
-        Environment::unsetVar(Env::MEDIA_BASE_URL);
+        Environment::setVar(Env::MEDIA_BASE_URL, self::MEDIA_BASE_URL);
         Environment::unsetVar(Env::CACHE_BASE_PATH);
+
+        parent::setUp();
     }
 
     public function testGetMediaUrlPreset(): void
@@ -73,7 +72,7 @@ class RoutesTest extends TestCase
     public function testGetCacheUrlFromEnvVar(): void
     {
         $cacheBasePath = 'foo';
-        $expectedBasePath = '/foo';
+        $expectedBasePath = self::MEDIA_BASE_URL . '/foo';
 
         Environment::setVar(Env::CACHE_BASE_PATH, $cacheBasePath);
 

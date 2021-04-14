@@ -6,9 +6,9 @@ namespace AbterPhp\Framework\Bootstrappers\I18n;
 
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Constant\Session;
+use AbterPhp\Framework\Environments\Environment;
 use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\I18n\Translator;
-use Opulence\Environments\Environment;
 use Opulence\Framework\Configuration\Config;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\IContainer;
@@ -33,9 +33,11 @@ class I18nBootstrapper extends Bootstrapper
             return $this->resourcePaths;
         }
 
-        $this->resourcePaths = $abterModuleManager->getResourcePaths() ?: [];
+        $paths = $abterModuleManager->getResourcePaths() ?: [];
 
-        return $this->resourcePaths;
+        $this->resourcePaths = $paths;
+
+        return $paths;
     }
 
     /**
@@ -92,13 +94,13 @@ class I18nBootstrapper extends Bootstrapper
             return (string)$session->get(Session::LANGUAGE_IDENTIFIER);
         }
 
-        return (string)Environment::getVar(Env::DEFAULT_LANGUAGE);
+        return Environment::mustGetVar(Env::DEFAULT_LANGUAGE);
     }
 
     /**
      * @param string $lang
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     protected function getTranslations(string $lang): array
     {
@@ -113,7 +115,7 @@ class I18nBootstrapper extends Bootstrapper
     /**
      * @param string $dir
      *
-     * @return string[]
+     * @return array<string,array<string,string>>
      */
     protected function scanDir(string $dir): array
     {

@@ -23,14 +23,11 @@ class Collection implements ICollection
     /** @var INode[] */
     protected array $nodes = [];
 
-    /** @var string */
     protected string $nodeClass = INode::class;
 
-    /** @var ITranslator */
-    protected $translator;
+    protected ?ITranslator $translator = null;
 
-    /** @var int */
-    protected $position = 0;
+    protected int $position = 0;
 
     /**
      * Intents are a way to achieve frontend-framework independence.
@@ -40,12 +37,13 @@ class Collection implements ICollection
      *
      * @var string[]
      */
-    protected $intents = [];
+    protected array $intents = [];
 
     /**
      * Collection constructor.
      *
      * @param INode[]|INode|string|null $content
+     * @param array                     $intents
      */
     public function __construct($content = null, array $intents = [])
     {
@@ -441,9 +439,7 @@ class Collection implements ICollection
             $list[] = (string)$node;
         }
 
-        $content = implode("\n", $list);
-
-        return $content;
+        return implode("\n", $list);
     }
 
     /**

@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Form\Element;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Attributes;
+use AbterPhp\Framework\Html\Helper\TagHelper;
 use AbterPhp\Framework\Html\Tag;
+use InvalidArgumentException;
 
 class Textarea extends Tag implements IElement
 {
@@ -16,35 +19,33 @@ class Textarea extends Tag implements IElement
 
     protected const DEFAULT_ROW = '3';
 
-    /** @var array<string,null|string[]> */
-    protected array $attributes = [];
-
     /**
      * Textarea constructor.
      *
-     * @param string      $inputId
-     * @param string      $name
-     * @param string      $value
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param string          $inputId
+     * @param string          $name
+     * @param string          $value
+     * @param string[]        $intents
+     * @param Attributes|null $attributes
+     * @param string|null     $tag
      */
     public function __construct(
         string $inputId,
         string $name,
         string $value = '',
         array $intents = [],
-        array $attributes = [],
+        ?Attributes $attributes = null,
         ?string $tag = null
     ) {
+        $attributes ??= new Attributes();
         if ($inputId) {
-            $attributes[Html5::ATTR_ID] = $inputId;
+            $attributes->replaceItem(new Attribute(Html5::ATTR_ID, $inputId));
         }
-        if (!array_key_exists(Html5::ATTR_ROWS, $attributes)) {
-            $attributes[Html5::ATTR_ROWS] = static::DEFAULT_ROW;
+        if (!$attributes->hasItem(Html5::ATTR_ROWS)) {
+            $attributes->replaceItem(new Attribute(Html5::ATTR_ROWS, static::DEFAULT_ROW));
         }
 
-        $attributes[Html5::ATTR_NAME]  = $name;
+        $attributes->replaceItem(new Attribute(Html5::ATTR_NAME, $name));
 
         parent::__construct(null, $intents, $attributes, $tag);
 
@@ -56,32 +57,40 @@ class Textarea extends Tag implements IElement
      */
     public function getName(): string
     {
-        if (!$this->hasAttribute(Html5::ATTR_NAME)) {
+        if (!$this->getAttributes()->hasItem(Html5::ATTR_NAME)) {
             return '';
         }
 
-        $value = $this->getAttribute(Html5::ATTR_NAME);
-        if (null === $value) {
+        $values = $this->getAttributes()->getItem(Html5::ATTR_NAME)->getValues();
+        if (null === $values) {
             return '';
         }
 
-        return $value;
+        return implode(' ', $values);
     }
 
     /**
-     * @param string $value
+     * @param string|string[] $value
      *
      * @return $this
      */
     public function setValue($value): IElement
     {
         if (!is_string($value)) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException();
         }
 
-        $this->attributes[Html5::ATTR_VALUE] = [htmlspecialchars($value)];
+        $this->forceGetAttribute(Html5::ATTR_VALUE)->set(htmlspecialchars($value));
 
         return $this;
+    }
+
+    /**
+     * @return string|string[]
+     */
+    public function getValue()
+    {
+        return $this->getAttribute(Html5::ATTR_VALUE)->getValue();
     }
 
     /**
@@ -89,11 +98,11 @@ class Textarea extends Tag implements IElement
      */
     public function __toString(): string
     {
-        $attributes = $this->attributes;
-        $content    = $this->getAttribute(Html5::ATTR_VALUE);
+        $value = $this->getAttributes()->getItem(Html5::ATTR_VALUE)->getValue();
 
-        unset($attributes[Html5::ATTR_VALUE]);
+        $attributes = clone $this->getAttributes();
+        $attributes->remove(Html5::ATTR_VALUE);
 
-        return StringHelper::wrapInTag($content, $this->tag, $attributes);
+        return TagHelper::toString($this->tag, $value, $attributes);
     }
 }
