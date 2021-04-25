@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Bootstrappers\Vendor;
 
 use AbterPhp\Framework\Constant\Env;
+use AbterPhp\Framework\Environments\Environment;
 use AbterPhp\Framework\Exception\Config;
 use CasbinAdapter\Database\Adapter;
 use Opulence\Databases\Adapters\Pdo\MySql\Driver as MySqlDriver;
 use Opulence\Databases\Adapters\Pdo\PostgreSql\Driver as PostgreSqlDriver;
-use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -50,11 +50,11 @@ class CasbinDatabaseAdapterBootstrapper extends Bootstrapper implements ILazyBoo
 
         $config = [
             'type'     => $dirDriver,
-            'hostname' => Environment::getVar(Env::DB_HOST),
-            'database' => Environment::getVar(Env::DB_NAME),
-            'username' => Environment::getVar(Env::DB_USER),
-            'password' => Environment::getVar(Env::DB_PASSWORD),
-            'hostport' => Environment::getVar(Env::DB_PORT),
+            'hostname' => Environment::mustGetVar(Env::DB_HOST),
+            'database' => Environment::mustGetVar(Env::DB_NAME),
+            'username' => Environment::mustGetVar(Env::DB_USER),
+            'password' => Environment::mustGetVar(Env::DB_PASSWORD),
+            'hostport' => Environment::mustGetVar(Env::DB_PORT),
         ];
 
         $adapter = Adapter::newAdapter($config);

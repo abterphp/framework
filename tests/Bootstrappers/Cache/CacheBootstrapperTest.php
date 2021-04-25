@@ -24,13 +24,13 @@ class CacheBootstrapperTest extends TestCase
 
     public function setUp(): void
     {
+        Environment::unsetVar(Env::ENV_NAME);
+
         $this->sut = new CacheBootstrapper();
     }
 
     protected function tearDown(): void
     {
-        Environment::unsetVar(Env::ENV_NAME);
-
         Config::set('cache', 'file.path', '');
         Config::set('cache', 'cache.bridge', '');
         Config::set('cache', 'cache.clientName', '');

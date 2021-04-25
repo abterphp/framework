@@ -49,4 +49,13 @@ class MaxLengthTest extends TestCase
 
         $this->assertSame('maxLength', $actualResult);
     }
+
+    public function testPassesThrowsExceptionIfMaxIsNotSet(): void
+    {
+        $this->expectException(\LogicException::class);
+
+        $sut = new MaxLength();
+
+        $sut->passes('foo', []);
+    }
 }

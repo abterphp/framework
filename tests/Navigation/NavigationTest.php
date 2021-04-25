@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Navigation;
 
-use AbterPhp\Framework\Html\Collection;
-use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\IComponent;
+use AbterPhp\Framework\Html\Helper\Attributes;
+use AbterPhp\Framework\Html\ITag;
 use AbterPhp\Framework\Html\Node;
+use AbterPhp\Framework\Html\Tag;
 use AbterPhp\Framework\I18n\ITranslator;
 use Casbin\Enforcer;
+use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class NavigationTest extends TestCase
 {
     protected const INTENTS    = ['bar', 'baz'];
-    protected const ATTRIBUTES = ['data-quix' => 'quix'];
+    protected const ATTRIBUTES = ['data-quix' => ['quix']];
     protected const RESOURCE   = 'quint';
 
     /** @var Enforcer|MockObject */
@@ -29,7 +30,30 @@ class NavigationTest extends TestCase
         $this->enforcerMock = $this->createMock(Enforcer::class);
     }
 
-    public function testDefaultGetExtended(): void
+    public function testAddWillAddAtTheEnd(): void
+    {
+        $expectedResult = "<ul>2\n0\n0\n0\n1\n1\n2</ul>";
+
+        $itemMock0 = $this->createMock(Item::class);
+        $itemMock0->expects($this->any())->method('__toString')->willReturn('0');
+        $itemMock1 = $this->createMock(Item::class);
+        $itemMock1->expects($this->any())->method('__toString')->willReturn('1');
+        $itemMock2 = $this->createMock(Item::class);
+        $itemMock2->expects($this->any())->method('__toString')->willReturn('2');
+
+        $sut = new Navigation();
+        $sut->addWithWeight(2, $itemMock0, $itemMock0);
+        $sut->addWithWeight(4, $itemMock1, $itemMock1);
+        $sut->addWithWeight(1, $itemMock2);
+        $sut->addWithWeight(3, $itemMock0);
+        $sut->add($itemMock2);
+
+        $actualResult = (string)$sut;
+
+        $this->assertSame($expectedResult, $actualResult);
+    }
+
+    public function testGetExtendedDefault(): void
     {
         $sut = new Navigation();
 
@@ -40,95 +64,20 @@ class NavigationTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testGetExtendedWithOptionalsReplaced(): void
+    public function testGetExtendedWithWrapper(): void
     {
-        $wrapper = new Component('YYY', [], [], 'foo');
-        $prefix  = new Component('XXX', [], [], 'bar');
-        $postfix = new Component('ZZZ', [], [], 'baz');
+        $prefix = new Node();
+        $postfix = new Node();
+        $wrapper = new Tag();
 
         $sut = new Navigation();
+        $sut->setWrapper($wrapper)->setPrefix($prefix)->setPostfix($postfix);
 
-        $sut->setWrapper($wrapper);
-        $sut->setPrefix($prefix);
-        $sut->setPostfix($postfix);
+        $expectedResult = [$prefix, $postfix, $wrapper];
 
         $actualResult = $sut->getExtendedNodes();
 
-        $this->assertContains($wrapper, $actualResult);
-        $this->assertContains($prefix, $actualResult);
-        $this->assertContains($postfix, $actualResult);
-    }
-
-    public function testGetDescendantNodesIgnoresOptionals(): void
-    {
-        $wrapper = new Component('YYY', [], [], 'foo');
-        $prefix  = new Component('XXX', [], [], 'bar');
-        $postfix = new Component('ZZZ', [], [], 'baz');
-
-        $sut = new Navigation();
-
-        $sut->setWrapper($wrapper);
-        $sut->setPrefix($prefix);
-        $sut->setPostfix($postfix);
-
-        $actualResult = $sut->getDescendantNodes(-1);
-
-        $this->assertSame([], $actualResult);
-    }
-
-    public function testGetDescendantNodesGetsChildren(): void
-    {
-        $node       = new Node('A');
-        $component  = new Component($node);
-        $collection = new Collection([$component]);
-        $item       = new Item($collection);
-
-        $sut = new Navigation();
-
-        $sut->addItem($item);
-
-        $actualResult = $sut->getDescendantNodes(-1);
-
-        $this->assertContains($item, $actualResult);
-        $this->assertContains($collection, $actualResult);
-        $this->assertContains($component, $actualResult);
-        $this->assertContains($node, $actualResult);
-    }
-
-    public function testGetDescendantRespectsDepth(): void
-    {
-        $node       = new Node('A');
-        $component  = new Component($node);
-        $collection = new Collection([$component]);
-        $item       = new Item($collection);
-
-        $sut = new Navigation();
-
-        $sut->addItem($item);
-
-        $actualResult = $sut->getDescendantNodes(2);
-
-        $this->assertContains($item, $actualResult);
-        $this->assertContains($collection, $actualResult);
-        $this->assertContains($component, $actualResult);
-        $this->assertNotContains($node, $actualResult);
-    }
-
-    public function testGetExtendedDescendantNodesIgnoresOptionals(): void
-    {
-        $wrapper = new Component(null, [], [], 'foo');
-        $prefix  = new Component(null, [], [], 'bar');
-        $postfix = new Component(null, [], [], 'baz');
-
-        $sut = new Navigation();
-
-        $sut->setWrapper($wrapper);
-        $sut->setPrefix($prefix);
-        $sut->setPostfix($postfix);
-
-        $actualResult = $sut->getExtendedDescendantNodes(-1);
-
-        $this->assertSame([$prefix, $postfix, $wrapper], $actualResult);
+        $this->assertSame($expectedResult, $actualResult);
     }
 
     public function testSetContent(): void
@@ -137,42 +86,55 @@ class NavigationTest extends TestCase
 
         $sut = new Navigation();
 
+        /** @scrutinizer ignore-deprecated */
         $sut->setContent('');
+    }
+
+    public function testSetContentReturnsSelfIfContentIsNull(): void
+    {
+        $sut = new Navigation();
+
+        $actualResult = $sut->setContent(null);
+
+        $this->assertSame($sut, $actualResult);
     }
 
     public function testDefaultToString(): void
     {
+        $expectedResult = '<ul></ul>';
+
         $sut = new Navigation();
 
-        $this->assertSame('<ul></ul>', (string)$sut);
+        $actualResult = (string)$sut;
+
+        $this->assertSame($expectedResult, $actualResult);
     }
 
     public function testToStringWithOptionalsModified(): void
     {
         $sut = new Navigation();
 
-        $sut->setWrapper(new Component('YYY', [], [], 'foo'));
-        $sut->getPrefix()->setContent(new Component('XXX', [], [], 'bar'));
-        $sut->getPostfix()->setContent(new Component('ZZZ', [], [], 'baz'));
+        $sut->setWrapper(new Tag('YYY', [], null, 'foo'));
+        $sut->getPrefix()->setContent(new Tag('XXX', [], null, 'bar'));
+        $sut->getPostfix()->setContent(new Tag('ZZZ', [], null, 'baz'));
 
         $this->assertSame('<bar>XXX</bar><foo><ul></ul></foo><baz>ZZZ</baz>', (string)$sut);
     }
 
     public function testRenderDisplaysItemsInProperOrder(): void
     {
-        $rawItems = [new Item('AAA'), new Item('BBB'), new Item('CCC'), new Item('DDD')];
-        $items    = [
+        $rawItems   = [new Item('AAA'), new Item('BBB'), new Item('CCC'), new Item('DDD')];
+        $items      = [
             100 => [$rawItems[0], $rawItems[1]],
             50  => [$rawItems[2]],
             75  => [$rawItems[3]],
         ];
+        $attributes = Attributes::fromArray(static::ATTRIBUTES);
 
-        $sut = new Navigation(static::INTENTS, static::ATTRIBUTES);
+        $sut = new Navigation(static::INTENTS, $attributes);
 
         foreach ($items as $weight => $itemsByWeight) {
-            foreach ($itemsByWeight as $item) {
-                $sut->addItem($item, $weight);
-            }
+            $sut->addWithWeight($weight, ...$itemsByWeight);
         }
 
         $rendered = (string)$sut;
@@ -193,14 +155,14 @@ class NavigationTest extends TestCase
     {
         $sut = new Navigation();
 
-        /** @var IComponent $componentStub */
-        $componentStub = $this->createMock(IComponent::class);
+        /** @var ITag $tagMock */
+        $tagMock = $this->createMock(ITag::class);
 
-        $sut->setWrapper($componentStub);
+        $sut->setWrapper($tagMock);
 
         $actualResult = $sut->getWrapper();
 
-        $this->assertSame($componentStub, $actualResult);
+        $this->assertSame($tagMock, $actualResult);
     }
 
     public function testSetTranslatorSetsTranslatorOnNodes(): void
@@ -219,8 +181,98 @@ class NavigationTest extends TestCase
             ->with($translatorMock)
             ->willReturn($sut);
 
-        $sut->addItem($itemMock);
+        $sut[] = $itemMock;
 
         $sut->setTranslator($translatorMock);
+    }
+
+    public function testOffsetSetThrowsExceptionOnInvalidOffset(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $sut = new Navigation();
+
+        /** @var Item|MockObject $itemMock */
+        $itemMock = $this->createMock(Item::class);
+
+        $sut[1] = $itemMock;
+    }
+
+    public function testOffsetSetCanUseWeightIfNeeded(): void
+    {
+        $sut = $this->createNavigation();
+
+        $itemMock = $this->createMock(Item::class);
+        $itemMock->expects($this->any())->method('__toString')->willReturn('!');
+        $sut[4] = $itemMock;
+
+        $expectedResult = "<ul>ax\nay\naz\nbx\n!\nbz</ul>";
+        $actualResult   = (string)$sut;
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    public function testOffsetUnSetCanUseWeightIfNeeded(): void
+    {
+        $sut = $this->createNavigation();
+
+        unset($sut[4]);
+
+        $expectedResult = "<ul>ax\nay\naz\nbx\nbz</ul>";
+        $actualResult   = (string)$sut;
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    public function testOffsetGetCanUseWeightIfNeeded(): void
+    {
+        $sut            = $this->createNavigation();
+        $expectedResult = "by";
+        $actualResult   = (string)$sut[4];
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    public function testCount(): void
+    {
+        $sut = $this->createNavigation();
+
+        $expectedResult = 6;
+        $actualResult   = count($sut);
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    public function testForeach(): void
+    {
+        $sut = $this->createNavigation();
+
+        $expectedResults = ['ax', 'ay', 'az', 'bx', 'by', 'bz'];
+
+        foreach ($sut as $key => $item) {
+            $this->assertEquals($expectedResults[$key], (string)$item);
+        }
+    }
+
+    /**
+     * @param array|string[] $weightGroups
+     * @param array|string[] $itemGroups
+     *
+     * @return Navigation
+     */
+    protected function createNavigation(
+        array $weightGroups = ['a', 'b'],
+        array $itemGroups = ['x', 'y', 'z']
+    ): Navigation {
+        $sut = new Navigation();
+        foreach ($weightGroups as $w) {
+            foreach ($itemGroups as $n) {
+                $itemMock = $this->createMock(Item::class);
+                $itemMock->expects($this->any())->method('__toString')->willReturn("$w$n");
+                $sut->addWithWeight(ord($w) - ord('a'), $itemMock);
+            }
+        }
+
+        return $sut;
     }
 }

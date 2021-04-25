@@ -15,9 +15,6 @@ use Whoops\RunInterface;
  */
 class ExceptionRenderer extends Http\ExceptionRenderer implements Http\IExceptionRenderer
 {
-    /** @var RunInterface */
-    protected RunInterface $run;
-
     public const HTML = <<< EOF
         <!DOCTYPE html>
         <html>
@@ -51,6 +48,10 @@ class ExceptionRenderer extends Http\ExceptionRenderer implements Http\IExceptio
         </html>
         EOF;
 
+    protected array $headers = [];
+
+    /** @var RunInterface */
+    protected RunInterface $run;
 
     /**
      * @return bool
@@ -126,13 +127,7 @@ class ExceptionRenderer extends Http\ExceptionRenderer implements Http\IExceptio
             $headers    = $ex->getHeaders();
         }
 
-        // Always get the content, even if headers are sent, so that we can unit test this
         $content = $ex->getMessage();
-
-        if (headers_sent()) {
-            return;
-        }
-
         switch ($this->getRequestFormat()) {
             case 'json':
                 $headers['Content-Type'] = 'application/json';
@@ -148,7 +143,9 @@ class ExceptionRenderer extends Http\ExceptionRenderer implements Http\IExceptio
 
         $this->devRenderHeaders($headers, $statusCode);
 
+        // Always get the content, even if headers are sent, so that we can unit test this
         echo $content;
+
         // To prevent any potential output buffering, let's flush
         flush();
     }
@@ -159,14 +156,36 @@ class ExceptionRenderer extends Http\ExceptionRenderer implements Http\IExceptio
      */
     protected function devRenderHeaders(array $headers, int $statusCode): void
     {
-        header("HTTP/1.1 $statusCode", true, $statusCode);
+        $this->header("HTTP/1.1 $statusCode", true, $statusCode);
 
         foreach ($headers as $name => $values) {
             $values = (array)$values;
 
             foreach ($values as $value) {
-                header("$name:$value", false);
+                $this->header("$name:$value", false);
             }
         }
+    }
+
+    /**
+     * @param string $header
+     * @param bool   $replace
+     * @param int    $responseCode
+     */
+    protected function header(string $header, bool $replace = true, int $responseCode = 0): void
+    {
+        $this->headers[] = [$header, $replace, $responseCode];
+
+        if (!headers_sent()) {
+            header($header, $replace, $responseCode);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeaders(): array
+    {
+        return $this->headers;
     }
 }

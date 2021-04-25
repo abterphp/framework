@@ -32,7 +32,7 @@ abstract class FilterTest extends TestCase
     {
         $sut = $this->createFilter();
 
-        $actualResult = $sut->getExtendedNodes(-1);
+        $actualResult = $sut->getExtendedNodes();
 
         $this->assertContains($sut->getLabel(), $actualResult);
         $this->assertContains($sut->getWrapper(), $actualResult);

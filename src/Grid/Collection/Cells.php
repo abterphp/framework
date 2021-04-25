@@ -5,24 +5,12 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Grid\Collection;
 
 use AbterPhp\Framework\Grid\Cell\ICell;
-use AbterPhp\Framework\Html\Collection;
-use AbterPhp\Framework\Html\INode;
+use AbterPhp\Framework\Html\Tag;
 
-class Cells extends Collection
+class Cells extends Tag
 {
+    protected const CONTENT_TYPE = ICell::class;
+
     /** @var ICell[] */
-    protected array $nodes = [];
-
-    /** @var string */
-    protected string $nodeClass = ICell::class;
-
-    /**
-     * @param string $content
-     *
-     * @return INode
-     */
-    protected function createNode(string $content): INode
-    {
-        throw new \LogicException();
-    }
+    protected array $content = [];
 }

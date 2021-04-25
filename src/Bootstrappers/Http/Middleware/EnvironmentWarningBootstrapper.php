@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Bootstrappers\Http\Middleware;
 
 use AbterPhp\Framework\Constant\Env;
+use AbterPhp\Framework\Environments\Environment;
 use AbterPhp\Framework\Http\Middleware\EnvironmentWarning;
 use AbterPhp\Framework\I18n\ITranslator;
-use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -32,7 +32,7 @@ class EnvironmentWarningBootstrapper extends Bootstrapper implements ILazyBootst
      */
     public function registerBindings(IContainer $container): void
     {
-        $environment = Environment::getVar(Env::ENV_NAME);
+        $environment = Environment::mustGetVar(Env::ENV_NAME);
 
         /** @var ITranslator $translator */
         $translator = $container->resolve(ITranslator::class);

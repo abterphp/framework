@@ -6,11 +6,11 @@ namespace AbterPhp\Framework\Bootstrappers\Template;
 
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Constant\Event;
+use AbterPhp\Framework\Environments\Environment;
 use AbterPhp\Framework\Events\TemplateEngineReady;
 use AbterPhp\Framework\Template\CacheManager;
 use AbterPhp\Framework\Template\Engine;
 use AbterPhp\Framework\Template\Renderer;
-use Opulence\Environments\Environment;
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
@@ -45,7 +45,7 @@ class EngineBootstrapper extends Bootstrapper implements ILazyBootstrapper
         /** @var Renderer $renderer */
         $renderer = $container->resolve(Renderer::class);
 
-        $isCacheAllowed = (Environment::getVar(Env::ENV_NAME) !== Environment::DEVELOPMENT);
+        $isCacheAllowed = (Environment::mustGetVar(Env::ENV_NAME) !== Environment::DEVELOPMENT);
 
         $templateEngine = new Engine($renderer, $cacheManager, $isCacheAllowed);
         $eventDispatcher->dispatch(Event::TEMPLATE_ENGINE_READY, new TemplateEngineReady($templateEngine));

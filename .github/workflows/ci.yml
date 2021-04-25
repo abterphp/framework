@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         operating-system: [ ubuntu-latest, macos-latest ]
-        php-versions: [ '7.4', '8.0' ]
+        php-versions: [ '8.0', '7.4' ]
     # Name the Job
     name: Lint code base
     # Set the type of machine to run on
@@ -52,7 +52,15 @@ jobs:
 
       - name: Coverage report
         if: ${{ matrix.operating-system == 'ubuntu-latest' && matrix.php-versions == '8.0' }}
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          make coverage
+        run: make coverage
+
+      - name: Badge generation
+        if: ${{ matrix.operating-system == 'ubuntu-latest' && matrix.php-versions == '8.0' }}
+        uses: timkrase/phpunit-coverage-badge@v1.2.0
+        with:
+          push_badge: true
+          coverage_badge_path: coverage.svg
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_message: Code coverage badge update
+          commit_email: coverage@peteraba.com
+          commit_name: AbterCMS Coverage

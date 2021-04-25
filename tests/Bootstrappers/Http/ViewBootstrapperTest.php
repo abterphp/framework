@@ -30,6 +30,8 @@ class ViewBootstrapperTest extends TestCase
 
     public function setUp(): void
     {
+        Environment::unsetVar(Env::ENV_NAME);
+
         $this->root = vfsStream::setup(static::BASE_PATH);
         mkdir(vfsStream::url(static::BASE_PATH) . DIRECTORY_SEPARATOR . 'views');
 
@@ -38,8 +40,6 @@ class ViewBootstrapperTest extends TestCase
 
     public function tearDown(): void
     {
-        Environment::unsetVar(Env::ENV_NAME);
-
         Config::set('views', 'cache', '');
         Config::set('views', 'cache.lifetime', '');
         Config::set('views', 'gc.chance', '');

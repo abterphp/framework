@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Session;
 
-use AbterPhp\Framework\Session\Helper\ArrayHelper;
 use AbterPhp\Framework\I18n\ITranslator;
+use AbterPhp\Framework\Session\Helper\ArrayHelper;
 use Opulence\Sessions\ISession;
 
 class FlashService
@@ -15,15 +15,15 @@ class FlashService
 
     protected ISession $session;
 
-    protected ITranslator $translator;
+    protected ?ITranslator $translator;
 
     /**
      * Helper constructor.
      *
-     * @param ISession    $session
-     * @param ITranslator $translator
+     * @param ISession         $session
+     * @param ITranslator|null $translator
      */
-    public function __construct(ISession $session, ITranslator $translator)
+    public function __construct(ISession $session, ?ITranslator $translator)
     {
         $this->session    = $session;
         $this->translator = $translator;
@@ -42,7 +42,7 @@ class FlashService
     }
 
     /**
-     * @param array  $messages
+     * @param array $messages
      */
     public function mergeErrorMessages(array $messages): void
     {

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Module;
 
 use AbterPhp\Framework\Constant\Module;
+use DirectoryIterator;
+use LogicException;
 
 class Loader
 {
@@ -13,10 +15,9 @@ class Loader
     protected const ERROR_MSG_UNRESOLVABLE_DEPENDENCIES = 'Not able to determine module order. Likely circular dependency found.'; // phpcs:ignore
 
     /** @var string[] */
-    protected $sourceRoots;
+    protected array $sourceRoots;
 
-    /** @var string */
-    protected $moduleFileName;
+    protected string $moduleFileName;
 
     /**
      * Loader constructor.
@@ -32,12 +33,13 @@ class Loader
     }
 
     /**
-     * @return array
+     * @return array<string,mixed>[]
      */
     public function loadModules(): array
     {
         $rawModules = [];
         foreach ($this->findModules() as $path) {
+            /** @var array<string,mixed> $rawModule */
             $rawModule = include $path;
 
             if (empty($rawModule[Module::ENABLED])) {
@@ -55,6 +57,9 @@ class Loader
     }
 
     /**
+     * @param array<string,mixed>[] $rawModules
+     * @param array<string,string>  $sortedIds
+     *
      * @return array
      */
     protected function sortModules(array $rawModules, array $sortedIds = []): array
@@ -70,13 +75,14 @@ class Loader
                     }
                 }
 
-                $sortedIds[$rawModule[Module::IDENTIFIER]] = $rawModule[Module::IDENTIFIER];
-                $sortedModules[] = $rawModule;
+                $moduleId             = $rawModule[Module::IDENTIFIER];
+                $sortedIds[$moduleId] = $moduleId;
+                $sortedModules[]      = $rawModule;
                 unset($rawModules[$idx]);
             }
 
             if ($sortedCount === count($sortedIds)) {
-                throw new \LogicException(static::ERROR_MSG_UNRESOLVABLE_DEPENDENCIES);
+                throw new LogicException(static::ERROR_MSG_UNRESOLVABLE_DEPENDENCIES);
             }
         }
 
@@ -95,18 +101,18 @@ class Loader
                 continue;
             }
 
-            $paths = array_merge($paths, $this->scanDirectories(new \DirectoryIterator($root)));
+            $paths = array_merge($paths, $this->scanDirectories(new DirectoryIterator($root)));
         }
 
         return $paths;
     }
 
     /**
-     * @param \DirectoryIterator $directoryIterator
+     * @param DirectoryIterator $directoryIterator
      *
      * @return array
      */
-    protected function scanDirectories(\DirectoryIterator $directoryIterator): array
+    protected function scanDirectories(DirectoryIterator $directoryIterator): array
     {
         $paths = [];
         foreach ($directoryIterator as $fileInfo) {
@@ -123,7 +129,7 @@ class Loader
                 continue;
             }
 
-            $paths = array_merge($paths, $this->scanDirectories(new \DirectoryIterator($fileInfo->getRealPath())));
+            $paths = array_merge($paths, $this->scanDirectories(new DirectoryIterator($fileInfo->getRealPath())));
         }
 
         return $paths;

@@ -8,9 +8,9 @@ use AbterPhp\Framework\Authorization\CombinedAdapter;
 use AbterPhp\Framework\Authorization\Constant\Role;
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Constant\Session;
+use AbterPhp\Framework\Environments\Environment;
 use Casbin\Enforcer;
 use Casbin\Exceptions\CasbinException;
-use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -41,7 +41,7 @@ class EnforcerBootstrapper extends Bootstrapper implements ILazyBootstrapper
         /** @var CombinedAdapter $combinedAdapter */
         $combinedAdapter = $container->resolve(CombinedAdapter::class);
 
-        $modelPath = sprintf("%s/model.conf", Environment::getVar(Env::DIR_AUTH_CONFIG));
+        $modelPath = sprintf("%s/model.conf", Environment::mustGetVar(Env::DIR_AUTH_CONFIG));
         $enforcer  = new Enforcer($modelPath, $combinedAdapter);
 
         $enforcer->loadPolicy();

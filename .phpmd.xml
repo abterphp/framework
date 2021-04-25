@@ -20,11 +20,6 @@
     <rule ref="rulesets/design.xml/GotoStatement" />
     <rule ref="rulesets/design.xml/NumberOfChildren" />
     <rule ref="rulesets/design.xml/DepthOfInheritance" />
-    <rule ref="rulesets/design.xml/CouplingBetweenObjects">
-        <priority>1</priority>
-        <properties>
-            <property name="maximum" value="25" />
-        </properties>
-    </rule>
+    <rule ref="rulesets/design.xml/CouplingBetweenObjects" />
     <rule ref="rulesets/design.xml/DevelopmentCodeFragment" />
 </ruleset>

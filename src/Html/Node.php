@@ -4,13 +4,30 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Html;
 
+use AbterPhp\Framework\Html\Helper\Collection;
 use AbterPhp\Framework\I18n\ITranslator;
-use InvalidArgumentException;
+use ArrayAccess;
+use Closure;
+use Countable;
+use Iterator;
 
-class Node implements INode
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
+class Node implements INode, Iterator, ArrayAccess, Countable
 {
-    /** @var string|INode */
-    protected $content;
+    protected const ERROR_INVALID_OFFSET = 'Offset must be a positive integer and not larger than number of items'; // phpcs:ignore
+
+    protected const CONTENT_TYPE = '';
+
+    protected const SEPARATOR = '';
+
+    /** @var array<string|INode> */
+    protected array $content = [];
+
+    /** @var int */
+    protected int $position = 0;
 
     /**
      * Intents are a way to achieve frontend-framework independence.
@@ -27,59 +44,94 @@ class Node implements INode
     /**
      * Node constructor.
      *
-     * @param INode|string[]|string|null $content
-     * @param string[]                   $intents
+     * @param array<string|INode>|string|INode|null $content
+     * @param string                                ...$intents
      */
-    public function __construct($content = null, array $intents = [])
+    public function __construct($content = null, string ...$intents)
     {
-        $this->setContent($content);
+        if ($content !== null) {
+            $this->setContent($content);
+        }
+
         $this->setIntent(...$intents);
     }
 
     /**
-     * @return string
+     * @param array<string|IStringer>|string|IStringer|null $content
+     *
+     * @return $this
      */
-    public function getRawContent(): string
+    public function setContent($content): self
     {
-        if ($this->content instanceof Node) {
-            return $this->content->getRawContent();
+        $this->check($content);
+
+        $this->content = [];
+
+        if (null === $content) {
+            return $this;
         }
 
-        return $this->content;
+        if (!is_array($content)) {
+            $content = [$content];
+        }
+
+        foreach ($content as $item) {
+            if ($item instanceof INode) {
+                $this->content[] = $item;
+            } else {
+                $this->content[] = (string)$item;
+            }
+        }
+
+        return $this;
     }
 
     /**
-     * @param INode|string[]|string|null $content
-     *
-     * @return INode
+     * @return INode[]
      */
-    public function setContent($content): INode
+    public function getNodes(): array
     {
-        if (null === $content) {
-            $this->content = '';
+        $result = [];
 
-            return $this;
+        foreach ($this->content as $item) {
+            if ($item instanceof INode) {
+                $result[] = $item;
+            }
         }
 
-        if (is_scalar($content)) {
-            $content = (string)$content;
+        return $result;
+    }
+
+    /**
+     * @return INode[]
+     */
+    public function getExtendedNodes(): array
+    {
+        return $this->getNodes();
+    }
+
+    /**
+     * @return INode[]
+     */
+    public function forceGetNodes(): array
+    {
+        $result = [];
+
+        foreach ($this->content as $item) {
+            if ($item instanceof INode) {
+                $result[] = $item;
+            } else {
+                $result[] = new Node($item);
+            }
         }
 
-        if (is_string($content) || ($content instanceof INode)) {
-            $this->content = $content;
-
-            return $this;
-        }
-
-        throw new InvalidArgumentException();
+        return $result;
     }
 
     /**
      * @param string $intent
      *
      * @return bool
-     * @see Node::$intents
-     *
      */
     public function hasIntent(string $intent): bool
     {
@@ -88,8 +140,6 @@ class Node implements INode
 
     /**
      * @return string[]
-     * @see Node::$intents
-     *
      */
     public function getIntents(): array
     {
@@ -100,10 +150,8 @@ class Node implements INode
      * @param string ...$intent
      *
      * @return $this
-     * @see Node::$intents
-     *
      */
-    public function setIntent(string ...$intent): INode
+    public function setIntent(string ...$intent): self
     {
         $this->intents = $intent;
 
@@ -115,7 +163,7 @@ class Node implements INode
      *
      * @return $this
      */
-    public function addIntent(string ...$intent): INode
+    public function addIntent(string ...$intent): self
     {
         $this->intents = array_merge($this->intents, $intent);
 
@@ -123,36 +171,17 @@ class Node implements INode
     }
 
     /**
-     * Checks if the current component matches the arguments provided
-     *
-     * @param string|null $className
-     * @param string      ...$intents
-     *
-     * @return bool
-     */
-    public function isMatch(?string $className = null, string ...$intents): bool
-    {
-        if ($className && !($this instanceof $className)) {
-            return false;
-        }
-
-        foreach ($intents as $intent) {
-            if (!in_array($intent, $this->intents, true)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * @param ITranslator|null $translator
      *
-     * @return INode
+     * @return $this
      */
-    public function setTranslator(?ITranslator $translator): INode
+    public function setTranslator(?ITranslator $translator): self
     {
         $this->translator = $translator;
+
+        foreach ($this->getExtendedNodes() as $node) {
+            $node->setTranslator($translator);
+        }
 
         return $this;
     }
@@ -166,24 +195,284 @@ class Node implements INode
     }
 
     /**
+     * Checks if the current component matches the arguments provided
+     *
+     * @param string|null  $className
+     * @param Closure|null $matcher
+     * @param string       ...$intents
+     *
+     * @return bool
+     */
+    public function isMatch(?string $className = null, ?Closure $matcher = null, string ...$intents): bool
+    {
+        if ($className && !($this instanceof $className)) {
+            return false;
+        }
+
+        if ($matcher && !$matcher($this)) {
+            return false;
+        }
+
+        foreach ($intents as $intent) {
+            if (!in_array($intent, $this->intents, true)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param string|null  $className
+     * @param Closure|null $matcher
+     * @param string       ...$intents
+     *
+     * @return INode|null
+     */
+    public function find(?string $className = null, ?Closure $matcher = null, string ...$intents): ?INode
+    {
+        if ($this->isMatch($className, $matcher, ...$intents)) {
+            return $this;
+        }
+
+        foreach ($this->getNodes() as $node) {
+            $found = $node->find($className, $matcher, ...$intents);
+            if ($found) {
+                return $found;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Finds all sub-nodes which match a certain criteria
+     *
+     * @param string|null  $className
+     * @param Closure|null $matcher
+     * @param string       ...$intents
+     *
+     * @return INode[]
+     */
+    public function findAll(?string $className = null, ?Closure $matcher = null, string ...$intents): array
+    {
+        return $this->findAllShallow(-1, $className, $matcher, ...$intents);
+    }
+
+    /**
+     * @param int          $maxDepth
+     * @param string|null  $className
+     * @param Closure|null $matcher
+     * @param string       ...$intents
+     *
+     * @return INode[]
+     */
+    public function findAllShallow(
+        int $maxDepth,
+        ?string $className = null,
+        ?Closure $matcher = null,
+        string ...$intents
+    ): array {
+        $result = [];
+
+        if ($this->isMatch($className, $matcher, ...$intents)) {
+            $result[] = $this;
+        }
+
+        if ($maxDepth === 0) {
+            return $result;
+        }
+
+        foreach ($this->getNodes() as $node) {
+            $result = array_merge($result, $node->findAllShallow($maxDepth - 1, $className, $matcher, ...$intents));
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param INode|string $itemToFind
+     *
+     * @return int|null
+     */
+    public function findKey($itemToFind): ?int
+    {
+        foreach ($this->content as $key => $item) {
+            if ($item === $itemToFind) {
+                return $key;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Replaces a given node with a number of nodes
+     * It will also call the children to execute the same operation if the node was not found
+     *
+     * @param INode $itemToFind
+     * @param INode ...$items
+     *
+     * @return bool
+     */
+    public function replace(INode $itemToFind, INode ...$items): bool
+    {
+        $this->check($items);
+
+        $key = $this->findKey($itemToFind);
+        if ($key !== null) {
+            array_splice($this->content, $key, 1, $items);
+
+            return true;
+        }
+
+        foreach ($this->content as $item) {
+            if ($item instanceof INode && $item->replace($itemToFind, ...$items)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param INode ...$items
+     *
+     * @return $this
+     */
+    public function add(INode ...$items): self
+    {
+        $this->check($items);
+
+        $this->content = array_merge($this->content, $items);
+
+        return $this;
+    }
+
+    /**
+     * @param array<string|INode>|string|INode|null $content
+     */
+    protected function check($content = null)
+    {
+        if ($content === null) {
+            return;
+        }
+
+        if (!is_array($content)) {
+            $content = [$content];
+        }
+
+        if (!static::CONTENT_TYPE) {
+            assert(Collection::allNodes($content));
+        } else {
+            assert(Collection::allInstanceOf($content, static::CONTENT_TYPE));
+        }
+    }
+
+    /**
      * @return string
      */
     public function __toString(): string
     {
-        return $this->translate($this->content);
+        $items = [];
+        foreach ($this->content as $item) {
+            if (is_scalar($item) && $this->getTranslator()) {
+                $i = $this->getTranslator()->translate($item);
+            } else {
+                $i = (string)$item;
+            }
+            if ($i !== '') {
+                $items[] = $i;
+            }
+        }
+
+        return join(static::SEPARATOR, $items);
     }
 
     /**
-     * @param mixed $content
-     *
-     * @return string
+     * @param int|null $offset
+     * @param INode    $value
      */
-    public function translate($content): string
+    public function offsetSet($offset, $value): void
     {
-        if (is_string($content) && $this->translator && $this->translator->canTranslate($content)) {
-            return $this->translator->translate($content);
-        }
+        assert(Collection::allInstanceOf([$value], static::CONTENT_TYPE));
 
-        return (string)$content;
+        if (is_null($offset)) {
+            $this->content[] = $value;
+        } elseif ($offset < 0 || $offset > count($this->content)) {
+            throw new \InvalidArgumentException(static::ERROR_INVALID_OFFSET);
+        } else {
+            $this->content[$offset] = $value;
+        }
+    }
+
+    /**
+     * @param int $offset
+     *
+     * @return bool
+     */
+    public function offsetExists($offset): bool
+    {
+        return isset($this->content[$offset]);
+    }
+
+    /**
+     * @param int $offset
+     */
+    public function offsetUnset($offset): void
+    {
+        unset($this->content[$offset]);
+    }
+
+    /**
+     * @param int $offset
+     *
+     * @return INode|null
+     */
+    public function offsetGet($offset): ?INode
+    {
+        return $this->content[$offset] ?? null;
+    }
+
+    /**
+     * @return int
+     */
+    public function count(): int
+    {
+        return count($this->content);
+    }
+
+    public function rewind(): void
+    {
+        $this->position = 0;
+    }
+
+    /**
+     * @return INode
+     */
+    public function current(): INode
+    {
+        return $this->content[$this->position];
+    }
+
+    /**
+     * @return int
+     */
+    public function key(): int
+    {
+        return $this->position;
+    }
+
+    public function next(): void
+    {
+        ++$this->position;
+    }
+
+    /**
+     * @return bool
+     */
+    public function valid(): bool
+    {
+        return isset($this->content[$this->position]);
     }
 }

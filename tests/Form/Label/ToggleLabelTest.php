@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Form\Label;
 
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
+use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use PHPUnit\Framework\TestCase;
 
@@ -14,56 +17,31 @@ class ToggleLabelTest extends TestCase
      */
     public function renderProvider(): array
     {
+        $attributes = StubAttributeFactory::createAttributes();
+        $str        = Attributes::toString($attributes);
+
         return [
-            'simple'            => [
-                'a',
-                'ABC',
-                [],
-                null,
-                null,
-                '<label for="a">ABC</label>',
-            ],
-            'with attributes'   => [
-                'a',
-                'ABC',
-                ['foo' => ['bar'], 'class' => ['baz']],
-                null,
-                null,
-                '<label for="a" foo="bar" class="baz">ABC</label>',
-            ],
-            'with translations' => [
-                'a',
-                'ABC',
-                [],
-                ['ABC' => 'CBA'],
-                null,
-                '<label for="a">CBA</label>',
-            ],
-            'custom tag'        => [
-                'a',
-                'ABC',
-                [],
-                [],
-                'foo',
-                '<foo for="a">ABC</foo>',
-            ],
+            'simple'            => ['a', 'ABC', null, null, null, '<label for="a">ABC</label>',],
+            'with attributes'   => ['a', 'ABC', $attributes, null, null, "<label$str for=\"a\">ABC</label>",],
+            'with translations' => ['a', 'ABC', null, ['ABC' => 'CBA'], null, '<label for="a">CBA</label>',],
+            'custom tag'        => ['a', 'ABC', null, [], 'foo', '<foo for="a">ABC</foo>',],
         ];
     }
 
     /**
      * @dataProvider renderProvider
      *
-     * @param string        $inputId
-     * @param string        $content
-     * @param string[][]    $attributes
-     * @param string[]|null $translations
-     * @param string|null   $tag
-     * @param string        $expectedResult
+     * @param string                       $inputId
+     * @param string                       $content
+     * @param array<string,Attribute>|null $attributes
+     * @param string[]|null                $translations
+     * @param string|null                  $tag
+     * @param string                       $expectedResult
      */
     public function testRender(
         string $inputId,
         string $content,
-        array $attributes,
+        ?array $attributes,
         ?array $translations,
         ?string $tag,
         string $expectedResult
@@ -74,18 +52,18 @@ class ToggleLabelTest extends TestCase
     }
 
     /**
-     * @param string      $inputId
-     * @param string      $content
-     * @param array       $attributes
-     * @param array|null  $translations
-     * @param string|null $tag
+     * @param string                       $inputId
+     * @param string                       $content
+     * @param array<string,Attribute>|null $attributes
+     * @param array|null                   $translations
+     * @param string|null                  $tag
      *
      * @return Label
      */
     private function createElement(
         string $inputId,
         string $content,
-        array $attributes,
+        ?array $attributes,
         ?array $translations,
         ?string $tag
     ): Label {

@@ -113,7 +113,7 @@ class NavigationBuilderTest extends TestCase
         /** @var MockObject|Navigation $navigationStub */
         $navigationStub = $this->createMock(Navigation::class);
 
-        $navigationStub->expects($expects)->method('getExtendedDescendantNodes')->willReturn($nodes);
+        $navigationStub->expects($expects)->method('getExtendedNodes')->willReturn($nodes);
 
         return new NavigationReady($navigationStub);
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Component;
 
-use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Grid\Row\Row;
 use AbterPhp\Framework\TestDouble\Domain\Entity\FooBarStub;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -18,7 +17,7 @@ class BodyTest extends TestCase
 
         $sut->setEntities([]);
 
-        $this->assertCount(0, $sut);
+        $this->assertCount(0, $sut->getNodes());
     }
 
     public function testSetEntitiesWithoutGetters(): void
@@ -31,9 +30,11 @@ class BodyTest extends TestCase
 
         $sut->setEntities($entities);
 
-        $this->assertCount(2, $sut);
-        $this->assertInstanceOf(Row::class, $sut[0]);
-        $this->assertInstanceOf(Row::class, $sut[1]);
+        $this->assertCount(2, $sut->getNodes());
+
+        assert($sut[0] instanceof Row);
+        assert($sut[1] instanceof Row);
+
         $this->assertCount(0, $sut[0]->getCells());
         $this->assertCount(0, $sut[1]->getCells());
     }
@@ -53,7 +54,7 @@ class BodyTest extends TestCase
 
         $sut->setEntities($entities);
 
-        $this->assertCount(2, $sut);
+        $this->assertCount(2, $sut->getNodes());
         $this->assertInstanceOf(Row::class, $sut[0]);
         $this->assertInstanceOf(Row::class, $sut[1]);
         $this->assertCount(2, $sut[0]->getCells());
@@ -75,7 +76,7 @@ class BodyTest extends TestCase
 
         $sut->setEntities($entities);
 
-        $this->assertCount(2, $sut);
+        $this->assertCount(2, $sut->getNodes());
         $this->assertInstanceOf(Row::class, $sut[0]);
         $this->assertInstanceOf(Row::class, $sut[1]);
         $this->assertCount(2, $sut[0]->getCells());
@@ -97,7 +98,7 @@ class BodyTest extends TestCase
 
         $sut->setEntities($entities);
 
-        $this->assertCount(2, $sut);
+        $this->assertCount(2, $sut->getNodes());
         $this->assertInstanceOf(Row::class, $sut[0]);
         $this->assertInstanceOf(Row::class, $sut[1]);
         $this->assertCount(2, $sut[0]->getCells());
@@ -112,7 +113,7 @@ class BodyTest extends TestCase
      *
      * @return FooBarStub|MockObject
      */
-    private function createEntity(string $string, int $entityId, string $foo = '', string $bar = ''): IStringerEntity
+    private function createEntity(string $string, int $entityId, string $foo = '', string $bar = '')
     {
         /** @var FooBarStub|MockObject $entity */
         $entity = $this->createMock(FooBarStub::class);

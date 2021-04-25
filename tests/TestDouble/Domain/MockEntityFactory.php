@@ -25,7 +25,8 @@ class MockEntityFactory
         ?string $toJson = null,
         ?string $entityId = null,
         string $className = IStringerEntity::class
-    ): IStringerEntity {
+    ) {
+        /** @var IStringerEntity|MockObject $entity */
         $entity = $testCase->getMockBuilder($className)
             ->disableOriginalConstructor()
             ->getMock();

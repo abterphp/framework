@@ -7,13 +7,16 @@ namespace AbterPhp\Framework\Grid\Table;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Grid\Component\Body;
 use AbterPhp\Framework\Grid\Component\Header;
-use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Tag as TagHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\ITemplater;
+use AbterPhp\Framework\Html\Tag;
 
-class Table extends Component implements ITable, ITemplater
+class Table extends Tag implements ITable, ITemplater
 {
+    public const TAG_TABLE = 'table';
+
     /**
      *   %1$s - thead
      *   %2$s - tbody
@@ -22,26 +25,21 @@ class Table extends Component implements ITable, ITemplater
 
     protected const DEFAULT_TAG = self::TAG_TABLE;
 
-    public const TAG_TABLE = 'table';
-
-    /** @var Header */
     protected Header $header;
 
-    /** @var Body */
     protected Body $body;
 
-    /** @var string */
     protected string $template = self::DEFAULT_TEMPLATE;
 
     /**
      * Table constructor.
      *
-     * @param Body     $body
-     * @param Header   $header
-     * @param string[] $intents
-     * @param array    $attributes
+     * @param Body                         $body
+     * @param Header                       $header
+     * @param string[]                     $intents
+     * @param array<string,Attribute>|null $attributes
      */
-    public function __construct(Body $body, Header $header, array $intents = [], array $attributes = [])
+    public function __construct(Body $body, Header $header, array $intents = [], ?array $attributes = null)
     {
         $this->body   = $body;
         $this->header = $header;
@@ -68,7 +66,7 @@ class Table extends Component implements ITable, ITemplater
     }
 
     /**
-     * @return array
+     * @return array<string,string>
      */
     public function getSqlParams(): array
     {
@@ -121,8 +119,6 @@ class Table extends Component implements ITable, ITemplater
             $tbody
         );
 
-        $content = StringHelper::wrapInTag($content, $this->tag, $this->attributes);
-
-        return $content;
+        return TagHelper::toString($this->tag, $content, $this->attributes);
     }
 }

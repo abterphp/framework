@@ -18,20 +18,22 @@ class GridBootstrapperTest extends TestCase
 
     public function setUp(): void
     {
+        Environment::setVar(Env::PAGINATION_SIZE_OPTIONS, '5,25');
+        Environment::setVar(Env::PAGINATION_SIZE_DEFAULT, '5');
+        Environment::setVar(Env::PAGINATION_NUMBER_COUNT, '2');
+
         $this->sut = new GridBootstrapper();
     }
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
         Environment::unsetVar(Env::PAGINATION_SIZE_OPTIONS);
-        Environment::unsetVar(Env::ENV_NAME);
+        Environment::unsetVar(Env::PAGINATION_SIZE_DEFAULT);
+        Environment::unsetVar(Env::PAGINATION_NUMBER_COUNT);
     }
 
     public function testRegisterBindings(): void
     {
-        Environment::setVar(Env::PAGINATION_SIZE_OPTIONS, '5,25');
-        Environment::setVar(Env::ENV_NAME, 'foo');
-
         $mockTranslator = $this->getMockBuilder(ITranslator::class)->getMock();
 
         $container = new Container();

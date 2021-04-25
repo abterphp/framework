@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Html;
 
-interface ITemplater extends INodeContainer
+interface ITemplater
 {
     /**
      * @param string $template

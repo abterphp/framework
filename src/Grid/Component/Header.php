@@ -7,27 +7,29 @@ namespace AbterPhp\Framework\Grid\Component;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Grid\Cell\Sortable;
 use AbterPhp\Framework\Grid\Row\IRow;
-use AbterPhp\Framework\Html\Component;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Tag;
 
-class Header extends Component
+class Header extends Tag
 {
-    protected const DEFAULT_TAG = Html5::TAG_THEAD;
+    protected const DEFAULT_TAG  = Html5::TAG_THEAD;
+    protected const CONTENT_TYPE = IRow::class;
 
     /** @var IRow[] */
-    protected array $nodes = [];
+    protected array $content = [];
 
-    /** @var string */
     protected string $nodeClass = IRow::class;
 
     /**
      * Header constructor.
      *
-     * @param string[] $intents
-     * @param array    $attributes
+     * @param IRow[]|null                  $content
+     * @param string[]                     $intents
+     * @param array<string,Attribute>|null $attributes
      */
-    public function __construct(array $intents = [], array $attributes = [])
+    public function __construct(?array $content = null, array $intents = [], ?array $attributes = null)
     {
-        parent::__construct(null, $intents, $attributes);
+        parent::__construct($content, $intents, $attributes);
     }
 
     /**
@@ -37,7 +39,7 @@ class Header extends Component
      */
     public function setBaseUrl(string $baseUrl): Header
     {
-        foreach ($this->nodes as $row) {
+        foreach ($this->content as $row) {
             foreach ($row->getCells() as $cell) {
                 if (!($cell instanceof Sortable)) {
                     continue;
@@ -57,7 +59,7 @@ class Header extends Component
      */
     public function setParams(array $params): Header
     {
-        foreach ($this->nodes as $row) {
+        foreach ($this->content as $row) {
             foreach ($row->getCells() as $cell) {
                 if (!($cell instanceof Sortable)) {
                     continue;
@@ -78,7 +80,7 @@ class Header extends Component
     public function getSortedUrl(string $baseUrl): string
     {
         $params = [];
-        foreach ($this->nodes as $row) {
+        foreach ($this->content as $row) {
             foreach ($row->getCells() as $cell) {
                 if (!($cell instanceof Sortable)) {
                     continue;
@@ -102,7 +104,7 @@ class Header extends Component
     public function getSortConditions(): array
     {
         $conditions = [];
-        foreach ($this->nodes as $row) {
+        foreach ($this->content as $row) {
             foreach ($row->getCells() as $cell) {
                 if (!($cell instanceof Sortable)) {
                     continue;
@@ -116,7 +118,7 @@ class Header extends Component
     }
 
     /**
-     * @return array
+     * @return array<string,string>
      */
     public function getQueryParams(): array
     {

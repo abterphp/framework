@@ -11,7 +11,7 @@ class LikeFilter extends Filter
     protected const QUERY_TEMPLATE = '%s LIKE ?';
 
     /**
-     * @param array $params
+     * @param array<string,string> $params
      *
      * @return IFilter
      */
@@ -19,8 +19,8 @@ class LikeFilter extends Filter
     {
         parent::setParams($params);
 
-        if ($this->value) {
-            $this->queryParams = ['%' . $this->value . '%'];
+        if ($this->getValue()) {
+            $this->queryParams = ['%' . $this->getValue() . '%'];
         }
 
         return $this;

@@ -7,22 +7,44 @@ namespace AbterPhp\Framework\Html;
 interface ITag extends INode
 {
     /**
-     * @param string|null $tag
+     * @param string $tag
      *
-     * @return INode
+     * @return $this
      */
-    public function setTag(?string $tag = null): INode;
+    public function setTag(string $tag): INode;
 
     /**
-     * Retrieves all set attributes
-     *
-     * @return array of strings and nulls
+     * @return $this
+     */
+    public function resetTag(): INode;
+
+    /**
+     * @return array<string,Attribute>
      */
     public function getAttributes(): array;
 
     /**
-     * Checks if an attribute is set
+     * @param array<string,Attribute> $attributes
      *
+     * @return INode
+     */
+    public function setAttributes(array $attributes): INode;
+
+    /**
+     * @param Attribute ...$attributes
+     *
+     * @return INode
+     */
+    public function setAttribute(Attribute ...$attributes): INode;
+
+    /**
+     * @param string $key
+     *
+     * @return Attribute|null
+     */
+    public function getAttribute(string $key): ?Attribute;
+
+    /**
      * @param string $key
      *
      * @return bool
@@ -30,67 +52,11 @@ interface ITag extends INode
     public function hasAttribute(string $key): bool;
 
     /**
-     * Retrieves a single attribute
-     *
      * @param string $key
      *
-     * @return string|null
+     * @return $this
      */
-    public function getAttribute(string $key): ?string;
-
-    /**
-     * Unsets a single attribute
-     *
-     * @param string $key
-     *
-     * @return INode
-     */
-    public function unsetAttribute(string $key): INode;
-
-    /**
-     * Removes a single attribute value
-     *
-     * @param string $key
-     * @param string $value
-     *
-     * @return INode
-     */
-    public function unsetAttributeValue(string $key, string $value): INode;
-
-    /**
-     * Unsets all existing attributes and replaces them with the newly provided attributes
-     * Use addAttributes if you want to keep all existing attributes but the ones provided
-     *
-     * @param array $attributes
-     *
-     * @return INode
-     */
-    public function setAttributes(array $attributes): INode;
-
-    /**
-     * Replaces all set provided attributes with new ones
-     * Existing ones will be kept if not provided
-     *
-     * @param array $attributes
-     *
-     * @return INode
-     */
-    public function addAttributes(array $attributes): INode;
-
-    /**
-     * @param string      $key
-     * @param string|null ...$values
-     *
-     * @return INode
-     */
-    public function setAttribute(string $key, ?string ...$values): INode;
-
-    /**
-     * @param array $attributes
-     *
-     * @return INode
-     */
-    public function appendToAttributes(array $attributes): INode;
+    public function removeAttribute(string $key): self;
 
     /**
      * @param string $key

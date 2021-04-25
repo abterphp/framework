@@ -61,6 +61,7 @@ class Uploader
      * @param UploadedFile[] $fileData
      *
      * @return array file paths of storage
+     * @throws \Exception
      */
     public function persist(array $fileData): array
     {
@@ -120,6 +121,7 @@ class Uploader
      * @param string $path
      *
      * @return bool
+     * @throws FilesystemException
      */
     public function delete(string $path): bool
     {
@@ -150,9 +152,6 @@ class Uploader
 
         try {
             $content = $this->filesystem->read($path);
-            if (false === $content) {
-                return null;
-            }
         } catch (UnableToReadFile $e) {
             return null;
         }

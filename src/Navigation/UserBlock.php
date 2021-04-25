@@ -6,19 +6,16 @@ namespace AbterPhp\Framework\Navigation;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Constant\Session;
-use AbterPhp\Framework\Html\Component;
+use AbterPhp\Framework\Html\Attribute;
 use AbterPhp\Framework\Html\Contentless;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Helper\Attributes;
+use AbterPhp\Framework\Html\Helper\Tag as TagHelper;
 use AbterPhp\Framework\Html\INode;
-use AbterPhp\Framework\Html\INodeContainer;
-use AbterPhp\Framework\Html\NodeContainerTrait;
 use AbterPhp\Framework\Html\Tag;
 use Opulence\Sessions\ISession;
 
-class UserBlock extends Tag implements INodeContainer
+class UserBlock extends Tag
 {
-    use NodeContainerTrait;
-
     protected const DEFAULT_TAG = Html5::TAG_A;
 
     public const AVATAR_BASE_URL = 'https://www.gravatar.com/avatar/%1$s';
@@ -32,18 +29,18 @@ class UserBlock extends Tag implements INodeContainer
     /**
      * UserBlock constructor.
      *
-     * @param ISession     $session
-     * @param string[]     $intents
-     * @param array        $attributes
-     * @param string|null  $tag
+     * @param ISession                     $session
+     * @param string[]                     $intents
+     * @param array<string,Attribute>|null $attributes
+     * @param string|null                  $tag
      */
     public function __construct(
         ISession $session,
         array $intents = [],
-        array $attributes = [],
+        ?array $attributes = null,
         ?string $tag = null
     ) {
-        $this->session      = $session;
+        $this->session = $session;
 
         if (!$this->session->has(Session::USERNAME)) {
             throw new \LogicException('session must be set');
@@ -51,9 +48,9 @@ class UserBlock extends Tag implements INodeContainer
 
         $username = (string)$this->session->get(Session::USERNAME, '');
 
-        $this->mediaLeft  = new Component($this->getUserImage($username), [], [], Html5::TAG_DIV);
-        $this->mediaBody  = new Component($username, [], [], Html5::TAG_DIV);
-        $this->mediaRight = new Component(null, [], [], Html5::TAG_DIV);
+        $this->mediaLeft  = new Tag($this->getUserImage($username), [], null, Html5::TAG_DIV);
+        $this->mediaBody  = new Tag($username, [], null, Html5::TAG_DIV);
+        $this->mediaRight = new Tag(null, [], null, Html5::TAG_DIV);
 
         parent::__construct(null, $intents, $attributes, $tag);
     }
@@ -69,14 +66,15 @@ class UserBlock extends Tag implements INodeContainer
             return $this->getDefaultUserImage($username);
         }
 
-        $emailHash = md5((string)$this->session->get(Session::EMAIL));
-        $url       = sprintf(static::AVATAR_BASE_URL, $emailHash);
+        $emailHash  = md5((string)$this->session->get(Session::EMAIL));
+        $url        = sprintf(static::AVATAR_BASE_URL, $emailHash);
+        $attributes = Attributes::fromArray([Html5::ATTR_SRC => $url, Html5::ATTR_ALT => $username]);
 
-        $img     = new Contentless([], [Html5::ATTR_SRC => $url, Html5::ATTR_ALT => $username], Html5::TAG_IMG);
-        $style   = sprintf('background: url(%1$s) no-repeat;', $url);
-        $attribs = [Html5::ATTR_CLASS => 'user-img', Html5::ATTR_STYLE => $style];
+        $img        = new Contentless([], $attributes, Html5::TAG_IMG);
+        $style      = sprintf('background: url(%1$s) no-repeat;', $url);
+        $attributes = Attributes::fromArray([Html5::ATTR_CLASS => 'user-img', Html5::ATTR_STYLE => $style]);
 
-        return new Component($img, [], $attribs, Html5::TAG_DIV);
+        return new Tag($img, [], $attributes, Html5::TAG_DIV);
     }
 
     /**
@@ -86,9 +84,10 @@ class UserBlock extends Tag implements INodeContainer
      */
     protected function getDefaultUserImage(string $username): INode
     {
-        $url = 'https://via.placeholder.com/40/09f/fff.png';
+        $url        = 'https://via.placeholder.com/40/09f/fff.png';
+        $attributes = Attributes::fromArray([Html5::ATTR_SRC => $url, Html5::ATTR_ALT => $username]);
 
-        return new Contentless([], [Html5::ATTR_SRC => $url, Html5::ATTR_ALT => $username]);
+        return new Contentless([], $attributes, Html5::TAG_SPAN);
     }
 
     /**
@@ -165,6 +164,6 @@ class UserBlock extends Tag implements INodeContainer
         $content[] = (string)$this->mediaBody;
         $content[] = (string)$this->mediaRight;
 
-        return StringHelper::wrapInTag(implode("\n", $content), $this->tag, $this->attributes);
+        return TagHelper::toString($this->tag, implode("\n", $content), $this->attributes);
     }
 }

@@ -10,12 +10,14 @@ use AbterPhp\Framework\Grid\Cell\Cell;
 use AbterPhp\Framework\Grid\Collection\Cells;
 use AbterPhp\Framework\Grid\Row\IRow;
 use AbterPhp\Framework\Grid\Row\Row;
-use AbterPhp\Framework\Html\Component;
+use AbterPhp\Framework\Html\Attribute;
 use AbterPhp\Framework\Html\INode;
+use AbterPhp\Framework\Html\Tag;
 
-class Body extends Component
+class Body extends Tag
 {
-    protected const DEFAULT_TAG = Html5::TAG_TBODY;
+    protected const DEFAULT_TAG  = Html5::TAG_TBODY;
+    protected const CONTENT_TYPE = IRow::class;
 
     /** @var array<string,callable> */
     protected array $getters;
@@ -23,22 +25,28 @@ class Body extends Component
     protected ?Actions $actions;
 
     /** @var IRow[] */
-    protected array $nodes = [];
-
-    protected string $nodeClass = IRow::class;
+    protected array $content = [];
 
     /**
      * Body constructor.
      *
-     * @param array<string,callable> $getters
-     * @param Actions|null           $actions
+     * @param array<string,callable>  $getters
+     * @param Actions|null            $actions
+     * @param IRow[]|null             $content
+     * @param string[]                $intents
+     * @param array<string,Attribute> $attributes
      */
-    public function __construct(array $getters, ?Actions $actions)
-    {
-        parent::__construct();
+    public function __construct(
+        array $getters,
+        ?Actions $actions,
+        ?array $content = null,
+        array $intents = [],
+        array $attributes = []
+    ) {
+        parent::__construct($content, $intents, $attributes);
 
-        $this->getters      = $getters;
-        $this->actions      = $actions;
+        $this->getters = $getters;
+        $this->actions = $actions;
     }
 
     /**
@@ -51,12 +59,12 @@ class Body extends Component
         foreach ($entities as $entity) {
             $cells = $this->createCells($entity);
 
-            $actions = $this->actions ? $this->actions->duplicate() : null;
+            $actions = $this->actions ? clone $this->actions : null;
 
             $row = new Row($cells, $actions);
             $row->setEntity($entity);
 
-            $this->nodes[] = $row;
+            $this->content[] = $row;
         }
 
         return $this;

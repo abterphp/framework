@@ -4,6 +4,8 @@ composer.phar
 nbproject/
 phpunit.phar
 NOTES.md
+.phpunit.cache
 .phpunit.result.cache
 tmp/report/*
+clover.xml
 vendor/

@@ -19,12 +19,14 @@ class CasbinDatabaseAdapterBootstrapperTest extends TestCase
 
     public function setUp(): void
     {
-        $this->sut = new CasbinDatabaseAdapterBootstrapper();
-    }
-
-    protected function tearDown(): void
-    {
         Environment::unsetVar('DB_DRIVER');
+        Environment::setVar('DB_HOST', 'db');
+        Environment::setVar('DB_NAME', 'test');
+        Environment::setVar('DB_PASSWORD', 'pass');
+        Environment::setVar('DB_PORT', '4321');
+        Environment::setVar('DB_USER', 'root');
+
+        $this->sut = new CasbinDatabaseAdapterBootstrapper();
     }
 
     public function testRegisterBindingsPostgresTriesToConnectToDB(): void
@@ -32,7 +34,6 @@ class CasbinDatabaseAdapterBootstrapperTest extends TestCase
         Environment::setVar('DB_DRIVER', PostgreSqlDriver::class);
 
         $this->expectException(PDOException::class);
-        $this->expectErrorMessageMatches('/No such file or directory/');
 
         $container = new Container();
 
@@ -44,7 +45,6 @@ class CasbinDatabaseAdapterBootstrapperTest extends TestCase
         Environment::setVar('DB_DRIVER', MySqlDriver::class);
 
         $this->expectException(PDOException::class);
-        $this->expectErrorMessageMatches('/No such file or directory/');
 
         $container = new Container();
 

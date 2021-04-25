@@ -9,27 +9,27 @@ use PHPUnit\Framework\TestCase;
 
 class ActionsTest extends TestCase
 {
-    public function testDuplicateWithEmptyNodes(): void
+    public function testCloneWithoutNodes(): void
     {
         $sut = new Actions();
 
-        $duplicate = $sut->duplicate();
+        $clone = clone $sut;
 
-        $this->assertNotSame($sut, $duplicate);
-        $this->assertEquals($sut, $duplicate);
+        $this->assertNotSame($sut, $clone);
+        $this->assertEquals($sut, $clone);
     }
 
-    public function testDuplicateWithNodes(): void
+    public function testCloneWithNodes(): void
     {
         $sut = new Actions();
 
         $sut[] = new Action('abc');
         $sut[] = new Action('bcd');
 
-        $duplicate = $sut->duplicate();
+        $clone = clone $sut;
 
-        $this->assertCount(2, $duplicate);
-        $this->assertNotSame($sut, $duplicate);
-        $this->assertEquals($sut, $duplicate);
+        $this->assertCount(2, $clone->getNodes());
+        $this->assertNotSame($sut, $clone);
+        $this->assertEquals($sut, $clone);
     }
 }

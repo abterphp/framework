@@ -7,22 +7,22 @@ namespace AbterPhp\Framework\Grid\Pagination;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Grid\Action\Action;
 use AbterPhp\Framework\Grid\Component\Actions;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
 
 class Numbers extends Actions
 {
     /** @var string */
     protected string $baseUrl = '';
 
-    /** @var array<string,mixed> */
-    protected array $fakeBtnAttr = [
-        Html5::ATTR_DISABLED => null,
-    ];
+    /** @var array<string,Attribute> */
+    protected array $fakeBtnAttr;
 
     /** @var string[] */
     protected array $fakeBtnIntents = [Action::INTENT_PRIMARY];
 
-    /** @var array<string,null|string|string[]> */
-    protected array $realBtnAttr = [];
+    /** @var array<string,Attribute> */
+    protected array $realBtnAttr;
 
     /** @var string[] */
     protected array $realBtnIntents = [Action::INTENT_PRIMARY];
@@ -35,6 +35,9 @@ class Numbers extends Actions
     public function __construct(string $baseUrl)
     {
         parent::__construct();
+
+        $this->fakeBtnAttr = Attributes::fromArray([Html5::ATTR_DISABLED => null]);
+        $this->realBtnAttr = [];
 
         $this->baseUrl = $baseUrl;
     }
@@ -76,19 +79,25 @@ class Numbers extends Actions
     protected function attachLeft(bool $isFirst, bool $isFirstVisible, int $currentPage): void
     {
         if (!$isFirstVisible) {
-            $this->realBtnAttr[Html5::ATTR_HREF] = sprintf('%spage=%d', $this->baseUrl, 1);
+            $this->realBtnAttr = Attributes::replaceItem(
+                $this->realBtnAttr,
+                new Attribute(Html5::ATTR_HREF, sprintf('%spage=%d', $this->baseUrl, 1))
+            );
 
-            $this->nodes[] = new Action('<<', $this->realBtnIntents, $this->realBtnAttr, [], Html5::TAG_A);
+            $this->content[] = new Action('<<', $this->realBtnIntents, $this->realBtnAttr, [], Html5::TAG_A);
         }
 
         if (!$isFirst) {
-            $this->realBtnAttr[Html5::ATTR_HREF] = sprintf('%spage=%d', $this->baseUrl, $currentPage - 1);
+            $this->realBtnAttr = Attributes::replaceItem(
+                $this->realBtnAttr,
+                new Attribute(Html5::ATTR_HREF, sprintf('%spage=%d', $this->baseUrl, $currentPage - 1))
+            );
 
-            $this->nodes[] = new Action('<', $this->realBtnIntents, $this->realBtnAttr, [], Html5::TAG_A);
+            $this->content[] = new Action('<', $this->realBtnIntents, $this->realBtnAttr, [], Html5::TAG_A);
         }
 
         if (!$isFirstVisible) {
-            $this->nodes[] = new Action('...', $this->realBtnIntents, $this->fakeBtnAttr, [], Html5::TAG_BUTTON);
+            $this->content[] = new Action('...', $this->realBtnIntents, $this->fakeBtnAttr, [], Html5::TAG_BUTTON);
         }
     }
 
@@ -100,11 +109,14 @@ class Numbers extends Actions
     {
         foreach ($numbers as $number) {
             if ($currentPage == $number) {
-                $this->nodes[] = new Action("$number", $this->fakeBtnIntents, $this->fakeBtnAttr);
+                $this->content[] = new Action("$number", $this->fakeBtnIntents, $this->fakeBtnAttr);
             } else {
-                $this->realBtnAttr[Html5::ATTR_HREF] = sprintf('%spage=%d', $this->baseUrl, $number);
+                $this->realBtnAttr = Attributes::replaceItem(
+                    $this->realBtnAttr,
+                    new Attribute(Html5::ATTR_HREF, sprintf('%spage=%d', $this->baseUrl, $number))
+                );
 
-                $this->nodes[] = new Action("$number", $this->realBtnIntents, $this->realBtnAttr, [], Html5::TAG_A);
+                $this->content[] = new Action("$number", $this->realBtnIntents, $this->realBtnAttr, [], Html5::TAG_A);
             }
         }
     }
@@ -118,19 +130,25 @@ class Numbers extends Actions
     protected function attachRight(bool $isLast, bool $isLastVisible, int $currentPage, int $lastPage): void
     {
         if (!$isLastVisible) {
-            $this->nodes[] = new Action('...', $this->fakeBtnIntents, $this->fakeBtnAttr);
+            $this->content[] = new Action('...', $this->fakeBtnIntents, $this->fakeBtnAttr);
         }
 
         if (!$isLast) {
-            $this->realBtnAttr[Html5::ATTR_HREF] = sprintf('%spage=%d', $this->baseUrl, $currentPage + 1);
+            $this->realBtnAttr = Attributes::replaceItem(
+                $this->realBtnAttr,
+                new Attribute(Html5::ATTR_HREF, sprintf('%spage=%d', $this->baseUrl, $currentPage + 1))
+            );
 
-            $this->nodes[] = new Action('>', $this->realBtnIntents, $this->realBtnAttr, [], Html5::TAG_A);
+            $this->content[] = new Action('>', $this->realBtnIntents, $this->realBtnAttr, [], Html5::TAG_A);
         }
 
         if (!$isLastVisible) {
-            $this->realBtnAttr[Html5::ATTR_HREF] = sprintf('%spage=%d', $this->baseUrl, $lastPage);
+            $this->realBtnAttr = Attributes::replaceItem(
+                $this->realBtnAttr,
+                new Attribute(Html5::ATTR_HREF, sprintf('%spage=%d', $this->baseUrl, $lastPage))
+            );
 
-            $this->nodes[] = new Action('>>', $this->realBtnIntents, $this->realBtnAttr, [], Html5::TAG_A);
+            $this->content[] = new Action('>>', $this->realBtnIntents, $this->realBtnAttr, [], Html5::TAG_A);
         }
     }
 }

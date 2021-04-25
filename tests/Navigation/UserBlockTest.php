@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Navigation;
 
 use AbterPhp\Framework\Constant\Session as SessionConstant;
-use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Node;
-use AbterPhp\Framework\Html\TagTest;
 use Opulence\Sessions\ISession;
 use Opulence\Sessions\Session;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class UserBlockTest extends TagTest
+class UserBlockTest extends TestCase
 {
     /** @var ISession|MockObject */
     protected $sessionMock;
@@ -75,7 +73,7 @@ class UserBlockTest extends TagTest
         $rendered = (string)$sut;
 
         $this->assertStringContainsString(
-            '<a><div><span src="https://via.placeholder.com/40/09f/fff.png" alt="Mr. Wolf"></div>',
+            '<a><div><span src="https://via.placeholder.com/40/09f/fff.png" alt="Mr. Wolf"></span></div>',
             $rendered
         ); // nolint
         $this->assertStringContainsString('<div>Mr. Wolf</div>', $rendered);
@@ -84,7 +82,7 @@ class UserBlockTest extends TagTest
 
     public function testDefaultToString(): void
     {
-        $sut = $this->createNode();
+        $sut = $this->createUserBlock();
 
         $rendered = (string)$sut;
 
@@ -98,7 +96,7 @@ class UserBlockTest extends TagTest
 
     public function testToStringWithOptionalsSet(): void
     {
-        $sut = $this->createNode();
+        $sut = $this->createUserBlock();
 
         $sut->setMediaLeft(new Node('AAA'));
         $sut->setMediaBody(new Node('BBB'));
@@ -113,7 +111,7 @@ class UserBlockTest extends TagTest
     {
         $expectedNodes = [];
 
-        $sut = $this->createNode();
+        $sut = $this->createUserBlock();
 
         $actualResult = $sut->getNodes();
 
@@ -122,49 +120,22 @@ class UserBlockTest extends TagTest
 
     public function testGetExtendedNodes(): void
     {
-        $sut = $this->createNode();
+        $sut = $this->createUserBlock();
 
         $actualResult = $sut->getExtendedNodes();
 
         $this->assertCount(3, $actualResult);
-        $this->assertInstanceOf(Component::class, $actualResult[0]);
-        $this->assertInstanceOf(Component::class, $actualResult[1]);
-        $this->assertInstanceOf(Component::class, $actualResult[2]);
-    }
-
-    public function testGetMediaLeftReturnsINodeByDefault(): void
-    {
-        $sut = $this->createNode();
-
-        $actualResult = $sut->getMediaLeft();
-
-        $this->assertInstanceOf(INode::class, $actualResult);
-    }
-
-    public function testGetMediaRightReturnsINodeByDefault(): void
-    {
-        $sut = $this->createNode();
-
-        $actualResult = $sut->getMediaRight();
-
-        $this->assertInstanceOf(INode::class, $actualResult);
-    }
-
-    public function testGetMediaBodyReturnsINodeByDefault(): void
-    {
-        $sut = $this->createNode();
-
-        $actualResult = $sut->getMediaBody();
-
-        $this->assertInstanceOf(INode::class, $actualResult);
+        $this->assertInstanceOf(Node::class, $actualResult[0]);
+        $this->assertInstanceOf(Node::class, $actualResult[1]);
+        $this->assertInstanceOf(Node::class, $actualResult[2]);
     }
 
     public function testGetMediaLeftReturnsTheLastSetMediaLeft(): void
     {
-        /** @var IComponent $mediaLeft */
-        $mediaLeft = $this->createMock(IComponent::class);
+        /** @var Node|MockObject $mediaLeft */
+        $mediaLeft = $this->createMock(Node::class);
 
-        $sut = $this->createNode();
+        $sut = $this->createUserBlock();
 
         $sut->setMediaLeft($mediaLeft);
 
@@ -175,10 +146,10 @@ class UserBlockTest extends TagTest
 
     public function testGetMediaRightReturnsTheLastSetMediaRight(): void
     {
-        /** @var IComponent $mediaRight */
-        $mediaRight = $this->createMock(IComponent::class);
+        /** @var Node|MockObject $mediaRight */
+        $mediaRight = $this->createMock(Node::class);
 
-        $sut = $this->createNode();
+        $sut = $this->createUserBlock();
 
         $sut->setMediaRight($mediaRight);
 
@@ -189,10 +160,10 @@ class UserBlockTest extends TagTest
 
     public function testGetMediaBodyReturnsTheLastSetMediaBody(): void
     {
-        /** @var IComponent $mediaBody */
-        $mediaBody = $this->createMock(IComponent::class);
+        /** @var Node|MockObject $mediaBody */
+        $mediaBody = $this->createMock(Node::class);
 
-        $sut = $this->createNode();
+        $sut = $this->createUserBlock();
 
         $sut->setMediaBody($mediaBody);
 
@@ -206,7 +177,7 @@ class UserBlockTest extends TagTest
      *
      * @return UserBlock
      */
-    protected function createNode($content = null): INode
+    protected function createUserBlock($content = null): UserBlock
     {
         $userBlock = new UserBlock($this->sessionMock);
 

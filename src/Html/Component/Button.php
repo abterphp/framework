@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Html\Component;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Component;
+use AbterPhp\Framework\Html\Tag;
 
-class Button extends Component
+class Button extends Tag
 {
     protected const DEFAULT_TAG = Html5::TAG_BUTTON;
 

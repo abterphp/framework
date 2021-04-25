@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Action;
 
+use AbterPhp\Framework\Html\Attribute;
 use AbterPhp\Framework\Html\Component\Button;
 use AbterPhp\Framework\Html\INode;
+use InvalidArgumentException;
+use LogicException;
 use Opulence\Orm\IEntity;
 
 class Action extends Button implements IAction
@@ -18,20 +21,28 @@ class Action extends Button implements IAction
     /**
      * Action constructor.
      *
-     * @param INode[]|INode|string|null          $content
-     * @param string[]                           $intents
-     * @param array<string,null|string|string[]> $attributes
-     * @param array<string,callable>             $attributeCallbacks
-     * @param string|null                        $tag
+     * @param INode[]|INode|string|null $content
+     * @param string[]                  $intents
+     * @param Attribute[]|null          $attributes
+     * @param array<string,callable>    $attributeCallbacks
+     * @param string|null               $tag
      */
     public function __construct(
         $content,
         array $intents = [],
-        array $attributes = [],
+        ?array $attributes = null,
         array $attributeCallbacks = [],
         ?string $tag = null
     ) {
         parent::__construct($content, $intents, $attributes, $tag);
+
+        foreach (array_keys($attributeCallbacks) as $key) {
+            if (!array_key_exists($key, $this->attributes)) {
+                throw new InvalidArgumentException(
+                    sprintf('Attribute callback for non-existent attribute: %s', $key)
+                );
+            }
+        }
 
         $this->attributeCallbacks = $attributeCallbacks;
     }
@@ -50,25 +61,26 @@ class Action extends Button implements IAction
     public function __toString(): string
     {
         foreach ($this->attributeCallbacks as $key => $callback) {
-            $value  = $this->hasAttribute($key) ? $this->getAttribute($key) : null;
+            $value  = $this->attributes[$key]->getValue();
             $result = (array)$callback($value, $this->entity);
 
-            $this->setAttribute($key, ...$result);
+            $this->setAttribute(new Attribute($key, ...$result));
         }
 
         return parent::__toString();
     }
 
     /**
-     * @return IAction
+     * @param string $key
+     *
+     * @return $this
      */
-    public function duplicate(): IAction
+    public function removeAttribute(string $key): self
     {
-        $nodes = [];
-        foreach ($this->nodes as $node) {
-            $nodes[] = clone $node;
+        if (array_key_exists($key, $this->attributeCallbacks)) {
+            throw new LogicException(sprintf("Attribute is protected, can not be removed: %s", $key));
         }
 
-        return new Action($nodes, $this->intents, $this->attributes, $this->attributeCallbacks, $this->tag);
+        return parent::removeAttribute($key);
     }
 }

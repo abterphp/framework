@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Template;
 
+use AbterPhp\Framework\Html\Attribute;
+
 class ParsedTemplate
 {
-    /** @var string */
     protected string $type;
 
-    /** @var string */
     protected string $identifier;
 
-    /** @var string[] */
+    /** @var array<string,Attribute> */
     protected array $attributes;
 
     /** @var string[] */
@@ -21,17 +21,21 @@ class ParsedTemplate
     /**
      * ParsedData constructor.
      *
-     * @param string   $type
-     * @param string   $identifier
-     * @param string[] $attributes
-     * @param string[] $occurences
+     * @param string                       $type
+     * @param string                       $identifier
+     * @param array<string,Attribute>|null $attributes
+     * @param string[]                     $occurrences
      */
-    public function __construct(string $type, string $identifier, array $attributes = [], array $occurences = [])
-    {
-        $this->type       = $type;
-        $this->identifier = $identifier;
-        $this->attributes = $attributes;
-        $this->occurrences = $occurences;
+    public function __construct(
+        string $type,
+        string $identifier,
+        ?array $attributes = null,
+        array $occurrences = []
+    ) {
+        $this->type        = $type;
+        $this->identifier  = $identifier;
+        $this->attributes  = $attributes ?? [];
+        $this->occurrences = $occurrences;
     }
 
     /**
@@ -51,7 +55,7 @@ class ParsedTemplate
     }
 
     /**
-     * @return string[]
+     * @return array<string,Attribute>
      */
     public function getAttributes(): array
     {
@@ -59,15 +63,15 @@ class ParsedTemplate
     }
 
     /**
-     * @param string      $attribute
+     * @param string      $key
      * @param string|null $default
      *
      * @return string|null
      */
-    public function getAttribute(string $attribute, ?string $default = null): ?string
+    public function getAttributeValue(string $key, ?string $default = null): ?string
     {
-        if (array_key_exists($attribute, $this->attributes)) {
-            return $this->attributes[$attribute];
+        if (isset($this->attributes[$key])) {
+            return $this->attributes[$key]->getValue();
         }
 
         return $default;

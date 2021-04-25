@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Helper;
 
+use DateTime;
 use PHPUnit\Framework\TestCase;
 
 class MysqlTest extends TestCase
 {
     public function nullableParamProvider(): array
     {
+        $dateString = '2010-11-27 09:08:59';
+        $dateTime   = new DateTime($dateString);
+
         return [
             'null'                     => [null, \PDO::PARAM_STR, [null, \PDO::PARAM_NULL]],
             'empty string'             => ['', \PDO::PARAM_STR, ['', \PDO::PARAM_STR]],
@@ -19,13 +23,9 @@ class MysqlTest extends TestCase
             'number as int'            => [23.4, \PDO::PARAM_INT, [23.4, \PDO::PARAM_INT]],
             'false as bool'            => [false, \PDO::PARAM_BOOL, [false, \PDO::PARAM_BOOL]],
             'true as bool'             => [true, \PDO::PARAM_BOOL, [true, \PDO::PARAM_BOOL]],
-            'datetime'                 => [
-                new \DateTime('2010-11-27 09:08:59'),
-                \PDO::PARAM_STR,
-                ['2010-11-27 09:08:59', \PDO::PARAM_STR],
-            ],
+            'datetime'                 => [$dateTime, \PDO::PARAM_STR, ['2010-11-27 09:08:59', \PDO::PARAM_STR],],
             'date'                     => [
-                new \DateTime('2010-11-27 09:08:59'),
+                $dateTime,
                 \PDO::PARAM_STR,
                 ['2010-11-27', \PDO::PARAM_STR],
                 Mysql::OPTION_PREFER_DATE,

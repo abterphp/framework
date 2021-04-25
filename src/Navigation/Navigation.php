@@ -5,21 +5,17 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Navigation;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Collection;
-use AbterPhp\Framework\Html\Helper\StringHelper;
-use AbterPhp\Framework\Html\ICollection;
-use AbterPhp\Framework\Html\IComponent;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Contentless;
 use AbterPhp\Framework\Html\INode;
-use AbterPhp\Framework\Html\INodeContainer;
-use AbterPhp\Framework\Html\Tag;
-use AbterPhp\Framework\I18n\ITranslator;
+use AbterPhp\Framework\Html\IStringer;
+use AbterPhp\Framework\Html\ITag;
+use AbterPhp\Framework\Html\Node;
+use InvalidArgumentException;
+use LogicException;
 
-class Navigation extends Tag implements INodeContainer
+class Navigation extends Contentless
 {
-    protected const DEFAULT_TAG = Html5::TAG_UL;
-
-    protected const ERROR_INVALID_TAG_FOR_ITEM_CREATION = 'item creation is not allowed for navigation type: %s';
-
     public const ROLE_NAVIGATION = 'navigation';
 
     public const INTENT_NAVBAR    = 'navbar';
@@ -27,41 +23,71 @@ class Navigation extends Tag implements INodeContainer
     public const INTENT_PRIMARY   = 'primary';
     public const INTENT_SECONDARY = 'secondary';
 
-    protected ICollection $prefix;
-    protected ICollection $postfix;
+    protected const DEFAULT_TAG = Html5::TAG_UL;
+    protected const CONTENT_TYPE = Item::class;
+    protected const SEPARATOR = "\n";
 
-    protected ?IComponent $wrapper = null;
+    protected const ERROR_INVALID_TAG_FOR_ITEM_CREATION = 'item creation is not allowed for navigation type: %s';
+    protected const ERROR_NAVIGATION_OFFSET_NOT_ALLOWED = 'navigation offsets are not allowed';
+    protected const ERROR_UNEXPECTED_OFFSET_VALUE_COMBINATION = 'Unexpected offset-value combination: %s %s';
 
-    /** @var Item[][] */
+    protected INode $prefix;
+    protected INode $postfix;
+
+    protected ?ITag $wrapper = null;
+
+    /** @var array<int,Item[]> */
     protected array $itemsByWeight = [];
 
+    /** @var int highest key of $itemsByWeight */
+    protected int $highestWeight = 0;
+
     /** @var Item[] */
-    protected array $nodes = [];
+    protected array $content = [];
 
     /**
      * Navigation constructor.
      *
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param string[]                     $intents
+     * @param array<string,Attribute>|null $attributes
+     * @param string|null                  $tag
      */
-    public function __construct(array $intents = [], array $attributes = [], ?string $tag = null)
+    public function __construct(array $intents = [], ?array $attributes = null, ?string $tag = null)
     {
-        parent::__construct(null, $intents, $attributes, $tag);
+        parent::__construct($intents, $attributes, $tag);
 
-        $this->prefix  = new Collection();
-        $this->postfix = new Collection();
+        $this->prefix  = new Node();
+        $this->postfix = new Node();
     }
 
     /**
-     * @param Item $component
      * @param int  $weight
+     * @param Item ...$items
      *
      * @return $this
      */
-    public function addItem(Item $component, int $weight = PHP_INT_MAX): Navigation
+    public function addWithWeight(int $weight, Item ...$items): self
     {
-        $this->itemsByWeight[$weight][] = $component;
+        foreach ($items as $item) {
+            $this->itemsByWeight[$weight][] = $item;
+        }
+
+        $this->highestWeight = $this->highestWeight > $weight ? $this->highestWeight : $weight;
+
+        return $this;
+    }
+
+    /**
+     * @param INode ...$items
+     *
+     * @return $this
+     */
+    public function add(INode ...$items): self
+    {
+        foreach ($items as $item) {
+            assert($item instanceof Item);
+            $this->itemsByWeight[$this->highestWeight][] = $item;
+        }
 
         return $this;
     }
@@ -70,28 +96,28 @@ class Navigation extends Tag implements INodeContainer
     {
         ksort($this->itemsByWeight);
 
-        $nodes = [];
-        foreach ($this->itemsByWeight as $nodesByWeight) {
-            $nodes = array_merge($nodes, $nodesByWeight);
+        $content = [];
+        foreach ($this->itemsByWeight as $items) {
+            $content = array_merge($content, $items);
         }
 
-        $this->nodes = $nodes;
+        $this->content = $content;
     }
 
     /**
-     * @return ICollection
+     * @return INode
      */
-    public function getPrefix(): ICollection
+    public function getPrefix(): INode
     {
         return $this->prefix;
     }
 
     /**
-     * @param ICollection $prefix
+     * @param INode $prefix
      *
      * @return $this
      */
-    public function setPrefix(ICollection $prefix): Navigation
+    public function setPrefix(INode $prefix): self
     {
         $this->prefix = $prefix;
 
@@ -99,19 +125,19 @@ class Navigation extends Tag implements INodeContainer
     }
 
     /**
-     * @return ICollection
+     * @return INode
      */
-    public function getPostfix(): ICollection
+    public function getPostfix(): INode
     {
         return $this->postfix;
     }
 
     /**
-     * @param ICollection $postfix
+     * @param INode $postfix
      *
      * @return $this
      */
-    public function setPostfix(ICollection $postfix): Navigation
+    public function setPostfix(INode $postfix): self
     {
         $this->postfix = $postfix;
 
@@ -119,19 +145,19 @@ class Navigation extends Tag implements INodeContainer
     }
 
     /**
-     * @return IComponent|null
+     * @return ITag|null
      */
-    public function getWrapper(): ?IComponent
+    public function getWrapper(): ?ITag
     {
         return $this->wrapper;
     }
 
     /**
-     * @param IComponent|null $wrapper
+     * @param ITag|null $wrapper
      *
      * @return $this
      */
-    public function setWrapper(?IComponent $wrapper): Navigation
+    public function setWrapper(?ITag $wrapper): self
     {
         $this->wrapper = $wrapper;
 
@@ -141,95 +167,25 @@ class Navigation extends Tag implements INodeContainer
     /**
      * @return INode[]
      */
-    public function getExtendedNodes(): array
-    {
-        $nodes = [$this->prefix, $this->postfix];
-        if ($this->wrapper) {
-            $nodes[] = $this->wrapper;
-        }
-
-        return array_merge($nodes, $this->getNodes());
-    }
-
-    /**
-     * @return INode[]
-     */
     public function getNodes(): array
     {
         $this->resort();
 
-        return $this->nodes;
+        return $this->content;
     }
 
     /**
-     * @param int $depth
-     *
      * @return INode[]
      */
-    public function getDescendantNodes(int $depth = -1): array
+    public function getExtendedNodes(): array
     {
-        $nodes = [];
-        foreach ($this->getNodes() as $node) {
-            $nodes[] = $node;
+        $nodes = array_merge([$this->prefix, $this->postfix], $this->getNodes());
 
-            if ($depth !== 0 && $node instanceof INodeContainer) {
-                $nodes = array_merge($nodes, $node->getDescendantNodes($depth - 1));
-            }
+        if ($this->wrapper) {
+            $nodes[] = $this->wrapper;
         }
 
         return $nodes;
-    }
-
-    /**
-     * @param int $depth
-     *
-     * @return INode[]
-     */
-    public function getExtendedDescendantNodes(int $depth = -1): array
-    {
-        $nodes = [];
-        foreach ($this->getExtendedNodes() as $node) {
-            $nodes[] = $node;
-
-            if ($depth !== 0 && $node instanceof INodeContainer) {
-                $nodes = array_merge($nodes, $node->getExtendedDescendantNodes($depth - 1));
-            }
-        }
-
-        return $nodes;
-    }
-
-    /**
-     * @param ITranslator|null $translator
-     *
-     * @return INode
-     */
-    public function setTranslator(?ITranslator $translator): INode
-    {
-        $this->translator = $translator;
-
-        $nodes = $this->getExtendedNodes();
-        /** @var INode $node */
-        foreach ($nodes as $node) {
-            $node->setTranslator($translator);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param string|INode $content
-     *
-     * @return INode
-     * @deprecated setContent is not supported on Navigation
-     */
-    public function setContent($content): INode
-    {
-        if ($content !== null) {
-            throw new \LogicException('Navigation::setContent must not be called');
-        }
-
-        return $this;
     }
 
     /**
@@ -239,13 +195,8 @@ class Navigation extends Tag implements INodeContainer
     {
         $this->resort();
 
-        $itemContentList = [];
-        foreach ($this->nodes as $node) {
-            $itemContentList[] = (string)$node;
-        }
-        $content = implode("\n", $itemContentList);
+        $content = parent::__toString();
 
-        $content = StringHelper::wrapInTag($content, $this->tag, $this->attributes);
         if ($this->wrapper) {
             $content = (string)$this->wrapper->setContent($content);
         }
@@ -254,5 +205,94 @@ class Navigation extends Tag implements INodeContainer
         $postfix = $this->postfix ? (string)$this->postfix : '';
 
         return $prefix . $content . $postfix;
+    }
+
+    /**
+     * @param int $offset
+     *
+     * @return INode|null
+     */
+    public function offsetGet($offset): ?INode
+    {
+        $this->resort();
+
+        return $this->content[$offset] ?? null;
+    }
+
+    /**
+     * @return int
+     */
+    public function count(): int
+    {
+        $this->resort();
+
+        return count($this->content);
+    }
+
+    public function rewind(): void
+    {
+        $this->resort();
+
+        $this->position = 0;
+    }
+
+    /**
+     * @param int|null $offset
+     * @param INode    $value
+     */
+    public function offsetSet($offset, $value): void
+    {
+        assert($value instanceof Item);
+
+        if (is_null($offset)) {
+            $this->addWithWeight($this->highestWeight, $value);
+            return;
+        } elseif ($offset < 0 || $offset > $this->count()) {
+            throw new InvalidArgumentException(static::ERROR_INVALID_OFFSET);
+        }
+
+        $count = 0;
+        foreach ($this->itemsByWeight as $weight => $values) {
+            $diff = $offset - $count;
+            if (count($values) + $count >= $offset) {
+                array_splice($this->itemsByWeight[$weight], $diff, 1, [$value]);
+
+                break;
+            } else {
+                $count += count($values);
+            }
+        }
+    }
+
+    /**
+     * @param int $offset
+     */
+    public function offsetUnset($offset): void
+    {
+        $count = 0;
+        foreach ($this->itemsByWeight as $weight => $values) {
+            $diff = $offset - count($values);
+            if (count($values) + $count >= $offset) {
+                array_splice($this->itemsByWeight[$weight], $diff, 1);
+
+                break;
+            } else {
+                $count += count($values);
+            }
+        }
+    }
+
+    /**
+     * @param array<string|IStringer>|string|IStringer|null $content
+     *
+     * @return $this
+     */
+    public function setContent($content): self
+    {
+        if (null === $content) {
+            return $this;
+        }
+
+        throw new LogicException(self::ERROR_NO_CONTENT);
     }
 }

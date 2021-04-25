@@ -49,4 +49,13 @@ class MinLengthTest extends TestCase
 
         $this->assertSame('minLength', $actualResult);
     }
+
+    public function testPassesThrowsExceptionIfMinIsNotSet(): void
+    {
+        $this->expectException(\LogicException::class);
+
+        $sut = new MinLength();
+
+        $sut->passes('foo', []);
+    }
 }

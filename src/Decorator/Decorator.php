@@ -42,7 +42,7 @@ abstract class Decorator
      */
     protected function decorateNode(Rule $rule, INode $node): void
     {
-        if (!$node->isMatch($rule->getRequiredClassName(), ...$rule->getRequiredIntents())) {
+        if (!$node->isMatch($rule->getRequiredClassName(), null, ...$rule->getRequiredIntents())) {
             return;
         }
 

@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Grid\Filter;
 
 use AbterPhp\Framework\Form\Label\Label;
-use AbterPhp\Framework\Html\IComponent;
+use AbterPhp\Framework\Html\ITag;
 
-interface IFilter extends IComponent
+interface IFilter extends ITag
 {
     /**
-     * @param array $params
+     * @param array<string,string> $params
      *
      * @return IFilter
      */
     public function setParams(array $params): IFilter;
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getWhereConditions(): array;
 
     /**
-     * @return array
+     * @return array<string,string>
      */
     public function getQueryParams(): array;
 
@@ -32,9 +32,9 @@ interface IFilter extends IComponent
     public function getQueryPart(): string;
 
     /**
-     * @return IComponent
+     * @return ITag
      */
-    public function getWrapper(): IComponent;
+    public function getWrapper(): ITag;
 
     /**
      * @return Label|null

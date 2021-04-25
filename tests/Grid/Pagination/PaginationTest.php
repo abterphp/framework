@@ -39,7 +39,7 @@ class PaginationTest extends TestCase
     ): void {
         $params = ['page' => (string)$page];
 
-        $sut = new Pagination($params, '', $numberCount, $pageSize, [$pageSize], [], []);
+        $sut = new Pagination($params, '', $numberCount, $pageSize, [$pageSize]);
 
         $sut->setTotalCount($totalCount);
 
@@ -58,7 +58,7 @@ class PaginationTest extends TestCase
 
         $params = ['page' => '1'];
 
-        new Pagination($params, '', 4, 10, [10], [], []);
+        new Pagination($params, '', 4, 10, [10]);
     }
 
     public function testConstructFailureOnInvalidPageSize(): void
@@ -67,7 +67,7 @@ class PaginationTest extends TestCase
 
         $params = ['page' => '1'];
 
-        new Pagination($params, '', 5, 8, [10], [], []);
+        new Pagination($params, '', 5, 8, [10]);
     }
 
     public function testConstructFailureOnInvalidPageSizeParam(): void
@@ -76,7 +76,7 @@ class PaginationTest extends TestCase
 
         $params = ['page' => '1', 'page-size' => -8];
 
-        new Pagination($params, '', 4, 10, [10], [], []);
+        new Pagination($params, '', 4, 10, [10]);
     }
 
     public function testSetTotalCountFailureOnNegativeTotalCount(): void
@@ -85,7 +85,7 @@ class PaginationTest extends TestCase
 
         $params = ['page' => '1'];
 
-        $sut = new Pagination($params, '', 5, 10, [10], [], []);
+        $sut = new Pagination($params, '', 5, 10, [10]);
 
         $sut->setTotalCount(-1);
     }
@@ -96,14 +96,14 @@ class PaginationTest extends TestCase
 
         $params = ['page' => '2'];
 
-        $sut = new Pagination($params, '', 5, 10, [10], [], []);
+        $sut = new Pagination($params, '', 5, 10, [10]);
 
         $sut->setTotalCount(0);
     }
 
     public function testGetNodes(): void
     {
-        $sut = new Pagination([], '', 5, 10, [10], [], []);
+        $sut = new Pagination([], '', 5, 10, [10]);
 
         $actualResult = $sut->getNodes();
 
@@ -112,7 +112,7 @@ class PaginationTest extends TestCase
 
     public function testGetExtendedNodes(): void
     {
-        $sut = new Pagination([], '', 5, 10, [10], [], []);
+        $sut = new Pagination([], '', 5, 10, [10]);
 
         $actualResult = $sut->getExtendedNodes();
 
@@ -123,7 +123,7 @@ class PaginationTest extends TestCase
 
     public function testTemplateIsChangeable(): void
     {
-        $sut = new Pagination([], '', 5, 10, [10], [], []);
+        $sut = new Pagination([], '', 5, 10, [10]);
 
         $sut->setTemplate('<foo>%1$s</foo><bar>%2$s%3$s</bar>');
 
@@ -134,7 +134,7 @@ class PaginationTest extends TestCase
     {
         $url = '/foo?';
 
-        $sut = new Pagination([], '', 5, 10, [10], [], []);
+        $sut = new Pagination([], '', 5, 10, [10]);
 
         $sut->setSortedUrl($url);
 
@@ -149,7 +149,7 @@ class PaginationTest extends TestCase
     {
         $url = '/foo?';
 
-        $sut = new Pagination([], '', 5, 10, [10], [], []);
+        $sut = new Pagination([], '', 5, 10, [10]);
 
         $sut->setTotalCount(100);
 
@@ -158,5 +158,16 @@ class PaginationTest extends TestCase
         $actualResult = (string)$sut;
 
         $this->assertStringNotContainsString($url, $actualResult);
+    }
+
+    public function testGetGroup()
+    {
+        $expectedResult = 10;
+
+        $sut = new Pagination([], '', 5, 10, [10]);
+
+        $pageSize = $sut->getPageSize();
+
+        $this->assertSame($expectedResult, $pageSize);
     }
 }

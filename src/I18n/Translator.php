@@ -6,13 +6,13 @@ namespace AbterPhp\Framework\I18n;
 
 class Translator implements ITranslator
 {
-    /** @var array */
-    protected $translations = [];
+    /** @var array<string,array<string,string>> */
+    protected array $translations = [];
 
     /**
      * Translator constructor.
      *
-     * @param array $translations
+     * @param array<string,array<string,string>> $translations
      */
     public function __construct(array $translations)
     {
@@ -20,7 +20,7 @@ class Translator implements ITranslator
     }
 
     /**
-     * @param array $translations
+     * @param array<string,array<string,string>> $translations
      */
     public function setTranslations(array $translations): void
     {
@@ -56,6 +56,8 @@ class Translator implements ITranslator
     }
 
     /**
+     * @suppress PhanTypeMismatchPropertyByRef
+     *
      * @param string $key
      * @param array  $args
      *

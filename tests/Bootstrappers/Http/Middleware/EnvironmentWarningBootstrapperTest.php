@@ -18,12 +18,9 @@ class EnvironmentWarningBootstrapperTest extends TestCase
 
     public function setUp(): void
     {
-        $this->sut = new EnvironmentWarningBootstrapper();
-    }
-
-    protected function tearDown(): void
-    {
         Environment::unsetVar(Env::ENV_NAME);
+
+        $this->sut = new EnvironmentWarningBootstrapper();
     }
 
     public function testRegisterBindings(): void

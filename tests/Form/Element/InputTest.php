@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Form\Element;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Helper\ArrayHelper;
+use AbterPhp\Framework\Html\Attribute;
 use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use InvalidArgumentException;
@@ -21,14 +21,12 @@ class InputTest extends TestCase
     {
         $attributes = StubAttributeFactory::createAttributes();
 
-        $str = ArrayHelper::toAttributes($attributes);
-
         return [
             'simple'               => [
                 'abc',
                 'bcd',
                 'val',
-                [],
+                null,
                 null,
                 null,
                 '<input id="abc" type="text" name="bcd" value="val">',
@@ -37,7 +35,7 @@ class InputTest extends TestCase
                 'abc',
                 'bcd',
                 'val',
-                [],
+                null,
                 [],
                 null,
                 '<input id="abc" type="text" name="bcd" value="val">',
@@ -49,7 +47,7 @@ class InputTest extends TestCase
                 $attributes,
                 [],
                 null,
-                "<input$str id=\"abc\" type=\"text\" name=\"bcd\" value=\"val\">",
+                "<input foo=\"foo baz\" bar=\"bar baz\" id=\"abc\" type=\"text\" name=\"bcd\" value=\"val\">",
             ],
         ];
     }
@@ -60,7 +58,7 @@ class InputTest extends TestCase
      * @param string        $inputId
      * @param string        $name
      * @param string        $value
-     * @param string[][]    $attributes
+     * @param array|null    $attributes
      * @param string[]|null $translations
      * @param string|null   $tag
      * @param string        $expectedResult
@@ -69,45 +67,18 @@ class InputTest extends TestCase
         string $inputId,
         string $name,
         string $value,
-        array $attributes,
+        ?array $attributes,
         ?array $translations,
         ?string $tag,
         string $expectedResult
     ): void {
-        $sut = $this->createElement($inputId, $name, $value, $attributes, $translations, $tag);
+        $sut = $this->createInput($inputId, $name, $value, $attributes, $translations, $tag);
 
         $actualResult   = (string)$sut;
         $repeatedResult = (string)$sut;
 
         $this->assertSame($actualResult, $repeatedResult);
         $this->assertSame($expectedResult, $actualResult);
-    }
-
-    /**
-     * @param string        $inputId
-     * @param string        $name
-     * @param string        $value
-     * @param string[][]    $attributes
-     * @param string[]|null $translations
-     * @param string|null   $tag
-     *
-     * @return Input
-     */
-    private function createElement(
-        string $inputId,
-        string $name,
-        string $value,
-        array $attributes,
-        ?array $translations,
-        ?string $tag
-    ): Input {
-        $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
-
-        $input = new Input($inputId, $name, $value, [], $attributes, $tag);
-
-        $input->setTranslator($translatorMock);
-
-        return $input;
     }
 
     public function testSetValueSetsAttribute(): void
@@ -118,7 +89,7 @@ class InputTest extends TestCase
 
         $sut->setValue($expectedResult);
 
-        $this->assertEquals($sut->getAttribute(Html5::ATTR_VALUE), $expectedResult);
+        $this->assertEquals($expectedResult, $sut->getValue());
     }
 
     /**
@@ -149,15 +120,13 @@ class InputTest extends TestCase
         $sut->setValue($value);
     }
 
-    public function testGetNameReturnsEmptyStringIfUnset(): void
+    public function testRemoveAttributeThrowsExceptionWhenTryingToRemoveProtectedAttributes(): void
     {
-        $sut = new Input('id', 'name');
+        $this->expectException(\RuntimeException::class);
 
-        $sut->unsetAttribute(Html5::ATTR_NAME);
+        $sut = new Input('id', 'foo');
 
-        $actualResult = $sut->getName();
-
-        $this->assertSame('', $actualResult);
+        $sut->removeAttribute(Html5::ATTR_NAME);
     }
 
     public function testGetName(): void
@@ -177,10 +146,37 @@ class InputTest extends TestCase
 
         $sut = new Input('id', $expectedResult);
 
-        $sut->setAttribute(Html5::ATTR_NAME, null);
+        $sut->setAttribute(new Attribute(Html5::ATTR_NAME));
 
         $actualResult = $sut->getName();
 
         $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
+     * @param string                       $inputId
+     * @param string                       $name
+     * @param string                       $value
+     * @param array<string,Attribute>|null $attributes
+     * @param string[]|null                $translations
+     * @param string|null                  $tag
+     *
+     * @return Input
+     */
+    private function createInput(
+        string $inputId,
+        string $name,
+        string $value,
+        ?array $attributes,
+        ?array $translations,
+        ?string $tag
+    ): Input {
+        $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
+
+        $input = new Input($inputId, $name, $value, [], $attributes, $tag);
+
+        $input->setTranslator($translatorMock);
+
+        return $input;
     }
 }

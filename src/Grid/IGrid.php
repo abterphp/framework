@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid;
 
-use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
+use AbterPhp\Framework\Html\ITag;
 
-interface IGrid extends IComponent
+interface IGrid extends ITag
 {
     /**
      * @return int

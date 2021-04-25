@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Html\Component;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\Helper\ArrayHelper;
-use AbterPhp\Framework\Html\IComponent;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
+use AbterPhp\Framework\Html\ITag;
+use AbterPhp\Framework\Html\Tag;
 use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use PHPUnit\Framework\TestCase;
@@ -17,45 +18,53 @@ class ButtonWithIconTest extends TestCase
     public function renderProvider(): array
     {
         $attr = StubAttributeFactory::createAttributes();
-        $str  = ArrayHelper::toAttributes($attr);
+        $str  = Attributes::toString($attr);
 
-        $text = new Component('A', [], [], Html5::TAG_B);
-        $icon = new Component('B', [], [], Html5::TAG_I);
+        $text = new Tag('A', [], null, Html5::TAG_B);
+        $icon = new Tag('', [], null, Html5::TAG_I);
 
         $textStr  = '<b>A</b>';
-        $iconStr  = '<i>B</i>';
+        $iconStr  = '<i></i>';
         $transStr = '<b>Z</b>';
 
         return [
-            'simple'               => [$text, $icon, [], [], null, null, "<button>$iconStr $textStr</button>"],
-            'with attributes'      => [$text, $icon, [], $attr, null, null, "<button$str>$iconStr $textStr</button>"],
-            'missing translations' => [$text, $icon, [], [], [], null, "<button>$iconStr $textStr</button>"],
-            'custom tag'           => [$text, $icon, [], [], null, 'mytag', "<mytag>$iconStr $textStr</mytag>"],
-            'with translations'    => [$text, $icon, [], [], ['A' => 'Z'], null, "<button>$iconStr $transStr</button>"],
+            'simple'               => [$text, $icon, [], null, null, null, "<button>$iconStr $textStr</button>"],
+            'with attributes'      => [$text, $icon, [], $attr, null, null, "<button$str>$iconStr $textStr</button>",],
+            'missing translations' => [$text, $icon, [], null, [], null, "<button>$iconStr $textStr</button>"],
+            'custom tag'           => [$text, $icon, [], null, null, 'mytag', "<mytag>$iconStr $textStr</mytag>"],
+            'with translations'    => [
+                $text,
+                $icon,
+                [],
+                null,
+                ['A' => 'Z'],
+                null,
+                "<button>$iconStr $transStr</button>",
+            ],
         ];
     }
 
     /**
      * @dataProvider renderProvider
      *
-     * @param IComponent  $text
-     * @param IComponent  $icon
-     * @param array       $intents
-     * @param array       $attributes
-     * @param array|null  $translations
-     * @param string|null $tag
-     * @param string      $expectedResult
+     * @param ITag                         $text
+     * @param ITag                         $icon
+     * @param array                        $intents
+     * @param array<string,Attribute>|null $attributes
+     * @param array|null                   $translations
+     * @param string|null                  $tag
+     * @param string                       $expectedResult
      */
     public function testRender(
-        IComponent $text,
-        IComponent $icon,
+        ITag $text,
+        ITag $icon,
         array $intents,
-        array $attributes,
+        ?array $attributes,
         ?array $translations,
         ?string $tag,
         string $expectedResult
     ): void {
-        $sut = $this->createElement($text, $icon, $intents, $attributes, $translations, $tag);
+        $sut = $this->createButtonWithIcon($text, $icon, $intents, $attributes, $translations, $tag);
 
         $actualResult1 = (string)$sut;
         $actualResult2 = (string)$sut;
@@ -68,8 +77,8 @@ class ButtonWithIconTest extends TestCase
     {
         $template = '--||--';
 
-        $text = new Component('A', [], [], Html5::TAG_B);
-        $icon = new Component('B', [], [], Html5::TAG_I);
+        $text = new Tag('A', [], null, Html5::TAG_B);
+        $icon = new Tag('B', [], null, Html5::TAG_I);
 
         $sut = new ButtonWithIcon($text, $icon);
 
@@ -82,8 +91,8 @@ class ButtonWithIconTest extends TestCase
 
     public function testGetTextRetrievesText(): void
     {
-        $text = new Component('A', [], [], Html5::TAG_B);
-        $icon = new Component('B', [], [], Html5::TAG_I);
+        $text = new Tag('A', [], null, Html5::TAG_B);
+        $icon = new Tag('B', [], null, Html5::TAG_I);
 
         $sut = new ButtonWithIcon($text, $icon);
 
@@ -94,8 +103,8 @@ class ButtonWithIconTest extends TestCase
 
     public function testGetIconRetrievesIcon(): void
     {
-        $text = new Component('A', [], [], Html5::TAG_B);
-        $icon = new Component('B', [], [], Html5::TAG_I);
+        $text = new Tag('A', [], null, Html5::TAG_B);
+        $icon = new Tag('B', [], null, Html5::TAG_I);
 
         $sut = new ButtonWithIcon($text, $icon);
 
@@ -105,20 +114,20 @@ class ButtonWithIconTest extends TestCase
     }
 
     /**
-     * @param IComponent  $text
-     * @param IComponent  $icon
-     * @param array       $intents
-     * @param array       $attributes
-     * @param array|null  $translations
-     * @param string|null $tag
+     * @param ITag                         $text
+     * @param ITag                         $icon
+     * @param array                        $intents
+     * @param array<string,Attribute>|null $attributes
+     * @param array|null                   $translations
+     * @param string|null                  $tag
      *
      * @return ButtonWithIcon
      */
-    protected function createElement(
-        IComponent $text,
-        IComponent $icon,
+    protected function createButtonWithIcon(
+        ITag $text,
+        ITag $icon,
         array $intents,
-        array $attributes,
+        ?array $attributes,
         ?array $translations,
         ?string $tag
     ): ButtonWithIcon {

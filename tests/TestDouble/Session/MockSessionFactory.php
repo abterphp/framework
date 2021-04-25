@@ -23,7 +23,7 @@ class MockSessionFactory
         array $sessionData = null,
         string $name = 'foo',
         $sessionId = 'bar'
-    ): ?ISession {
+    ) {
         if (!$sessionData) {
             return null;
         }

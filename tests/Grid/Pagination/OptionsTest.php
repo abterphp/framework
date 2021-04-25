@@ -10,7 +10,7 @@ class OptionsTest extends TestCase
 {
     protected const DEFAULT_PAGE_SIZE = 5;
     protected const PAGE_SIZE_OPTIONS = [5, 10, 25];
-    protected const NUMBER_COUNT = 33;
+    protected const NUMBER_COUNT      = 33;
 
     /** @var Options - System Under Test */
     protected Options $sut;
@@ -41,23 +41,5 @@ class OptionsTest extends TestCase
         $actualResult = $this->sut->getNumberCount();
 
         $this->assertSame(static::NUMBER_COUNT, $actualResult);
-    }
-
-    public function testGetAttributesEmptyByDefault(): void
-    {
-        $actualResult = $this->sut->getAttributes();
-
-        $this->assertSame([], $actualResult);
-    }
-
-    public function testGetAttributes(): void
-    {
-        $attributes = ['foo' => 'bar'];
-
-        $this->sut->setAttributes($attributes);
-
-        $actualResult = $this->sut->getAttributes();
-
-        $this->assertSame($attributes, $actualResult);
     }
 }

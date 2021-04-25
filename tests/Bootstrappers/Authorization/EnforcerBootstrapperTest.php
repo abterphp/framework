@@ -21,13 +21,10 @@ class EnforcerBootstrapperTest extends TestCase
 
     public function setUp(): void
     {
-        $this->sut = new EnforcerBootstrapper();
-    }
-
-    protected function tearDown(): void
-    {
         Environment::unsetVar(Env::DIR_AUTH_CONFIG);
         Environment::unsetVar(Env::ENV_NAME);
+
+        $this->sut = new EnforcerBootstrapper();
     }
 
     public function testRegisterBindingsWithoutSession(): void

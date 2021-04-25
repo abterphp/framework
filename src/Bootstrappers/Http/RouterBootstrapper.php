@@ -28,9 +28,11 @@ class RouterBootstrapper extends BaseBootstrapper
             return $this->routePaths;
         }
 
-        $this->routePaths = $abterModuleManager->getRoutePaths() ?: [];
+        $paths = $abterModuleManager->getRoutePaths() ?: [];
 
-        return $this->routePaths;
+        $this->routePaths = $paths;
+
+        return $paths;
     }
 
     /**

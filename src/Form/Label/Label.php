@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Form\Label;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Component;
+use AbterPhp\Framework\Html\Attribute;
 use AbterPhp\Framework\Html\INode;
+use AbterPhp\Framework\Html\Tag;
 
-class Label extends Component
+class Label extends Tag
 {
     protected const DEFAULT_TAG = Html5::TAG_LABEL;
 
@@ -16,28 +17,24 @@ class Label extends Component
 
     protected string $template;
 
-    /** @var array<string,null|string|string[]> */
-    protected array $attributes = [
-        Html5::ATTR_FOR => '',
-    ];
-
     /**
      * Label constructor.
      *
-     * @param string                    $inputId
-     * @param INode[]|INode|string|null $content
-     * @param string[]                  $intents
-     * @param array                     $attributes
-     * @param string|null               $tag
+     * @param string                       $inputId
+     * @param INode[]|INode|string|null    $content
+     * @param string[]                     $intents
+     * @param array<string,Attribute>|null $attributes
+     * @param string|null                  $tag
      */
     public function __construct(
         string $inputId,
         $content = null,
         array $intents = [],
-        array $attributes = [],
+        ?array $attributes = null,
         ?string $tag = null
     ) {
-        $this->attributes[Html5::ATTR_FOR] = [$inputId];
+        $attributes ??= [];
+        $attributes[Html5::ATTR_FOR] = new Attribute(Html5::ATTR_FOR, $inputId);
 
         parent::__construct($content, $intents, $attributes, $tag);
     }

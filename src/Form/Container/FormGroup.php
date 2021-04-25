@@ -7,16 +7,14 @@ namespace AbterPhp\Framework\Form\Container;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Form\Element\IElement;
 use AbterPhp\Framework\Form\Label\Label;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Tag as TagHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\ITemplater;
-use AbterPhp\Framework\Html\NodeContainerTrait;
 use AbterPhp\Framework\Html\Tag;
 
 class FormGroup extends Tag implements ITemplater
 {
-    use NodeContainerTrait;
-
     protected const DEFAULT_TAG = Html5::TAG_DIV;
 
     /**
@@ -30,9 +28,6 @@ class FormGroup extends Tag implements ITemplater
 
     public const CLASS_REQUIRED = 'required';
 
-    /** @var string[][] */
-    protected array $attributes = [];
-
     protected IElement $input;
 
     protected Label $label;
@@ -44,19 +39,19 @@ class FormGroup extends Tag implements ITemplater
     /**
      * FormGroup constructor.
      *
-     * @param IElement    $input
-     * @param Label       $label
-     * @param INode|null  $help
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param IElement                     $input
+     * @param Label                        $label
+     * @param INode|null                   $help
+     * @param string[]                     $intents
+     * @param array<string,Attribute>|null $attributes
+     * @param string|null                  $tag
      */
     public function __construct(
         IElement $input,
         Label $label,
         ?INode $help = null,
         array $intents = [],
-        array $attributes = [],
+        ?array $attributes = null,
         ?string $tag = null
     ) {
         parent::__construct(null, $intents, $attributes, $tag);
@@ -158,8 +153,6 @@ class FormGroup extends Tag implements ITemplater
             (string)$help
         );
 
-        $content = StringHelper::wrapInTag($content, $this->tag, $this->attributes);
-
-        return $content;
+        return TagHelper::toString($this->tag, $content, $this->attributes);
     }
 }

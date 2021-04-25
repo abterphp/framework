@@ -21,11 +21,15 @@ class HeaderTest extends TestCase
 
         $sut->setBaseUrl($expectedResult);
 
-        /** @var IRow $row */
         foreach ($sut as $row) {
-            /** @var Sortable $cell */
+            assert($row instanceof IRow);
+
             foreach ($row->getCells() as $cell) {
-                $this->assertSame($expectedResult, $cell->getBaseUrl());
+                if ($cell instanceof Sortable) {
+                    $this->assertSame($expectedResult, $cell->getBaseUrl());
+                } else {
+                    $this->fail('$cell is not Sortable');
+                }
             }
         }
     }
@@ -43,8 +47,8 @@ class HeaderTest extends TestCase
 
         $sut->setBaseUrl($expectedResult);
 
-        /** @var IRow $row */
         foreach ($sut as $row) {
+            assert($row instanceof IRow);
             foreach ($row->getCells() as $cell) {
                 if (!($cell instanceof Sortable)) {
                     continue;
@@ -68,8 +72,9 @@ class HeaderTest extends TestCase
 
         $sut->setParams($params);
 
-        /** @var IRow $row */
         foreach ($sut as $row) {
+            assert($row instanceof IRow);
+
             foreach ($row->getCells() as $cell) {
                 if (!($cell instanceof Sortable)) {
                     continue;

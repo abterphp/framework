@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Bootstrappers\Http;
 
-use Opulence\Framework\Configuration\Config;
+use AbterPhp\Framework\Config\Config;
 use Opulence\Framework\Views\Bootstrappers\ViewBootstrapper as BaseBootstrapper;
 use Opulence\Ioc\IContainer;
 use Opulence\Views\Caching\ArrayCache;
@@ -36,9 +36,11 @@ class ViewBootstrapper extends BaseBootstrapper
             return $this->resourcePaths;
         }
 
-        $this->resourcePaths = $abterModuleManager->getResourcePaths() ?: [];
+        $paths = $abterModuleManager->getResourcePaths() ?: [];
 
-        return $this->resourcePaths;
+        $this->resourcePaths = $paths;
+
+        return $paths;
     }
 
     /**
@@ -66,15 +68,15 @@ class ViewBootstrapper extends BaseBootstrapper
      */
     protected function getViewCache(IContainer $container): ICache
     {
-        switch (Config::get('views', 'cache')) {
+        switch (Config::mustGetString('views', 'cache')) {
             case ArrayCache::class:
                 return new ArrayCache();
             default:
                 return new FileCache(
                     Config::get('paths', 'views.compiled'),
-                    Config::get('views', 'cache.lifetime'),
-                    Config::get('views', 'gc.chance'),
-                    Config::get('views', 'gc.divisor')
+                    Config::mustGetInt('views', 'cache.lifetime'),
+                    Config::mustGetInt('views', 'gc.chance'),
+                    Config::mustGetInt('views', 'gc.divisor')
                 );
         }
     }
@@ -106,7 +108,7 @@ class ViewBootstrapper extends BaseBootstrapper
      */
     protected function registerPaths(FileViewNameResolver $resolver): void
     {
-        $globalPath = Config::get('paths', 'views.raw');
+        $globalPath = Config::mustGetString('paths', 'views.raw');
         if ($globalPath) {
             $resolver->registerPath($globalPath);
         }

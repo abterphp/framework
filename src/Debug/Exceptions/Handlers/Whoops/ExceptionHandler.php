@@ -24,9 +24,8 @@ class ExceptionHandler implements IExceptionHandler
     /**
      * @param LoggerInterface   $logger
      * @param ExceptionRenderer $whoopsRenderer
-     * @param array             $exceptionsSkipped
      */
-    public function __construct(LoggerInterface $logger, ExceptionRenderer $whoopsRenderer, array $exceptionsSkipped)
+    public function __construct(LoggerInterface $logger, ExceptionRenderer $whoopsRenderer)
     {
         $this->logger         = $logger;
         $this->whoopsRenderer = $whoopsRenderer;
