@@ -9,7 +9,7 @@ class ExactFilter extends Filter
     public const HELP_CONTENT = 'framework:helpExact';
 
     /**
-     * @param array $params
+     * @param array<string,string> $params
      *
      * @return $this
      */
@@ -17,8 +17,8 @@ class ExactFilter extends Filter
     {
         parent::setParams($params);
 
-        if ($this->value) {
-            $this->queryParams = [$this->value];
+        if ($this->getValue()) {
+            $this->queryParams = [$this->getValue()];
         }
 
         return $this;

@@ -5,19 +5,16 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Config;
 
 use AbterPhp\Framework\Constant\Env;
-use Opulence\Environments\Environment;
+use AbterPhp\Framework\Environments\Environment;
 
 class Routes
 {
     public const ASSETS_PATH = '/:path';
 
-    /** @var string|null */
     protected ?string $mediaUrl = null;
 
-    /** @var string|null */
     protected ?string $cacheUrl = null;
 
-    /** @var string|null */
     protected ?string $assetsPath = null;
 
     /**
@@ -37,7 +34,7 @@ class Routes
             return $this->mediaUrl;
         }
 
-        $this->mediaUrl = (string)Environment::getVar(Env::MEDIA_BASE_URL);
+        $this->mediaUrl = Environment::mustGetVar(Env::MEDIA_BASE_URL);
 
         return $this->mediaUrl;
     }
@@ -66,7 +63,7 @@ class Routes
 
         $this->cacheUrl = sprintf(
             '%s%s%s',
-            rtrim(static::getMediaUrl(), DIRECTORY_SEPARATOR),
+            rtrim($this->getMediaUrl(), DIRECTORY_SEPARATOR),
             DIRECTORY_SEPARATOR,
             ltrim($cachePath, DIRECTORY_SEPARATOR)
         );
@@ -96,8 +93,10 @@ class Routes
             return '';
         }
 
-        $this->assetsPath = sprintf('%s%s', $basePath, static::ASSETS_PATH);
+        $path = sprintf('%s%s', $basePath, static::ASSETS_PATH);
 
-        return $this->assetsPath;
+        $this->assetsPath = $path;
+
+        return $path;
     }
 }

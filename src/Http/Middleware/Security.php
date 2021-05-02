@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Http\Middleware;
 
 use AbterPhp\Framework\Constant\Env;
+use AbterPhp\Framework\Environments\Environment;
 use AbterPhp\Framework\Exception\Security as SecurityException;
 use Closure;
 use Opulence\Cache\ICacheBridge;
-use Opulence\Environments\Environment;
 use Opulence\Http\Requests\Request;
 use Opulence\Http\Responses\Response;
 use Opulence\Routing\Middleware\IMiddleware;
@@ -58,7 +58,7 @@ class Security implements IMiddleware
     public function getVar(string $key): string
     {
         if (!isset($this->environmentData[$key])) {
-            return (string)Environment::getVar($key);
+            return Environment::mustGetVar($key);
         }
 
         return (string)$this->environmentData[$key];

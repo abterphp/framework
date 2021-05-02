@@ -41,9 +41,10 @@ class MockFactory
         }
 
         foreach ($expectsAt as $method => $methodExpectations) {
-            foreach ($methodExpectations as $at => $willReturn) {
-                $entity->expects($testCase->at($at))->method($method)->willReturn($willReturn);
-            }
+            $entity
+                ->expects($testCase->exactly(count($methodExpectations)))
+                ->method($method)
+                ->willReturnOnConsecutiveCalls($methodExpectations);
         }
 
         return $entity;

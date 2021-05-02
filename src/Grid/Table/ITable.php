@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Table;
 
-use AbterPhp\Framework\Html\IComponent;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
+use AbterPhp\Framework\Html\ITag;
 
-interface ITable extends IComponent
+interface ITable extends ITag
 {
     /**
      * @param string $baseUrl
@@ -22,7 +22,7 @@ interface ITable extends IComponent
     public function getSortConditions(): array;
 
     /**
-     * @return array
+     * @return array<string,string>
      */
     public function getSqlParams(): array;
 

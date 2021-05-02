@@ -29,6 +29,8 @@ class EventDispatcherBootstrapper extends BaseBootstrapper
             $this->baseEvents = require Config::get('paths', 'config') . '/events.php';
         }
 
+        assert(is_array($this->baseEvents));
+
         return $this->baseEvents;
     }
 
@@ -55,9 +57,11 @@ class EventDispatcherBootstrapper extends BaseBootstrapper
             return $this->moduleEvents;
         }
 
-        $this->moduleEvents = $abterModuleManager->getEvents() ?: [];
+        $events = $abterModuleManager->getEvents() ?: [];
 
-        return $this->moduleEvents;
+        $this->moduleEvents = $events;
+
+        return $events;
     }
 
     /**

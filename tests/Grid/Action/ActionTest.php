@@ -4,25 +4,34 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Action;
 
-use AbterPhp\Framework\Html\Collection;
-use AbterPhp\Framework\Html\Helper\ArrayHelper;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Node;
+use AbterPhp\Framework\Html\Tag;
 use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
+use LogicException;
 use Opulence\Orm\IEntity;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ActionTest extends TestCase
 {
+    public function testConstructThrowsExceptionIfAttributeDoesNotExistForAttributeCallback()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        new Action(null, [], null, ['foo' => fn () => true]);
+    }
+
     /**
      * @return array[]
      */
     public function renderProvider(): array
     {
         $attributes = StubAttributeFactory::createAttributes();
-        $str        = ArrayHelper::toAttributes($attributes);
+        $str        = Attributes::toString($attributes);
 
         $callbacks = [
             StubAttributeFactory::ATTRIBUTE_FOO => fn() => [
@@ -33,12 +42,12 @@ class ActionTest extends TestCase
         ];
 
         return [
-            'simple'               => ['Button', [], [], null, null, "<button>Button</button>"],
-            'with attributes'      => ['Button', $attributes, [], null, null, "<button$str>Button</button>"],
-            'missing translations' => ['Button', [], [], [], null, "<button>Button</button>"],
-            'custom tag'           => ['Button', [], [], null, 'mybutton', "<mybutton>Button</mybutton>"],
-            'with translations'    => ['Button', [], [], ['Button' => 'Gomb'], null, "<button>Gomb</button>"],
-            'with callbacks'       => ['Button', [], $callbacks, null, null, "<button$str>Button</button>"],
+            'simple'               => ['Button', null, [], null, null, "<button>Button</button>"],
+            'with attributes'      => ['Button', $attributes, [], null, null, "<button$str>Button</button>",],
+            'missing translations' => ['Button', null, [], [], null, "<button>Button</button>"],
+            'custom tag'           => ['Button', null, [], null, 'mybutton', "<mybutton>Button</mybutton>"],
+            'with translations'    => ['Button', null, [], ['Button' => 'Gomb'], null, "<button>Gomb</button>"],
+            'with callbacks'       => ['Button', $attributes, $callbacks, null, null, "<button$str>Button</button>",],
         ];
     }
 
@@ -46,7 +55,7 @@ class ActionTest extends TestCase
      * @dataProvider renderProvider
      *
      * @param INode[]|INode|string|null $content
-     * @param array                     $attributes
+     * @param Attribute[]|null          $attributes
      * @param array                     $attributeCallbacks
      * @param string[]|null             $translations
      * @param string|null               $tag
@@ -54,13 +63,13 @@ class ActionTest extends TestCase
      */
     public function testRender(
         $content,
-        array $attributes,
+        ?array $attributes,
         array $attributeCallbacks,
         ?array $translations,
         ?string $tag,
         string $expectedResult
     ): void {
-        $sut = $this->createElement($content, $attributes, $attributeCallbacks, $translations, $tag);
+        $sut = $this->createAction($content, $attributes, $attributeCallbacks, $translations, $tag);
 
         $actualResult1 = (string)$sut;
         $actualResult2 = (string)$sut;
@@ -78,12 +87,14 @@ class ActionTest extends TestCase
         $entityMock->expects($this->atLeastOnce())->method('getId')->willReturn('bar');
 
         $content            = 'Button';
-        $attributes         = [];
+        $attributes         = Attributes::fromArray([
+            StubAttributeFactory::ATTRIBUTE_FOO => '',
+        ]);
         $attributeCallbacks = [
             StubAttributeFactory::ATTRIBUTE_FOO => fn($value, IEntity $entity) => [$entity->getId()],
         ];
 
-        $sut = $this->createElement($content, $attributes, $attributeCallbacks, null, null);
+        $sut = $this->createAction($content, $attributes, $attributeCallbacks, null, null);
 
         $sut->setEntity($entityMock);
 
@@ -91,31 +102,31 @@ class ActionTest extends TestCase
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testDuplicate(): void
+    public function testClone(): void
     {
         $attributes = StubAttributeFactory::createAttributes();
 
-        $sut = new Action([new Node('A'), new Collection('B')], [], $attributes);
+        $sut = new Action([new Node('A'), new Tag('B')], [], $attributes);
 
-        $clone = $sut->duplicate();
+        $clone = clone $sut;
 
         $this->assertNotSame($sut, $clone);
         $this->assertEquals($sut, $clone);
-        $this->assertCount(2, $clone);
+        $this->assertCount(2, $clone->getNodes());
     }
 
     /**
-     * @param INode[]|INode|string|null $content
-     * @param array                     $attributes
-     * @param array                     $attributeCallbacks
-     * @param array|null                $translations
-     * @param string|null               $tag
+     * @param INode[]|INode|string|null    $content
+     * @param array<string,Attribute>|null $attributes
+     * @param array                        $attributeCallbacks
+     * @param array|null                   $translations
+     * @param string|null                  $tag
      *
      * @return Action
      */
-    private function createElement(
+    private function createAction(
         $content,
-        array $attributes,
+        ?array $attributes,
         array $attributeCallbacks,
         ?array $translations,
         ?string $tag
@@ -125,5 +136,23 @@ class ActionTest extends TestCase
         $action->setTranslator(MockTranslatorFactory::createSimpleTranslator($this, $translations));
 
         return $action;
+    }
+
+    public function testRemoveAttribute()
+    {
+        $sut = new Action(null, [], ['foo' => new Attribute('foo')]);
+
+        $sut->removeAttribute('foo');
+
+        $this->assertSame('<button></button>', (string)$sut);
+    }
+
+    public function testRemoveAttributeThrowsAttributeWhenRemovingAttributeForAttributeCallback()
+    {
+        $this->expectException(LogicException::class);
+
+        $sut = new Action(null, [], ['foo' => new Attribute('foo')], ['foo' => fn () => true]);
+
+        $sut->removeAttribute('foo');
     }
 }

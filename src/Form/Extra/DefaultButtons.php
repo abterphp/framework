@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Form\Extra;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Component;
 use AbterPhp\Framework\Html\Component\Button;
+use AbterPhp\Framework\Html\Contentless;
+use AbterPhp\Framework\Html\Helper\Attributes;
 
-class DefaultButtons extends Component
+class DefaultButtons extends Contentless
 {
     public const BTN_CONTENT_SAVE            = 'framework:save';
     public const BTN_CONTENT_SAVE_AND_BACK   = 'framework:saveAndBack';
@@ -23,27 +24,28 @@ class DefaultButtons extends Component
     public const BTN_VALUE_NEXT_CREATE = 'create';
     public const BTN_VALUE_NEXT_BACK   = 'back';
 
-    protected const DEFAULT_TAG = 'div';
+    protected const SEPARATOR = "\n";
 
-    /** @var Button[] */
-    protected array $components;
-
-    /** @var array<string,null|string[]> */
-    protected array $btnAttributes = [
+    protected const BTN_ATTRIBUTES = [
         Html5::ATTR_NAME  => [self::BTN_NAME_NEXT],
         Html5::ATTR_TYPE  => [Button::TYPE_SUBMIT],
         Html5::ATTR_VALUE => [self::BTN_VALUE_NEXT_NONE],
     ];
+
+    protected const DEFAULT_TAG = 'div';
+
+    /** @var Button[] */
+    protected array $content = [];
 
     /**
      * @return $this
      */
     public function addSave(): DefaultButtons
     {
-        $this->nodes[] = new Button(
+        $this->content[] = new Button(
             static::BTN_CONTENT_SAVE,
             [Button::INTENT_PRIMARY, Button::INTENT_FORM],
-            $this->btnAttributes
+            Attributes::fromArray(static::BTN_ATTRIBUTES)
         );
 
         return $this;
@@ -58,11 +60,11 @@ class DefaultButtons extends Component
     {
         $intents = $intents ?: [Button::INTENT_PRIMARY, Button::INTENT_FORM];
 
-        $attributes = $this->btnAttributes;
+        $attributes                    = static::BTN_ATTRIBUTES;
+        $attributes[Html5::ATTR_VALUE] = static::BTN_VALUE_NEXT_BACK;
+        $attributes                    = Attributes::fromArray($attributes);
 
-        $attributes[Html5::ATTR_VALUE] = [static::BTN_VALUE_NEXT_BACK];
-
-        $this->nodes[] = new Button(
+        $this->content[] = new Button(
             static::BTN_CONTENT_SAVE_AND_BACK,
             $intents,
             $attributes
@@ -80,11 +82,11 @@ class DefaultButtons extends Component
     {
         $intents = $intents ?: [Button::INTENT_DEFAULT, Button::INTENT_FORM];
 
-        $attributes = $this->btnAttributes;
+        $attributes                    = static::BTN_ATTRIBUTES;
+        $attributes[Html5::ATTR_VALUE] = static::BTN_VALUE_NEXT_EDIT;
+        $attributes                    = Attributes::fromArray($attributes);
 
-        $attributes[Html5::ATTR_VALUE] = [static::BTN_VALUE_NEXT_EDIT];
-
-        $this->nodes[] = new Button(
+        $this->content[] = new Button(
             static::BTN_CONTENT_SAVE_AND_EDIT,
             $intents,
             $attributes
@@ -102,11 +104,11 @@ class DefaultButtons extends Component
     {
         $intents = $intents ?: [Button::INTENT_DEFAULT, Button::INTENT_FORM];
 
-        $attributes = $this->btnAttributes;
+        $attributes                    = static::BTN_ATTRIBUTES;
+        $attributes[Html5::ATTR_VALUE] = static::BTN_VALUE_NEXT_CREATE;
+        $attributes                    = Attributes::fromArray($attributes);
 
-        $attributes[Html5::ATTR_VALUE] = [static::BTN_VALUE_NEXT_CREATE];
-
-        $this->nodes[] = new Button(
+        $this->content[] = new Button(
             static::BTN_CONTENT_SAVE_AND_CREATE,
             $intents,
             $attributes
@@ -125,11 +127,9 @@ class DefaultButtons extends Component
     {
         $intents = $intents ?: [Button::INTENT_DANGER, Button::INTENT_FORM];
 
-        $attributes = [
-            Html5::ATTR_HREF => [$showUrl],
-        ];
+        $attributes = Attributes::fromArray([Html5::ATTR_HREF => [$showUrl]]);
 
-        $this->nodes[] = new Button(
+        $this->content[] = new Button(
             static::BTN_CONTENT_BACK_TO_GRID,
             $intents,
             $attributes,

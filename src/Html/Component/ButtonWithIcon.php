@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Html\Component;
 
-use AbterPhp\Framework\Html\Helper\StringHelper;
-use AbterPhp\Framework\Html\IComponent;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Tag;
 use AbterPhp\Framework\Html\INode;
+use AbterPhp\Framework\Html\ITag;
 use AbterPhp\Framework\Html\ITemplater;
 
 class ButtonWithIcon extends Button implements ITemplater
@@ -22,24 +23,24 @@ class ButtonWithIcon extends Button implements ITemplater
 
     protected string $template = self::DEFAULT_TEMPLATE;
 
-    protected IComponent $text;
+    protected ITag $text;
 
-    protected IComponent $icon;
+    protected ITag $icon;
 
     /**
      * ButtonWithIcon constructor.
      *
-     * @param IComponent  $text
-     * @param IComponent  $icon
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param ITag                         $text
+     * @param ITag                         $icon
+     * @param string[]                     $intents
+     * @param array<string,Attribute>|null $attributes
+     * @param string|null                  $tag
      */
     public function __construct(
-        IComponent $text,
-        IComponent $icon,
+        ITag $text,
+        ITag $icon,
         array $intents = [],
-        array $attributes = [],
+        ?array $attributes = null,
         ?string $tag = null
     ) {
         parent::__construct(null, $intents, $attributes, $tag);
@@ -68,12 +69,18 @@ class ButtonWithIcon extends Button implements ITemplater
         return array_merge([$this->text, $this->icon], $this->getNodes());
     }
 
-    public function getText(): IComponent
+    /**
+     * @return ITag
+     */
+    public function getText(): ITag
     {
         return $this->text;
     }
 
-    public function getIcon(): IComponent
+    /**
+     * @return ITag
+     */
+    public function getIcon(): ITag
     {
         return $this->icon;
     }
@@ -89,8 +96,6 @@ class ButtonWithIcon extends Button implements ITemplater
             (string)$this->icon
         );
 
-        $content = StringHelper::wrapInTag($content, $this->tag, $this->attributes);
-
-        return $content;
+        return Tag::toString($this->tag, $content, $this->attributes);
     }
 }

@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 class EngineTest extends TestCase
 {
     /** @var Engine - System Under Test */
-    protected $sut;
+    protected Engine $sut;
 
     /** @var Renderer|MockObject */
     protected $rendererMock;

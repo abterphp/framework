@@ -24,20 +24,20 @@ class NavigationBuilder
      */
     public function __construct(ISession $session, Enforcer $enforcer)
     {
-        $this->username = $session->get(Session::USERNAME);
+        $this->username = (string)$session->get(Session::USERNAME);
         $this->enforcer = $enforcer;
     }
 
     /**
      * @param NavigationReady $event
      *
-     * @throws \Opulence\Routing\Urls\URLException
+     * @throws \Casbin\Exceptions\CasbinException
      */
     public function handle(NavigationReady $event): void
     {
         $navigation = $event->getNavigation();
 
-        $nodes = $navigation->getExtendedDescendantNodes();
+        $nodes = $navigation->getExtendedNodes();
 
         foreach ($nodes as $node) {
             if (!($node instanceof IResourcable)) {

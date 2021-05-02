@@ -5,19 +5,33 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Html;
 
 use AbterPhp\Framework\I18n\ITranslator;
+use Closure;
 
-interface INode
+interface INode extends IStringer
 {
     /**
-     * @param string|INode|null $content
+     * @param array<string|IStringer>|string|IStringer|null $content
      *
-     * @return INode
+     * @return $this
      */
-    public function setContent($content): INode;
+    public function setContent($content): self;
 
     /**
-     * @see Node::$intents
-     *
+     * @return INode[]
+     */
+    public function getNodes(): array;
+
+    /**
+     * @return INode[]
+     */
+    public function getExtendedNodes(): array;
+
+    /**
+     * @return INode[]
+     */
+    public function forceGetNodes(): array;
+
+    /**
      * @param string $intent
      *
      * @return bool
@@ -25,38 +39,32 @@ interface INode
     public function hasIntent(string $intent): bool;
 
     /**
-     * @see Node::$intents
-     *
      * @return string[]
      */
     public function getIntents(): array;
 
     /**
-     * @see Node::$intents
-     *
      * @param string ...$intent
      *
-     * @return INode
+     * @return $this
      */
-    public function setIntent(string ...$intent): INode;
+    public function setIntent(string ...$intent): self;
 
     /**
      * Adds a single intent
      *
-     * @see Node::$intents
-     *
      * @param string ...$intent
      *
-     * @return INode
+     * @return $this
      */
-    public function addIntent(string ...$intent): INode;
+    public function addIntent(string ...$intent): self;
 
     /**
      * @param ITranslator|null $translator
      *
-     * @return INode
+     * @return $this
      */
-    public function setTranslator(?ITranslator $translator): INode;
+    public function setTranslator(?ITranslator $translator): self;
 
     /**
      * @return ITranslator|null
@@ -66,15 +74,64 @@ interface INode
     /**
      * Checks if the current component matches the arguments provided
      *
-     * @param string|null $className
-     * @param string      ...$intents
+     * @param string|null  $className
+     * @param Closure|null $matcher
+     * @param string       ...$intents
      *
      * @return bool
      */
-    public function isMatch(?string $className = null, string ...$intents): bool;
+    public function isMatch(?string $className = null, ?Closure $matcher = null, string ...$intents): bool;
 
     /**
-     * @return string
+     * @param string|null  $className
+     * @param Closure|null $matcher
+     * @param string       ...$intents
+     *
+     * @return INode|null
      */
-    public function __toString(): string;
+    public function find(?string $className = null, ?Closure $matcher = null, string ...$intents): ?INode;
+
+    /**
+     * @param string|null  $className
+     * @param Closure|null $matcher
+     * @param string       ...$intents
+     *
+     * @return INode[]
+     */
+    public function findAll(?string $className = null, ?Closure $matcher = null, string ...$intents): array;
+
+    /**
+     * @param int          $maxDepth
+     * @param string|null  $className
+     * @param Closure|null $matcher
+     * @param string       ...$intents
+     *
+     * @return INode[]
+     */
+    public function findAllShallow(
+        int $maxDepth,
+        ?string $className = null,
+        ?Closure $matcher = null,
+        string ...$intents
+    ): array;
+
+    /**
+     * Replaces a given node with a number of nodes
+     * It will also call the children to execute the same operation if the node was not found
+     *
+     * @param INode $itemToFind
+     * @param INode ...$items
+     *
+     * @return bool
+     */
+    public function replace(INode $itemToFind, INode ...$items): bool;
+
+    /**
+     * Add items
+     *
+     * @param INode ...$items
+     *
+     * @return $this
+     */
+    public function add(INode ...$items): self;
 }

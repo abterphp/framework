@@ -23,10 +23,6 @@ class Base64 implements IRule
     {
         $decoded = base64_decode($value, true);
 
-        if (is_bool($decoded)) {
-            return $decoded;
-        }
-
-        return true;
+        return $decoded !== false;
     }
 }

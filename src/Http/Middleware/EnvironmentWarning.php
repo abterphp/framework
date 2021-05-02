@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Http\Middleware;
 
-use AbterPhp\Framework\Html\Helper\ArrayHelper;
+use AbterPhp\Framework\Html\Helper\Css;
 use AbterPhp\Framework\I18n\ITranslator;
 use Closure;
 use Opulence\Environments\Environment;
@@ -66,7 +66,7 @@ class EnvironmentWarning implements IMiddleware
         ];
         $warning = sprintf(
             '<p style="%s">%s</p>',
-            ArrayHelper::toStyles($styles),
+            Css::toStyles($styles),
             $this->translator->translate('admin:environment', $environmentName)
         );
 
@@ -82,6 +82,6 @@ class EnvironmentWarning implements IMiddleware
         ];
         $onClick = '$(this).remove()';
 
-        return sprintf('<div style="%s" onclick="%s">%s</div>', ArrayHelper::toStyles($styles), $onClick, $warning);
+        return sprintf('<div style="%s" onclick="%s">%s</div>', Css::toStyles($styles), $onClick, $warning);
     }
 }

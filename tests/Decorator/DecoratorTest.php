@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Decorator;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\IComponent;
+use AbterPhp\Framework\Html\ITag;
 use AbterPhp\Framework\Html\Node;
+use AbterPhp\Framework\Html\Tag;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 class DecoratorTest extends TestCase
 {
-    /** @var Decorator - System Under Test */
-    protected Decorator $sut;
+    /** @var Decorator|MockObject - System Under Test */
+    protected $sut;
 
     public function setUp(): void
     {
@@ -33,7 +34,7 @@ class DecoratorTest extends TestCase
 
     public function testDecorateWithEmptyRules(): void
     {
-        $this->sut->decorate([new Component()]);
+        $this->sut->decorate([new Tag()]);
 
         $this->assertTrue(true, 'No error was found.');
     }
@@ -51,7 +52,7 @@ class DecoratorTest extends TestCase
     {
         $this->sut->addRule(new Rule([], stdClass::class, ['dont-set-this']));
 
-        $this->sut->decorate([new Component()]);
+        $this->sut->decorate([new Tag()]);
 
         $this->assertTrue(true, 'No error was found.');
     }
@@ -61,8 +62,8 @@ class DecoratorTest extends TestCase
         $newClass = 'baz';
         $intents  = ['foo', 'bar'];
 
-        $nonMatchingComponent = new Component('a');
-        $matchingComponent    = new Component('b', $intents);
+        $nonMatchingComponent = new Tag('a');
+        $matchingComponent    = new Tag('b', $intents);
 
         $this->sut->addRule(new Rule($intents, null, [$newClass]));
 
@@ -70,7 +71,7 @@ class DecoratorTest extends TestCase
 
         $this->assertFalse($nonMatchingComponent->hasAttribute(Html5::ATTR_CLASS));
         $this->assertTrue($matchingComponent->hasAttribute(Html5::ATTR_CLASS));
-        $this->assertStringContainsString($newClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
+        $this->assertContains($newClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS)->getValues());
     }
 
     public function testDecorateWithIntentClassMap(): void
@@ -78,8 +79,8 @@ class DecoratorTest extends TestCase
         $newClass = 'baz';
         $intents  = ['foo', 'bar'];
 
-        $nonMatchingComponent = new Component('a');
-        $matchingComponent    = new Component('b', $intents);
+        $nonMatchingComponent = new Tag('a');
+        $matchingComponent    = new Tag('b', $intents);
 
         $this->sut->addRule(new Rule($intents, null, [], ['bar' => [$newClass]]));
 
@@ -87,19 +88,19 @@ class DecoratorTest extends TestCase
 
         $this->assertFalse($nonMatchingComponent->hasAttribute(Html5::ATTR_CLASS));
         $this->assertTrue($matchingComponent->hasAttribute(Html5::ATTR_CLASS));
-        $this->assertStringContainsString($newClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
+        $this->assertContains($newClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS)->getValues());
     }
 
     public function testDecorateWithCallback(): void
     {
         $newClass = 'baz';
         $intents  = ['foo', 'bar'];
-        $callback = function (IComponent $component) use ($newClass): void {
+        $callback = function (ITag $component) use ($newClass): void {
             $component->appendToClass($newClass);
         };
 
-        $nonMatchingComponent = new Component('a');
-        $matchingComponent    = new Component('b', $intents);
+        $nonMatchingComponent = new Tag('a');
+        $matchingComponent    = new Tag('b', $intents);
 
         $this->sut->addRule(new Rule($intents, null, [], [], $callback));
 
@@ -107,7 +108,8 @@ class DecoratorTest extends TestCase
 
         $this->assertFalse($nonMatchingComponent->hasAttribute(Html5::ATTR_CLASS));
         $this->assertTrue($matchingComponent->hasAttribute(Html5::ATTR_CLASS));
-        $this->assertStringContainsString($newClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
+
+        $this->assertEquals($newClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS)->getValue());
     }
 
     public function testDecorateWithCombined(): void
@@ -116,21 +118,21 @@ class DecoratorTest extends TestCase
         $mapClass      = 'bar';
         $callbackClass = 'baz';
         $intents       = ['foo', 'bar'];
-        $callback      = function (IComponent $component) use ($callbackClass): void {
+        $callback      = function (ITag $component) use ($callbackClass): void {
             $component->appendToClass($callbackClass);
         };
 
-        $nonMatchingComponent = new Component('a');
-        $matchingComponent    = new Component('b', $intents);
+        $nonMatchingComponent = new Tag('a');
+        $matchingComponent    = new Tag('b', $intents);
 
         $this->sut->addRule(new Rule($intents, null, [$defaultClass], ['foo' => [$mapClass]], $callback));
 
         $this->sut->decorate([$nonMatchingComponent, $matchingComponent]);
 
         $this->assertFalse($nonMatchingComponent->hasAttribute(Html5::ATTR_CLASS));
-        $this->assertStringContainsString($defaultClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
-        $this->assertStringContainsString($mapClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
-        $this->assertStringContainsString($callbackClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS));
+        $this->assertContains($defaultClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS)->getValues());
+        $this->assertContains($mapClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS)->getValues());
+        $this->assertContains($callbackClass, $matchingComponent->getAttribute(Html5::ATTR_CLASS)->getValues());
     }
 
     public function testDecorateMatchingNonTagNodeWorks(): void

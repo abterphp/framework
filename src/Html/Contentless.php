@@ -4,82 +4,35 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Html;
 
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use LogicException;
 
-final class Contentless extends Component
+class Contentless extends Tag
 {
-    private const ERROR_NO_CONTENT = 'Contentless can not contain nodes';
+    protected const ERROR_NO_CONTENT = 'Contentless can not contain nodes';
 
     /**
      * Contentless constructor.
      *
-     * @param array       $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param array                        $intents
+     * @param array<string,Attribute>|null $attributes
+     * @param string|null                  $tag
      */
-    public function __construct(array $intents = [], array $attributes = [], ?string $tag = null)
+    public function __construct(array $intents = [], ?array $attributes = null, ?string $tag = null)
     {
         parent::__construct(null, $intents, $attributes, $tag);
     }
 
     /**
-     * @param INode $node
-     *
-     * @return int|null
-     */
-    public function find(INode $node): ?int
-    {
-        throw new \LogicException(static::ERROR_NO_CONTENT);
-    }
-
-    /**
-     * Collects all children, grandchildren, etc that match the arguments provided
-     *
-     * @param string|null $className
-     * @param array       $intents
-     * @param int         $depth maximum level of recursion, -1 or smaller means infinite, 0 is direct children only
-     *
-     * @return IComponent[]
-     */
-    public function collect(?string $className = null, array $intents = [], int $depth = -1): array
-    {
-        throw new \LogicException(static::ERROR_NO_CONTENT);
-    }
-
-    /**
-     * Tries to find the first child that matches the arguments provided
-     *
-     * @param string|null $className
-     * @param string      ...$intents
-     *
-     * @return IComponent|null
-     */
-    public function findFirstChild(?string $className = null, string ...$intents): ?IComponent
-    {
-        throw new \LogicException(static::ERROR_NO_CONTENT);
-    }
-
-    /**
-     * @param INode[]|INode|string|null $content
+     * @param array<string|IStringer>|string|IStringer|null $content
      *
      * @return $this
      */
-    public function setContent($content = null): INode
+    public function setContent($content): self
     {
         if (null === $content) {
             return $this;
         }
 
-        throw new \LogicException(static::ERROR_NO_CONTENT);
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        $content = StringHelper::createTag($this->tag, $this->attributes);
-
-        return $content;
+        throw new LogicException(self::ERROR_NO_CONTENT);
     }
 }

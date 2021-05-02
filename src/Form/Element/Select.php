@@ -6,39 +6,62 @@ namespace AbterPhp\Framework\Form\Element;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Form\Component\Option;
-use AbterPhp\Framework\Html\Component;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Tag as TagHelper;
+use AbterPhp\Framework\Html\IStringer;
+use AbterPhp\Framework\Html\Node;
+use AbterPhp\Framework\Html\Tag;
+use LogicException;
 
-class Select extends Component implements IElement
+class Select extends Input
 {
-    protected const DEFAULT_TAG = Html5::TAG_SELECT;
+    protected const ERROR_NO_CONTENT = 'Select can not contain nodes';
+
+    protected const SEPARATOR = "\n";
+
+    protected const DEFAULT_TAG  = Html5::TAG_SELECT;
+    protected const CONTENT_TYPE = Option::class;
+
+    protected const PROTECTED_KEYS = [Html5::ATTR_ID, Html5::ATTR_NAME];
 
     /** @var Option[] */
-    protected array $nodes = [];
-
-    protected string $nodeClass = Option::class;
+    protected array $content = [];
 
     /**
      * Select constructor.
      *
-     * @param string      $inputId
-     * @param string      $name
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param string           $inputId
+     * @param string           $name
+     * @param string[]         $intents
+     * @param Attribute[]|null $attributes
+     * @param string|null      $tag
      */
     public function __construct(
         string $inputId,
         string $name,
         array $intents = [],
-        array $attributes = [],
+        ?array $attributes = null,
         ?string $tag = null
     ) {
-        if ($inputId) {
-            $attributes[Html5::ATTR_ID] = $inputId;
-        }
-        $attributes[Html5::ATTR_NAME] = $name;
+        $attributes                   ??= [];
+        $attributes[Html5::ATTR_ID]   = new Attribute(Html5::ATTR_ID, $inputId);
+        $attributes[Html5::ATTR_NAME] = new Attribute(Html5::ATTR_NAME, $name);
 
-        parent::__construct(null, $intents, $attributes, $tag);
+        Tag::__construct(null, $intents, $attributes, $tag);
+    }
+
+    /**
+     * @param array<string|IStringer>|string|IStringer|null $content
+     *
+     * @return $this
+     */
+    public function setContent($content): self
+    {
+        if (null === $content) {
+            return $this;
+        }
+
+        throw new LogicException(static::ERROR_NO_CONTENT);
     }
 
     /**
@@ -46,7 +69,7 @@ class Select extends Component implements IElement
      *
      * @return $this
      */
-    public function setValue($value): IElement
+    public function setValue($value): self
     {
         if (!is_string($value)) {
             throw new \InvalidArgumentException();
@@ -60,13 +83,14 @@ class Select extends Component implements IElement
      *
      * @return $this
      */
-    public function setValueInner(array $values): IElement
+    protected function setValueInner(array $values): self
     {
-        foreach ($this->nodes as $option) {
-            if (in_array($option->getValue(), $values, true)) {
-                $option->setAttribute(Html5::ATTR_SELECTED, null);
+        foreach ($this->content as $option) {
+            $value = $option->getValue();
+            if (in_array($value, $values, true)) {
+                $option->setAttribute(new Attribute(Html5::ATTR_SELECTED));
             } elseif ($option->hasAttribute(Html5::ATTR_SELECTED)) {
-                $option->unsetAttribute(Html5::ATTR_SELECTED);
+                $option->removeAttribute(Html5::ATTR_SELECTED);
             }
         }
 
@@ -74,19 +98,36 @@ class Select extends Component implements IElement
     }
 
     /**
+     * @suppress PhanParamSignatureMismatch
+     *
+     * @return string|null
+     */
+    public function getValue()
+    {
+        foreach ($this->content as $option) {
+            if ($option->hasAttribute(Html5::ATTR_SELECTED)) {
+                return $option->getValue();
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @return string
      */
     public function getName(): string
     {
-        if (!$this->hasAttribute(Html5::ATTR_NAME)) {
-            return '';
-        }
+        return $this->attributes[Html5::ATTR_NAME]->getValue();
+    }
 
-        $value = $this->getAttribute(Html5::ATTR_NAME);
-        if (null === $value) {
-            return '';
-        }
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        $content = Node::__toString();
 
-        return $value;
+        return TagHelper::toString($this->tag, $content, $this->getAttributes());
     }
 }

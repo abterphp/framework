@@ -28,7 +28,7 @@ class ExceptionHandlerTest extends TestCase
 
         $this->exceptionRendererMock = $this->createMock(ExceptionRenderer::class);
 
-        $this->sut = new ExceptionHandler($this->loggerMock, $this->exceptionRendererMock, []);
+        $this->sut = new ExceptionHandler($this->loggerMock, $this->exceptionRendererMock);
 
         parent::setUp();
     }

@@ -6,13 +6,17 @@ namespace AbterPhp\Framework\Grid\Filter;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Form\Label\Label;
-use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\IComponent;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use AbterPhp\Framework\Html\INode;
+use AbterPhp\Framework\Html\ITag;
 use AbterPhp\Framework\Html\ITemplater;
+use AbterPhp\Framework\Html\Tag;
 
-abstract class Filter extends Component implements IFilter, ITemplater
+abstract class Filter extends Tag implements IFilter, ITemplater
 {
+    public const INTENT_HELP_BLOCK = 'help-block';
+
     protected const DEFAULT_TAG = Html5::TAG_INPUT;
 
     /**
@@ -28,83 +32,88 @@ abstract class Filter extends Component implements IFilter, ITemplater
 
     protected const QUERY_TEMPLATE = '%s = ?';
 
-    public const INTENT_HELP_BLOCK = 'help-block';
+    protected const PROTECTED_KEYS = [Html5::ATTR_ID, Html5::ATTR_NAME, Html5::ATTR_VALUE, Html5::ATTR_TITLE];
 
-    /** @var string */
-    protected $fieldName = '';
+    protected ITag $wrapper;
 
-    /** @var string */
-    protected $inputName = '';
+    protected Label $label;
 
-    /** @var array */
-    protected $conditions = [];
+    protected ITag $helpBlock;
 
-    /** @var array */
-    protected $queryParams = [];
+    protected string $fieldName = '';
 
-    /** @var string */
-    protected $value = '';
+    /** @var string[] */
+    protected array $conditions = [];
 
-    /** @var string */
-    protected $template = self::DEFAULT_TEMPLATE;
+    /** @var string[] */
+    protected array $queryParams = [];
 
-    /** @var IComponent */
-    protected $wrapper;
-
-    /** @var Label */
-    protected $label;
-
-    /** @var IComponent */
-    protected $helpBlock;
+    protected string $template = self::DEFAULT_TEMPLATE;
 
     /**
-     * Input constructor.
+     * Filter constructor.
      *
-     * @param string      $inputName
-     * @param string      $fieldName
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param string                       $inputName
+     * @param string                       $fieldName
+     * @param string[]                     $intents
+     * @param array<string|Attribute>|null $attributes
+     * @param string|null                  $tag
      */
     public function __construct(
         string $inputName = '',
         string $fieldName = '',
         array $intents = [],
-        array $attributes = [],
+        ?array $attributes = null,
         ?string $tag = null
     ) {
         $this->fieldName = $fieldName;
-        $this->inputName = static::NAME_PREFIX . $inputName;
 
-        $attributes[Html5::ATTR_ID]    = $this->inputName;
-        $attributes[Html5::ATTR_NAME]  = $this->inputName;
-        $attributes[Html5::ATTR_TITLE] = '';
-        $attributes[Html5::ATTR_VALUE] = '';
+        $inputName = static::NAME_PREFIX . $inputName;
+
+        $rawAttributes = Attributes::fromArray(
+            [
+                Html5::ATTR_ID    => $inputName,
+                Html5::ATTR_NAME  => $inputName,
+                Html5::ATTR_TITLE => '',
+                Html5::ATTR_VALUE => '',
+            ]
+        );
+
+        $attributes ??= [];
+        $attributes = Attributes::replace($attributes, $rawAttributes);
 
         parent::__construct(null, $intents, $attributes, $tag);
 
-        $this->wrapper = new Component(null, [], [], Html5::TAG_DIV);
+        $this->wrapper = new Tag(null, [], null, Html5::TAG_DIV);
 
-        $this->label = new Label($this->inputName);
+        $this->label = new Label($inputName);
         $this->label->setContent($fieldName);
 
-        $this->helpBlock = new Component(static::HELP_CONTENT, [static::INTENT_HELP_BLOCK], [], Html5::TAG_P);
+        $this->helpBlock = new Tag(static::HELP_CONTENT, [static::INTENT_HELP_BLOCK], null, Html5::TAG_P);
+    }
+
+    protected function getInputName(): string
+    {
+        return $this->attributes[Html5::ATTR_ID]->getValue();
+    }
+
+    protected function getValue(): string
+    {
+        return $this->attributes[Html5::ATTR_VALUE]->getValue();
     }
 
     /**
-     * @param array $params
+     * @param array<string,string> $params
      *
      * @return IFilter
      */
     public function setParams(array $params): IFilter
     {
-        if (empty($params[$this->inputName])) {
+        if (empty($params[$this->getInputName()])) {
             return $this;
         }
 
-        $this->value = $params[$this->inputName];
-
-        $this->attributes[Html5::ATTR_VALUE] = $this->value;
+        $this->attributes[Html5::ATTR_VALUE]->set($params[$this->getInputName()]);
 
         $this->conditions = [sprintf(static::QUERY_TEMPLATE, $this->fieldName)];
 
@@ -132,17 +141,17 @@ abstract class Filter extends Component implements IFilter, ITemplater
      */
     public function getQueryPart(): string
     {
-        if (empty($this->value)) {
+        if (empty($this->getValue())) {
             return '';
         }
 
-        return sprintf('%s=%s', $this->inputName, urlencode($this->value));
+        return sprintf('%s=%s', $this->getInputName(), urlencode($this->getValue()));
     }
 
     /**
-     * @return IComponent
+     * @return ITag
      */
-    public function getWrapper(): IComponent
+    public function getWrapper(): ITag
     {
         return $this->wrapper;
     }

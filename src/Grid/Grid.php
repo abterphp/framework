@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid;
 
-use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Grid\Component\Actions;
 use AbterPhp\Framework\Grid\Component\Filters;
 use AbterPhp\Framework\Grid\Pagination\IPagination;
 use AbterPhp\Framework\Grid\Table\ITable;
-use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Tag as TagHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\ITemplater;
+use AbterPhp\Framework\Html\Tag;
 
-class Grid extends Component implements IGrid, ITemplater
+class Grid extends Tag implements IGrid, ITemplater
 {
     /**
      * %1$s - filter
@@ -48,12 +48,12 @@ class Grid extends Component implements IGrid, ITemplater
     /**
      * Grid constructor.
      *
-     * @param ITable           $table
-     * @param IPagination|null $pagination
-     * @param Filters|null     $filters
-     * @param Actions|null     $actions
-     * @param string[]         $intents
-     * @param array            $attributes
+     * @param ITable                       $table
+     * @param IPagination|null             $pagination
+     * @param Filters|null                 $filters
+     * @param Actions|null                 $actions
+     * @param string[]                     $intents
+     * @param array<string,Attribute>|null $attributes
      */
     public function __construct(
         ITable $table,
@@ -61,23 +61,23 @@ class Grid extends Component implements IGrid, ITemplater
         Filters $filters = null,
         Actions $actions = null,
         array $intents = [],
-        array $attributes = []
+        ?array $attributes = null
     ) {
         $this->table      = $table;
         $this->pagination = $pagination;
 
         parent::__construct(null, $intents, $attributes, static::TAG_GRID);
 
-        $this->appendToAttribute(Html5::ATTR_CLASS, static::ATTRIBUTE_GRID_CLASS);
+        $this->appendToClass(static::ATTRIBUTE_GRID_CLASS);
 
         if ($actions) {
             $this->actions = $actions;
-            $this->actions->appendToAttribute(Html5::ATTR_CLASS, static::ATTRIBUTE_ACTIONS_CLASS);
+            $this->actions->appendToClass(static::ATTRIBUTE_ACTIONS_CLASS);
         }
 
         if ($filters) {
             $this->filters = $filters;
-            $this->filters->appendToAttribute(Html5::ATTR_CLASS, static::ATTRIBUTE_FILTER_CLASS);
+            $this->filters->appendToClass(static::ATTRIBUTE_FILTER_CLASS);
         }
     }
 
@@ -86,11 +86,15 @@ class Grid extends Component implements IGrid, ITemplater
      */
     public function getFilters(): Filters
     {
-        if ($this->filters === null) {
-            $this->filters = new Filters();
+        if ($this->filters instanceof Filters) {
+            return $this->filters;
         }
 
-        return $this->filters;
+        $filters = new Filters();
+
+        $this->filters = $filters;
+
+        return $filters;
     }
 
     /**
@@ -98,11 +102,15 @@ class Grid extends Component implements IGrid, ITemplater
      */
     public function getActions(): Actions
     {
-        if ($this->actions === null) {
-            $this->actions = new Actions();
+        if ($this->actions instanceof Actions) {
+            return $this->actions;
         }
 
-        return $this->actions;
+        $actions = new Actions();
+
+        $this->actions = $actions;
+
+        return $actions;
     }
 
     /**
@@ -114,9 +122,7 @@ class Grid extends Component implements IGrid, ITemplater
             throw new \LogicException();
         }
 
-        $pageSize = $this->pagination->getPageSize();
-
-        return $pageSize;
+        return $this->pagination->getPageSize();
     }
 
     /**
@@ -140,7 +146,7 @@ class Grid extends Component implements IGrid, ITemplater
     }
 
     /**
-     * @return array
+     * @return array<string,string>
      */
     public function getSqlParams(): array
     {
@@ -209,9 +215,8 @@ class Grid extends Component implements IGrid, ITemplater
         if ($this->table) {
             $extendedNodes[] = $this->table;
         }
-        $extendedNodes = array_merge($extendedNodes, $this->getNodes());
 
-        return $extendedNodes;
+        return array_merge($extendedNodes, $this->getNodes());
     }
 
     /**
@@ -226,8 +231,6 @@ class Grid extends Component implements IGrid, ITemplater
 
         $content = sprintf($this->template, $filters, $actions, $table, $pagination);
 
-        $content = StringHelper::wrapInTag($content, $this->tag, $this->attributes);
-
-        return $content;
+        return TagHelper::toString($this->tag, $content, $this->attributes);
     }
 }

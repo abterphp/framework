@@ -6,20 +6,23 @@ namespace AbterPhp\Framework\Grid\Component;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Grid\Action\Action;
+use AbterPhp\Framework\Grid\Filter\Filter;
 use AbterPhp\Framework\Grid\Filter\IFilter;
-use AbterPhp\Framework\Html\Collection;
-use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
+use AbterPhp\Framework\Html\Helper\Tag as TagHelper;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\ITemplater;
+use AbterPhp\Framework\Html\Tag;
 
-class Filters extends Component implements ITemplater
+class Filters extends Tag implements ITemplater
 {
-    protected const DEFAULT_TAG = Html5::TAG_FORM;
-
     public const BTN_CONTENT_FILTERS = 'framework:filters';
     public const BTN_CONTENT_FILTER  = 'framework:filter';
     public const BTN_CONTENT_RESET   = 'framework:reset';
+
+    protected const DEFAULT_TAG  = Html5::TAG_FORM;
+    protected const CONTENT_TYPE = Filter::class;
 
     protected const ATTRIBUTES_FORM = [
         Html5::ATTR_CLASS => 'filter-form',
@@ -47,30 +50,41 @@ class Filters extends Component implements ITemplater
     protected string $template = self::DEFAULT_TEMPLATE;
 
     /** @var IFilter[] */
-    protected array $nodes = [];
+    protected array $content = [];
 
     protected string $nodeClass = IFilter::class;
 
     protected Action $hiderBtn;
-
     protected Action $filterBtn;
-
     protected Action $resetBtn;
+
+    /** @var array<string,Attribute> */
+    protected array $formAttributes;
+
+    /** @var array<string,Attribute> */
+    protected array $searchAttributes;
+
+    /** @var array<string,Attribute> */
+    protected array $resetAttributes;
 
     /**
      * Filters constructor.
      *
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param string[]                     $intents
+     * @param array<string,Attribute>|null $attributes
+     * @param string|null                  $tag
      */
-    public function __construct(array $intents = [], array $attributes = [], ?string $tag = null)
+    public function __construct(array $intents = [], ?array $attributes = null, ?string $tag = null)
     {
         parent::__construct(null, $intents, $attributes, $tag);
 
+        $this->formAttributes   = Attributes::fromArray(static::ATTRIBUTES_FORM);
+        $this->searchAttributes = Attributes::fromArray(static::ATTRIBUTES_SEARCH);
+        $this->resetAttributes  = Attributes::fromArray(static::ATTRIBUTES_RESET);
+
         $this->hiderBtn  = new Action(static::BTN_CONTENT_FILTERS, [Action::INTENT_INFO]);
-        $this->filterBtn = new Action(static::BTN_CONTENT_FILTER, [Action::INTENT_PRIMARY], static::ATTRIBUTES_SEARCH);
-        $this->resetBtn  = new Action(static::BTN_CONTENT_RESET, [Action::INTENT_SECONDARY], static::ATTRIBUTES_RESET);
+        $this->filterBtn = new Action(static::BTN_CONTENT_FILTER, [Action::INTENT_PRIMARY], $this->searchAttributes);
+        $this->resetBtn  = new Action(static::BTN_CONTENT_RESET, [Action::INTENT_SECONDARY], $this->resetAttributes);
     }
 
     /**
@@ -80,7 +94,7 @@ class Filters extends Component implements ITemplater
      */
     public function setParams(array $params): Filters
     {
-        foreach ($this->nodes as $filter) {
+        foreach ($this->content as $filter) {
             $filter->setParams($params);
         }
 
@@ -95,7 +109,7 @@ class Filters extends Component implements ITemplater
     public function getUrl(string $baseUrl): string
     {
         $queryParts = [];
-        foreach ($this->nodes as $filter) {
+        foreach ($this->content as $filter) {
             $queryPart = $filter->getQueryPart();
             if (!$queryPart) {
                 continue;
@@ -117,7 +131,7 @@ class Filters extends Component implements ITemplater
     public function getWhereConditions(): array
     {
         $conditions = [];
-        foreach ($this->nodes as $filter) {
+        foreach ($this->content as $filter) {
             $conditions = array_merge($conditions, $filter->getWhereConditions());
         }
 
@@ -125,12 +139,12 @@ class Filters extends Component implements ITemplater
     }
 
     /**
-     * @return array
+     * @return array<string,string>
      */
     public function getSqlParams(): array
     {
         $params = [];
-        foreach ($this->nodes as $filter) {
+        foreach ($this->content as $filter) {
             $params = array_merge($params, $filter->getQueryParams());
         }
 
@@ -162,13 +176,9 @@ class Filters extends Component implements ITemplater
      */
     public function __toString(): string
     {
-        $nodes = Collection::__toString();
+        $nodes = Tag::__toString();
 
-        $form = StringHelper::wrapInTag(
-            $nodes,
-            $this->tag,
-            static::ATTRIBUTES_FORM
-        );
+        $form = TagHelper::toString($this->tag, $nodes, $this->formAttributes);
 
         return sprintf(
             $this->template,

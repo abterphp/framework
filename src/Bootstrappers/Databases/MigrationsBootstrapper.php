@@ -10,6 +10,7 @@ use Opulence\Ioc\IContainer;
 
 class MigrationsBootstrapper extends OpulenceMigrationsBootstrapper
 {
+    /** @var array|null */
     protected ?array $migrationPaths = null;
 
     /**
@@ -24,6 +25,8 @@ class MigrationsBootstrapper extends OpulenceMigrationsBootstrapper
         }
 
         $this->migrationPaths = $abterModuleManager->getMigrationPaths() ?: [];
+
+        assert(is_array($this->migrationPaths));
 
         return $this->migrationPaths;
     }

@@ -9,8 +9,7 @@ use AbterPhp\Framework\Grid\Action\Action;
 use AbterPhp\Framework\Grid\Cell\Cell;
 use AbterPhp\Framework\Grid\Collection\Cells;
 use AbterPhp\Framework\Grid\Component\Actions;
-use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\Node;
+use AbterPhp\Framework\Html\Tag;
 use AbterPhp\Framework\TestDouble\Domain\MockEntityFactory;
 use PHPUnit\Framework\TestCase;
 
@@ -55,12 +54,12 @@ class RowTest extends TestCase
 
         $actions = new Actions();
         for ($i = 0; $i < $actionCount; $i++) {
-            $action = $this->createMock(Action::class);
+            $actionMock = $this->createMock(Action::class);
 
-            $action->expects($this->once())->method('setEntity')->with($stubEntity);
-            $action->expects($this->atLeastOnce())->method('__toString')->willReturn("action-$i");
+            $actionMock->expects($this->once())->method('setEntity')->with($stubEntity);
+            $actionMock->expects($this->atLeastOnce())->method('__toString')->willReturn("action-$i");
 
-            $actions[] = $action;
+            $actions[] = $actionMock;
         }
 
         $sut = new Row(new Cells(), $actions);
@@ -77,60 +76,31 @@ class RowTest extends TestCase
 
     public function testGetNodes(): void
     {
-        $cells   = new Cells(new Cell(new Component('abc', [], [], Html5::TAG_I), 'foo-group'));
+        $expectedResult = 0;
+
+        $cell0 = new Cell(new Tag('abc', [], null, Html5::TAG_I), 'foo-group');
+        $cells   = new Cells([$cell0]);
         $actions = new Actions();
 
         $sut = new Row($cells, $actions);
 
         $nodes = $sut->getNodes();
 
-        $this->assertCount(0, $nodes);
+        $this->assertCount($expectedResult, $nodes);
     }
 
     public function testGetExtendedNodes(): void
     {
-        $cells   = new Cells(new Cell(new Component('abc', [], [], Html5::TAG_I), 'foo-group'));
+        $expectedResult = 2;
+
+        $cell0 = new Cell(new Tag('abc', [], null, Html5::TAG_I), 'foo-group');
+        $cells   = new Cells([$cell0]);
         $actions = new Actions();
 
         $sut = new Row($cells, $actions);
 
         $nodes = $sut->getExtendedNodes();
 
-        $this->assertCount(2, $nodes);
-        $this->assertSame($cells, $nodes[0]);
-        $this->assertInstanceOf(Cell::class, $nodes[1]);
-    }
-
-    public function testGetDescendantNodes(): void
-    {
-        $cells   = new Cells(new Cell(new Component('abc', [], [], Html5::TAG_I), 'foo-group'));
-        $actions = new Actions();
-
-        $sut = new Row($cells, $actions);
-
-        $nodes = $sut->getDescendantNodes();
-
-        $this->assertCount(0, $nodes);
-    }
-
-    public function testGetExtendedDescendantNodes(): void
-    {
-        $node      = new Node('abc');
-        $component = new Component($node, [], [], Html5::TAG_I);
-        $cell      = new Cell($component, 'foo-group');
-        $cells     = new Cells($cell);
-        $actions   = new Actions();
-
-        $sut = new Row($cells, $actions);
-
-        $nodes = $sut->getExtendedDescendantNodes();
-
-        $this->assertCount(6, $nodes);
-        $this->assertSame($cells, $nodes[0]);
-        $this->assertSame($cell, $nodes[1]);
-        $this->assertSame($component, $nodes[2]);
-        $this->assertSame($node, $nodes[3]);
-        $this->assertEquals(new Cell($actions, Cell::GROUP_ACTIONS, [Cell::INTENT_ACTIONS]), $nodes[4]);
-        $this->assertEquals($actions, $nodes[5]);
+        $this->assertCount($expectedResult, $nodes);
     }
 }

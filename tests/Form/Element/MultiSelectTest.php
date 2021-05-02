@@ -6,21 +6,39 @@ namespace AbterPhp\Framework\Form\Element;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Form\Component\Option;
-use AbterPhp\Framework\Html\Helper\ArrayHelper;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class MultiSelectTest extends TestCase
 {
+    public function testToStringIsEmptyByDefault(): void
+    {
+        $sut = new MultiSelect('id', 'name');
+
+        $this->assertStringContainsString('', (string)$sut);
+    }
+
+    public function testSetContentThrowsExceptionIfCalledWithNotNull(): void
+    {
+        $this->expectException(\LogicException::class);
+
+        $sut = new MultiSelect('id', 'name');
+
+        $sut->setContent(12);
+    }
+
     /**
      * @return array[]
      */
     public function renderProvider(): array
     {
         $attribs = StubAttributeFactory::createAttributes();
-        $str     = ArrayHelper::toAttributes($attribs);
+        $str     = Attributes::toString($attribs);
 
         return [
             'simple'               => [
@@ -28,7 +46,7 @@ class MultiSelectTest extends TestCase
                 'bcd',
                 ['val'],
                 [],
-                [],
+                null,
                 null,
                 null,
                 '<select multiple id="abc" name="bcd"></select>',
@@ -38,7 +56,7 @@ class MultiSelectTest extends TestCase
                 'bcd',
                 ['val'],
                 [],
-                [],
+                null,
                 [],
                 null,
                 '<select multiple id="abc" name="bcd"></select>',
@@ -79,65 +97,32 @@ class MultiSelectTest extends TestCase
     /**
      * @dataProvider renderProvider
      *
-     * @param string        $inputId
-     * @param string        $name
-     * @param string[]      $value
-     * @param string[]      $options
-     * @param array         $attributes
-     * @param string[]|null $translations
-     * @param string|null   $tag
-     * @param string        $expectedResult
+     * @param string               $inputId
+     * @param string               $name
+     * @param string[]             $value
+     * @param array<string,string> $options
+     * @param Attribute[]|null     $attributes
+     * @param string[]|null        $translations
+     * @param string|null          $tag
+     * @param string               $expectedResult
      */
     public function testRender(
         string $inputId,
         string $name,
         array $value,
         array $options,
-        array $attributes,
+        ?array $attributes,
         ?array $translations,
         ?string $tag,
         string $expectedResult
     ): void {
-        $sut = $this->createElement($inputId, $name, $value, $options, $attributes, $translations, $tag);
+        $sut = $this->createMultiSelect($inputId, $name, $value, $options, $attributes, $translations, $tag);
 
         $actualResult   = (string)$sut;
         $repeatedResult = (string)$sut;
 
         $this->assertSame($expectedResult, $actualResult);
         $this->assertSame($actualResult, $repeatedResult);
-    }
-
-    /**
-     * @param string        $inputId
-     * @param string        $name
-     * @param string[]      $value
-     * @param string[]      $options
-     * @param array         $attributes
-     * @param string[]|null $translations
-     * @param string|null   $tag
-     *
-     * @return MultiSelect
-     */
-    protected function createElement(
-        string $inputId,
-        string $name,
-        array $value,
-        array $options,
-        array $attributes,
-        ?array $translations,
-        ?string $tag
-    ): MultiSelect {
-        $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
-
-        $select = new MultiSelect($inputId, $name, [], $attributes, $tag);
-
-        foreach ($options as $k => $v) {
-            $select[] = new Option($k, $v, in_array($k, $value, true));
-        }
-
-        $select->setTranslator($translatorMock);
-
-        return $select;
     }
 
     public function testSetValueSetsOptionsSelected(): void
@@ -148,9 +133,7 @@ class MultiSelectTest extends TestCase
         $option2 = new Option('2', 'bar', false);
         $option3 = new Option('3', 'baz', false);
 
-        $sut[] = $option1;
-        $sut[] = $option2;
-        $sut[] = $option3;
+        $sut->add($option1, $option2, $option3);
 
         $sut->setValue(['2', '3']);
 
@@ -166,11 +149,11 @@ class MultiSelectTest extends TestCase
     {
         return [
             'string'   => [''],
-            'stdclass' => [new \stdClass()],
+            'stdclass' => [new stdClass()],
             'int'      => [123],
             'bool'     => [false],
             'float'    => [123.53],
-            'ints'     => [[1, 3, 4]],
+            'integers' => [[1, 3, 4]],
         ];
     }
 
@@ -183,20 +166,18 @@ class MultiSelectTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $sut = new MultiSelect('id', 'name');
+        $sut = new MultiSelect('id', 'foo');
 
         $sut->setValue($value);
     }
 
-    public function testGetNameReturnsEmptyStringIfUnset(): void
+    public function testRemoveAttributeThrowsExceptionWhenTryingToRemoveProtectedAttributes(): void
     {
-        $sut = new MultiSelect('id', 'name');
+        $this->expectException(\RuntimeException::class);
 
-        $sut->unsetAttribute(Html5::ATTR_NAME);
+        $sut = new MultiSelect('id', 'foo');
 
-        $actualResult = $sut->getName();
-
-        $this->assertSame('', $actualResult);
+        $sut->removeAttribute(Html5::ATTR_NAME);
     }
 
     public function testGetName(): void
@@ -208,5 +189,49 @@ class MultiSelectTest extends TestCase
         $actualResult = $sut->getName();
 
         $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    public function testGetGetValue(): void
+    {
+        $expectedResult = ['bar', 'ba'];
+
+        $sut = $this->createMultiSelect('id', 'name', $expectedResult, ['foo' => 'Foo', 'bar' => 'Bar', 'ba' => 'Ba']);
+
+        $actualResult = $sut->getValue();
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
+     * @param string                       $inputId
+     * @param string                       $name
+     * @param string[]                     $values
+     * @param array<string,string>         $options
+     * @param array<string,Attribute>|null $attributes
+     * @param string[]|null                $translations
+     * @param string|null                  $tag
+     *
+     * @return MultiSelect
+     */
+    protected function createMultiSelect(
+        string $inputId,
+        string $name,
+        array $values,
+        array $options,
+        ?array $attributes = null,
+        ?array $translations = null,
+        ?string $tag = null
+    ): MultiSelect {
+        $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
+
+        $multiSelect = new MultiSelect($inputId, $name, [], $attributes, $tag);
+
+        foreach ($options as $k => $v) {
+            $multiSelect->add(new Option($k, $v, in_array($k, $values, true)));
+        }
+
+        $multiSelect->setTranslator($translatorMock);
+
+        return $multiSelect;
     }
 }

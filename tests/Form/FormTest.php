@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Form;
 
+use AbterPhp\Framework\Html\Attribute;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use PHPUnit\Framework\TestCase;
 
@@ -15,25 +16,25 @@ class FormTest extends TestCase
     public function renderProvider(): array
     {
         return [
-            'simple'     => ['bar', 'baz', [], [], null, '<form action="bar" method="baz"></form>'],
-            'custom-tag' => ['bar', 'baz', [], [], 'foo', '<foo action="bar" method="baz"></foo>'],
+            'simple'     => ['bar', 'baz', null, [], null, '<form action="bar" method="baz"></form>'],
+            'custom-tag' => ['bar', 'baz', null, [], 'foo', '<foo action="bar" method="baz"></foo>'],
         ];
     }
 
     /**
      * @dataProvider renderProvider
      *
-     * @param string        $action
-     * @param string        $method
-     * @param string[][]    $attributes
-     * @param string[]|null $translations
-     * @param string|null   $tag
-     * @param string        $expectedResult
+     * @param string                       $action
+     * @param string                       $method
+     * @param array<string,Attribute>|null $attributes
+     * @param string[]|null                $translations
+     * @param string|null                  $tag
+     * @param string                       $expectedResult
      */
     public function testRender(
         string $action,
         string $method,
-        array $attributes,
+        ?array $attributes,
         ?array $translations,
         ?string $tag,
         string $expectedResult
@@ -44,22 +45,22 @@ class FormTest extends TestCase
     }
 
     /**
-     * @param string        $action
-     * @param string        $method
-     * @param string[][]    $attributes
-     * @param string[]|null $translations
-     * @param string|null   $tag
+     * @param string                       $action
+     * @param string                       $method
+     * @param array<string,Attribute>|null $attributes
+     * @param string[]|null                $translations
+     * @param string|null                  $tag
      *
      * @return Form
      */
     private function createElement(
         string $action,
         string $method,
-        array $attributes,
+        ?array $attributes,
         ?array $translations,
         ?string $tag
     ): Form {
-        $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
+        $translatorMock = $translations ? MockTranslatorFactory::createSimpleTranslator($this, $translations) : null;
 
         $form = new Form($action, $method, [], $attributes, $tag);
 

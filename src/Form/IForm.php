@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Form;
 
-use AbterPhp\Framework\Html\IComponent;
+use AbterPhp\Framework\Html\ITag;
 
-interface IForm extends IComponent
+interface IForm extends ITag
 {
 }

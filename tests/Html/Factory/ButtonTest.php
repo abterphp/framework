@@ -2,27 +2,31 @@
 
 declare(strict_types=1);
 
-namespace AbterPhp\Framework\Html\Component;
+namespace AbterPhp\Framework\Html\Factory;
 
 use AbterPhp\Framework\Constant\Html5;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Component\Button as ButtonComponent;
+use AbterPhp\Framework\Html\Component\ButtonWithIcon;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
 use Opulence\Routing\Urls\UrlGenerator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class ButtonFactoryTest extends TestCase
+class ButtonTest extends TestCase
 {
-    /** @var ButtonFactory - System Under Test */
-    protected ButtonFactory $sut;
+    /** @var Button - System Under Test */
+    protected Button $sut;
 
     /** @var UrlGenerator|MockObject */
     protected $urlGeneratorMock;
 
-    /** @var string[][] */
-    protected array $iconAttributes = [];
+    /** @var array<string,Attribute> */
+    protected array $iconAttributes;
 
-    /** @var string[][] */
-    protected array $textAttributes = [];
+    /** @var array<string,Attribute> */
+    protected array $textAttributes;
 
     public function setUp(): void
     {
@@ -33,7 +37,7 @@ class ButtonFactoryTest extends TestCase
         $this->iconAttributes = StubAttributeFactory::createAttributes(['icon' => ['asd']]);
         $this->textAttributes = StubAttributeFactory::createAttributes(['text' => ['qwe']]);
 
-        $this->sut = new ButtonFactory($this->urlGeneratorMock, $this->textAttributes, $this->iconAttributes);
+        $this->sut = new Button($this->urlGeneratorMock, $this->textAttributes, $this->iconAttributes);
     }
 
     public function testCreateFromUrlCreatesSimpleButtonByDefault(): void
@@ -43,7 +47,7 @@ class ButtonFactoryTest extends TestCase
 
         $actualResult = $this->sut->createFromUrl($text, $url);
 
-        $this->assertInstanceOf(Button::class, $actualResult);
+        $this->assertInstanceOf(ButtonComponent::class, $actualResult);
         $this->assertNotInstanceOf(ButtonWithIcon::class, $actualResult);
     }
 
@@ -55,7 +59,7 @@ class ButtonFactoryTest extends TestCase
 
         $actualResult = $this->sut->createFromUrl($text, $url, $icon);
 
-        $this->assertInstanceOf(Button::class, $actualResult);
+        $this->assertInstanceOf(ButtonComponent::class, $actualResult);
         $this->assertInstanceOf(ButtonWithIcon::class, $actualResult);
     }
 
@@ -64,9 +68,9 @@ class ButtonFactoryTest extends TestCase
         $url         = '/best/url/ever';
         $text        = 'button text';
         $icon        = 'hello';
-        $textAttribs = ['attr5' => ['val7', 'val8'], 'attr6' => ['val9']];
-        $iconAttribs = ['attr3' => ['val4', 'val5'], 'attr4' => ['val6']];
-        $attribs     = ['attr1' => ['val1', 'val2'], 'attr2' => ['val3']];
+        $textAttribs = Attributes::fromArray(['attr5' => ['val7', 'val8'], 'attr6' => ['val9']]);
+        $iconAttribs = Attributes::fromArray(['attr3' => ['val4', 'val5'], 'attr4' => ['val6']]);
+        $attribs     = Attributes::fromArray(['attr1' => ['val1', 'val2'], 'attr2' => ['val3']]);
 
         $actualResult = $this->sut->createFromUrl(
             $text,
@@ -79,7 +83,7 @@ class ButtonFactoryTest extends TestCase
             Html5::TAG_STRONG
         );
 
-        $expectedResult = '<strong attr1="val1 val2" attr2="val3" href="/best/url/ever"><i foo="foo baz" bar="bar baz" icon="asd" attr3="val4 val5" attr4="val6">hello</i> <span foo="foo baz" bar="bar baz" text="qwe" attr5="val7 val8" attr6="val9">button text</span></strong>'; // phpcs:ignore
+        $expectedResult = '<strong attr1="val1 val2" attr2="val3" href="/best/url/ever"><i attr3="val4 val5" attr4="val6" foo="foo baz" bar="bar baz" icon="asd">hello</i> <span attr5="val7 val8" attr6="val9" foo="foo baz" bar="bar baz" text="qwe">button text</span></strong>'; // phpcs:ignore
 
         $this->assertSame($expectedResult, (string)$actualResult);
     }
@@ -96,7 +100,7 @@ class ButtonFactoryTest extends TestCase
 
         $actualResult = $this->sut->createFromName($text, $name, []);
 
-        $this->assertInstanceOf(Button::class, $actualResult);
+        $this->assertInstanceOf(ButtonComponent::class, $actualResult);
         $this->assertNotInstanceOf(ButtonWithIcon::class, $actualResult);
     }
 
@@ -113,7 +117,7 @@ class ButtonFactoryTest extends TestCase
 
         $actualResult = $this->sut->createFromName($text, $name, [], $icon);
 
-        $this->assertInstanceOf(Button::class, $actualResult);
+        $this->assertInstanceOf(ButtonComponent::class, $actualResult);
         $this->assertInstanceOf(ButtonWithIcon::class, $actualResult);
     }
 
@@ -122,9 +126,9 @@ class ButtonFactoryTest extends TestCase
         $name        = 'best-route-ever';
         $text        = 'button text';
         $icon        = 'hello';
-        $textAttribs = ['attr5' => ['val7', 'val8'], 'attr6' => ['val9']];
-        $iconAttribs = ['attr3' => ['val4', 'val5'], 'attr4' => ['val6']];
-        $attribs     = ['attr1' => ['val1', 'val2'], 'attr2' => ['val3']];
+        $textAttribs = Attributes::fromArray(['attr5' => ['val7', 'val8'], 'attr6' => ['val9']]);
+        $iconAttribs = Attributes::fromArray(['attr3' => ['val4', 'val5'], 'attr4' => ['val6']]);
+        $attribs     = Attributes::fromArray(['attr1' => ['val1', 'val2'], 'attr2' => ['val3']]);
 
         $this->urlGeneratorMock
             ->expects($this->atLeastOnce())
@@ -143,7 +147,7 @@ class ButtonFactoryTest extends TestCase
             Html5::TAG_STRONG
         );
 
-        $expectedResult = '<strong attr1="val1 val2" attr2="val3" href="/best/url/ever"><i foo="foo baz" bar="bar baz" icon="asd" attr3="val4 val5" attr4="val6">hello</i> <span foo="foo baz" bar="bar baz" text="qwe" attr5="val7 val8" attr6="val9">button text</span></strong>'; // phpcs:ignore
+        $expectedResult = '<strong attr1="val1 val2" attr2="val3" href="/best/url/ever"><i attr3="val4 val5" attr4="val6" foo="foo baz" bar="bar baz" icon="asd">hello</i> <span attr5="val7 val8" attr6="val9" foo="foo baz" bar="bar baz" text="qwe">button text</span></strong>'; // phpcs:ignore
 
         $this->assertSame($expectedResult, (string)$actualResult);
     }

@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Form\Extra;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Helper\ArrayHelper;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use PHPUnit\Framework\TestCase;
@@ -17,36 +18,36 @@ class HelpTest extends TestCase
      */
     public function renderProvider(): array
     {
-        $attributes = StubAttributeFactory::createAttributes();
-
-        $finalAttribs = ArrayHelper::mergeAttributes([Html5::ATTR_CLASS => [Help::CLASS_HELP_BLOCK]], $attributes);
-        $str          = ArrayHelper::toAttributes($finalAttribs);
+        $defaultAttr    = StubAttributeFactory::createAttributes();
+        $additionalAttr = Attributes::fromArray([Html5::ATTR_CLASS => [Help::CLASS_HELP_BLOCK]]);
+        $attributes     = Attributes::merge($defaultAttr, $additionalAttr);
+        $str            = Attributes::toString($attributes);
 
         return [
-            'simple'               => ['ABC', [], null, null, '<div class="help-block">ABC</div>'],
+            'simple'               => ['ABC', null, null, null, '<div class="help-block">ABC</div>'],
             'attributes'           => ['ABC', $attributes, [], null, "<div$str>ABC</div>"],
-            'missing translations' => ['ABC', [], [], null, '<div class="help-block">ABC</div>'],
-            'found translations'   => ['ABC', [], ['ABC' => 'CBA'], null, '<div class="help-block">CBA</div>'],
+            'missing translations' => ['ABC', null, [], null, '<div class="help-block">ABC</div>'],
+            'found translations'   => ['ABC', null, ['ABC' => 'CBA'], null, '<div class="help-block">CBA</div>'],
         ];
     }
 
     /**
      * @dataProvider renderProvider
      *
-     * @param string        $content
-     * @param array         $attributes
-     * @param string[]|null $translations
-     * @param string|null   $tag
-     * @param string        $expectedResult
+     * @param string                       $content
+     * @param array<string,Attribute>|null $attributes
+     * @param string[]|null                $translations
+     * @param string|null                  $tag
+     * @param string                       $expectedResult
      */
     public function testRender(
         string $content,
-        array $attributes,
+        ?array $attributes,
         ?array $translations,
         ?string $tag,
         string $expectedResult
     ): void {
-        $sut = $this->createElement($content, $attributes, $translations, $tag);
+        $sut = $this->createHelp($content, $attributes, $translations, $tag);
 
         $actualResult   = (string)$sut;
         $repeatedResult = (string)$sut;
@@ -56,16 +57,16 @@ class HelpTest extends TestCase
     }
 
     /**
-     * @param string        $content
-     * @param array         $attributes
-     * @param string[]|null $translations
-     * @param string|null   $tag
+     * @param string                       $content
+     * @param array<string,Attribute>|null $attributes
+     * @param string[]|null                $translations
+     * @param string|null                  $tag
      *
      * @return Help
      */
-    private function createElement(
+    private function createHelp(
         string $content,
-        array $attributes,
+        ?array $attributes,
         ?array $translations,
         ?string $tag
     ): Help {

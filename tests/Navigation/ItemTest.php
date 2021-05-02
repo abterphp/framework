@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Navigation;
 
-use AbterPhp\Framework\Html\ComponentTest;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Node;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
+use PHPUnit\Framework\TestCase;
 
-class ItemTest extends ComponentTest
+class ItemTest extends TestCase
 {
     public function testDefaultToString(): void
     {
-        $sut = $this->createNode();
+        $sut = $this->createItem();
 
         $this->assertSame('<li></li>', (string)$sut);
     }
@@ -65,7 +65,7 @@ class ItemTest extends ComponentTest
     {
         $translator = MockTranslatorFactory::createSimpleTranslator($this, $translations);
 
-        $sut = $this->createNode($content);
+        $sut = $this->createItem($content);
         $sut->setTranslator($translator);
 
         $this->assertSame($expectedResult, (string)$sut);
@@ -79,7 +79,7 @@ class ItemTest extends ComponentTest
      */
     public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult): void
     {
-        $sut = $this->createNode($rawContent);
+        $sut = $this->createItem($rawContent);
 
         $this->assertStringContainsString($expectedResult, (string)$sut);
     }
@@ -98,7 +98,7 @@ class ItemTest extends ComponentTest
     ): void {
         $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
 
-        $sut = $this->createNode($rawContent);
+        $sut = $this->createItem($rawContent);
 
         $sut->setTranslator($translatorMock);
 
@@ -110,7 +110,7 @@ class ItemTest extends ComponentTest
         $content  = 'foo';
         $resource = 'bar';
 
-        $sut = $this->createNode($content);
+        $sut = $this->createItem($content);
 
         $sut->setResource($resource);
 
@@ -124,7 +124,7 @@ class ItemTest extends ComponentTest
         $content = 'foo';
         $role    = 'bar';
 
-        $sut = $this->createNode($content);
+        $sut = $this->createItem($content);
 
         $sut->setRole($role);
 
@@ -136,7 +136,7 @@ class ItemTest extends ComponentTest
     public function testDisabledItemCastsToEmptyString(): void
     {
         $content = 'foo';
-        $sut     = $this->createNode($content);
+        $sut     = $this->createItem($content);
 
         $sut->disable();
 
@@ -146,7 +146,7 @@ class ItemTest extends ComponentTest
     public function testEnableCanRevertDisabling(): void
     {
         $content = 'foo';
-        $sut     = $this->createNode($content);
+        $sut     = $this->createItem($content);
 
         $sut->disable();
         $sut->enable();
@@ -159,7 +159,7 @@ class ItemTest extends ComponentTest
      *
      * @return Item
      */
-    protected function createNode($content = null): INode
+    protected function createItem($content = null): Item
     {
         return new Item($content);
     }

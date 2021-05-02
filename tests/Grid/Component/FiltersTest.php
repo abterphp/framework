@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Grid\Component;
 
 use AbterPhp\Framework\Grid\Filter\Filter;
-use AbterPhp\Framework\Html\Component;
+use AbterPhp\Framework\Html\Tag;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -14,11 +14,11 @@ class FiltersTest extends TestCase
 {
     public function testNodesMustBeFilters(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\AssertionError::class);
 
         $sut = new Filters();
 
-        $sut[] = new Component();
+        $sut[] = new Tag();
     }
 
     public function testSetParamsSetsParamsOnAllNodes(): void

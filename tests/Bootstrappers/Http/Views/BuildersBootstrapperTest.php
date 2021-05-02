@@ -17,12 +17,9 @@ class BuildersBootstrapperTest extends TestCase
 
     public function setUp(): void
     {
-        $this->sut = new BuildersBootstrapper();
-    }
-
-    protected function tearDown(): void
-    {
         Environment::unsetVar(Env::ENV_NAME);
+
+        $this->sut = new BuildersBootstrapper();
     }
 
     public function testRegisterBindings(): void

@@ -4,19 +4,16 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Pagination;
 
-class Options
+use AbterPhp\Framework\Html\Contentless;
+
+class Options extends Contentless
 {
-    /** @var int */
-    protected $defaultPageSize;
+    protected int $defaultPageSize;
 
     /** @var int[] */
-    protected $pageSizeOptions;
+    protected array $pageSizeOptions;
 
-    /** @var int */
-    protected $numberCount;
-
-    /** @var array */
-    protected $attributes = [];
+    protected int $numberCount;
 
     /**
      * Options constructor.
@@ -30,6 +27,8 @@ class Options
         $this->defaultPageSize = $defaultPageSize;
         $this->pageSizeOptions = $pageSizeOptions;
         $this->numberCount     = $numberCount;
+
+        parent::__construct();
     }
 
     /**
@@ -54,25 +53,5 @@ class Options
     public function getNumberCount(): int
     {
         return $this->numberCount;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAttributes(): array
-    {
-        return $this->attributes;
-    }
-
-    /**
-     * @param array $attributes
-     *
-     * @return $this
-     */
-    public function setAttributes(array $attributes): Options
-    {
-        $this->attributes = $attributes;
-
-        return $this;
     }
 }

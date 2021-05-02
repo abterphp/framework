@@ -9,6 +9,9 @@ use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 abstract class FooBarStub implements IStringerEntity
 {
     /** @var string */
+    protected string $id;
+
+    /** @var string */
     protected string $foo;
 
     /** @var string */
@@ -19,7 +22,7 @@ abstract class FooBarStub implements IStringerEntity
      */
     public function getId()
     {
-        return $this->foo;
+        return $this->id;
     }
 
     /**

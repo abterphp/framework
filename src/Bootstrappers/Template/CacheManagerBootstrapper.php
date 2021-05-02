@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Bootstrappers\Template;
 
+use AbterPhp\Framework\Config\Config;
 use AbterPhp\Framework\Template\CacheManager;
 use Opulence\Cache\ArrayBridge;
 use Opulence\Cache\FileBridge;
 use Opulence\Cache\ICacheBridge;
 use Opulence\Cache\MemcachedBridge;
 use Opulence\Cache\RedisBridge;
-use Opulence\Framework\Configuration\Config;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -54,23 +54,23 @@ class CacheManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     private function getCacheBridge(IContainer $container): ICacheBridge
     {
-        switch (Config::get('templates', 'cache.bridge')) {
+        switch (Config::mustGetString('templates', 'cache.bridge')) {
             case ArrayBridge::class:
                 return new ArrayBridge();
             case MemcachedBridge::class:
                 return new MemcachedBridge(
                     $container->resolve(Memcached::class),
-                    Config::get('templates', 'cache.clientName'),
-                    Config::get('templates', 'cache.keyPrefix')
+                    Config::mustGetString('templates', 'cache.clientName'),
+                    Config::mustGetString('templates', 'cache.keyPrefix')
                 );
             case RedisBridge::class:
                 return new RedisBridge(
                     $container->resolve(Redis::class),
-                    Config::get('templates', 'cache.clientName'),
-                    Config::get('templates', 'cache.keyPrefix')
+                    Config::mustGetString('templates', 'cache.clientName'),
+                    Config::mustGetString('templates', 'cache.keyPrefix')
                 );
             default: // FileBridge
-                return new FileBridge(Config::get('templates', 'file.path'));
+                return new FileBridge(Config::mustGetString('templates', 'file.path'));
         }
     }
 }

@@ -6,9 +6,9 @@ namespace AbterPhp\Framework\Navigation;
 
 use AbterPhp\Framework\Authorization\Constant\Role;
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Component;
+use AbterPhp\Framework\Html\Tag;
 
-class Item extends Component implements IResourcable
+class Item extends Tag implements IResourcable
 {
     protected const DEFAULT_TAG = Html5::TAG_LI;
 
@@ -41,11 +41,11 @@ class Item extends Component implements IResourcable
     }
 
     /**
-     * @param string|null $role
+     * @param string $role
      *
      * @return $this
      */
-    public function setRole(?string $role): IResourcable
+    public function setRole(string $role): IResourcable
     {
         $this->role = $role;
 

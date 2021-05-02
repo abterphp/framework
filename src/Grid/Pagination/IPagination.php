@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Pagination;
 
-use AbterPhp\Framework\Html\INodeContainer;
 use AbterPhp\Framework\Html\ITag;
 
-interface IPagination extends ITag, INodeContainer
+interface IPagination extends ITag
 {
     /**
      * @return int

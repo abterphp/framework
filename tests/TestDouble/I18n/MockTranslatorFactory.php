@@ -17,13 +17,13 @@ class MockTranslatorFactory
      *
      * @return ITranslator|MockObject|null
      */
-    public static function createSimpleTranslator(TestCase $testCase, ?array $translations): ?ITranslator
+    public static function createSimpleTranslator(TestCase $testCase, ?array $translations)
     {
         if (null === $translations) {
             return null;
         }
 
-        /** @var ITranslator|MockObject $mockTranslator */
+        /** @var ITranslator|MockObject $translatorMock */
         $translatorMock = (new MockBuilder($testCase, ITranslator::class))
             ->disableOriginalConstructor()
             ->getMock();
@@ -37,7 +37,7 @@ class MockTranslatorFactory
                         return $translations[$key];
                     }
 
-                    return "{{translation missing: $key}}";
+                    return $key;
                 }
             );
 
@@ -46,7 +46,7 @@ class MockTranslatorFactory
             ->method('canTranslate')
             ->willReturnCallback(
                 function ($key) use ($translations) {
-                    if ($translations && array_key_exists($key, $translations)) {
+                    if (array_key_exists($key, $translations)) {
                         return true;
                     }
 

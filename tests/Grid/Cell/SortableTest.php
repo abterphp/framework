@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Grid\Cell;
 
-use AbterPhp\Framework\Html\ComponentTest;
-use AbterPhp\Framework\Html\Helper\ArrayHelper;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use AbterPhp\Framework\TestDouble\Html\Component\StubAttributeFactory;
 use AbterPhp\Framework\TestDouble\I18n\MockTranslatorFactory;
+use PHPUnit\Framework\TestCase;
 
-class SortableTest extends ComponentTest
+class SortableTest extends TestCase
 {
     /**
      * @return array[]
@@ -17,14 +18,14 @@ class SortableTest extends ComponentTest
     public function renderProvider(): array
     {
         $attribs = StubAttributeFactory::createAttributes();
-        $str     = ArrayHelper::toAttributes($attribs);
+        $str     = Attributes::toString($attribs);
 
         return [
-            'simple'               => ['ABC', 'a', '', '', [], null, null, "<th>ABC <a></a></th>"],
-            'with attributes'      => ['ABC', 'a', '', '', $attribs, null, null, "<th$str>ABC <a></a></th>"],
-            'missing translations' => ['ABC', 'a', '', '', [], [], null, "<th>ABC <a></a></th>"],
-            'custom tag'           => ['ABC', 'a', '', '', [], null, 'myth', "<myth>ABC <a></a></myth>"],
-            'with translations'    => ['ABC', 'a', '', '', [], ['ABC' => 'CBA'], null, "<th>CBA <a></a></th>"],
+            'simple'               => ['ABC', 'a', '', '', null, null, null, "<th>ABC <a></a></th>"],
+            'with attributes'      => ['ABC', 'a', '', '', $attribs, null, null, "<th$str>ABC <a></a></th>",],
+            'missing translations' => ['ABC', 'a', '', '', null, [], null, "<th>ABC <a></a></th>",],
+            'custom tag'           => ['ABC', 'a', '', '', null, null, 'myth', "<myth>ABC <a></a></myth>"],
+            'with translations'    => ['ABC', 'a', '', '', null, ['ABC' => 'CBA'], null, "<th>CBA <a></a></th>"],
         ];
     }
 
@@ -35,7 +36,7 @@ class SortableTest extends ComponentTest
      * @param string      $group
      * @param string      $inputName
      * @param string      $fieldName
-     * @param array       $attributes
+     * @param array|null  $attributes
      * @param array|null  $translations
      * @param string|null $tag
      * @param string      $expectedResult
@@ -45,12 +46,12 @@ class SortableTest extends ComponentTest
         string $group,
         string $inputName,
         string $fieldName,
-        array $attributes,
+        ?array $attributes,
         ?array $translations,
         ?string $tag,
         string $expectedResult
     ): void {
-        $sut = $this->createNode($content, $group, $inputName, $fieldName, $attributes, $translations, $tag);
+        $sut = $this->createSortable($content, $group, $inputName, $fieldName, $attributes, $translations, $tag);
 
         $actualResult1 = (string)$sut;
         $actualResult2 = (string)$sut;
@@ -75,8 +76,8 @@ class SortableTest extends ComponentTest
     /**
      * @dataProvider queryParamProvider
      *
-     * @param array          $params
-     * @param        ?string $expectedResult
+     * @param array       $params
+     * @param string|null $expectedResult
      */
     public function testQueryParam(array $params, ?string $expectedResult): void
     {
@@ -152,7 +153,6 @@ class SortableTest extends ComponentTest
 
         $allNodes = $sut->getExtendedNodes();
 
-        $this->assertCount(2, $allNodes);
         $this->assertContains($sut->getSortBtn(), $allNodes);
     }
 
@@ -261,7 +261,7 @@ class SortableTest extends ComponentTest
      */
     public function testToStringReturnsRawContentByDefault($rawContent, string $expectedResult): void
     {
-        $sut = $this->createNode($rawContent, 'g', 'i', 'f', [], null, null);
+        $sut = $this->createSortable($rawContent, 'g', 'i', 'f', null, null, null);
 
         $this->assertStringContainsString($expectedResult, (string)$sut);
     }
@@ -292,7 +292,7 @@ class SortableTest extends ComponentTest
     ): void {
         $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
 
-        $sut = $this->createNode($rawContent, 'g', 'i', 'f', [], null, null);
+        $sut = $this->createSortable($rawContent, 'g', 'i', 'f', null, null, null);
 
         $sut->setTranslator($translatorMock);
 
@@ -300,45 +300,30 @@ class SortableTest extends ComponentTest
     }
 
     /**
-     * @dataProvider isMatchProvider
-     *
-     * @param string|null $className
-     * @param string[]    $intents
-     * @param bool        $expectedResult
-     */
-    public function testIsMatch(?string $className, array $intents, bool $expectedResult): void
-    {
-        $sut = $this->createNode(null, 'g', 'i', 'f', [], null, null);
-        $sut->setIntent('foo', 'bar');
-
-        $actualResult = $sut->isMatch($className, ...$intents);
-
-        $this->assertSame($expectedResult, $actualResult);
-    }
-
-    /**
-     * @param string|null $content
-     * @param string      $group
-     * @param string      $inputName
-     * @param string      $fieldName
-     * @param array       $attributes
-     * @param array|null  $translations
-     * @param string|null $tag
+     * @param string|null                  $content
+     * @param string                       $group
+     * @param string                       $inputName
+     * @param string                       $fieldName
+     * @param array<string,Attribute>|null $attributes
+     * @param array|null                   $translations
+     * @param string|null                  $tag
      *
      * @return Sortable
      */
-    private function createNode(
-        ?string $content,
-        string $group,
-        string $inputName,
-        string $fieldName,
-        array $attributes,
-        ?array $translations,
-        ?string $tag
+    private function createSortable(
+        ?string $content = null,
+        string $group = '',
+        string $inputName = '',
+        string $fieldName = '',
+        ?array $attributes = null,
+        ?array $translations = null,
+        ?string $tag = null
     ): Sortable {
+        $translatorMock = MockTranslatorFactory::createSimpleTranslator($this, $translations);
+
         $cell = new Sortable($content, $group, $inputName, $fieldName, [], $attributes, $tag);
 
-        $cell->setTranslator(MockTranslatorFactory::createSimpleTranslator($this, $translations));
+        $cell->setTranslator($translatorMock);
 
         return $cell;
     }

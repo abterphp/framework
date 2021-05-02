@@ -5,102 +5,104 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Navigation;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Collection;
-use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\Helper\StringHelper;
-use AbterPhp\Framework\Html\ICollection;
-use AbterPhp\Framework\Html\IComponent;
+use AbterPhp\Framework\Html\Attribute;
 use AbterPhp\Framework\Html\INode;
+use AbterPhp\Framework\Html\ITag;
+use AbterPhp\Framework\Html\Node;
+use AbterPhp\Framework\Html\Tag;
 
-class Dropdown extends Component
+class Dropdown extends Tag
 {
     protected const DEFAULT_TAG = Html5::TAG_UL;
+    protected const CONTENT_TYPE = Item::class;
 
     public const WRAPPER_INTENT = 'dropdown-wrapper-intent';
 
-    protected ?IComponent $wrapper = null;
-    protected ICollection $prefix;
-    protected ICollection $postfix;
+    protected ?ITag $wrapper = null;
+    protected INode $prefix;
+    protected INode $postfix;
 
     /** @var Item[] */
-    protected array $nodes = [];
-
-    protected string $nodeClass = Item::class;
+    protected array $content = [];
 
     /**
      * Component constructor.
      *
-     * @param INode[]|INode|string|null $content
-     * @param string[]                  $intents
-     * @param array                     $attributes
-     * @param string|null               $tag
+     * @param INode[]|INode|string|null    $content
+     * @param string[]                     $intents
+     * @param array<string,Attribute>|null $attributes
+     * @param string|null                  $tag
      */
-    public function __construct($content = null, array $intents = [], array $attributes = [], ?string $tag = null)
-    {
-        $this->wrapper = new Component(null, [static::WRAPPER_INTENT], [], Html5::TAG_DIV);
+    public function __construct(
+        $content = null,
+        array $intents = [],
+        ?array $attributes = null,
+        ?string $tag = null
+    ) {
+        $this->wrapper = new Tag(null, [static::WRAPPER_INTENT], null, Html5::TAG_DIV);
 
-        $this->prefix  = new Collection();
-        $this->postfix = new Collection();
+        $this->prefix  = new Node();
+        $this->postfix = new Node();
 
         parent::__construct($content, $intents, $attributes, $tag);
     }
 
     /**
-     * @return IComponent|null
+     * @return ITag|null
      */
-    public function getWrapper(): ?IComponent
+    public function getWrapper(): ?ITag
     {
         return $this->wrapper;
     }
 
     /**
-     * @param IComponent|null $wrapper
+     * @param ITag|null $tag
      *
      * @return $this
      */
-    public function setWrapper(?IComponent $wrapper): Dropdown
+    public function setWrapper(?ITag $tag): self
     {
-        $this->wrapper = $wrapper;
+        $this->wrapper = $tag;
 
         return $this;
     }
 
     /**
-     * @return ICollection
+     * @return INode
      */
-    public function getPrefix(): ICollection
+    public function getPrefix(): INode
     {
         return $this->prefix;
     }
 
     /**
-     * @param ICollection $collection
+     * @param INode $tag
      *
-     * @return Dropdown
+     * @return $this
      */
-    public function setPrefix(ICollection $collection): Dropdown
+    public function setPrefix(INode $tag): self
     {
-        $this->prefix = $collection;
+        $this->prefix = $tag;
 
         return $this;
     }
 
     /**
-     * @return ICollection
+     * @return INode
      */
-    public function getPostfix(): ICollection
+    public function getPostfix(): INode
     {
         return $this->postfix;
     }
 
     /**
-     * @param ICollection $collection
+     * @param INode $tag
      *
-     * @return Dropdown
+     * @return $this
      */
-    public function setPostfix(ICollection $collection): Dropdown
+    public function setPostfix(INode $tag): self
     {
-        $this->postfix = $collection;
+        $this->postfix = $tag;
 
         return $this;
     }
@@ -124,9 +126,8 @@ class Dropdown extends Component
      */
     public function __toString(): string
     {
-        $content = Collection::__toString();
-        $content = StringHelper::wrapInTag($content, $this->tag, $this->attributes);
-        $content = (string)$this->prefix . $content . (string)$this->postfix;
+        $content = Tag::__toString();
+        $content = $this->prefix . $content . $this->postfix;
 
         if ($this->wrapper) {
             $this->wrapper->setContent($content);

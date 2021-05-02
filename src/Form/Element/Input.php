@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Form\Element;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Helper\StringHelper;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Tag as TagHelper;
 use AbterPhp\Framework\Html\Tag;
 
 class Input extends Tag implements IElement
@@ -41,32 +42,32 @@ class Input extends Tag implements IElement
 
     protected const DEFAULT_TYPE = self::TYPE_TEXT;
 
+    protected const PROTECTED_KEYS = [Html5::ATTR_ID, Html5::ATTR_TYPE, Html5::ATTR_NAME, Html5::ATTR_VALUE];
+
     /**
      * Input constructor.
      *
-     * @param string      $inputId
-     * @param string      $name
-     * @param string      $value
-     * @param string[]    $intents
-     * @param array       $attributes
-     * @param string|null $tag
+     * @param string           $inputId
+     * @param string           $name
+     * @param string           $value
+     * @param string[]         $intents
+     * @param Attribute[]|null $attributes
+     * @param string|null      $tag
      */
     public function __construct(
         string $inputId,
         string $name,
         string $value = '',
         array $intents = [],
-        array $attributes = [],
+        ?array $attributes = null,
         ?string $tag = null
     ) {
-        if ($inputId) {
-            $attributes[Html5::ATTR_ID] = $inputId;
+        $attributes ??= [];
+        $attributes[Html5::ATTR_ID] = new Attribute(Html5::ATTR_ID, $inputId);
+        if (!in_array(Html5::ATTR_TYPE, $attributes)) {
+            $attributes[Html5::ATTR_TYPE] = new Attribute(Html5::ATTR_TYPE, static::DEFAULT_TYPE);
         }
-        if (!array_key_exists(Html5::ATTR_TYPE, $attributes)) {
-            $attributes[Html5::ATTR_TYPE] = static::DEFAULT_TYPE;
-        }
-
-        $attributes[Html5::ATTR_NAME] = $name;
+        $attributes[Html5::ATTR_NAME] = new Attribute(Html5::ATTR_NAME, $name);
 
         parent::__construct(null, $intents, $attributes, $tag);
 
@@ -78,16 +79,22 @@ class Input extends Tag implements IElement
      */
     public function getName(): string
     {
-        if (!$this->hasAttribute(Html5::ATTR_NAME)) {
+        $values = $this->attributes[Html5::ATTR_NAME]->getValues();
+        if (null === $values) {
             return '';
         }
 
-        $value = $this->getAttribute(Html5::ATTR_NAME);
-        if (null === $value) {
-            return '';
-        }
+        return implode(' ', $values);
+    }
 
-        return $value;
+    /**
+     * @suppress PhanParamSignatureMismatch
+     *
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->getAttribute(Html5::ATTR_VALUE)->getValue();
     }
 
     /**
@@ -95,13 +102,15 @@ class Input extends Tag implements IElement
      *
      * @return $this
      */
-    public function setValue($value): IElement
+    public function setValue($value): self
     {
         if (!is_string($value)) {
             throw new \InvalidArgumentException();
         }
 
-        return $this->setAttribute(Html5::ATTR_VALUE, $value);
+        $this->attributes[Html5::ATTR_VALUE] = new Attribute(Html5::ATTR_VALUE, htmlspecialchars($value));
+
+        return $this;
     }
 
     /**
@@ -109,6 +118,6 @@ class Input extends Tag implements IElement
      */
     public function __toString(): string
     {
-        return StringHelper::createTag($this->tag, $this->attributes);
+        return TagHelper::toString($this->tag, '', $this->getAttributes());
     }
 }

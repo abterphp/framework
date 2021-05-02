@@ -11,7 +11,7 @@ class PrefixFilter extends Filter
     protected const QUERY_TEMPLATE = '%s LIKE ?';
 
     /**
-     * @param array $params
+     * @param array<string,string> $params
      *
      * @return $this
      */
@@ -19,8 +19,8 @@ class PrefixFilter extends Filter
     {
         parent::setParams($params);
 
-        if ($this->value) {
-            $this->queryParams = [sprintf('%s%%', $this->value)];
+        if ($this->getValue()) {
+            $this->queryParams = [sprintf('%s%%', $this->getValue())];
         }
 
         return $this;

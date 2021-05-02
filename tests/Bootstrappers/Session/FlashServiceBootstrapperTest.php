@@ -19,12 +19,9 @@ class FlashServiceBootstrapperTest extends TestCase
 
     public function setUp(): void
     {
-        $this->sut = new FlashServiceBootstrapper();
-    }
-
-    protected function tearDown(): void
-    {
         Environment::unsetVar(Env::ENV_NAME);
+
+        $this->sut = new FlashServiceBootstrapper();
     }
 
     public function testRegisterBindings(): void

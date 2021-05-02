@@ -4,9 +4,16 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Template;
 
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
+
 class Template
 {
     public const TYPE_BLOCK = 'block';
+
+    private const REGEXP_ATTRIBUTES = '/\s*([\w_\-]*)\s*\=\s*\"([^"]*)\"\s*/Ums';
+    private const REGEXP_TEMPLATES  = '/\{\{\s*(TYPES)\/([\w-]+)(\s+[^}]*)?\s*\}\}/Ums';
+    private const REGEXP_VARIABLES  = '/{{\s*var\/([\w-]+)\s*}}/';
 
     protected string $rawContent = '';
 
@@ -69,8 +76,7 @@ class Template
         return $this;
     }
 
-    /**
-     * @return ParsedTemplate[][][]
+    /** @return array<string,array<string,ParsedTemplate[]>>
      */
     public function parse(): array
     {
@@ -86,12 +92,12 @@ class Template
     }
 
     /**
-     * Replaces is {{var/xxx}} occurances in the content
+     * Replaces is {{var/xxx}} occurrences in the content
      */
     private function replaceVars(): void
     {
         $matches = [];
-        preg_match_all('/\{\{\s*var\/([\w-]+)\s*\}\}/', $this->rawContent, $matches);
+        preg_match_all(self::REGEXP_VARIABLES, $this->rawContent, $matches);
 
         foreach ($matches[1] as $idx => $varName) {
             $search      = $matches[0][$idx];
@@ -105,12 +111,12 @@ class Template
     }
 
     /**
-     * @return array<string,ParsedTemplate[][]>
+     * @return array<string,array<string,ParsedTemplate[]>>
      */
     private function parseTemplates(): array
     {
         $matches = [];
-        $pattern = sprintf('/\{\{\s*(%s)\/([\w-]+)(\s+[^}]*)?\s*\}\}/Ums', implode('|', $this->types));
+        $pattern = str_replace('TYPES', implode('|', $this->types), self::REGEXP_TEMPLATES);
         preg_match_all($pattern, $this->rawContent, $matches);
 
         $parsedTemplates = [];
@@ -119,7 +125,7 @@ class Template
             $identifier = $matches[2][$idx];
             $attributes = $this->parseAttributes($matches[3][$idx]);
 
-            $this->addOccurence($parsedTemplates, $type, $identifier, $attributes, $occurrence);
+            $this->addOccurrence($parsedTemplates, $type, $identifier, $attributes, $occurrence);
         }
 
         return $parsedTemplates;
@@ -128,58 +134,54 @@ class Template
     /**
      * @param string $rawAttributes
      *
-     * @return string[]
+     * @return array<string,Attribute>|null
      */
-    private function parseAttributes(string $rawAttributes): array
+    private function parseAttributes(string $rawAttributes): ?array
     {
         if (trim($rawAttributes) === '') {
-            return [];
+            return null;
         }
 
         $matches = [];
-        $pattern = '/\s*([\w_\-]*)\s*\=\s*\"([^"]*)\"\s*/Ums';
-        preg_match_all($pattern, $rawAttributes, $matches);
+        preg_match_all(self::REGEXP_ATTRIBUTES, $rawAttributes, $matches);
 
         $attributes = [];
         foreach (array_keys($matches[0]) as $idx) {
             $attributes[$matches[1][$idx]] = $matches[2][$idx];
         }
 
-        return $attributes;
+        return Attributes::fromArray($attributes);
     }
 
     /**
-     * @param ParsedTemplate[][][] &$parsedTemplates
-     * @param string                $type
-     * @param string                $identifier
-     * @param array                 $attributes
-     * @param string                $occurence
+     * @param array<string,array<string,ParsedTemplate[]>> &$parsedTemplates
+     * @param string                                        $type
+     * @param string                                        $identifier
+     * @param array<string,Attribute>|null                  $attributes
+     * @param string                                        $occurrence
      */
-    private function addOccurence(
+    private function addOccurrence(
         array &$parsedTemplates,
         string $type,
         string $identifier,
-        array $attributes,
-        string $occurence
+        ?array $attributes,
+        string $occurrence
     ): void {
         if (!isset($parsedTemplates[$type][$identifier])) {
-            $parsedTemplates[$type][$identifier][] = new ParsedTemplate($type, $identifier, $attributes, [$occurence]);
+            $parsedTemplates[$type][$identifier][] = new ParsedTemplate($type, $identifier, $attributes, [$occurrence]);
 
             return;
         }
 
         foreach ($parsedTemplates[$type][$identifier] as $parsedTemplate) {
             // Note: == is used on purpose here!
-            if ($parsedTemplate->getAttributes() != $attributes) {
-                continue;
+            if (Attributes::isEqual($parsedTemplate->getAttributes(), $attributes)) {
+                $parsedTemplate->addOccurrence($occurrence);
+                return;
             }
-
-            $parsedTemplate->addOccurrence($occurence);
-
-            return;
         }
 
-        $parsedTemplates[$type][$identifier][] = new ParsedTemplate($type, $identifier, $attributes, [$occurence]);
+        $parsedTemplates[$type][$identifier][] = new ParsedTemplate($type, $identifier, $attributes, [$occurrence]);
     }
 
     /**

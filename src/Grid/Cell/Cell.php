@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Grid\Cell;
 
 use AbterPhp\Framework\Constant\Html5;
-use AbterPhp\Framework\Html\Component;
+use AbterPhp\Framework\Html\Attribute;
 use AbterPhp\Framework\Html\INode;
+use AbterPhp\Framework\Html\Tag;
 
-class Cell extends Component implements ICell
+class Cell extends Tag implements ICell
 {
     protected const DEFAULT_TAG = Html5::TAG_TD;
 
@@ -21,17 +22,17 @@ class Cell extends Component implements ICell
     /**
      * Cell constructor.
      *
-     * @param INode[]|INode|string|null $content
-     * @param string                    $group
-     * @param string[]                  $intents
-     * @param array                     $attributes
-     * @param string|null               $tag
+     * @param INode[]|INode|string|null    $content
+     * @param string                       $group
+     * @param string[]                     $intents
+     * @param array<string,Attribute>|null $attributes
+     * @param string|null                  $tag
      */
     public function __construct(
         $content,
         string $group,
         array $intents = [],
-        array $attributes = [],
+        ?array $attributes = null,
         ?string $tag = null
     ) {
         parent::__construct($content, $intents, $attributes, $tag);

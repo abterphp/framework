@@ -58,20 +58,30 @@ class CacheManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
             case ArrayBridge::class:
                 return new ArrayBridge();
             case MemcachedBridge::class:
-                return new MemcachedBridge(
-                    $container->resolve(Memcached::class),
-                    Config::get('authorization', 'cache.clientName'),
-                    Config::get('authorization', 'cache.keyPrefix')
-                );
+                /** @var Memcached $memcached */
+                $memcached = $container->resolve(Memcached::class);
+
+                $clientName = Config::get('authorization', 'cache.clientName');
+                $keyPrefix  = Config::get('authorization', 'cache.keyPrefix');
+                assert(is_string($clientName));
+                assert(is_string($keyPrefix));
+
+                return new MemcachedBridge($memcached, $clientName, $keyPrefix);
             case RedisBridge::class:
-                return new RedisBridge(
-                    $container->resolve(Redis::class),
-                    Config::get('authorization', 'cache.clientName'),
-                    Config::get('authorization', 'cache.keyPrefix')
-                );
+                /** @var Redis $redis */
+                $redis = $container->resolve(Redis::class);
+
+                $clientName = Config::get('authorization', 'cache.clientName');
+                $keyPrefix  = Config::get('authorization', 'cache.keyPrefix');
+                assert(is_string($clientName));
+                assert(is_string($keyPrefix));
+
+                return new RedisBridge($redis, $clientName, $keyPrefix);
             default:
-                // FileBridge
-                return new FileBridge(Config::get('authorization', 'file.path'));
+                $filePath = Config::get('authorization', 'file.path');
+                assert(is_string($filePath));
+
+                return new FileBridge($filePath);
         }
     }
 }

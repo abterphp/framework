@@ -18,6 +18,8 @@ use PHPUnit\Framework\TestCase;
 
 class AssetManagerBootstrapperTest extends TestCase
 {
+    private const DIR_MEDIA = '/media';
+
     /** @var AssetManagerBootstrapper - System Under Test */
     protected AssetManagerBootstrapper $sut;
 
@@ -26,8 +28,8 @@ class AssetManagerBootstrapperTest extends TestCase
 
     public function setUp(): void
     {
-        Environment::setVar(Env::DIR_MEDIA, '');
-        Environment::setVar(Env::CACHE_BASE_PATH, '');
+        Environment::setVar(Env::DIR_MEDIA, static::DIR_MEDIA);
+        Environment::setVar(Env::CACHE_BASE_PATH, '/cache');
         Environment::setVar(Env::ENV_NAME, 'foo');
 
         $this->sut = new AssetManagerBootstrapper();
@@ -35,15 +37,12 @@ class AssetManagerBootstrapperTest extends TestCase
         $this->transpilerMock = $this->getMockBuilder(ITranspiler::class)->getMock();
     }
 
-    public function tearDown(): void
-    {
-        Environment::unsetVar(Env::DIR_MEDIA);
-        Environment::unsetVar(Env::CACHE_BASE_PATH);
-        Environment::unsetVar(Env::ENV_NAME);
-    }
-
     public function testRegisterBindingsBindsAnAssetManager(): void
     {
+        if (!is_dir(static::DIR_MEDIA) || !is_writable(static::DIR_MEDIA)) {
+            $this->markTestSkipped();
+        }
+
         $fileFinderMock   = $this->createMock(FileFinder::class);
         $cacheManagerMock = $this->createMock(ICacheManager::class);
         $urlFixerMock     = $this->getMockBuilder(UrlFixer::class)->disableOriginalConstructor()->getMock();

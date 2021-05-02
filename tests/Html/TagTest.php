@@ -4,133 +4,139 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Html;
 
-use AbterPhp\Framework\TestCase\Html\NodeTestCase;
+use AbterPhp\Framework\Constant\Html5;
+use AbterPhp\Framework\Html\Helper\Attributes;
+use PHPUnit\Framework\TestCase;
 
-class TagTest extends NodeTestCase
+class TagTest extends TestCase
 {
-    public function testDefaultToString(): void
+    public function testConstructSetsTag(): void
     {
-        $sut = $this->createNode();
+        $expectedResult = '<article></article>';
 
-        $this->assertSame('<div></div>', (string)$sut);
-    }
+        $sut = new Tag(null, [], null, Html5::TAG_ARTICLE);
 
-    /**
-     * @return array
-     */
-    public function toStringWithTranslationProvider(): array
-    {
-        return [
-            ['AAA', ['AAA' => 'BBB'], '<div>BBB</div>'],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function isMatchProvider(): array
-    {
-        return [
-            'INode-no-intent'               => [INode::class, [], true],
-            'INode-foo-intent'              => [INode::class, ['foo'], true],
-            'INode-bar-intent'              => [INode::class, ['bar'], true],
-            'INode-foo-and-bar-intent'      => [INode::class, ['foo', 'bar'], true],
-            'fail-IComponent-foo-intent'    => [IComponent::class, ['foo'], false],
-            'fail-Component-foo-intent'     => [Component::class, ['foo'], false],
-            'fail-INode-baz-intent'         => [INode::class, ['baz'], false],
-            'fail-INode-foo-and-baz-intent' => [INode::class, ['foo', 'baz'], false],
-            'Node-foo-intent'               => [Node::class, ['foo'], true],
-            'Tag-foo-intent'                => [Tag::class, ['foo'], true],
-        ];
-    }
-
-    /**
-     * @dataProvider isMatchProvider
-     *
-     * @param string|null $className
-     * @param string[]    $intents
-     * @param bool        $expectedResult
-     */
-    public function testIsMatch(?string $className, array $intents, bool $expectedResult): void
-    {
-        $sut = $this->createNode();
-        $sut->setIntent('foo', 'bar');
-
-        $actualResult = $sut->isMatch($className, ...$intents);
+        $actualResult = (string)$sut;
 
         $this->assertSame($expectedResult, $actualResult);
     }
 
-    public function testUnsetAttributeWorksIfAttributeIsNotSet(): void
+    public function testSetTag(): void
     {
-        $key   = 'foo';
-        $value = 'bar';
+        $expectedResult = '<article></article>';
 
-        $sut = $this->createNode();
+        $sut = new Tag();
 
-        $sut->setAttribute($key, $value);
+        $sut->setTag(Html5::TAG_ARTICLE);
 
-        $sut->unsetAttribute($key);
+        $actualResult = (string)$sut;
 
-        $actualResult = $sut->getAttribute($key);
+        $this->assertSame($expectedResult, $actualResult);
+    }
+
+    public function testResetTag(): void
+    {
+        $expectedResult = '<div></div>';
+
+        $sut = new Tag();
+
+        $sut->setTag(Html5::TAG_ARTICLE)->resetTag();
+
+        $actualResult = (string)$sut;
+
+        $this->assertSame($expectedResult, $actualResult);
+    }
+
+    public function testConstructSetsAttributes(): void
+    {
+        $expectedResult = '<div foo="bar"></div>';
+        $attributes     = Attributes::fromArray(['foo' => 'bar']);
+
+        $sut = new Tag(null, [], $attributes);
+
+        $actualResult = (string)$sut;
+
+        $this->assertSame($expectedResult, $actualResult);
+    }
+
+    public function testSetAttributes(): void
+    {
+        $expectedResult = '<div foo="bar"></div>';
+        $attributes     = Attributes::fromArray(['foo' => 'bar']);
+
+        $sut = new Tag();
+        $sut->setAttributes($attributes);
+
+        $actualResult = (string)$sut;
+
+        $this->assertSame($expectedResult, $actualResult);
+    }
+
+    public function testGetAttribute(): void
+    {
+        $expectedResult = 'foo="bar"';
+        $attributes     = Attributes::fromArray(['foo' => 'bar']);
+
+        $sut = new Tag();
+        $sut->setAttribute($attributes['foo']);
+
+        $actualResult = $sut->getAttribute('foo');
+
+        $this->assertSame($expectedResult, (string)$actualResult);
+    }
+
+    public function testGetAttributeReturnsNullWhenAttributeDoesNotExist(): void
+    {
+        $sut = new Tag();
+
+        $actualResult = $sut->getAttribute('foo');
 
         $this->assertNull($actualResult);
     }
 
-    public function testUnsetAttributeValueWorksIfAttributeIsNotSet(): void
+    public function testHasAttribute(): void
     {
-        $key   = 'foo';
-        $value = 'bar';
+        $attributes = Attributes::fromArray(['foo' => 'bar']);
 
-        $sut = $this->createNode();
+        $sut = new Tag();
+        $sut->setAttribute($attributes['foo']);
 
-        $sut->unsetAttributeValue($key, $value);
+        $actualResult = $sut->hasAttribute('foo');
 
-        $actualResult = $sut->getAttribute($key);
-
-        $this->assertNull($actualResult);
+        $this->assertTrue($actualResult);
     }
 
-    public function testUnsetAttributeValueWorksIfAttributeIsSet(): void
+    public function testRemoveAttribute(): void
     {
-        $key   = 'foo';
-        $value = 'bar';
+        $attributes = Attributes::fromArray(['foo' => 'bar', 'bar' => 'baz']);
 
-        $sut = $this->createNode();
+        $sut = new Tag(null, [], $attributes);
+        $sut->removeAttribute('foo');
 
-        $sut->setAttribute($key, $value);
+        $actualResult = $sut->getAttributes();
 
-        $sut->unsetAttributeValue($key, $value);
-
-        $actualResult = $sut->getAttribute($key);
-
-        $this->assertNull($actualResult);
+        $this->assertEquals(['bar'], array_keys($actualResult));
     }
 
-    public function testUnsetAttributeValueWorksIfAttributeIsSetButValueIsNot(): void
+    public function testAppendToAttributeAsNew(): void
     {
-        $key   = 'foo';
-        $value1 = 'bar';
-        $value2 = 'baz';
+        $expectedResult = 'foo="bar baz"';
 
-        $sut = $this->createNode();
+        $sut = new Tag();
+        $sut->appendToAttribute('foo', 'bar', 'baz');
 
-        $sut->setAttribute($key, $value1);
-
-        $sut->unsetAttributeValue($key, $value2);
-
-        $actualResult = $sut->getAttribute($key);
-
-        $this->assertSame($value1, $actualResult);
+        $actualResult = $sut->getAttribute('foo');
+        $this->assertEquals($expectedResult, (string)$actualResult);
     }
 
-    /**
-     * @param INode[]|INode|string|null $content
-     *
-     * @return Tag
-     */
-    protected function createNode($content = null): INode
+    public function testAppendToClassAsNew(): void
     {
-        return new Tag($content);
+        $expectedResult = 'class="bar baz"';
+
+        $sut = new Tag();
+        $sut->appendToClass('bar', 'baz');
+
+        $actualResult = $sut->getAttribute(Html5::ATTR_CLASS);
+        $this->assertEquals($expectedResult, (string)$actualResult);
     }
 }
