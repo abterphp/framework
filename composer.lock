@@ -59,16 +59,16 @@
         },
         {
             "name": "casbin/casbin",
-            "version": "v3.1.1",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-casbin/php-casbin.git",
-                "reference": "71fd830c33895825b1fc4e57d340e0ac2dc949e3"
+                "reference": "a7c1cfa896c85d468f6fe608f3831d08dcea30d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-casbin/php-casbin/zipball/71fd830c33895825b1fc4e57d340e0ac2dc949e3",
-                "reference": "71fd830c33895825b1fc4e57d340e0ac2dc949e3",
+                "url": "https://api.github.com/repos/php-casbin/php-casbin/zipball/a7c1cfa896c85d468f6fe608f3831d08dcea30d7",
+                "reference": "a7c1cfa896c85d468f6fe608f3831d08dcea30d7",
                 "shasum": ""
             },
             "require": {
@@ -109,7 +109,7 @@
             ],
             "support": {
                 "issues": "https://github.com/php-casbin/php-casbin/issues",
-                "source": "https://github.com/php-casbin/php-casbin/tree/v3.1.1"
+                "source": "https://github.com/php-casbin/php-casbin/tree/v3.2.0"
             },
             "funding": [
                 {
@@ -117,7 +117,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2021-03-16T10:57:16+00:00"
+            "time": "2021-05-06T08:01:10+00:00"
         },
         {
             "name": "casbin/database-adapter",
@@ -1943,16 +1943,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.1.3",
+            "version": "1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc"
+                "reference": "d49695b909c3b7628b6289db5479a1c204601f11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/0f73288fd15629204f9d42b7055f72dacbe811fc",
-                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/d49695b909c3b7628b6289db5479a1c204601f11",
+                "reference": "d49695b909c3b7628b6289db5479a1c204601f11",
                 "shasum": ""
             },
             "require": {
@@ -1976,7 +1976,7 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
             "description": "Common interface for logging libraries",
@@ -1987,9 +1987,9 @@
                 "psr-3"
             ],
             "support": {
-                "source": "https://github.com/php-fig/log/tree/1.1.3"
+                "source": "https://github.com/php-fig/log/tree/1.1.4"
             },
-            "time": "2020-03-23T09:12:05+00:00"
+            "time": "2021-05-03T11:20:27+00:00"
         },
         {
             "name": "s1lentium/iptools",
@@ -3381,16 +3381,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v2.18.6",
+            "version": "v2.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "5fed214993e7863cef88a08f214344891299b9e4"
+                "reference": "d5b8a9d852b292c2f8a035200fa6844b1f82300b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/5fed214993e7863cef88a08f214344891299b9e4",
-                "reference": "5fed214993e7863cef88a08f214344891299b9e4",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/d5b8a9d852b292c2f8a035200fa6844b1f82300b",
+                "reference": "d5b8a9d852b292c2f8a035200fa6844b1f82300b",
                 "shasum": ""
             },
             "require": {
@@ -3438,6 +3438,11 @@
                 "php-cs-fixer"
             ],
             "type": "application",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.19-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "PhpCsFixer\\": "src/"
@@ -3473,7 +3478,7 @@
             "description": "A tool to automatically fix PHP code style",
             "support": {
                 "issues": "https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues",
-                "source": "https://github.com/FriendsOfPHP/PHP-CS-Fixer/tree/v2.18.6"
+                "source": "https://github.com/FriendsOfPHP/PHP-CS-Fixer/tree/v2.19.0"
             },
             "funding": [
                 {
@@ -3481,7 +3486,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-04-19T19:45:11+00:00"
+            "time": "2021-05-03T21:43:24+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -3872,16 +3877,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.10.4",
+            "version": "v4.10.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "c6d052fc58cb876152f89f532b95a8d7907e7f0e"
+                "reference": "4432ba399e47c66624bc73c8c0f811e5c109576f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/c6d052fc58cb876152f89f532b95a8d7907e7f0e",
-                "reference": "c6d052fc58cb876152f89f532b95a8d7907e7f0e",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/4432ba399e47c66624bc73c8c0f811e5c109576f",
+                "reference": "4432ba399e47c66624bc73c8c0f811e5c109576f",
                 "shasum": ""
             },
             "require": {
@@ -3922,9 +3927,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v4.10.4"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v4.10.5"
             },
-            "time": "2020-12-20T10:01:03+00:00"
+            "time": "2021-05-03T19:11:20+00:00"
         },
         {
             "name": "pdepend/pdepend",
