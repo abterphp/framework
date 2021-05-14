@@ -65,7 +65,7 @@ class Input extends Tag implements IElement
     ) {
         $attributes ??= [];
         $attributes = Attributes::addItem($attributes, Html5::ATTR_ID, $inputId);
-        if (!in_array(Html5::ATTR_TYPE, $attributes)) {
+        if (!array_key_exists(Html5::ATTR_TYPE, $attributes)) {
             $attributes = Attributes::addItem($attributes, Html5::ATTR_TYPE, static::DEFAULT_TYPE);
         }
         $attributes = Attributes::addItem($attributes, Html5::ATTR_NAME, $name);

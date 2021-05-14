@@ -14,6 +14,8 @@ use AbterPhp\Framework\Html\Helper\Tag as Helper;
  */
 class Tag extends Node implements ITag
 {
+    public const INTENT_HIDDEN = 'hidden';
+
     protected const DEFAULT_TAG = Html5::TAG_DIV;
 
     protected const PROTECTED_KEYS = [];
