@@ -11,11 +11,11 @@ use AbterPhp\Framework\Html\Tag;
 
 class Cell extends Tag implements ICell
 {
-    protected const DEFAULT_TAG = Html5::TAG_TD;
-
     public const INTENT_ACTIONS = 'actions';
 
     public const GROUP_ACTIONS = 'actions';
+
+    protected const DEFAULT_TAG = Html5::TAG_TD;
 
     protected string $group = '';
 

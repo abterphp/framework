@@ -25,14 +25,11 @@ class Manager
     public const CACHE_KEY_ASSETS_PATHS       = 'AbterPhp:AssetsPaths';
     public const CACHE_KEY_VIEWS              = 'AbterPhp:Views';
 
-    /** @var Loader */
-    protected $loader;
+    protected Loader $loader;
 
-    /** @var ICacheBridge|null */
-    protected $cacheBridge;
+    protected ?ICacheBridge $cacheBridge;
 
-    /** @var array|null */
-    protected $modules;
+    protected ?array $modules = null;
 
     /**
      * Manager constructor.
@@ -47,6 +44,9 @@ class Manager
     }
 
     /**
+     * @param string   $cacheKey
+     * @param callable $callback
+     *
      * @return array
      */
     protected function cacheWrapper(string $cacheKey, callable $callback): array
@@ -84,21 +84,11 @@ class Manager
      */
     public function getHttpBootstrappers(): array
     {
-        $callback = function (array $modules) {
-            $bootstrappers = [];
-            foreach ($modules as $module) {
-                if (isset($module[Module::BOOTSTRAPPERS])) {
-                    $bootstrappers = array_merge($bootstrappers, $module[Module::BOOTSTRAPPERS]);
-                }
-                if (isset($module[Module::HTTP_BOOTSTRAPPERS])) {
-                    $bootstrappers = array_merge($bootstrappers, $module[Module::HTTP_BOOTSTRAPPERS]);
-                }
-            }
-
-            return $bootstrappers;
-        };
-
-        return $this->cacheWrapper(static::CACHE_KEY_HTTP_BOOTSTRAPPERS, $callback);
+        return $this->getBootstrappers(
+            static::CACHE_KEY_HTTP_BOOTSTRAPPERS,
+            Module::BOOTSTRAPPERS,
+            Module::HTTP_BOOTSTRAPPERS
+        );
     }
 
     /**
@@ -106,21 +96,32 @@ class Manager
      */
     public function getCliBootstrappers(): array
     {
-        $callback = function (array $modules) {
+        return $this->getBootstrappers(
+            static::CACHE_KEY_CLI_BOOTSTRAPPERS,
+            Module::BOOTSTRAPPERS,
+            Module::CLI_BOOTSTRAPPERS
+        );
+    }
+
+    /**
+     * @return Bootstrapper[]
+     */
+    protected function getBootstrappers(string $cacheKey, string ...$keys): array
+    {
+        $callback = function (array $modules) use ($keys) {
             $bootstrappers = [];
             foreach ($modules as $module) {
-                if (isset($module[Module::BOOTSTRAPPERS])) {
-                    $bootstrappers = array_merge($bootstrappers, $module[Module::BOOTSTRAPPERS]);
-                }
-                if (isset($module[Module::CLI_BOOTSTRAPPERS])) {
-                    $bootstrappers = array_merge($bootstrappers, $module[Module::CLI_BOOTSTRAPPERS]);
+                foreach ($keys as $key) {
+                    if (array_key_exists($key, $module)) {
+                        $bootstrappers = array_merge($bootstrappers, $module[$key]);
+                    }
                 }
             }
 
             return $bootstrappers;
         };
 
-        return $this->cacheWrapper(static::CACHE_KEY_CLI_BOOTSTRAPPERS, $callback);
+        return $this->cacheWrapper($cacheKey, $callback);
     }
 
     /**

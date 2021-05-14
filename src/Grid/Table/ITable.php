@@ -17,7 +17,7 @@ interface ITable extends ITag
     public function getSortedUrl(string $baseUrl): string;
 
     /**
-     * @return array
+     * @return array<string,string>
      */
     public function getSortConditions(): array;
 

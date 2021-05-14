@@ -15,6 +15,10 @@ use AbterPhp\Framework\Html\Tag;
 
 class FormGroup extends Tag implements ITemplater
 {
+    public const CLASS_COUNTABLE = 'countable';
+
+    public const CLASS_REQUIRED = 'required';
+
     protected const DEFAULT_TAG = Html5::TAG_DIV;
 
     /**
@@ -23,10 +27,6 @@ class FormGroup extends Tag implements ITemplater
      * %3$s - help
      */
     protected const DEFAULT_TEMPLATE = '%1$s%2$s%3$s';
-
-    public const CLASS_COUNTABLE = 'countable';
-
-    public const CLASS_REQUIRED = 'required';
 
     protected IElement $input;
 

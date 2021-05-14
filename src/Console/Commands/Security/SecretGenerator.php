@@ -2,14 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * Opulence
- *
- * @link      https://www.opulencephp.com
- * @copyright Copyright (C) 2017 David Young
- * @license   https://github.com/opulencephp/Opulence/blob/master/LICENSE.md
- */
-
 namespace AbterPhp\Framework\Console\Commands\Security;
 
 use AbterPhp\Framework\Constant\Env;
@@ -21,9 +13,6 @@ use Opulence\Console\Requests\OptionTypes;
 use Opulence\Console\Responses\IResponse;
 use Opulence\Framework\Configuration\Config;
 
-/**
- * Defines the encryption key generator command
- */
 class SecretGenerator extends Command
 {
     /** @var array<string,int> */

@@ -11,6 +11,7 @@ use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
+use Opulence\Ioc\IocException;
 
 class SecretGeneratorBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
@@ -24,6 +25,7 @@ class SecretGeneratorBootstrapper extends Bootstrapper implements ILazyBootstrap
 
     /**
      * @inheritdoc
+     * @throws IocException
      */
     public function registerBindings(IContainer $container): void
     {

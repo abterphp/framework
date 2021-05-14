@@ -16,6 +16,9 @@ use AbterPhp\Framework\Html\Tag;
 
 class Pagination extends Tag implements IPagination, ITemplater
 {
+    public const PARAM_KEY_PAGE = 'page';
+    public const PARAM_KEY_SIZE = 'page-size';
+
     protected const DEFAULT_TAG = Html5::TAG_DIV;
 
     /**
@@ -23,9 +26,6 @@ class Pagination extends Tag implements IPagination, ITemplater
      * %2$s - options
      */
     protected const DEFAULT_TEMPLATE = '<div class="gp-numbers">%1$s</div><div class="gp-options">%2$s%3$s</div>';
-
-    public const PARAM_KEY_PAGE = 'page';
-    public const PARAM_KEY_SIZE = 'page-size';
 
     protected const ERROR_MSG_INVALID_NUMBER_COUNT            = 'Number count must be a positive odd number.';
     protected const ERROR_MSG_INVALID_PAGE_SIZE               = 'Page size given is not allowed.';

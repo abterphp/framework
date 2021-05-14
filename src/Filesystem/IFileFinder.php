@@ -24,18 +24,18 @@ interface IFileFinder
 
     /**
      * @param string $path
-     * @param string $key
+     * @param string $groupName
      *
      * @return bool
      */
-    public function fileExists(string $path, string $key = IFileFinder::DEFAULT_KEY): bool;
+    public function fileExists(string $path, string $groupName = self::DEFAULT_KEY): bool;
 
     /**
      * @param string $path
-     * @param string $key
+     * @param string $groupName
      *
      * @return string|null
      * @throws FilesystemException
      */
-    public function read(string $path, string $key = IFileFinder::DEFAULT_KEY): ?string;
+    public function read(string $path, string $groupName = self::DEFAULT_KEY): ?string;
 }

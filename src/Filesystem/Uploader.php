@@ -156,7 +156,7 @@ class Uploader
             return null;
         }
 
-        return (string)$content;
+        return $content;
     }
 
     /**

@@ -99,7 +99,7 @@ class Header extends Tag
     }
 
     /**
-     * @return array
+     * @return array<string,string>
      */
     public function getSortConditions(): array
     {

@@ -17,8 +17,8 @@ class Hideable extends Tag implements ITemplater
 {
     protected const DEFAULT_TAG = Html5::TAG_DIV;
 
-    protected const CLASS_HIDABLE = 'hidable';
-    protected const CLASS_HIDER   = 'hider';
+    protected const CLASS_HIDEABLE = 'hideable';
+    protected const CLASS_HIDER    = 'hider';
 
     /**
      * %1$s - hider button
@@ -52,7 +52,7 @@ class Hideable extends Tag implements ITemplater
         ?string $tag = null
     ) {
         $attributes ??= [];
-        $attributes = Attributes::addItem($attributes, Html5::ATTR_CLASS, self::CLASS_HIDABLE);
+        $attributes = Attributes::addItem($attributes, Html5::ATTR_CLASS, self::CLASS_HIDEABLE);
 
         parent::__construct(null, $intent, $attributes, $tag);
 

@@ -86,6 +86,8 @@ class AssetManagerBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
     /**
      * @param IContainer $container
+     *
+     * @throws IocException
      */
     private function registerViewFunction(IContainer $container): void
     {

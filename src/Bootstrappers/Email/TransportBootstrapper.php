@@ -48,7 +48,7 @@ class TransportBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     private function createSmtpTransport(): Swift_SmtpTransport
     {
-        $host       = (string)Environment::mustGetVar(Env::EMAIL_SMTP_HOST);
+        $host       = Environment::mustGetVar(Env::EMAIL_SMTP_HOST);
         $port       = (int)Environment::mustGetVar(Env::EMAIL_SMTP_PORT);
         $encryption = (string)Environment::getVar(Env::EMAIL_SMTP_ENCRYPTION);
 
@@ -74,7 +74,7 @@ class TransportBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     private function createSendmailTransport(): Swift_SendmailTransport
     {
-        $command = (string)Environment::mustGetVar(Env::EMAIL_SENDMAIL_COMMAND);
+        $command = Environment::mustGetVar(Env::EMAIL_SENDMAIL_COMMAND);
 
         return new Swift_SendmailTransport($command);
     }

@@ -42,6 +42,7 @@ class FileFinder implements IFileFinder
      * @param string $groupName
      *
      * @return bool
+     * @throws FilesystemException
      */
     public function fileExists(string $path, string $groupName = IFileFinder::DEFAULT_KEY): bool
     {
@@ -50,15 +51,15 @@ class FileFinder implements IFileFinder
 
     /**
      * @param string $path
-     * @param string $key
+     * @param string $groupName
      *
      * @return string|null
      * @throws UnableToReadFile
      * @throws FilesystemException
      */
-    public function read(string $path, string $key = IFileFinder::DEFAULT_KEY): ?string
+    public function read(string $path, string $groupName = IFileFinder::DEFAULT_KEY): ?string
     {
-        $filesystem = $this->findFilesystem($path, $key);
+        $filesystem = $this->findFilesystem($path, $groupName);
         if (!$filesystem) {
             return null;
         }
@@ -77,6 +78,7 @@ class FileFinder implements IFileFinder
      * @param string $key
      *
      * @return FilesystemOperator|null
+     * @throws FilesystemException
      */
     protected function findFilesystem(string $path, string $key): ?FilesystemOperator
     {

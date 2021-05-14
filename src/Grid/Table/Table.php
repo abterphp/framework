@@ -58,7 +58,7 @@ class Table extends Tag implements ITable, ITemplater
     }
 
     /**
-     * @return array
+     * @return array<string,string>
      */
     public function getSortConditions(): array
     {
