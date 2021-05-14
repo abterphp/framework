@@ -40,6 +40,20 @@ class Attributes
     }
 
     /**
+     * @param array<string,Attribute> $attributes
+     * @param string                  $newKey
+     * @param                         ...$newValues
+     *
+     * @return array
+     */
+    public static function addItem(array $attributes, string $newKey, ...$newValues): array
+    {
+        $attributes[$newKey] = new Attribute($newKey, ...$newValues);
+
+        return $attributes;
+    }
+
+    /**
      * @param array<string,Attribute>|null $attribA
      * @param array<string,Attribute>|null $attribB
      *

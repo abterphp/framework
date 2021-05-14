@@ -74,12 +74,12 @@ class Button
         string $icon = '',
         ?array $textAttributes = null,
         ?array $iconAttributes = null,
-        $intents = [],
+        array $intents = [],
         ?array $attributes = null,
         ?string $tag = Html5::TAG_A
     ): ButtonComponent {
-        $attributes                   ??= [];
-        $attributes[Html5::ATTR_HREF] = new Attribute(Html5::ATTR_HREF, $url);
+        $attributes ??= [];
+        $attributes = Attributes::addItem($attributes, Html5::ATTR_HREF, $url);
 
         if ($icon) {
             return $this->createWithIcon($text, $icon, $textAttributes, $iconAttributes, $intents, $attributes, $tag);
@@ -113,14 +113,14 @@ class Button
         string $icon = '',
         ?array $textAttributes = null,
         ?array $iconAttributes = null,
-        $intents = [],
+        array $intents = [],
         ?array $attributes = null,
         ?string $tag = Html5::TAG_A
     ): ButtonComponent {
         $url = $this->urlGenerator->createFromName($urlName, ...$urlArgs);
 
-        $attributes                   ??= [];
-        $attributes[Html5::ATTR_HREF] = new Attribute(Html5::ATTR_HREF, $url);
+        $attributes ??= [];
+        $attributes = Attributes::addItem($attributes, Html5::ATTR_HREF, $url);
 
         if ($icon) {
             return $this->createWithIcon($text, $icon, $textAttributes, $iconAttributes, $intents, $attributes, $tag);

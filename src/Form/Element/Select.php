@@ -7,6 +7,7 @@ namespace AbterPhp\Framework\Form\Element;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Form\Component\Option;
 use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use AbterPhp\Framework\Html\Helper\Tag as TagHelper;
 use AbterPhp\Framework\Html\IStringer;
 use AbterPhp\Framework\Html\Node;
@@ -30,11 +31,11 @@ class Select extends Input
     /**
      * Select constructor.
      *
-     * @param string           $inputId
-     * @param string           $name
-     * @param string[]         $intents
-     * @param Attribute[]|null $attributes
-     * @param string|null      $tag
+     * @param string                        $inputId
+     * @param string                        $name
+     * @param string[]                      $intents
+     * @param array<string, Attribute>|null $attributes
+     * @param string|null                   $tag
      */
     public function __construct(
         string $inputId,
@@ -43,9 +44,9 @@ class Select extends Input
         ?array $attributes = null,
         ?string $tag = null
     ) {
-        $attributes                   ??= [];
-        $attributes[Html5::ATTR_ID]   = new Attribute(Html5::ATTR_ID, $inputId);
-        $attributes[Html5::ATTR_NAME] = new Attribute(Html5::ATTR_NAME, $name);
+        $attributes ??= [];
+        $attributes = Attributes::addItem($attributes, Html5::ATTR_ID, $inputId);
+        $attributes = Attributes::addItem($attributes, Html5::ATTR_NAME, $name);
 
         Tag::__construct(null, $intents, $attributes, $tag);
     }

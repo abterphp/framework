@@ -6,6 +6,7 @@ namespace AbterPhp\Framework\Form\Element;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
 
 class MultiSelect extends Select
 {
@@ -14,11 +15,11 @@ class MultiSelect extends Select
     /**
      * MultiSelect constructor.
      *
-     * @param string           $inputId
-     * @param string           $name
-     * @param string[]         $intents
-     * @param Attribute[]|null $attributes
-     * @param string|null      $tag
+     * @param string                        $inputId
+     * @param string                        $name
+     * @param string[]                      $intents
+     * @param array<string, Attribute>|null $attributes
+     * @param string|null                   $tag
      */
     public function __construct(
         string $inputId,
@@ -28,7 +29,7 @@ class MultiSelect extends Select
         ?string $tag = null
     ) {
         $attributes ??= [];
-        $attributes[Html5::ATTR_MULTIPLE] = new Attribute(Html5::ATTR_MULTIPLE);
+        $attributes = Attributes::addItem($attributes, Html5::ATTR_MULTIPLE);
 
         parent::__construct($inputId, $name, $intents, $attributes, $tag);
     }

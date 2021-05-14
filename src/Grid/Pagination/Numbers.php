@@ -79,19 +79,15 @@ class Numbers extends Actions
     protected function attachLeft(bool $isFirst, bool $isFirstVisible, int $currentPage): void
     {
         if (!$isFirstVisible) {
-            $this->realBtnAttr = Attributes::replaceItem(
-                $this->realBtnAttr,
-                new Attribute(Html5::ATTR_HREF, sprintf('%spage=%d', $this->baseUrl, 1))
-            );
+            $href              = sprintf('%spage=%d', $this->baseUrl, 1);
+            $this->realBtnAttr = Attributes::addItem($this->realBtnAttr, Html5::ATTR_HREF, $href);
 
             $this->content[] = new Action('<<', $this->realBtnIntents, $this->realBtnAttr, [], Html5::TAG_A);
         }
 
         if (!$isFirst) {
-            $this->realBtnAttr = Attributes::replaceItem(
-                $this->realBtnAttr,
-                new Attribute(Html5::ATTR_HREF, sprintf('%spage=%d', $this->baseUrl, $currentPage - 1))
-            );
+            $href              = sprintf('%spage=%d', $this->baseUrl, $currentPage - 1);
+            $this->realBtnAttr = Attributes::addItem($this->realBtnAttr, Html5::ATTR_HREF, $href);
 
             $this->content[] = new Action('<', $this->realBtnIntents, $this->realBtnAttr, [], Html5::TAG_A);
         }
@@ -111,10 +107,8 @@ class Numbers extends Actions
             if ($currentPage == $number) {
                 $this->content[] = new Action("$number", $this->fakeBtnIntents, $this->fakeBtnAttr);
             } else {
-                $this->realBtnAttr = Attributes::replaceItem(
-                    $this->realBtnAttr,
-                    new Attribute(Html5::ATTR_HREF, sprintf('%spage=%d', $this->baseUrl, $number))
-                );
+                $href              = sprintf('%spage=%d', $this->baseUrl, $number);
+                $this->realBtnAttr = Attributes::addItem($this->realBtnAttr, Html5::ATTR_HREF, $href);
 
                 $this->content[] = new Action("$number", $this->realBtnIntents, $this->realBtnAttr, [], Html5::TAG_A);
             }
@@ -134,19 +128,15 @@ class Numbers extends Actions
         }
 
         if (!$isLast) {
-            $this->realBtnAttr = Attributes::replaceItem(
-                $this->realBtnAttr,
-                new Attribute(Html5::ATTR_HREF, sprintf('%spage=%d', $this->baseUrl, $currentPage + 1))
-            );
+            $href              = sprintf('%spage=%d', $this->baseUrl, $currentPage + 1);
+            $this->realBtnAttr = Attributes::addItem($this->realBtnAttr, Html5::ATTR_HREF, $href);
 
             $this->content[] = new Action('>', $this->realBtnIntents, $this->realBtnAttr, [], Html5::TAG_A);
         }
 
         if (!$isLastVisible) {
-            $this->realBtnAttr = Attributes::replaceItem(
-                $this->realBtnAttr,
-                new Attribute(Html5::ATTR_HREF, sprintf('%spage=%d', $this->baseUrl, $lastPage))
-            );
+            $href              = sprintf('%spage=%d', $this->baseUrl, $lastPage);
+            $this->realBtnAttr = Attributes::addItem($this->realBtnAttr, Html5::ATTR_HREF, $href);
 
             $this->content[] = new Action('>>', $this->realBtnIntents, $this->realBtnAttr, [], Html5::TAG_A);
         }

@@ -34,12 +34,12 @@ class ButtonTest extends TestCase
     /**
      * @dataProvider renderProvider
      *
-     * @param mixed            $content
-     * @param array            $intents
-     * @param Attribute[]|null $attributes
-     * @param array|null       $translations
-     * @param string|null      $tag
-     * @param string           $expectedResult
+     * @param mixed                         $content
+     * @param array                         $intents
+     * @param array<string, Attribute>|null $attributes
+     * @param array|null                    $translations
+     * @param string|null                   $tag
+     * @param string                        $expectedResult
      */
     public function testRender(
         $content,
@@ -59,11 +59,11 @@ class ButtonTest extends TestCase
     }
 
     /**
-     * @param mixed            $content
-     * @param array            $intents
-     * @param Attribute[]|null $attributes
-     * @param array|null       $translations
-     * @param string|null      $tag
+     * @param mixed                         $content
+     * @param array                         $intents
+     * @param array<string, Attribute>|null $attributes
+     * @param array|null                    $translations
+     * @param string|null                   $tag
      *
      * @return Button
      */

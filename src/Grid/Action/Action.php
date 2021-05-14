@@ -21,11 +21,11 @@ class Action extends Button implements IAction
     /**
      * Action constructor.
      *
-     * @param INode[]|INode|string|null $content
-     * @param string[]                  $intents
-     * @param Attribute[]|null          $attributes
-     * @param array<string,callable>    $attributeCallbacks
-     * @param string|null               $tag
+     * @param INode[]|INode|string|null     $content
+     * @param string[]                      $intents
+     * @param array<string, Attribute>|null $attributes
+     * @param array<string,callable>        $attributeCallbacks
+     * @param string|null                   $tag
      */
     public function __construct(
         $content,

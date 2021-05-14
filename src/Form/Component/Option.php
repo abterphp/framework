@@ -6,6 +6,7 @@ namespace AbterPhp\Framework\Form\Component;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Tag;
 
@@ -18,29 +19,29 @@ class Option extends Tag
     /**
      * Option constructor.
      *
-     * @param string                    $value
-     * @param INode[]|INode|string|null $content
-     * @param bool                      $isSelected
-     * @param string[]                  $intents
-     * @param array<string,Attribute>|null           $counterAttributes
-     * @param string|null               $tag
+     * @param string                       $value
+     * @param INode[]|INode|string|null    $content
+     * @param bool                         $isSelected
+     * @param string[]                     $intents
+     * @param array<string,Attribute>|null $attributes
+     * @param string|null                  $tag
      */
     public function __construct(
         string $value,
         $content,
         bool $isSelected = false,
         array $intents = [],
-        ?array $counterAttributes = null,
+        ?array $attributes = null,
         ?string $tag = null
     ) {
-        $counterAttributes ??= [];
-        $counterAttributes[Html5::ATTR_VALUE] = new Attribute(Html5::ATTR_VALUE, $value);
+        $attributes ??= [];
+        $attributes = Attributes::addItem($attributes, Html5::ATTR_VALUE, $value);
 
         if ($isSelected) {
-            $counterAttributes[Html5::ATTR_SELECTED] = new Attribute(Html5::ATTR_SELECTED);
+            $attributes = Attributes::addItem($attributes, Html5::ATTR_SELECTED);
         }
 
-        parent::__construct($content, $intents, $counterAttributes, $tag);
+        parent::__construct($content, $intents, $attributes, $tag);
     }
 
     /**

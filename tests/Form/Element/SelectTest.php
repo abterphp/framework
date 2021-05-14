@@ -116,14 +116,14 @@ class SelectTest extends TestCase
     /**
      * @dataProvider renderProvider
      *
-     * @param string               $inputId
-     * @param string               $name
-     * @param string               $value
-     * @param array<string,string> $options
-     * @param Attribute[]|null     $attributes
-     * @param string[]|null        $translations
-     * @param string|null          $tag
-     * @param string               $expectedResult
+     * @param string                        $inputId
+     * @param string                        $name
+     * @param string                        $value
+     * @param array<string,string>          $options
+     * @param array<string, Attribute>|null $attributes
+     * @param string[]|null                 $translations
+     * @param string|null                   $tag
+     * @param string                        $expectedResult
      */
     public function testRender(
         string $inputId,
@@ -241,13 +241,13 @@ class SelectTest extends TestCase
     }
 
     /**
-     * @param string               $inputId
-     * @param string               $name
-     * @param string               $value
-     * @param array<string,string> $options
-     * @param Attribute[]|null     $attributes
-     * @param string[]|null        $translations
-     * @param string|null          $tag
+     * @param string                        $inputId
+     * @param string                        $name
+     * @param string                        $value
+     * @param array<string,string>          $options
+     * @param array<string, Attribute>|null $attributes
+     * @param string[]|null                 $translations
+     * @param string|null                   $tag
      *
      * @return Select
      */

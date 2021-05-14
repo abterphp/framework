@@ -6,6 +6,7 @@ namespace AbterPhp\Framework\Form\Label;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Tag;
 
@@ -34,7 +35,7 @@ class Label extends Tag
         ?string $tag = null
     ) {
         $attributes ??= [];
-        $attributes[Html5::ATTR_FOR] = new Attribute(Html5::ATTR_FOR, $inputId);
+        $attributes = Attributes::addItem($attributes, Html5::ATTR_FOR, $inputId);
 
         parent::__construct($content, $intents, $attributes, $tag);
     }

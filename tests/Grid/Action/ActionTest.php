@@ -54,12 +54,12 @@ class ActionTest extends TestCase
     /**
      * @dataProvider renderProvider
      *
-     * @param INode[]|INode|string|null $content
-     * @param Attribute[]|null          $attributes
-     * @param array                     $attributeCallbacks
-     * @param string[]|null             $translations
-     * @param string|null               $tag
-     * @param string                    $expectedResult
+     * @param INode[]|INode|string|null     $content
+     * @param array<string, Attribute>|null $attributes
+     * @param array                         $attributeCallbacks
+     * @param string[]|null                 $translations
+     * @param string|null                   $tag
+     * @param string                        $expectedResult
      */
     public function testRender(
         $content,

@@ -52,7 +52,7 @@ class Hideable extends Tag implements ITemplater
         ?string $tag = null
     ) {
         $attributes ??= [];
-        $attributes = Attributes::mergeItem($attributes, new Attribute(Html5::ATTR_CLASS, self::CLASS_HIDABLE));
+        $attributes = Attributes::addItem($attributes, Html5::ATTR_CLASS, self::CLASS_HIDABLE);
 
         parent::__construct(null, $intent, $attributes, $tag);
 

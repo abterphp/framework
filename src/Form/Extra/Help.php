@@ -6,6 +6,7 @@ namespace AbterPhp\Framework\Form\Extra;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use AbterPhp\Framework\Html\INode;
 use AbterPhp\Framework\Html\Tag;
 
@@ -29,8 +30,8 @@ class Help extends Tag
         ?array $attributes = null,
         ?string $tag = null
     ) {
-        $attributes                    ??= [];
-        $attributes[Html5::ATTR_CLASS] = new Attribute(Html5::ATTR_CLASS, self::CLASS_HELP_BLOCK);
+        $attributes ??= [];
+        $attributes = Attributes::addItem($attributes, Html5::ATTR_CLASS, self::CLASS_HELP_BLOCK);
 
         parent::__construct($content, $intents, $attributes, $tag);
     }

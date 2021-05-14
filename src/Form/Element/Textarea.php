@@ -6,6 +6,7 @@ namespace AbterPhp\Framework\Form\Element;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use AbterPhp\Framework\Html\Helper\Tag as TagHelper;
 use AbterPhp\Framework\Html\Tag;
 
@@ -22,12 +23,12 @@ class Textarea extends Input implements IElement
     /**
      * Textarea constructor.
      *
-     * @param string           $inputId
-     * @param string           $name
-     * @param string           $value
-     * @param string[]         $intents
-     * @param Attribute[]|null $attributes
-     * @param string|null      $tag
+     * @param string                        $inputId
+     * @param string                        $name
+     * @param string                        $value
+     * @param string[]                      $intents
+     * @param array<string, Attribute>|null $attributes
+     * @param string|null                   $tag
      */
     public function __construct(
         string $inputId,
@@ -37,13 +38,13 @@ class Textarea extends Input implements IElement
         ?array $attributes = null,
         ?string $tag = null
     ) {
-        $attributes ??= [];
-        $attributes[Html5::ATTR_ID] = new Attribute(Html5::ATTR_ID, $inputId);
+        $attributes                 ??= [];
+        $attributes = Attributes::addItem($attributes, Html5::ATTR_ID, $inputId);
         if (!in_array(Html5::ATTR_ROWS, $attributes)) {
-            $attributes[Html5::ATTR_ROWS] = new Attribute(Html5::ATTR_ROWS, static::DEFAULT_ROW);
+            $attributes = Attributes::addItem($attributes, Html5::ATTR_ROWS, static::DEFAULT_ROW);
         }
 
-        $attributes[Html5::ATTR_NAME] = new Attribute(Html5::ATTR_NAME, $name);
+        $attributes = Attributes::addItem($attributes, Html5::ATTR_NAME, $name);
 
         Tag::__construct(null, $intents, $attributes, $tag);
 

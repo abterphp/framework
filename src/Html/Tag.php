@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Html;
 
 use AbterPhp\Framework\Constant\Html5;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use AbterPhp\Framework\Html\Helper\Collection;
 use AbterPhp\Framework\Html\Helper\Tag as Helper;
 
@@ -162,7 +163,7 @@ class Tag extends Node implements ITag
     public function appendToAttribute(string $key, string ...$values): self
     {
         if (!array_key_exists($key, $this->attributes)) {
-            $this->attributes[$key] = new Attribute($key, ...$values);
+            $this->attributes = Attributes::addItem($this->attributes, $key, ...$values);
 
             return $this;
         }

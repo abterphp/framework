@@ -6,6 +6,7 @@ namespace AbterPhp\Framework\Form;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use AbterPhp\Framework\Html\Tag;
 use Opulence\Http\Requests\RequestMethods;
 
@@ -32,9 +33,8 @@ class Form extends Tag implements IForm
         ?string $tag = null
     ) {
         $attributes ??= [];
-
-        $attributes[Html5::ATTR_ACTION] = new Attribute(Html5::ATTR_ACTION, $action);
-        $attributes[Html5::ATTR_METHOD] = new Attribute(Html5::ATTR_METHOD, $method);
+        $attributes = Attributes::addItem($attributes, Html5::ATTR_ACTION, $action);
+        $attributes = Attributes::addItem($attributes, Html5::ATTR_METHOD, $method);
 
         parent::__construct(null, $intents, $attributes, $tag);
     }
