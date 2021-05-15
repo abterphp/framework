@@ -41,7 +41,7 @@ class Filters extends Tag implements ITemplater
      * %2$s - nodes (filters)
      */
     protected const DEFAULT_TEMPLATE = <<<'EOT'
-        <div class="hidable">
+        <div class="hideable">
             <p class="hider">%1$s</p>
             <div class="hidee">%2$s</div>
         </div>

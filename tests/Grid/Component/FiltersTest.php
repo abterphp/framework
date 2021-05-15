@@ -239,7 +239,7 @@ class FiltersTest extends TestCase
         $actualResult   = (string)$sut;
         $repeatedResult = (string)$sut;
 
-        $this->assertMatchesRegularExpression('/^\<div class\=\"hidable\"/', $actualResult);
+        $this->assertMatchesRegularExpression('/^\<div class\=\"hideable\"/', $actualResult);
         $this->assertMatchesRegularExpression('/\<p class\=\"hider\"\>\<button/', $actualResult);
         $this->assertMatchesRegularExpression('/\<div class\=\"hidee\"\>\<form/', $actualResult);
 
@@ -262,7 +262,7 @@ class FiltersTest extends TestCase
         $actualResult   = (string)$sut;
         $repeatedResult = (string)$sut;
 
-        $this->assertMatchesRegularExpression('/^\<div class\=\"hidable\"/', $actualResult);
+        $this->assertMatchesRegularExpression('/^\<div class\=\"hideable\"/', $actualResult);
         $this->assertMatchesRegularExpression('/\<p class\=\"hider\"\>\<button/', $actualResult);
         $this->assertMatchesRegularExpression('/\<div class\=\"hidee\"\>\<form/', $actualResult);
 
