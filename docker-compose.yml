@@ -1,15 +1,15 @@
 version: '3'
 services:
-  cli:
-    image: abtercms/php:74
+  cli80:
+    image: abtercms/php:80
     volumes:
       - .:/website
       - ./docker/php/conf.d/zzz_020_general.ini:/usr/local/etc/php/conf.d/zzz_020_general.ini:ro
       - ./docker/php/conf.d/zzz_500_local.ini:/usr/local/etc/php/conf.d/zzz_500_local.ini:ro
     working_dir: /website
 
-  cli80:
-    image: abtercms/php:80
+  cli81:
+    image: abtercms/php:81
     volumes:
       - .:/website
       - ./docker/php/conf.d/zzz_020_general.ini:/usr/local/etc/php/conf.d/zzz_020_general.ini:ro

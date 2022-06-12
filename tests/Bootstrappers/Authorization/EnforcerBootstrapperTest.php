@@ -19,6 +19,18 @@ class EnforcerBootstrapperTest extends TestCase
     /** @var EnforcerBootstrapper - System Under Test */
     protected EnforcerBootstrapper $sut;
 
+    const ACL = '[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj && r.act == p.act';
+
     public function setUp(): void
     {
         Environment::unsetVar(Env::DIR_AUTH_CONFIG);
@@ -32,7 +44,7 @@ class EnforcerBootstrapperTest extends TestCase
         Environment::setVar(Env::DIR_AUTH_CONFIG, '/tmp');
         Environment::setVar(Env::ENV_NAME, 'foo');
 
-        file_put_contents('/tmp/model.conf', '');
+        file_put_contents('/tmp/model.conf',  static::ACL);
 
         $mockAdapter = $this->getMockBuilder(CombinedAdapter::class)->disableOriginalConstructor()->getMock();
 
@@ -52,7 +64,7 @@ class EnforcerBootstrapperTest extends TestCase
         Environment::setVar(Env::DIR_AUTH_CONFIG, '/tmp');
         Environment::setVar(Env::ENV_NAME, 'foo');
 
-        file_put_contents('/tmp/model.conf', '');
+        file_put_contents('/tmp/model.conf', static::ACL);
 
         $mockAdapter = $this->getMockBuilder(CombinedAdapter::class)->disableOriginalConstructor()->getMock();
         $sessionMock = $this->getMockBuilder(ISession::class)->getMock();
