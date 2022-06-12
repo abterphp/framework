@@ -11,11 +11,21 @@ class Routes
 {
     public const ASSETS_PATH = '/:path';
 
+    protected static $class = __CLASS__;
+
     protected ?string $mediaUrl = null;
 
     protected ?string $cacheUrl = null;
 
     protected ?string $assetsPath = null;
+
+    /**
+     * @return static
+     */
+    public static function new(): static
+    {
+        return static::$class();
+    }
 
     /**
      * @param string $mediaUrl

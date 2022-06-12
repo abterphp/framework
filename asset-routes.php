@@ -19,6 +19,8 @@ use Opulence\Routing\Router;
 $router->group(
     ['controllerNamespace' => 'AbterPhp\Framework\Http\Controllers'],
     function (Router $router) use ($container) {
+        global $container;
+
         /** @var Routes $routes */
         $routes = $container->resolve(Routes::class);
 
