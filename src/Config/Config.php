@@ -10,7 +10,6 @@ use RuntimeException;
 
 class Config extends OpulenceConfig
 {
-
     /**
      * Gets a setting, but throws an exception if it's empty
      *

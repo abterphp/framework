@@ -12,7 +12,6 @@ use PHPUnit\Framework\TestCase;
 
 class NodeTest extends TestCase
 {
-
     /** @var Node - System Under Test */
     protected Node $sut;
 
