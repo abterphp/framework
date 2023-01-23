@@ -116,13 +116,18 @@ class SecretGenerator extends Command
     protected function handleKey(IResponse $response, string $name, string $key, int $maxNameLength): void
     {
         if (!$this->optionIsSet('dry-run') && $this->getEnvFile()) {
-            $contents    = file_get_contents($this->getEnvFile());
-            $newContents = preg_replace(
-                sprintf("/\"%s\",\s*\"[^\"]*\"/U", $name),
-                sprintf('"%s", "' . $key . '"', $name),
-                $contents
-            );
-            file_put_contents($this->getEnvFile(), $newContents);
+            $envFile = $this->getEnvFile();
+
+            if ($envFile !== null) {
+                $contents    = file_get_contents($envFile);
+                $newContents = preg_replace(
+                    sprintf("/\"%s\",\s*\"[^\"]*\"/U", $name),
+                    sprintf('"%s", "' . $key . '"', $name),
+                    $contents
+                );
+
+                file_put_contents($envFile, $newContents);
+            }
         }
 
         $pad = str_repeat(' ', $maxNameLength - strlen($name));

@@ -1,25 +1,10 @@
 version: '3'
 services:
-  cli80:
-    image: abtercms/php:80
-    volumes:
-      - .:/website
-      - ./docker/php/conf.d/zzz_020_general.ini:/usr/local/etc/php/conf.d/zzz_020_general.ini:ro
-      - ./docker/php/conf.d/zzz_500_local.ini:/usr/local/etc/php/conf.d/zzz_500_local.ini:ro
-    working_dir: /website
-
-  cli81:
-    image: abtercms/php:81
-    volumes:
-      - .:/website
-      - ./docker/php/conf.d/zzz_020_general.ini:/usr/local/etc/php/conf.d/zzz_020_general.ini:ro
-      - ./docker/php/conf.d/zzz_500_local.ini:/usr/local/etc/php/conf.d/zzz_500_local.ini:ro
-    working_dir: /website
-
   cli82:
     image: abtercms/php:82
     volumes:
       - .:/website
       - ./docker/php/conf.d/zzz_020_general.ini:/usr/local/etc/php/conf.d/zzz_020_general.ini:ro
       - ./docker/php/conf.d/zzz_500_local.ini:/usr/local/etc/php/conf.d/zzz_500_local.ini:ro
+      - ./docker/php/conf.d/ast-on.ini:/usr/local/etc/php/conf.d/ast-on.ini:ro
     working_dir: /website

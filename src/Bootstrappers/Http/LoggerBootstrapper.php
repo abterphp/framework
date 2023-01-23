@@ -7,6 +7,7 @@ namespace AbterPhp\Framework\Bootstrappers\Http;
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Environments\Environment;
 use Monolog\Handler\StreamHandler;
+use Monolog\Level;
 use Monolog\Logger;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
@@ -32,7 +33,7 @@ class LoggerBootstrapper extends Bootstrapper implements ILazyBootstrapper
     {
         $logger   = new Logger('application');
         $filePath = Environment::mustGetVar(Env::DIR_LOGS);
-        $logger->pushHandler(new StreamHandler($filePath . '/application.log', Logger::INFO));
+        $logger->pushHandler(new StreamHandler($filePath . '/application.log', Level::Info));
 
         $container->bindInstance(LoggerInterface::class, $logger);
     }

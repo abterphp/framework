@@ -88,7 +88,7 @@ class Sender implements ISender
     }
 
     /**
-     * @return string[]
+     * @return Address[]
      */
     public function getFailedRecipients(): array
     {

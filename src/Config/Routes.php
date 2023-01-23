@@ -18,14 +18,6 @@ class Routes
     protected ?string $assetsPath = null;
 
     /**
-     * @return static
-     */
-    public static function new(): static
-    {
-        return static::class();
-    }
-
-    /**
      * @param string $mediaUrl
      */
     public function setMediaUrl(string $mediaUrl): void
