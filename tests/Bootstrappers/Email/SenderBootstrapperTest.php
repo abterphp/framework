@@ -8,7 +8,8 @@ use AbterPhp\Framework\Email\MessageFactory;
 use AbterPhp\Framework\Email\Sender;
 use Opulence\Ioc\Container;
 use PHPUnit\Framework\TestCase;
-use Swift_Transport;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mailer\Transport\TransportInterface;
 
 class SenderBootstrapperTest extends TestCase
 {
@@ -22,11 +23,11 @@ class SenderBootstrapperTest extends TestCase
 
     public function testRegisterBindings(): void
     {
-        $transportMock      = $this->getMockBuilder(Swift_Transport::class)->getMock();
+        $nullTransport      = Transport::fromDsn('null://null');
         $messageFactoryMock = $this->getMockBuilder(MessageFactory::class)->getMock();
 
         $container = new Container();
-        $container->bindInstance(Swift_Transport::class, $transportMock);
+        $container->bindInstance(TransportInterface::class, $nullTransport);
         $container->bindInstance(MessageFactory::class, $messageFactoryMock);
 
         $this->sut->registerBindings($container);

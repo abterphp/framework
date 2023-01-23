@@ -9,8 +9,8 @@ use AbterPhp\Framework\Email\Sender;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
-use Swift_Mailer;
-use Swift_Transport;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport\TransportInterface;
 
 class SenderBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
@@ -29,13 +29,13 @@ class SenderBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     public function registerBindings(IContainer $container): void
     {
-        /** @var Swift_Transport $transport */
-        $transport = $container->resolve(Swift_Transport::class);
+        /** @var TransportInterface $transport */
+        $transport = $container->resolve(TransportInterface::class);
 
         /** @var MessageFactory $messageFactory */
         $messageFactory = $container->resolve(MessageFactory::class);
 
-        $mailer = new Swift_Mailer($transport);
+        $mailer = new Mailer($transport, null, null);
 
         $sender = new Sender($mailer, $messageFactory);
 

@@ -4,62 +4,87 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Email;
 
-use Swift_Mailer;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mime\Address;
 
 class Sender implements ISender
 {
-    protected Swift_Mailer $mailer;
+    protected Mailer $mailer;
 
     protected MessageFactory $messageFactory;
 
-    /** @var string[] */
+    /** @var Address[] */
     protected array $failedRecipients = [];
 
     /**
      * Sender constructor.
      *
-     * @param Swift_Mailer   $mailer
+     * @param Mailer         $mailer
      * @param MessageFactory $messageFactory
      */
-    public function __construct(Swift_Mailer $mailer, MessageFactory $messageFactory)
+    public function __construct(Mailer $mailer, MessageFactory $messageFactory)
     {
         $this->mailer         = $mailer;
         $this->messageFactory = $messageFactory;
     }
 
     /**
-     * @param string $subject
-     * @param string $body
-     * @param array  $recipients
-     * @param array  $fromAddresses
-     * @param array  $replyToAddresses
+     * @param string       $subject
+     * @param string       $textBody
+     * @param string       $htmlBody
+     * @param Address      $sender
+     * @param Address[]    $recipients
+     * @param Address|null $replyToAddress
+     * @param int|null     $priority
+     * @param array|null   $bcc
+     * @param array|null   $cc
      *
-     * @return int
+     * @return void
      */
     public function send(
         string $subject,
-        string $body,
+        string $textBody,
+        string $htmlBody,
+        Address $sender,
         array $recipients,
-        array $fromAddresses,
-        array $replyToAddresses
-    ): int {
-        $message = $this->messageFactory
-            ->create($subject)
-            ->setBody($body)
-            ->setFrom($fromAddresses)
-            ->setReplyTo($replyToAddresses);
+        ?Address $replyToAddress = null,
+        ?int $priority = null,
+        ?array $bcc = null,
+        ?array $cc = null,
+    ): void {
+        $message = $this->messageFactory->create()
+            ->from($sender)
+            ->subject($subject)
+            ->text($textBody)
+            ->html($htmlBody);
+
+        if ($replyToAddress !== null) {
+            $message->replyTo($replyToAddress);
+        }
+
+        if ($priority !== null) {
+            $message->priority($priority);
+        }
+
+        if ($cc !== null) {
+            $message->cc(...$cc);
+        }
+
+        if ($bcc !== null) {
+            $message->bcc(...$bcc);
+        }
 
         $this->failedRecipients = [];
 
-        foreach ($recipients as $key => $value) {
-            if (is_int($key)) {
-                $message->addTo($value);
-            } else {
-                $message->addTo($key, $value);
+        foreach ($recipients as $value) {
+            $message->to($value);
+
+            try {
+                $this->mailer->send($message);
+            } catch (\Throwable $e) {
+                $this->failedRecipients[] = $value;
             }
         }
-
-        return $this->mailer->send($message, $this->failedRecipients);
     }
 
     /**

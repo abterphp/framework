@@ -45,12 +45,7 @@ class Env
     public const PAGINATION_SIZE_DEFAULT = 'PAGINATION_SIZE_DEFAULT';
     public const PAGINATION_NUMBER_COUNT = 'PAGINATION_NUMBER_COUNT';
 
-    public const EMAIL_SMTP_HOST        = 'EMAIL_SMTP_HOST';
-    public const EMAIL_SMTP_PORT        = 'EMAIL_SMTP_PORT';
-    public const EMAIL_SMTP_ENCRYPTION  = 'EMAIL_SMTP_ENCRYPTION';
-    public const EMAIL_SMTP_USERNAME    = 'EMAIL_SMTP_USERNAME';
-    public const EMAIL_SMTP_PASSWORD    = 'EMAIL_SMTP_PASSWORD';
-    public const EMAIL_SENDMAIL_COMMAND = 'EMAIL_SENDMAIL_COMMAND';
+    public const EMAIL_DNS = 'EMAIL_DNS';
 
     public const MODULE_CACHE_KEY = 'MODULE_CACHE_KEY';
 

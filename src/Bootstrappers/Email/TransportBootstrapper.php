@@ -6,13 +6,12 @@ namespace AbterPhp\Framework\Bootstrappers\Email;
 
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Environments\Environment;
-use AbterPhp\Framework\Exception;
+use AbterPhp\Framework\Exception\Config;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
-use Swift_SendmailTransport;
-use Swift_SmtpTransport;
-use Swift_Transport;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mailer\Transport\TransportInterface;
 
 class TransportBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
@@ -22,7 +21,7 @@ class TransportBootstrapper extends Bootstrapper implements ILazyBootstrapper
     public function getBindings(): array
     {
         return [
-            Swift_Transport::class,
+            TransportInterface::class,
         ];
     }
 
@@ -31,51 +30,11 @@ class TransportBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     public function registerBindings(IContainer $container): void
     {
-        $transport = null;
-        if (Environment::getVar(Env::EMAIL_SMTP_HOST)) {
-            $transport = $this->createSmtpTransport();
-        } elseif (Environment::getVar(Env::EMAIL_SENDMAIL_COMMAND)) {
-            $transport = $this->createSendmailTransport();
-        } else {
-            throw new Exception\Config(Swift_Transport::class);
+        try {
+            $transport = Transport::fromDsn(Environment::getVar(Env::EMAIL_DNS));
+            $container->bindInstance(TransportInterface::class, $transport);
+        } catch (\Throwable $e) {
+            throw new Config(TransportInterface::class, [Env::EMAIL_DNS], $e->getCode(), $e);
         }
-
-        $container->bindInstance(Swift_Transport::class, $transport);
-    }
-
-    /**
-     * @return Swift_SmtpTransport
-     */
-    private function createSmtpTransport(): Swift_SmtpTransport
-    {
-        $host       = Environment::mustGetVar(Env::EMAIL_SMTP_HOST);
-        $port       = (int)Environment::mustGetVar(Env::EMAIL_SMTP_PORT);
-        $encryption = (string)Environment::getVar(Env::EMAIL_SMTP_ENCRYPTION);
-
-        if (!$encryption) {
-            $encryption = null;
-        }
-
-        // @phan-suppress-next-line PhanTypeMismatchArgumentNullable
-        $transport = new Swift_SmtpTransport($host, $port, $encryption);
-
-        $username = (string)Environment::getVar(Env::EMAIL_SMTP_USERNAME);
-        $password = (string)Environment::getVar(Env::EMAIL_SMTP_PASSWORD);
-
-        if ($username && $password) {
-            $transport->setUsername($username)->setPassword($password);
-        }
-
-        return $transport;
-    }
-
-    /**
-     * @return Swift_SendmailTransport
-     */
-    private function createSendmailTransport(): Swift_SendmailTransport
-    {
-        $command = Environment::mustGetVar(Env::EMAIL_SENDMAIL_COMMAND);
-
-        return new Swift_SendmailTransport($command);
     }
 }

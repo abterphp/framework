@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Framework\Email;
 
 use PHPUnit\Framework\TestCase;
-use Swift_Message;
+use Symfony\Component\Mime\Email;
 
 class MessageFactoryTest extends TestCase
 {
@@ -23,8 +23,8 @@ class MessageFactoryTest extends TestCase
     {
         $subject = 'foo';
 
-        $actualResult = $this->sut->create($subject);
+        $actualResult = $this->sut->create();
 
-        $this->assertInstanceOf(Swift_Message::class, $actualResult);
+        $this->assertInstanceOf(Email::class, $actualResult);
     }
 }

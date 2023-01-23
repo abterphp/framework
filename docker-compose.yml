@@ -15,3 +15,11 @@ services:
       - ./docker/php/conf.d/zzz_020_general.ini:/usr/local/etc/php/conf.d/zzz_020_general.ini:ro
       - ./docker/php/conf.d/zzz_500_local.ini:/usr/local/etc/php/conf.d/zzz_500_local.ini:ro
     working_dir: /website
+
+  cli82:
+    image: abtercms/php:82
+    volumes:
+      - .:/website
+      - ./docker/php/conf.d/zzz_020_general.ini:/usr/local/etc/php/conf.d/zzz_020_general.ini:ro
+      - ./docker/php/conf.d/zzz_500_local.ini:/usr/local/etc/php/conf.d/zzz_500_local.ini:ro
+    working_dir: /website

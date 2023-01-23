@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace AbterPhp\Framework\Email;
 
-use Swift_Message;
+use Symfony\Component\Mime\Email;
 
 class MessageFactory
 {
     /**
-     * @param string $subject
-     *
-     * @return Swift_Message
+     * @return Email
      */
-    public function create(string $subject): Swift_Message
+    public function create(): Email
     {
-        return new Swift_Message($subject);
+        return new Email();
     }
 }
