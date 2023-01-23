@@ -74,9 +74,9 @@ class SecretGenerator extends Command
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    protected function getEnvFile(): ?string
+    protected function getEnvFile(): string
     {
         if (null !== $this->envFile) {
             return $this->envFile;
@@ -90,7 +90,7 @@ class SecretGenerator extends Command
 
         $this->envFile = $fileName;
 
-        return $this->envFile;
+        return $fileName;
     }
 
     /**
@@ -118,16 +118,14 @@ class SecretGenerator extends Command
         if (!$this->optionIsSet('dry-run') && $this->getEnvFile()) {
             $envFile = $this->getEnvFile();
 
-            if ($envFile !== null) {
-                $contents    = file_get_contents($envFile);
-                $newContents = preg_replace(
-                    sprintf("/\"%s\",\s*\"[^\"]*\"/U", $name),
-                    sprintf('"%s", "' . $key . '"', $name),
-                    $contents
-                );
+            $contents    = file_get_contents($envFile);
+            $newContents = preg_replace(
+                sprintf("/\"%s\",\s*\"[^\"]*\"/U", $name),
+                sprintf('"%s", "' . $key . '"', $name),
+                $contents
+            );
 
-                file_put_contents($envFile, $newContents);
-            }
+            file_put_contents($envFile, $newContents);
         }
 
         $pad = str_repeat(' ', $maxNameLength - strlen($name));
